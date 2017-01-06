@@ -53,7 +53,7 @@ public class Bluejay: NSObject {
     
     // MARK: - Initialization
 
-    override init() {
+    public override init() {
         super.init()
         
         cbCentralManager = CBCentralManager(
