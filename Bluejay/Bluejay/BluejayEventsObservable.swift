@@ -32,9 +32,9 @@ public protocol BluejayEventsObservable: class {
 
 /// Slightly less gross way to make the BluejayEventsObservable protocol's functions optional.
 extension BluejayEventsObservable {
-    func bluetoothAvailable(_ available: Bool) {}
-    func connected(_ peripheral: BluejayPeripheral) {}
-    func disconected() {}
+    public func bluetoothAvailable(_ available: Bool) {}
+    public func connected(_ peripheral: BluejayPeripheral) {}
+    public func disconected() {}
 }
 
 /// Allows creating weak references to BluejayEventsObservable objects, so that the Bluejay singleton does not prevent the deallocation of those objects.
