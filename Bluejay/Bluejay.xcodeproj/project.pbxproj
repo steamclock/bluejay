@@ -1,0 +1,577 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		B8022D981E1EEED900EA360B /* BluejayWriteResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8022D971E1EEED900EA360B /* BluejayWriteResult.swift */; };
+		B8022D9A1E1F041D00EA360B /* BluejaySyncPeripheral.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8022D991E1F041D00EA360B /* BluejaySyncPeripheral.swift */; };
+		B8022D9C1E1F052F00EA360B /* BluejayListenAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8022D9B1E1F052F00EA360B /* BluejayListenAction.swift */; };
+		B88A0D9C1E1DAA1600A00FF8 /* BluejayEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88A0D9B1E1DAA1600A00FF8 /* BluejayEvent.swift */; };
+		B88A0D9F1E1DCFBF00A00FF8 /* DiscoverService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88A0D9E1E1DCFBF00A00FF8 /* DiscoverService.swift */; };
+		B88A0DA11E1DD15600A00FF8 /* DiscoverCharacteristic.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88A0DA01E1DD15600A00FF8 /* DiscoverCharacteristic.swift */; };
+		B88A0DA31E1DD18B00A00FF8 /* ReadCharacteristic.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88A0DA21E1DD18B00A00FF8 /* ReadCharacteristic.swift */; };
+		B88A0DA51E1DD1A200A00FF8 /* WriteCharacteristic.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88A0DA41E1DD1A200A00FF8 /* WriteCharacteristic.swift */; };
+		B88A0DA71E1DD1DE00A00FF8 /* ListenCharacteristic.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88A0DA61E1DD1DE00A00FF8 /* ListenCharacteristic.swift */; };
+		B8C70F7F1E1C22850006CF58 /* Bluejay.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B8C70F751E1C22850006CF58 /* Bluejay.framework */; };
+		B8C70F841E1C22850006CF58 /* BluejayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C70F831E1C22850006CF58 /* BluejayTests.swift */; };
+		B8C70F861E1C22850006CF58 /* Bluejay.h in Headers */ = {isa = PBXBuildFile; fileRef = B8C70F781E1C22850006CF58 /* Bluejay.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		B8C70F901E1C505C0006CF58 /* Bluejay.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C70F8F1E1C505C0006CF58 /* Bluejay.swift */; };
+		B8C70F921E1C56330006CF58 /* CBPeripheral+FindService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C70F911E1C56330006CF58 /* CBPeripheral+FindService.swift */; };
+		B8C70F951E1C57250006CF58 /* CBService+FindCharacteristic.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C70F941E1C57250006CF58 /* CBService+FindCharacteristic.swift */; };
+		B8C70F971E1C5A4F0006CF58 /* BluejayErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C70F961E1C5A4F0006CF58 /* BluejayErrors.swift */; };
+		B8C70F991E1C5A7F0006CF58 /* ServiceIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C70F981E1C5A7F0006CF58 /* ServiceIdentifier.swift */; };
+		B8C70F9B1E1C5A910006CF58 /* CharacteristicIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C70F9A1E1C5A910006CF58 /* CharacteristicIdentifier.swift */; };
+		B8C70FA01E1C61BD0006CF58 /* PeripheralIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C70F9F1E1C61BD0006CF58 /* PeripheralIdentifier.swift */; };
+		B8C70FA31E1C65000006CF58 /* BluejayConnectionResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C70FA21E1C65000006CF58 /* BluejayConnectionResult.swift */; };
+		B8C70FA51E1C65A20006CF58 /* BluejayReadResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C70FA41E1C65A20006CF58 /* BluejayReadResult.swift */; };
+		B8C70FA91E1C69B60006CF58 /* BluejayReceivable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C70FA81E1C69B60006CF58 /* BluejayReceivable.swift */; };
+		B8C70FAB1E1C69C50006CF58 /* BluejaySendable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C70FAA1E1C69C50006CF58 /* BluejaySendable.swift */; };
+		B8C70FAF1E1C6C780006CF58 /* Integer+BluejayTransferable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C70FAE1E1C6C780006CF58 /* Integer+BluejayTransferable.swift */; };
+		B8C70FB11E1C6F150006CF58 /* DataPadding.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C70FB01E1C6F150006CF58 /* DataPadding.swift */; };
+		B8C70FB71E1C71880006CF58 /* BluejayHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C70FB61E1C71880006CF58 /* BluejayHelper.swift */; };
+		B8C70FB91E1C725C0006CF58 /* BluejayEventsObservable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C70FB81E1C725C0006CF58 /* BluejayEventsObservable.swift */; };
+		B8C70FBD1E1C7DB60006CF58 /* BluejayPeripheral.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C70FBC1E1C7DB60006CF58 /* BluejayPeripheral.swift */; };
+		B8C70FBF1E1C7F300006CF58 /* BluejayOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C70FBE1E1C7F300006CF58 /* BluejayOperation.swift */; };
+		B8C70FC11E1C80150006CF58 /* BluejayOperationState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C70FC01E1C80150006CF58 /* BluejayOperationState.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		B8C70F801E1C22850006CF58 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B8C70F6C1E1C22850006CF58 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B8C70F741E1C22850006CF58;
+			remoteInfo = Bluejay;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		B8022D971E1EEED900EA360B /* BluejayWriteResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BluejayWriteResult.swift; sourceTree = "<group>"; };
+		B8022D991E1F041D00EA360B /* BluejaySyncPeripheral.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BluejaySyncPeripheral.swift; sourceTree = "<group>"; };
+		B8022D9B1E1F052F00EA360B /* BluejayListenAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BluejayListenAction.swift; sourceTree = "<group>"; };
+		B88A0D9B1E1DAA1600A00FF8 /* BluejayEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BluejayEvent.swift; sourceTree = "<group>"; };
+		B88A0D9E1E1DCFBF00A00FF8 /* DiscoverService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoverService.swift; sourceTree = "<group>"; };
+		B88A0DA01E1DD15600A00FF8 /* DiscoverCharacteristic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoverCharacteristic.swift; sourceTree = "<group>"; };
+		B88A0DA21E1DD18B00A00FF8 /* ReadCharacteristic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReadCharacteristic.swift; sourceTree = "<group>"; };
+		B88A0DA41E1DD1A200A00FF8 /* WriteCharacteristic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WriteCharacteristic.swift; sourceTree = "<group>"; };
+		B88A0DA61E1DD1DE00A00FF8 /* ListenCharacteristic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListenCharacteristic.swift; sourceTree = "<group>"; };
+		B8C70F751E1C22850006CF58 /* Bluejay.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Bluejay.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B8C70F781E1C22850006CF58 /* Bluejay.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Bluejay.h; sourceTree = "<group>"; };
+		B8C70F791E1C22850006CF58 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B8C70F7E1E1C22850006CF58 /* BluejayTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BluejayTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		B8C70F831E1C22850006CF58 /* BluejayTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BluejayTests.swift; sourceTree = "<group>"; };
+		B8C70F851E1C22850006CF58 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B8C70F8F1E1C505C0006CF58 /* Bluejay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bluejay.swift; sourceTree = "<group>"; };
+		B8C70F911E1C56330006CF58 /* CBPeripheral+FindService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CBPeripheral+FindService.swift"; sourceTree = "<group>"; };
+		B8C70F941E1C57250006CF58 /* CBService+FindCharacteristic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CBService+FindCharacteristic.swift"; sourceTree = "<group>"; };
+		B8C70F961E1C5A4F0006CF58 /* BluejayErrors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BluejayErrors.swift; sourceTree = "<group>"; };
+		B8C70F981E1C5A7F0006CF58 /* ServiceIdentifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceIdentifier.swift; sourceTree = "<group>"; };
+		B8C70F9A1E1C5A910006CF58 /* CharacteristicIdentifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CharacteristicIdentifier.swift; sourceTree = "<group>"; };
+		B8C70F9D1E1C5AD80006CF58 /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
+		B8C70F9F1E1C61BD0006CF58 /* PeripheralIdentifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeripheralIdentifier.swift; sourceTree = "<group>"; };
+		B8C70FA21E1C65000006CF58 /* BluejayConnectionResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BluejayConnectionResult.swift; sourceTree = "<group>"; };
+		B8C70FA41E1C65A20006CF58 /* BluejayReadResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BluejayReadResult.swift; sourceTree = "<group>"; };
+		B8C70FA81E1C69B60006CF58 /* BluejayReceivable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BluejayReceivable.swift; sourceTree = "<group>"; };
+		B8C70FAA1E1C69C50006CF58 /* BluejaySendable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BluejaySendable.swift; sourceTree = "<group>"; };
+		B8C70FAE1E1C6C780006CF58 /* Integer+BluejayTransferable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Integer+BluejayTransferable.swift"; sourceTree = "<group>"; };
+		B8C70FB01E1C6F150006CF58 /* DataPadding.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataPadding.swift; sourceTree = "<group>"; };
+		B8C70FB61E1C71880006CF58 /* BluejayHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BluejayHelper.swift; sourceTree = "<group>"; };
+		B8C70FB81E1C725C0006CF58 /* BluejayEventsObservable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BluejayEventsObservable.swift; sourceTree = "<group>"; };
+		B8C70FBC1E1C7DB60006CF58 /* BluejayPeripheral.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BluejayPeripheral.swift; sourceTree = "<group>"; };
+		B8C70FBE1E1C7F300006CF58 /* BluejayOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BluejayOperation.swift; sourceTree = "<group>"; };
+		B8C70FC01E1C80150006CF58 /* BluejayOperationState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BluejayOperationState.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		B8C70F711E1C22850006CF58 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B8C70F7B1E1C22850006CF58 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B8C70F7F1E1C22850006CF58 /* Bluejay.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		B88A0D9D1E1DCFA300A00FF8 /* Operations */ = {
+			isa = PBXGroup;
+			children = (
+				B8C70FBE1E1C7F300006CF58 /* BluejayOperation.swift */,
+				B8C70FC01E1C80150006CF58 /* BluejayOperationState.swift */,
+				B88A0D9E1E1DCFBF00A00FF8 /* DiscoverService.swift */,
+				B88A0DA01E1DD15600A00FF8 /* DiscoverCharacteristic.swift */,
+				B88A0DA21E1DD18B00A00FF8 /* ReadCharacteristic.swift */,
+				B88A0DA41E1DD1A200A00FF8 /* WriteCharacteristic.swift */,
+				B88A0DA61E1DD1DE00A00FF8 /* ListenCharacteristic.swift */,
+			);
+			name = Operations;
+			sourceTree = "<group>";
+		};
+		B8C70F6B1E1C22850006CF58 = {
+			isa = PBXGroup;
+			children = (
+				B8C70F771E1C22850006CF58 /* Bluejay */,
+				B8C70F821E1C22850006CF58 /* BluejayTests */,
+				B8C70F761E1C22850006CF58 /* Products */,
+				B8C70F9C1E1C5AD80006CF58 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		B8C70F761E1C22850006CF58 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				B8C70F751E1C22850006CF58 /* Bluejay.framework */,
+				B8C70F7E1E1C22850006CF58 /* BluejayTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		B8C70F771E1C22850006CF58 /* Bluejay */ = {
+			isa = PBXGroup;
+			children = (
+				B8C70F781E1C22850006CF58 /* Bluejay.h */,
+				B8C70F8F1E1C505C0006CF58 /* Bluejay.swift */,
+				B8C70FBC1E1C7DB60006CF58 /* BluejayPeripheral.swift */,
+				B8022D991E1F041D00EA360B /* BluejaySyncPeripheral.swift */,
+				B8C70FB61E1C71880006CF58 /* BluejayHelper.swift */,
+				B8C70F961E1C5A4F0006CF58 /* BluejayErrors.swift */,
+				B88A0D9D1E1DCFA300A00FF8 /* Operations */,
+				B8C70FA71E1C696A0006CF58 /* Protocols */,
+				B8C70FA61E1C68AD0006CF58 /* Structs */,
+				B8C70FA11E1C64D10006CF58 /* Enums */,
+				B8C70F931E1C56D80006CF58 /* Extensions */,
+				B8C70F791E1C22850006CF58 /* Info.plist */,
+			);
+			path = Bluejay;
+			sourceTree = "<group>";
+		};
+		B8C70F821E1C22850006CF58 /* BluejayTests */ = {
+			isa = PBXGroup;
+			children = (
+				B8C70F831E1C22850006CF58 /* BluejayTests.swift */,
+				B8C70F851E1C22850006CF58 /* Info.plist */,
+			);
+			path = BluejayTests;
+			sourceTree = "<group>";
+		};
+		B8C70F931E1C56D80006CF58 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				B8C70F911E1C56330006CF58 /* CBPeripheral+FindService.swift */,
+				B8C70F941E1C57250006CF58 /* CBService+FindCharacteristic.swift */,
+				B8C70FAE1E1C6C780006CF58 /* Integer+BluejayTransferable.swift */,
+			);
+			name = Extensions;
+			sourceTree = "<group>";
+		};
+		B8C70F9C1E1C5AD80006CF58 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				B8C70F9D1E1C5AD80006CF58 /* CoreBluetooth.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		B8C70FA11E1C64D10006CF58 /* Enums */ = {
+			isa = PBXGroup;
+			children = (
+				B8C70FA21E1C65000006CF58 /* BluejayConnectionResult.swift */,
+				B8C70FA41E1C65A20006CF58 /* BluejayReadResult.swift */,
+				B8022D971E1EEED900EA360B /* BluejayWriteResult.swift */,
+				B8022D9B1E1F052F00EA360B /* BluejayListenAction.swift */,
+				B88A0D9B1E1DAA1600A00FF8 /* BluejayEvent.swift */,
+			);
+			name = Enums;
+			sourceTree = "<group>";
+		};
+		B8C70FA61E1C68AD0006CF58 /* Structs */ = {
+			isa = PBXGroup;
+			children = (
+				B8C70F981E1C5A7F0006CF58 /* ServiceIdentifier.swift */,
+				B8C70F9A1E1C5A910006CF58 /* CharacteristicIdentifier.swift */,
+				B8C70F9F1E1C61BD0006CF58 /* PeripheralIdentifier.swift */,
+				B8C70FB01E1C6F150006CF58 /* DataPadding.swift */,
+			);
+			name = Structs;
+			sourceTree = "<group>";
+		};
+		B8C70FA71E1C696A0006CF58 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				B8C70FA81E1C69B60006CF58 /* BluejayReceivable.swift */,
+				B8C70FAA1E1C69C50006CF58 /* BluejaySendable.swift */,
+				B8C70FB81E1C725C0006CF58 /* BluejayEventsObservable.swift */,
+			);
+			name = Protocols;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		B8C70F721E1C22850006CF58 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B8C70F861E1C22850006CF58 /* Bluejay.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		B8C70F741E1C22850006CF58 /* Bluejay */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B8C70F891E1C22850006CF58 /* Build configuration list for PBXNativeTarget "Bluejay" */;
+			buildPhases = (
+				B8C70F701E1C22850006CF58 /* Sources */,
+				B8C70F711E1C22850006CF58 /* Frameworks */,
+				B8C70F721E1C22850006CF58 /* Headers */,
+				B8C70F731E1C22850006CF58 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Bluejay;
+			productName = Bluejay;
+			productReference = B8C70F751E1C22850006CF58 /* Bluejay.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		B8C70F7D1E1C22850006CF58 /* BluejayTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B8C70F8C1E1C22850006CF58 /* Build configuration list for PBXNativeTarget "BluejayTests" */;
+			buildPhases = (
+				B8C70F7A1E1C22850006CF58 /* Sources */,
+				B8C70F7B1E1C22850006CF58 /* Frameworks */,
+				B8C70F7C1E1C22850006CF58 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				B8C70F811E1C22850006CF58 /* PBXTargetDependency */,
+			);
+			name = BluejayTests;
+			productName = BluejayTests;
+			productReference = B8C70F7E1E1C22850006CF58 /* BluejayTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		B8C70F6C1E1C22850006CF58 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0820;
+				LastUpgradeCheck = 0820;
+				ORGANIZATIONNAME = "Steamclock Software";
+				TargetAttributes = {
+					B8C70F741E1C22850006CF58 = {
+						CreatedOnToolsVersion = 8.2.1;
+						LastSwiftMigration = 0820;
+						ProvisioningStyle = Automatic;
+					};
+					B8C70F7D1E1C22850006CF58 = {
+						CreatedOnToolsVersion = 8.2.1;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = B8C70F6F1E1C22850006CF58 /* Build configuration list for PBXProject "Bluejay" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = B8C70F6B1E1C22850006CF58;
+			productRefGroup = B8C70F761E1C22850006CF58 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				B8C70F741E1C22850006CF58 /* Bluejay */,
+				B8C70F7D1E1C22850006CF58 /* BluejayTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		B8C70F731E1C22850006CF58 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B8C70F7C1E1C22850006CF58 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		B8C70F701E1C22850006CF58 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B8C70FAF1E1C6C780006CF58 /* Integer+BluejayTransferable.swift in Sources */,
+				B8C70F921E1C56330006CF58 /* CBPeripheral+FindService.swift in Sources */,
+				B8C70F901E1C505C0006CF58 /* Bluejay.swift in Sources */,
+				B8C70F951E1C57250006CF58 /* CBService+FindCharacteristic.swift in Sources */,
+				B8C70FBD1E1C7DB60006CF58 /* BluejayPeripheral.swift in Sources */,
+				B8C70FA51E1C65A20006CF58 /* BluejayReadResult.swift in Sources */,
+				B8C70FC11E1C80150006CF58 /* BluejayOperationState.swift in Sources */,
+				B8C70FA31E1C65000006CF58 /* BluejayConnectionResult.swift in Sources */,
+				B88A0DA11E1DD15600A00FF8 /* DiscoverCharacteristic.swift in Sources */,
+				B8C70F991E1C5A7F0006CF58 /* ServiceIdentifier.swift in Sources */,
+				B88A0DA31E1DD18B00A00FF8 /* ReadCharacteristic.swift in Sources */,
+				B8022D981E1EEED900EA360B /* BluejayWriteResult.swift in Sources */,
+				B8C70FA91E1C69B60006CF58 /* BluejayReceivable.swift in Sources */,
+				B8C70FB71E1C71880006CF58 /* BluejayHelper.swift in Sources */,
+				B88A0DA71E1DD1DE00A00FF8 /* ListenCharacteristic.swift in Sources */,
+				B8C70F971E1C5A4F0006CF58 /* BluejayErrors.swift in Sources */,
+				B88A0D9F1E1DCFBF00A00FF8 /* DiscoverService.swift in Sources */,
+				B8022D9A1E1F041D00EA360B /* BluejaySyncPeripheral.swift in Sources */,
+				B8C70FB11E1C6F150006CF58 /* DataPadding.swift in Sources */,
+				B8022D9C1E1F052F00EA360B /* BluejayListenAction.swift in Sources */,
+				B8C70F9B1E1C5A910006CF58 /* CharacteristicIdentifier.swift in Sources */,
+				B8C70FBF1E1C7F300006CF58 /* BluejayOperation.swift in Sources */,
+				B88A0D9C1E1DAA1600A00FF8 /* BluejayEvent.swift in Sources */,
+				B88A0DA51E1DD1A200A00FF8 /* WriteCharacteristic.swift in Sources */,
+				B8C70FAB1E1C69C50006CF58 /* BluejaySendable.swift in Sources */,
+				B8C70FB91E1C725C0006CF58 /* BluejayEventsObservable.swift in Sources */,
+				B8C70FA01E1C61BD0006CF58 /* PeripheralIdentifier.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B8C70F7A1E1C22850006CF58 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B8C70F841E1C22850006CF58 /* BluejayTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		B8C70F811E1C22850006CF58 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B8C70F741E1C22850006CF58 /* Bluejay */;
+			targetProxy = B8C70F801E1C22850006CF58 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		B8C70F871E1C22850006CF58 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		B8C70F881E1C22850006CF58 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		B8C70F8A1E1C22850006CF58 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = Bluejay/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.steamclock.Bluejay;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Debug;
+		};
+		B8C70F8B1E1C22850006CF58 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = Bluejay/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.steamclock.Bluejay;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
+			};
+			name = Release;
+		};
+		B8C70F8D1E1C22850006CF58 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				INFOPLIST_FILE = BluejayTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.steamclock.BluejayTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Debug;
+		};
+		B8C70F8E1E1C22850006CF58 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				INFOPLIST_FILE = BluejayTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.steamclock.BluejayTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		B8C70F6F1E1C22850006CF58 /* Build configuration list for PBXProject "Bluejay" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B8C70F871E1C22850006CF58 /* Debug */,
+				B8C70F881E1C22850006CF58 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B8C70F891E1C22850006CF58 /* Build configuration list for PBXNativeTarget "Bluejay" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B8C70F8A1E1C22850006CF58 /* Debug */,
+				B8C70F8B1E1C22850006CF58 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B8C70F8C1E1C22850006CF58 /* Build configuration list for PBXNativeTarget "BluejayTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B8C70F8D1E1C22850006CF58 /* Debug */,
+				B8C70F8E1E1C22850006CF58 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = B8C70F6C1E1C22850006CF58 /* Project object */;
+}
