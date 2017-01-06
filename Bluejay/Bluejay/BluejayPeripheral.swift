@@ -199,9 +199,7 @@ extension BluejayPeripheral: CBPeripheralDelegate {
         }
         else {
             listener(.success(characteristic.value))
-        }
-        
-        handleEvent(.didReadCharacteristic(characteristic, characteristic.value ?? Data()), error: error as NSError?)
+        }        
     }
     
     public func peripheral(_ peripheral: CBPeripheral, didUpdateNotificationStateFor characteristic: CBCharacteristic, error: Error?) {
