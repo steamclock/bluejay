@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9A938B5C2098A12174E0C3D6 /* Pods_BluejayDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1CEF5B43BF902DEE7C8AABEC /* Pods_BluejayDemo.framework */; };
 		B8BFE9651E2436B500027237 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8BFE9641E2436B500027237 /* AppDelegate.swift */; };
 		B8BFE9671E2436B500027237 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8BFE9661E2436B500027237 /* ViewController.swift */; };
 		B8BFE96A1E2436B500027237 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B8BFE9681E2436B500027237 /* Main.storyboard */; };
@@ -15,6 +16,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1CEF5B43BF902DEE7C8AABEC /* Pods_BluejayDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BluejayDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		393CF797DDB0CEA11106F912 /* Pods-BluejayDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BluejayDemo.release.xcconfig"; path = "Pods/Target Support Files/Pods-BluejayDemo/Pods-BluejayDemo.release.xcconfig"; sourceTree = "<group>"; };
+		B2B1A3AB27A7EB1BF0973ECC /* Pods-BluejayDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BluejayDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BluejayDemo/Pods-BluejayDemo.debug.xcconfig"; sourceTree = "<group>"; };
 		B8BFE9611E2436B500027237 /* BluejayDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BluejayDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B8BFE9641E2436B500027237 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B8BFE9661E2436B500027237 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -29,17 +33,29 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9A938B5C2098A12174E0C3D6 /* Pods_BluejayDemo.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2C3A562596ABA653A8FA739C /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				B2B1A3AB27A7EB1BF0973ECC /* Pods-BluejayDemo.debug.xcconfig */,
+				393CF797DDB0CEA11106F912 /* Pods-BluejayDemo.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		B8BFE9581E2436B500027237 = {
 			isa = PBXGroup;
 			children = (
 				B8BFE9631E2436B500027237 /* BluejayDemo */,
 				B8BFE9621E2436B500027237 /* Products */,
+				2C3A562596ABA653A8FA739C /* Pods */,
+				C953D4CCA51170BDDA69224C /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -64,6 +80,14 @@
 			path = BluejayDemo;
 			sourceTree = "<group>";
 		};
+		C953D4CCA51170BDDA69224C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1CEF5B43BF902DEE7C8AABEC /* Pods_BluejayDemo.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -71,9 +95,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = B8BFE9731E2436B500027237 /* Build configuration list for PBXNativeTarget "BluejayDemo" */;
 			buildPhases = (
+				D15210D3043B9372A3E4CD91 /* [CP] Check Pods Manifest.lock */,
 				B8BFE95D1E2436B500027237 /* Sources */,
 				B8BFE95E1E2436B500027237 /* Frameworks */,
 				B8BFE95F1E2436B500027237 /* Resources */,
+				C6413AB41F4CE61EB8D68811 /* [CP] Embed Pods Frameworks */,
+				008D23950D73482A618D1337 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -131,6 +158,54 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		008D23950D73482A618D1337 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-BluejayDemo/Pods-BluejayDemo-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C6413AB41F4CE61EB8D68811 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-BluejayDemo/Pods-BluejayDemo-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D15210D3043B9372A3E4CD91 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		B8BFE95D1E2436B500027237 /* Sources */ = {
@@ -259,6 +334,7 @@
 		};
 		B8BFE9741E2436B500027237 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B2B1A3AB27A7EB1BF0973ECC /* Pods-BluejayDemo.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = GH868RP95T;
@@ -272,6 +348,7 @@
 		};
 		B8BFE9751E2436B500027237 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 393CF797DDB0CEA11106F912 /* Pods-BluejayDemo.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = GH868RP95T;
@@ -302,6 +379,7 @@
 				B8BFE9751E2436B500027237 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

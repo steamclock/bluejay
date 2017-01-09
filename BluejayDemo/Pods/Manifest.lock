@@ -1,0 +1,22 @@
+PODS:
+  - Bluejay (0.1.0)
+
+DEPENDENCIES:
+  - Bluejay (from `https://github.com/steamclock/bluejay.git`, branch `master`)
+
+EXTERNAL SOURCES:
+  Bluejay:
+    :branch: master
+    :git: https://github.com/steamclock/bluejay.git
+
+CHECKOUT OPTIONS:
+  Bluejay:
+    :commit: 85c13d7ea201c427b24c9759f6e8193cbeca256b
+    :git: https://github.com/steamclock/bluejay.git
+
+SPEC CHECKSUMS:
+  Bluejay: 51cf98f886fa0fed614ee16391947e29bb9d773b
+
+PODFILE CHECKSUM: 3b1c7da7641cbed29ec2f1441e9c2e428a547c7d
+
+COCOAPODS: 1.2.0.beta.1
