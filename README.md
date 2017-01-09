@@ -9,11 +9,14 @@ Bluejay's primary goals are:
 
 ## Requirements
 
-- iOS and Xcode compatibility
+- iOS 10 or above
+- Xcode 8.2.1 or above
 
 ## Getting started
 
-- A simple guide to making a connection
+Install using CocoaPods:
+
+`pod 'Bluejay', :git => 'https://github.com/steamclock/bluejay.git', :branch => 'master'`
 
 ## Documentaion
 
