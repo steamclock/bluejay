@@ -125,10 +125,10 @@ public class Bluejay: NSObject {
         self.connectingPeripheral = nil
         self.connectedPeripheral = nil
         
-        connected?.cancelAllOperations(BluejayErrors.unexpectedDisconnectError())
-        connecting?.cancelAllOperations(BluejayErrors.unexpectedDisconnectError())
+        connected?.cancelAllOperations(BluejayError.unexpectedDisconnectError())
+        connecting?.cancelAllOperations(BluejayError.unexpectedDisconnectError())
         
-        connectionCallback?(.failure(BluejayErrors.unexpectedDisconnectError()))
+        connectionCallback?(.failure(BluejayError.unexpectedDisconnectError()))
         connectionCallback = nil
     }
     
@@ -149,7 +149,7 @@ public class Bluejay: NSObject {
             cbCentralManager.connect(cbPeripheral, options: standardConnectOptions)
         }
         else {
-            completion(.failure(BluejayErrors.unknownPeripheralError(peripheralIdentifier)))
+            completion(.failure(BluejayError.unknownPeripheralError(peripheralIdentifier)))
         }
     }
     
@@ -161,7 +161,7 @@ public class Bluejay: NSObject {
             connectingPeripheral = nil
             connectedPeripheral = nil
             
-            peripheralToDisconnect.cancelAllOperations(BluejayErrors.cancelledError())
+            peripheralToDisconnect.cancelAllOperations(BluejayError.cancelledError())
             cbCentralManager.cancelPeripheralConnection(peripheralToDisconnect.cbPeripheral)
         }
         
@@ -176,7 +176,7 @@ public class Bluejay: NSObject {
             peripheral.read(from: characteristicIdentifier, completion: completion)
         }
         else {
-            completion(.failure(BluejayErrors.notConnectedError()))
+            completion(.failure(BluejayError.notConnectedError()))
         }
     }
     
@@ -186,7 +186,7 @@ public class Bluejay: NSObject {
             peripheral.write(to: characteristicIdentifier, value: value, completion: completion)
         }
         else {
-            completion(.failure(BluejayErrors.notConnectedError()))
+            completion(.failure(BluejayError.notConnectedError()))
         }
     }
     
@@ -196,7 +196,7 @@ public class Bluejay: NSObject {
             peripheral.listen(to: characteristicIdentifier, completion: completion)
         }
         else {
-            completion(.failure(BluejayErrors.notConnectedError()))
+            completion(.failure(BluejayError.notConnectedError()))
         }
     }
     
@@ -206,7 +206,7 @@ public class Bluejay: NSObject {
             peripheral.cancelListen(to: characteristicIdentifier, sendFailure: true, completion: completion)
         }
         else {
-            completion?(.failure(BluejayErrors.notConnectedError()))
+            completion?(.failure(BluejayError.notConnectedError()))
         }
     }
     
@@ -216,7 +216,7 @@ public class Bluejay: NSObject {
             peripheral.restoreListen(to: characteristicIdentifier, completion: completion)
         }
         else {
-            completion(.failure(BluejayErrors.notConnectedError()))
+            completion(.failure(BluejayError.notConnectedError()))
         }
     }
     
@@ -248,7 +248,7 @@ public class Bluejay: NSObject {
             }
         }
         else {
-            mainThread(.failure(BluejayErrors.notConnectedError()))
+            mainThread(.failure(BluejayError.notConnectedError()))
         }
     }
     

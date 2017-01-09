@@ -28,7 +28,7 @@ public class BluejaySyncPeripheral {
     
     /// Read a value from the specified characteristic synchronously.
     public func read<R: BluejayReceivable>(from characteristicIdentifier: CharacteristicIdentifier) throws -> R {
-        var finalResult: BluejayReadResult<R> = .failure(BluejayErrors.unknownError())
+        var finalResult: BluejayReadResult<R> = .failure(BluejayError.unknownError())
         
         let sem = DispatchSemaphore(value: 0)
         
@@ -52,7 +52,7 @@ public class BluejaySyncPeripheral {
     
     /// Write a value from the specified characteristic synchronously.
     public func write<S: BluejaySendable>(to characteristicIdentifier: CharacteristicIdentifier, value: S) throws {
-        var finalResult: BluejayWriteResult = .failure(BluejayErrors.unknownError())
+        var finalResult: BluejayWriteResult = .failure(BluejayError.unknownError())
         
         let sem = DispatchSemaphore(value: 0)
         

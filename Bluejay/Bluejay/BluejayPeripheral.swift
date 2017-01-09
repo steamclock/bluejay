@@ -52,7 +52,7 @@ public class BluejayPeripheral: NSObject {
     
     private func updateOperations() {
         if cbPeripheral.state == .disconnected {
-            cancelAllOperations(BluejayErrors.notConnectedError())
+            cancelAllOperations(BluejayError.notConnectedError())
             return
         }
         
@@ -92,7 +92,7 @@ public class BluejayPeripheral: NSObject {
             updateOperations()
         }
         else {
-            cancelAllOperations(error ?? BluejayErrors.unknownError())
+            cancelAllOperations(error ?? BluejayError.unknownError())
         }
     }
     
@@ -151,7 +151,7 @@ public class BluejayPeripheral: NSObject {
             self.listeners[characteristicIdentifier] = nil
             
             if(sendFailure) {
-                listenCallback?(.failure(BluejayErrors.cancelledError()))
+                listenCallback?(.failure(BluejayError.cancelledError()))
             }
             
             completion?(result)

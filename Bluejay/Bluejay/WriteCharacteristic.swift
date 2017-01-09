@@ -28,7 +28,7 @@ class WriteCharacteristic<T : BluejaySendable> : BluejayOperation {
             let service = peripheral.service(with: characteristicIdentifier.service.uuid),
             let characteristic = service.characteristic(with: characteristicIdentifier.uuid)
         else {
-            fail(BluejayErrors.missingCharacteristicError(characteristicIdentifier))
+            fail(BluejayError.missingCharacteristicError(characteristicIdentifier))
             return
         }
         

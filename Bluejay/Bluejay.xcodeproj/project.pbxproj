@@ -22,7 +22,7 @@
 		B8C70F901E1C505C0006CF58 /* Bluejay.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C70F8F1E1C505C0006CF58 /* Bluejay.swift */; };
 		B8C70F921E1C56330006CF58 /* CBPeripheral+FindService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C70F911E1C56330006CF58 /* CBPeripheral+FindService.swift */; };
 		B8C70F951E1C57250006CF58 /* CBService+FindCharacteristic.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C70F941E1C57250006CF58 /* CBService+FindCharacteristic.swift */; };
-		B8C70F971E1C5A4F0006CF58 /* BluejayErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C70F961E1C5A4F0006CF58 /* BluejayErrors.swift */; };
+		B8C70F971E1C5A4F0006CF58 /* BluejayError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C70F961E1C5A4F0006CF58 /* BluejayError.swift */; };
 		B8C70F991E1C5A7F0006CF58 /* ServiceIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C70F981E1C5A7F0006CF58 /* ServiceIdentifier.swift */; };
 		B8C70F9B1E1C5A910006CF58 /* CharacteristicIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C70F9A1E1C5A910006CF58 /* CharacteristicIdentifier.swift */; };
 		B8C70FA01E1C61BD0006CF58 /* PeripheralIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C70F9F1E1C61BD0006CF58 /* PeripheralIdentifier.swift */; };
@@ -68,7 +68,7 @@
 		B8C70F8F1E1C505C0006CF58 /* Bluejay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bluejay.swift; sourceTree = "<group>"; };
 		B8C70F911E1C56330006CF58 /* CBPeripheral+FindService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CBPeripheral+FindService.swift"; sourceTree = "<group>"; };
 		B8C70F941E1C57250006CF58 /* CBService+FindCharacteristic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CBService+FindCharacteristic.swift"; sourceTree = "<group>"; };
-		B8C70F961E1C5A4F0006CF58 /* BluejayErrors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BluejayErrors.swift; sourceTree = "<group>"; };
+		B8C70F961E1C5A4F0006CF58 /* BluejayError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BluejayError.swift; sourceTree = "<group>"; };
 		B8C70F981E1C5A7F0006CF58 /* ServiceIdentifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceIdentifier.swift; sourceTree = "<group>"; };
 		B8C70F9A1E1C5A910006CF58 /* CharacteristicIdentifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CharacteristicIdentifier.swift; sourceTree = "<group>"; };
 		B8C70F9D1E1C5AD80006CF58 /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
@@ -146,7 +146,7 @@
 				B8C70FBC1E1C7DB60006CF58 /* BluejayPeripheral.swift */,
 				B8022D991E1F041D00EA360B /* BluejaySyncPeripheral.swift */,
 				B8C70FB61E1C71880006CF58 /* BluejayHelper.swift */,
-				B8C70F961E1C5A4F0006CF58 /* BluejayErrors.swift */,
+				B8C70F961E1C5A4F0006CF58 /* BluejayError.swift */,
 				B88A0D9D1E1DCFA300A00FF8 /* Operations */,
 				B8C70FA71E1C696A0006CF58 /* Protocols */,
 				B8C70FA61E1C68AD0006CF58 /* Structs */,
@@ -343,7 +343,7 @@
 				B8C70FA91E1C69B60006CF58 /* BluejayReceivable.swift in Sources */,
 				B8C70FB71E1C71880006CF58 /* BluejayHelper.swift in Sources */,
 				B88A0DA71E1DD1DE00A00FF8 /* ListenCharacteristic.swift in Sources */,
-				B8C70F971E1C5A4F0006CF58 /* BluejayErrors.swift in Sources */,
+				B8C70F971E1C5A4F0006CF58 /* BluejayError.swift in Sources */,
 				B88A0D9F1E1DCFBF00A00FF8 /* DiscoverService.swift in Sources */,
 				B8022D9A1E1F041D00EA360B /* BluejaySyncPeripheral.swift in Sources */,
 				B8C70FB11E1C6F150006CF58 /* DataPadding.swift in Sources */,

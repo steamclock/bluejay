@@ -21,7 +21,7 @@ class DiscoverCharacteristic: BluejayOperation {
     
     func start(_ peripheral: CBPeripheral) {
         guard let service = peripheral.service(with: characteristicIdentifier.service.uuid) else {
-            fail(BluejayErrors.missingServiceError(characteristicIdentifier.service))
+            fail(BluejayError.missingServiceError(characteristicIdentifier.service))
             return
         }
         
@@ -36,13 +36,13 @@ class DiscoverCharacteristic: BluejayOperation {
     
     func receivedEvent(_ event: BluejayEvent, peripheral: CBPeripheral) {
         guard let service = peripheral.service(with: characteristicIdentifier.service.uuid) else {
-            fail(BluejayErrors.missingServiceError(characteristicIdentifier.service))
+            fail(BluejayError.missingServiceError(characteristicIdentifier.service))
             return
         }
         
         if case .didDiscoverCharacteristics = event {
             if service.characteristic(with: characteristicIdentifier.uuid) == nil {
-                fail(BluejayErrors.missingCharacteristicError(characteristicIdentifier))
+                fail(BluejayError.missingCharacteristicError(characteristicIdentifier))
             }
             else {
                 state = .completed

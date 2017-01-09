@@ -26,7 +26,7 @@ extension BluejayReadResult where R: BluejayReceivable {
                 self = .success(R(bluetoothData: data))
             }
             else {
-                self = .failure(BluejayErrors.missingDataError())
+                self = .failure(BluejayError.missingDataError())
             }
         }
     }

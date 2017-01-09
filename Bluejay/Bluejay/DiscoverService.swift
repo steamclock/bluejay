@@ -32,7 +32,7 @@ class DiscoverService: BluejayOperation {
     func receivedEvent(_ event: BluejayEvent, peripheral: CBPeripheral) {
         if case .didDiscoverServices = event {
             if peripheral.service(with: serviceIdentifier.uuid) == nil {
-                fail(BluejayErrors.missingServiceError(serviceIdentifier))
+                fail(BluejayError.missingServiceError(serviceIdentifier))
             }
             else {
                 state = .completed
