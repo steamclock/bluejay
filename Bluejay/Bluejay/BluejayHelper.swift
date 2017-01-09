@@ -8,14 +8,23 @@
 
 import Foundation
 
+/**
+    A class containing a variety of useful and common static functions that don't belong anywhere else.
+*/
 public struct BluejayHelper {
     
-    /// Helper function to take an array of sendable objects and merge their data together.
-    public static func joinSendables(_ elements: [BluejaySendable]) -> Data {
+    /**
+        Helper function to take an array of sendable objects and merge their data together.
+     
+        - Parameter sendables: An array of BluejaySendable objects whose Data should be appended in the order of the array.
+     
+        - Returns: The data of all the BluejaySendable objects joined together in the order of the passed in array.
+    */
+    public static func join(sendables: [BluejaySendable]) -> Data {
         let data = NSMutableData()
         
-        for element in elements {
-            data.append(element.toBluetoothData())
+        for sendable in sendables {
+            data.append(sendable.toBluetoothData())
         }
         
         return data as Data
