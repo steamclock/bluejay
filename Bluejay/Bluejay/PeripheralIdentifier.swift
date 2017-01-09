@@ -13,7 +13,7 @@ import Foundation
 */
 public struct PeripheralIdentifier {
     
-    public private(set) var uuid : UUID
+    public private(set) var uuid: UUID
     
     public init?(uuid: String) {
         if let uuid = UUID(uuidString: uuid) {

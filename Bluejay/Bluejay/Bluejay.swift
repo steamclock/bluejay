@@ -21,40 +21,57 @@ private var standardConnectOptions: [String : AnyObject] = [
 */
 public class Bluejay: NSObject {
     
-    // MARK: - Properties
+    // MARK: - Private Properties
     
+    /// Internal reference to CoreBluetooth's CBCentralManager.
     fileprivate var cbCentralManager: CBCentralManager!
     
+    /// List of weak references to objects interested in receiving Bluejay's Bluetooth event callbacks.
+    fileprivate var observers: [WeakBluejayEventsObservable] = []
+    
+    /// Reference to a peripheral that is still connecting. If this is nil, then the peripheral should either be disconnected or connected. This is used to help determine the state of the peripheral's connection.
+    fileprivate var connectingPeripheral: BluejayPeripheral?
+    
+    /// Reference to a peripheral that is connected. If this is nil, then the peripheral should either be disconnected or still connecting. This is used to help determine the state of the peripheral's connection.
+    fileprivate var connectedPeripheral: BluejayPeripheral?
+    
+    /// Internal state allowing or disallowing reconnection attempts upon a disconnection. It should always be set to true, unless there is a manual and explicit disconnection request that is not caused by an error.
+    fileprivate var shouldAutoReconnect = true
+    
+    /// The callback triggered at the end of connection related tasks, such as scanning, connecting, and disconnecting.
+    fileprivate var connectionCallback: ((BluejayConnectionResult) -> Void)?
+    
+    fileprivate var startupBackgroundTask: UIBackgroundTaskIdentifier = UIBackgroundTaskInvalid
+    fileprivate var peripheralIdentifierToRestore: PeripheralIdentifier?
+    fileprivate var shouldRestore = false
+    
+    // MARK: - Public Properties
+    
+    /// Allows checking whether the device's Bluetooth is powered on.
     public var isBluetoothAvailable: Bool {
         return cbCentralManager.state == .poweredOn
     }
     
-    fileprivate var observers: [WeakBluejayEventsObservable] = []
-    
-    fileprivate var connectingPeripheral: BluejayPeripheral?
-    fileprivate var connectedPeripheral: BluejayPeripheral?
-    
+    /// Allows checking whether Bluejay is currently connecting to a peripheral.
     public var isConnecting: Bool {
         return connectingPeripheral != nil
     }
     
+    /// Allows checking whether Bluejay is currently connected to a peripheral.
     public var isConnected: Bool {
         return connectedPeripheral != nil
     }
-    
-    public var shouldAutoReconnect = true
-    
-    fileprivate var connectionCallback: ((BluejayConnectionResult) -> Void)?
-    
-    fileprivate var startupBackgroundTask: UIBackgroundTaskIdentifier = UIBackgroundTaskInvalid
-    
-    fileprivate var peripheralIdentifierToRestore: PeripheralIdentifier?
-    fileprivate var shouldRestore = false
     
     // MARK: - Initialization
 
     public override init() {
         super.init()
+        
+        shouldRestore = UIApplication.shared.applicationState == .background
+        
+        if shouldRestore {
+            startupBackgroundTask = UIApplication.shared.beginBackgroundTask(expirationHandler: nil)
+        }
         
         cbCentralManager = CBCentralManager(
             delegate: self,
