@@ -102,7 +102,7 @@ public class Bluejay: NSObject {
     
     // MARK: - Scanning
     
-    /// Start a scan for devices with the specified service, device will be automatially connected once found
+    /// Start a scan for peripherals with the specified service, and Bluejay will attempt to connect to the peripheral once it is found.
     public func scan(service serviceIdentifier: ServiceIdentifier, completion: @escaping (BluejayConnectionResult) -> Void) {
         precondition(connectionCallback == nil, "Cannot have more than one active scan or connect request.")
         

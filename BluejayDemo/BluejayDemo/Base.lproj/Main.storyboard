@@ -1,14 +1,18 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11134" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16C67" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11106"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="BluejayDemo" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -16,7 +20,82 @@
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Bluetooth Status:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8Qc-3u-DYR">
+                                <rect key="frame" x="118" y="28" width="139.5" height="20.5"/>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Powered Off" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tjS-xP-ZtB">
+                                <rect key="frame" x="139.5" y="56.5" width="95.5" height="20.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="EI4-ws-y4h">
+                                <rect key="frame" x="16" y="93" width="343" height="44"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JFZ-83-dbY">
+                                        <rect key="frame" x="0.0" y="0.0" width="86" height="44"/>
+                                        <state key="normal" title="Scan"/>
+                                        <connections>
+                                            <action selector="scan" destination="BYZ-38-t0r" eventType="touchUpInside" id="mRo-sU-5jt"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="grW-Ze-dJR">
+                                        <rect key="frame" x="86" y="0.0" width="85.5" height="44"/>
+                                        <state key="normal" title="Read"/>
+                                        <connections>
+                                            <action selector="read" destination="BYZ-38-t0r" eventType="touchUpInside" id="V2l-qV-RAU"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kTV-SB-FHn">
+                                        <rect key="frame" x="171.5" y="0.0" width="86" height="44"/>
+                                        <state key="normal" title="Write"/>
+                                        <connections>
+                                            <action selector="write" destination="BYZ-38-t0r" eventType="touchUpInside" id="Pvb-ny-xMH"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hLn-2y-BIn">
+                                        <rect key="frame" x="257.5" y="0.0" width="85.5" height="44"/>
+                                        <state key="normal" title="Listen"/>
+                                        <connections>
+                                            <action selector="listen" destination="BYZ-38-t0r" eventType="touchUpInside" id="k5N-3d-GGF"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="W5E-yg-w44"/>
+                                </constraints>
+                            </stackView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Heart Rate:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ORP-yo-W1v">
+                                <rect key="frame" x="142" y="145" width="91" height="20.5"/>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0bpm" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Nn6-3q-Gsm">
+                                <rect key="frame" x="164.5" y="173" width="45" height="20.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="ORP-yo-W1v" firstAttribute="top" secondItem="EI4-ws-y4h" secondAttribute="bottom" constant="8" id="5gk-dO-t5g"/>
+                            <constraint firstItem="8Qc-3u-DYR" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="8" id="79d-nn-6En"/>
+                            <constraint firstItem="ORP-yo-W1v" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="FlD-HX-DLA"/>
+                            <constraint firstItem="EI4-ws-y4h" firstAttribute="top" secondItem="tjS-xP-ZtB" secondAttribute="bottom" constant="16" id="OOC-bd-YJ9"/>
+                            <constraint firstAttribute="trailing" secondItem="EI4-ws-y4h" secondAttribute="trailing" constant="16" id="P9t-rT-mjf"/>
+                            <constraint firstItem="EI4-ws-y4h" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="16" id="SG3-AQ-Deq"/>
+                            <constraint firstItem="Nn6-3q-Gsm" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Slb-kV-Iin"/>
+                            <constraint firstItem="8Qc-3u-DYR" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="fBA-lG-7Xg"/>
+                            <constraint firstItem="tjS-xP-ZtB" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="fHo-w7-imX"/>
+                            <constraint firstItem="Nn6-3q-Gsm" firstAttribute="top" secondItem="ORP-yo-W1v" secondAttribute="bottom" constant="8" id="nuL-s7-EqQ"/>
+                            <constraint firstItem="tjS-xP-ZtB" firstAttribute="top" secondItem="8Qc-3u-DYR" secondAttribute="bottom" constant="8" id="xhF-xA-OgY"/>
+                        </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
