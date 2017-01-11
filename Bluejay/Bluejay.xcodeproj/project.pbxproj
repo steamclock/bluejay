@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7677FF3A64A35BBC9125A87E /* Pods_Bluejay.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1460DB02323E612C0106BFE7 /* Pods_Bluejay.framework */; };
 		B8022D981E1EEED900EA360B /* BluejayWriteResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8022D971E1EEED900EA360B /* BluejayWriteResult.swift */; };
 		B8022D9A1E1F041D00EA360B /* BluejaySyncPeripheral.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8022D991E1F041D00EA360B /* BluejaySyncPeripheral.swift */; };
 		B8022D9C1E1F052F00EA360B /* BluejayListenAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8022D9B1E1F052F00EA360B /* BluejayListenAction.swift */; };
@@ -37,6 +38,9 @@
 		B8C70FBD1E1C7DB60006CF58 /* BluejayPeripheral.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C70FBC1E1C7DB60006CF58 /* BluejayPeripheral.swift */; };
 		B8C70FBF1E1C7F300006CF58 /* BluejayOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C70FBE1E1C7F300006CF58 /* BluejayOperation.swift */; };
 		B8C70FC11E1C80150006CF58 /* BluejayOperationState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C70FC01E1C80150006CF58 /* BluejayOperationState.swift */; };
+		B8D2078C1E26D446007E670A /* CBPeripheralState+ReturnString.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8D2078B1E26D446007E670A /* CBPeripheralState+ReturnString.swift */; };
+		B8D2078E1E26D702007E670A /* CBManagerState+ReturnString.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8D2078D1E26D702007E670A /* CBManagerState+ReturnString.swift */; };
+		C963376F716F30DEAA2F47E9 /* Pods_BluejayTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B30F88AC6C11B812FB55A055 /* Pods_BluejayTests.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -50,6 +54,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1460DB02323E612C0106BFE7 /* Pods_Bluejay.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Bluejay.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		916C6338CC4E6D8DBA1A561C /* Pods-Bluejay.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Bluejay.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Bluejay/Pods-Bluejay.debug.xcconfig"; sourceTree = "<group>"; };
+		B30F88AC6C11B812FB55A055 /* Pods_BluejayTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BluejayTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B8022D971E1EEED900EA360B /* BluejayWriteResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BluejayWriteResult.swift; sourceTree = "<group>"; };
 		B8022D991E1F041D00EA360B /* BluejaySyncPeripheral.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BluejaySyncPeripheral.swift; sourceTree = "<group>"; };
 		B8022D9B1E1F052F00EA360B /* BluejayListenAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BluejayListenAction.swift; sourceTree = "<group>"; };
@@ -84,6 +91,11 @@
 		B8C70FBC1E1C7DB60006CF58 /* BluejayPeripheral.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BluejayPeripheral.swift; sourceTree = "<group>"; };
 		B8C70FBE1E1C7F300006CF58 /* BluejayOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BluejayOperation.swift; sourceTree = "<group>"; };
 		B8C70FC01E1C80150006CF58 /* BluejayOperationState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BluejayOperationState.swift; sourceTree = "<group>"; };
+		B8D2078B1E26D446007E670A /* CBPeripheralState+ReturnString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CBPeripheralState+ReturnString.swift"; sourceTree = "<group>"; };
+		B8D2078D1E26D702007E670A /* CBManagerState+ReturnString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CBManagerState+ReturnString.swift"; sourceTree = "<group>"; };
+		CA9D0DDBCE2F5733134B0ED6 /* Pods-BluejayTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BluejayTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BluejayTests/Pods-BluejayTests.debug.xcconfig"; sourceTree = "<group>"; };
+		D3A376B191A26044FDEBF5C5 /* Pods-Bluejay.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Bluejay.release.xcconfig"; path = "Pods/Target Support Files/Pods-Bluejay/Pods-Bluejay.release.xcconfig"; sourceTree = "<group>"; };
+		F9DA2BB8096DC083CD6AF996 /* Pods-BluejayTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BluejayTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-BluejayTests/Pods-BluejayTests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -91,6 +103,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7677FF3A64A35BBC9125A87E /* Pods_Bluejay.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -99,12 +112,24 @@
 			buildActionMask = 2147483647;
 			files = (
 				B8C70F7F1E1C22850006CF58 /* Bluejay.framework in Frameworks */,
+				C963376F716F30DEAA2F47E9 /* Pods_BluejayTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		715085F1986E94D0C3C78D72 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				916C6338CC4E6D8DBA1A561C /* Pods-Bluejay.debug.xcconfig */,
+				D3A376B191A26044FDEBF5C5 /* Pods-Bluejay.release.xcconfig */,
+				CA9D0DDBCE2F5733134B0ED6 /* Pods-BluejayTests.debug.xcconfig */,
+				F9DA2BB8096DC083CD6AF996 /* Pods-BluejayTests.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		B88A0D9D1E1DCFA300A00FF8 /* Operations */ = {
 			isa = PBXGroup;
 			children = (
@@ -126,6 +151,7 @@
 				B8C70F821E1C22850006CF58 /* BluejayTests */,
 				B8C70F761E1C22850006CF58 /* Products */,
 				B8C70F9C1E1C5AD80006CF58 /* Frameworks */,
+				715085F1986E94D0C3C78D72 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -170,6 +196,8 @@
 			isa = PBXGroup;
 			children = (
 				B8C70F911E1C56330006CF58 /* CBPeripheral+FindService.swift */,
+				B8D2078B1E26D446007E670A /* CBPeripheralState+ReturnString.swift */,
+				B8D2078D1E26D702007E670A /* CBManagerState+ReturnString.swift */,
 				B8C70F941E1C57250006CF58 /* CBService+FindCharacteristic.swift */,
 				B8C70FAE1E1C6C780006CF58 /* Integer+BluejayTransferable.swift */,
 			);
@@ -180,6 +208,8 @@
 			isa = PBXGroup;
 			children = (
 				B8C70F9D1E1C5AD80006CF58 /* CoreBluetooth.framework */,
+				1460DB02323E612C0106BFE7 /* Pods_Bluejay.framework */,
+				B30F88AC6C11B812FB55A055 /* Pods_BluejayTests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -235,10 +265,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = B8C70F891E1C22850006CF58 /* Build configuration list for PBXNativeTarget "Bluejay" */;
 			buildPhases = (
+				E74B2676FBABC2E126DD9A0D /* [CP] Check Pods Manifest.lock */,
 				B8C70F701E1C22850006CF58 /* Sources */,
 				B8C70F711E1C22850006CF58 /* Frameworks */,
 				B8C70F721E1C22850006CF58 /* Headers */,
 				B8C70F731E1C22850006CF58 /* Resources */,
+				CDFF44BD852B1975CA311D63 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -253,9 +285,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = B8C70F8C1E1C22850006CF58 /* Build configuration list for PBXNativeTarget "BluejayTests" */;
 			buildPhases = (
+				C9BBFD3F5B175E9E175724F8 /* [CP] Check Pods Manifest.lock */,
 				B8C70F7A1E1C22850006CF58 /* Sources */,
 				B8C70F7B1E1C22850006CF58 /* Frameworks */,
 				B8C70F7C1E1C22850006CF58 /* Resources */,
+				68EE5F595715FB2CB4B93A0E /* [CP] Embed Pods Frameworks */,
+				F67765D899A4F934B4D62281 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -323,6 +358,84 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		68EE5F595715FB2CB4B93A0E /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-BluejayTests/Pods-BluejayTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C9BBFD3F5B175E9E175724F8 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		CDFF44BD852B1975CA311D63 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Bluejay/Pods-Bluejay-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E74B2676FBABC2E126DD9A0D /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		F67765D899A4F934B4D62281 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-BluejayTests/Pods-BluejayTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		B8C70F701E1C22850006CF58 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -332,6 +445,7 @@
 				B8C70F921E1C56330006CF58 /* CBPeripheral+FindService.swift in Sources */,
 				B8C70F901E1C505C0006CF58 /* Bluejay.swift in Sources */,
 				B8C70F951E1C57250006CF58 /* CBService+FindCharacteristic.swift in Sources */,
+				B8D2078E1E26D702007E670A /* CBManagerState+ReturnString.swift in Sources */,
 				B8C70FBD1E1C7DB60006CF58 /* BluejayPeripheral.swift in Sources */,
 				B8C70FA51E1C65A20006CF58 /* BluejayReadResult.swift in Sources */,
 				B8C70FC11E1C80150006CF58 /* BluejayOperationState.swift in Sources */,
@@ -349,6 +463,7 @@
 				B8C70FB11E1C6F150006CF58 /* DataPadding.swift in Sources */,
 				B8022D9C1E1F052F00EA360B /* BluejayListenAction.swift in Sources */,
 				B8C70F9B1E1C5A910006CF58 /* CharacteristicIdentifier.swift in Sources */,
+				B8D2078C1E26D446007E670A /* CBPeripheralState+ReturnString.swift in Sources */,
 				B8C70FBF1E1C7F300006CF58 /* BluejayOperation.swift in Sources */,
 				B88A0D9C1E1DAA1600A00FF8 /* BluejayEvent.swift in Sources */,
 				B88A0DA51E1DD1A200A00FF8 /* WriteCharacteristic.swift in Sources */,
@@ -478,6 +593,7 @@
 		};
 		B8C70F8A1E1C22850006CF58 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 916C6338CC4E6D8DBA1A561C /* Pods-Bluejay.debug.xcconfig */;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = NO;
 				CLANG_ENABLE_MODULES = YES;
@@ -499,6 +615,7 @@
 		};
 		B8C70F8B1E1C22850006CF58 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D3A376B191A26044FDEBF5C5 /* Pods-Bluejay.release.xcconfig */;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = NO;
 				CLANG_ENABLE_MODULES = YES;
@@ -519,6 +636,7 @@
 		};
 		B8C70F8D1E1C22850006CF58 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = CA9D0DDBCE2F5733134B0ED6 /* Pods-BluejayTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				INFOPLIST_FILE = BluejayTests/Info.plist;
@@ -531,6 +649,7 @@
 		};
 		B8C70F8E1E1C22850006CF58 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F9DA2BB8096DC083CD6AF996 /* Pods-BluejayTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				INFOPLIST_FILE = BluejayTests/Info.plist;

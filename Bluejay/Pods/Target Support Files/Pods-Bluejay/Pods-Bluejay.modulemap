@@ -1,0 +1,6 @@
+framework module Pods_Bluejay {
+  umbrella header "Pods-Bluejay-umbrella.h"
+
+  export *
+  module * { export * }
+}
