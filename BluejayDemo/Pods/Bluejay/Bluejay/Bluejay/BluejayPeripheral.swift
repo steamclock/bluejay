@@ -117,7 +117,10 @@ public class BluejayPeripheral: NSObject {
     
     /// Listen for notifications on a specified characterstic.
     public func listen<R: BluejayReceivable>(to characteristicIdentifier: CharacteristicIdentifier, completion: @escaping (BluejayReadResult<R>) -> Void) {
+        log.debug("Start listening: \(characteristicIdentifier.uuid.uuidString)")
+        
         discoverCharactersitic(characteristicIdentifier)
+        
         addOperation(ListenCharacteristic(characteristicIdentifier: characteristicIdentifier, value: true, callback: { result in
             precondition(
                 self.listeners[characteristicIdentifier] == nil,
@@ -126,10 +129,14 @@ public class BluejayPeripheral: NSObject {
             
             switch result {
             case .success:
+                log.debug("Listen successful: \(characteristicIdentifier.uuid.uuidString)")
+                
                 self.listeners[characteristicIdentifier] = { dataResult in
                     completion(BluejayReadResult<R>(dataResult: dataResult))
                 }
             case .failure(let error):
+                log.debug("Listen failed: \(characteristicIdentifier.uuid.uuidString)")
+                
                 completion(.failure(error))
             }
         }))
@@ -144,6 +151,8 @@ public class BluejayPeripheral: NSObject {
         Currently this can also cancel a regular in-progress read as well, but that behaviour may change down the road.
     */
     public func cancelListen(to characteristicIdentifier: CharacteristicIdentifier, sendFailure: Bool, completion: ((BluejayWriteResult) -> Void)? = nil) {
+        log.debug("Start cancelling listen: \(characteristicIdentifier.uuid.uuidString)")
+        
         discoverCharactersitic(characteristicIdentifier)
         
         addOperation(ListenCharacteristic(characteristicIdentifier: characteristicIdentifier, value: false, callback: { result in
@@ -151,8 +160,11 @@ public class BluejayPeripheral: NSObject {
             self.listeners[characteristicIdentifier] = nil
             
             if(sendFailure) {
+                log.debug("Sending listeners an error for cancelling the listen on: \(characteristicIdentifier.uuid.uuidString)")
                 listenCallback?(.failure(BluejayError.cancelledError()))
             }
+            
+            log.debug("Cancellation of listen successful: \(characteristicIdentifier.uuid.uuidString)")
             
             completion?(result)
         }))

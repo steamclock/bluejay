@@ -1,0 +1,25 @@
+//
+//  CBManagerState+ReturnString.swift
+//  Bluejay
+//
+//  Created by Jeremy Chiang on 2017-01-11.
+//  Copyright © 2017 Steamclock Software. All rights reserved.
+//
+
+import Foundation
+import CoreBluetooth
+
+extension CBManagerState {
+    
+    public func string() -> String {
+        switch self {
+        case .poweredOff: return "Powered Off"
+        case .poweredOn: return "Powered On"
+        case .resetting: return "Resetting"
+        case .unauthorized: return "Unauthorized"
+        case .unknown: return "Unknown"
+        case .unsupported: return "Unsupported"
+        }
+    }
+    
+}

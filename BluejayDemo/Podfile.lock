@@ -1,5 +1,9 @@
 PODS:
-  - Bluejay (0.1.0)
+  - Bluejay (0.1.0):
+    - XCGLogger (~> 4.0.0)
+  - XCGLogger (4.0.0):
+    - XCGLogger/Core (= 4.0.0)
+  - XCGLogger/Core (4.0.0)
 
 DEPENDENCIES:
   - Bluejay (from `https://github.com/steamclock/bluejay.git`, branch `master`)
@@ -11,11 +15,12 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   Bluejay:
-    :commit: 85c13d7ea201c427b24c9759f6e8193cbeca256b
+    :commit: 82cee886e50f81b622ddae51c61471f272552f62
     :git: https://github.com/steamclock/bluejay.git
 
 SPEC CHECKSUMS:
-  Bluejay: 51cf98f886fa0fed614ee16391947e29bb9d773b
+  Bluejay: 3bf74807da40d4ad2d4d02c806ac95365d9ea69d
+  XCGLogger: 38063ea89b4c8b23232d18efd2e12eb0005f3ea4
 
 PODFILE CHECKSUM: 3b1c7da7641cbed29ec2f1441e9c2e428a547c7d
 

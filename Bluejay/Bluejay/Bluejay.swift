@@ -130,6 +130,8 @@ public class Bluejay: NSObject {
     public func scan(service serviceIdentifier: ServiceIdentifier, completion: @escaping (BluejayConnectionResult) -> Void) {
         precondition(connectionCallback == nil, "Cannot have more than one active scan or connect request.")
         
+        log.debug("Starting scan.")
+        
         connectionCallback = completion
         
         cbCentralManager.scanForPeripherals(withServices: [serviceIdentifier.uuid], options: [CBCentralManagerScanOptionAllowDuplicatesKey : false])
@@ -137,12 +139,16 @@ public class Bluejay: NSObject {
     
     /// Cancel oustanding peripheral scans.
     public func cancelScan() {
+        log.debug("Cancelling scan.")
+        
         cbCentralManager.stopScan()
     }
     
     // MARK: - Connection
     
     public func cancelAllConnections() {
+        log.debug("Cancelling all connections.")
+        
         let connected = connectedPeripheral
         let connecting = connectedPeripheral
         
@@ -183,6 +189,8 @@ public class Bluejay: NSObject {
     
     /// Disconnect the currently connected peripheral.
     public func disconnect() {
+        log.debug("Disconnecting.")
+        
         shouldAutoReconnect = false
         
         if let peripheralToDisconnect = connectedPeripheral {
@@ -287,7 +295,7 @@ public class Bluejay: NSObject {
 extension Bluejay: CBCentralManagerDelegate {
     
     public func centralManagerDidUpdateState(_ central: CBCentralManager) {
-        log.debug("CBCentralManager state updated: \(central.state.string())")
+        log.debug("State updated: \(central.state.string())")
         
         let backgroundTask = UIApplication.shared.beginBackgroundTask(expirationHandler: nil)
         
@@ -313,7 +321,7 @@ extension Bluejay: CBCentralManagerDelegate {
     }
     
     public func centralManager(_ central: CBCentralManager, willRestoreState dict: [String : Any]) {
-        log.debug("CBCentralManager will restore state.")
+        log.debug("Will restore state.")
         
         shouldRestoreState = false
         
@@ -368,7 +376,7 @@ extension Bluejay: CBCentralManagerDelegate {
     public func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
         let backgroundTask =  UIApplication.shared.beginBackgroundTask(expirationHandler: nil)
         
-        log.debug("CBCentralManager did connect to: \(peripheral.name ?? peripheral.identifier.uuidString)")
+        log.debug("Did connect to: \(peripheral.name ?? peripheral.identifier.uuidString)")
         
         connectedPeripheral = connectingPeripheral
         connectingPeripheral = nil
@@ -391,12 +399,10 @@ extension Bluejay: CBCentralManagerDelegate {
         let peripheralString = peripheral.name ?? peripheral.identifier.uuidString
         let errorString = error?.localizedDescription ?? ""
         
-        log.debug(
-            "CBCentralManager did disconnect from: \(peripheralString) with error: \(errorString)"
-        )
+        log.debug("Did disconnect from: \(peripheralString) with error: \(errorString)")
         
         if connectingPeripheral == nil && connectedPeripheral == nil {
-            log.debug("CBCentralManager disconnection is bogus, Bluejay has no connected peripheral.")
+            log.debug("Disconnection is bogus, Bluejay has no connected peripheral.")
             return
         }
         
@@ -425,9 +431,7 @@ extension Bluejay: CBCentralManagerDelegate {
         let peripheralString = peripheral.name ?? peripheral.identifier.uuidString
         let errorString = error?.localizedDescription ?? ""
         
-        log.debug(
-            "CBCentralManager did fail to connect to: \(peripheralString) with error: \(errorString)"
-        )
+        log.debug("Did fail to connect to: \(peripheralString) with error: \(errorString)")
         
         // Use the same clean up logic provided in the did disconnect callback.
         centralManager(central, didDisconnectPeripheral: peripheral, error: error)
@@ -436,7 +440,7 @@ extension Bluejay: CBCentralManagerDelegate {
     public func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
         let peripheralString = peripheral.name ?? peripheral.identifier.uuidString
         
-        log.debug("CBCentralManager did discover: \(peripheralString)")
+        log.debug("Did discover: \(peripheralString)")
         log.debug("Connecting to: \(peripheralString)")
         
         cbCentralManager.stopScan()

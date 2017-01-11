@@ -105,12 +105,16 @@ public class BluejayPeripheral: NSObject {
             "Cannot read from characteristic: \(characteristicIdentifier.uuid), which is already being listened on."
         )
         
+        log.debug("Queueing read to: \(characteristicIdentifier.uuid.uuidString)")
+        
         discoverCharactersitic(characteristicIdentifier)
         addOperation(ReadCharacteristic(characteristicIdentifier: characteristicIdentifier, callback: completion))
     }
     
     /// Write to a specified characteristic.
     public func write<S: BluejaySendable>(to characteristicIdentifier: CharacteristicIdentifier, value: S, completion: @escaping (BluejayWriteResult) -> Void) {
+        log.debug("Queueing write to: \(characteristicIdentifier.uuid.uuidString) with value of: \(value)")
+        
         discoverCharactersitic(characteristicIdentifier)
         addOperation(WriteCharacteristic(characteristicIdentifier: characteristicIdentifier, value: value, callback: completion))
     }
