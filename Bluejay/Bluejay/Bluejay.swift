@@ -219,6 +219,7 @@ public class Bluejay: NSObject {
             peripheral.read(from: characteristicIdentifier, completion: completion)
         }
         else {
+            log.debug("Could not read characteristic \(characteristicIdentifier.uuid.uuidString): Peripheral is not connected.")
             completion(.failure(BluejayError.notConnectedError()))
         }
     }
@@ -229,6 +230,7 @@ public class Bluejay: NSObject {
             peripheral.write(to: characteristicIdentifier, value: value, completion: completion)
         }
         else {
+            log.debug("Could not write to characteristic \(characteristicIdentifier.uuid.uuidString): Peripheral is not connected.")
             completion(.failure(BluejayError.notConnectedError()))
         }
     }
@@ -239,6 +241,7 @@ public class Bluejay: NSObject {
             peripheral.listen(to: characteristicIdentifier, completion: completion)
         }
         else {
+            log.debug("Could not listen to characteristic \(characteristicIdentifier.uuid.uuidString): Peripheral is not connected.")
             completion(.failure(BluejayError.notConnectedError()))
         }
     }
@@ -249,6 +252,7 @@ public class Bluejay: NSObject {
             peripheral.cancelListen(to: characteristicIdentifier, sendFailure: true, completion: completion)
         }
         else {
+            log.debug("Could not cancel listen to characteristic \(characteristicIdentifier.uuid.uuidString): Peripheral is not connected.")
             completion?(.failure(BluejayError.notConnectedError()))
         }
     }
@@ -259,6 +263,7 @@ public class Bluejay: NSObject {
             peripheral.restoreListen(to: characteristicIdentifier, completion: completion)
         }
         else {
+            log.debug("Could not restore listen to characteristic \(characteristicIdentifier.uuid.uuidString): Peripheral is not connected.")
             completion(.failure(BluejayError.notConnectedError()))
         }
     }
