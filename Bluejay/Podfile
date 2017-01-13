@@ -6,8 +6,9 @@ target 'Bluejay' do
   use_frameworks!
 
   # Pods for Bluejay
+  pod 'SwiftyUserDefaults'
   pod 'XCGLogger', '~> 4.0.0'
-
+  
   target 'BluejayTests' do
     inherit! :search_paths
     # Pods for testing

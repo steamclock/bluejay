@@ -8,6 +8,7 @@
 
 import Foundation
 import CoreBluetooth
+import SwiftyUserDefaults
 
 public class BluejayPeripheral: NSObject {
     
@@ -138,6 +139,9 @@ public class BluejayPeripheral: NSObject {
                 self.listeners[characteristicIdentifier] = { dataResult in
                     completion(BluejayReadResult<R>(dataResult: dataResult))
                 }
+                
+                // Make sure a successful listen is cached, so Bluejay can inform which characteristics need their listens restored on state restoration.
+                self.cache(listeningCharacteristic: characteristicIdentifier)
             case .failure(let error):
                 log.debug("Listen failed: \(characteristicIdentifier.uuid.uuidString)")
                 
@@ -171,6 +175,9 @@ public class BluejayPeripheral: NSObject {
             log.debug("Cancellation of listen successful: \(characteristicIdentifier.uuid.uuidString)")
             
             completion?(result)
+            
+            // Make sure a cancelled listen does not exist in the cache, as we don't want to restore a cancelled listen on state restoration.
+            self.remove(listeningCharacteristic: characteristicIdentifier)
         }))
     }
     
@@ -184,8 +191,38 @@ public class BluejayPeripheral: NSObject {
         listeners[characteristicIdentifier] = { dataResult in
             completion(BluejayReadResult<R>(dataResult: dataResult))
         }
+        
+        // Make sure restored listens are cached again for future restoration. The cache method will handle any duplicate uuid, so this sanity check should not create any redundancy.
+        cache(listeningCharacteristic: characteristicIdentifier)
+    }
+        
+    private func cache(listeningCharacteristic: CharacteristicIdentifier) {
+        let serviceUuid = listeningCharacteristic.service.uuid.uuidString
+        let characteristicUuid = listeningCharacteristic.uuid.uuidString
+        
+        log.debug("Adding cached listen: \(characteristicUuid) for service: \(serviceUuid)")
+        
+        Defaults[.listeningCharacteristics][serviceUuid] = characteristicUuid
+        
+        // Don't want to open up any possibilities where the defaults are not saved immediately.
+        Defaults.synchronize()
+        
+        log.debug("Current cached listens: \(Defaults[.listeningCharacteristics])")
     }
     
+    private func remove(listeningCharacteristic: CharacteristicIdentifier) {
+        let serviceUuid = listeningCharacteristic.service.uuid.uuidString
+        let characteristicUuid = listeningCharacteristic.uuid.uuidString
+        
+        log.debug("Removing cached listen: \(characteristicUuid) for service: \(serviceUuid)")
+        
+        Defaults[.listeningCharacteristics][serviceUuid] = nil
+        
+        // Don't want to open up any possibilities where the defaults are not saved immediately.
+        Defaults.synchronize()
+        
+        log.debug("Current cached listens: \(Defaults[.listeningCharacteristics])")
+    }
 }
 
 // MARK: - CBPeripheralDelegate

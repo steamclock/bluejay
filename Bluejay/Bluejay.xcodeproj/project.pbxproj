@@ -11,6 +11,7 @@
 		B8022D981E1EEED900EA360B /* BluejayWriteResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8022D971E1EEED900EA360B /* BluejayWriteResult.swift */; };
 		B8022D9A1E1F041D00EA360B /* BluejaySyncPeripheral.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8022D991E1F041D00EA360B /* BluejaySyncPeripheral.swift */; };
 		B8022D9C1E1F052F00EA360B /* BluejayListenAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8022D9B1E1F052F00EA360B /* BluejayListenAction.swift */; };
+		B880C09E1E270856007F065A /* UserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = B880C09D1E270856007F065A /* UserDefaults.swift */; };
 		B88A0D9C1E1DAA1600A00FF8 /* BluejayEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88A0D9B1E1DAA1600A00FF8 /* BluejayEvent.swift */; };
 		B88A0D9F1E1DCFBF00A00FF8 /* DiscoverService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88A0D9E1E1DCFBF00A00FF8 /* DiscoverService.swift */; };
 		B88A0DA11E1DD15600A00FF8 /* DiscoverCharacteristic.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88A0DA01E1DD15600A00FF8 /* DiscoverCharacteristic.swift */; };
@@ -60,6 +61,7 @@
 		B8022D971E1EEED900EA360B /* BluejayWriteResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BluejayWriteResult.swift; sourceTree = "<group>"; };
 		B8022D991E1F041D00EA360B /* BluejaySyncPeripheral.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BluejaySyncPeripheral.swift; sourceTree = "<group>"; };
 		B8022D9B1E1F052F00EA360B /* BluejayListenAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BluejayListenAction.swift; sourceTree = "<group>"; };
+		B880C09D1E270856007F065A /* UserDefaults.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDefaults.swift; sourceTree = "<group>"; };
 		B88A0D9B1E1DAA1600A00FF8 /* BluejayEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BluejayEvent.swift; sourceTree = "<group>"; };
 		B88A0D9E1E1DCFBF00A00FF8 /* DiscoverService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoverService.swift; sourceTree = "<group>"; };
 		B88A0DA01E1DD15600A00FF8 /* DiscoverCharacteristic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoverCharacteristic.swift; sourceTree = "<group>"; };
@@ -200,6 +202,7 @@
 				B8D2078D1E26D702007E670A /* CBManagerState+ReturnString.swift */,
 				B8C70F941E1C57250006CF58 /* CBService+FindCharacteristic.swift */,
 				B8C70FAE1E1C6C780006CF58 /* Integer+BluejayTransferable.swift */,
+				B880C09D1E270856007F065A /* UserDefaults.swift */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -467,6 +470,7 @@
 				B8C70FBF1E1C7F300006CF58 /* BluejayOperation.swift in Sources */,
 				B88A0D9C1E1DAA1600A00FF8 /* BluejayEvent.swift in Sources */,
 				B88A0DA51E1DD1A200A00FF8 /* WriteCharacteristic.swift in Sources */,
+				B880C09E1E270856007F065A /* UserDefaults.swift in Sources */,
 				B8C70FAB1E1C69C50006CF58 /* BluejaySendable.swift in Sources */,
 				B8C70FB91E1C725C0006CF58 /* BluejayEventsObservable.swift in Sources */,
 				B8C70FA01E1C61BD0006CF58 /* PeripheralIdentifier.swift in Sources */,

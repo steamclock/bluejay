@@ -8,6 +8,7 @@
 
 import Foundation
 import CoreBluetooth
+import SwiftyUserDefaults
 import XCGLogger
 
 // Setup XCGLogger
@@ -48,6 +49,7 @@ public class Bluejay: NSObject {
     
     fileprivate var startupBackgroundTask: UIBackgroundTaskIdentifier = UIBackgroundTaskInvalid
     fileprivate var peripheralIdentifierToRestore: PeripheralIdentifier?
+    fileprivate var listenRestorationHandler: ((CharacteristicIdentifier) -> Bool)?
     fileprivate var shouldRestoreState = false
     
     // MARK: - Public Properties
@@ -69,10 +71,15 @@ public class Bluejay: NSObject {
     
     // MARK: - Initialization
 
-    public override init() {
+    /**
+        - Parameter listenRestorationHandler: This closure is called once for every characteristics with uncancelled listening and allows an opportunity to restore the listening callbacks during Bluetooth state restoration. Return true and make a call to `restoreListen` to restore listening on the given characteristic. Return false to cancel listening restoration of the given characteristic. If a listening callback is not provided at all, listening on all characteristics that need restoration will be cancelled.
+    */
+    public init(listenRestorationHandler: ((CharacteristicIdentifier) -> Bool)?) {
         super.init()
         
         setupLogger()
+        
+        self.listenRestorationHandler = listenRestorationHandler
         
         shouldRestoreState = UIApplication.shared.applicationState == .background
         
@@ -362,6 +369,24 @@ extension Bluejay: CBCentralManagerDelegate {
         case .disconnected:
             precondition(connectingPeripheral == nil && connectedPeripheral == nil,
                          "Connecting and connected peripherals are not nil during willRestoreState for state: disconnected.")
+        }
+        
+        log.debug("Starting listen restoration.")
+        
+        let cachedListens = Defaults[.listeningCharacteristics]
+        
+        for (serviceUuid, characteristicUuid) in cachedListens {
+            let serviceIdentifier = ServiceIdentifier(uuid: serviceUuid)
+            let characteristicIdentifier = CharacteristicIdentifier(uuid: characteristicUuid as! String, service: serviceIdentifier)
+            
+            if let listenRestorationHandler = listenRestorationHandler {
+                if !listenRestorationHandler(characteristicIdentifier) {
+                    cancelListen(to: characteristicIdentifier)
+                }
+            }
+            else {
+                cancelListen(to: characteristicIdentifier)
+            }
         }
         
         log.debug("State restoration finished.")

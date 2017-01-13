@@ -7,137 +7,192 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		08BDCB79F233B11506E64544333106DD /* HelperFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D15C75DC7DDB217E4234FD44CBD1994 /* HelperFunctions.swift */; };
-		19A637CF9AB26FB8434AEE3CB586A467 /* FileDestination.swift in Sources */ = {isa = PBXBuildFile; fileRef = F26ED850ECA068F2B8F9F527FC37188A /* FileDestination.swift */; };
-		1C99E3432950F0D22B515AD1DE1AD1E0 /* DevFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48484635D917BF6841EB9DE0BBA09387 /* DevFilter.swift */; };
-		2E1E5992DE6F6B4C0A9632EDC77819BE /* Pods-Bluejay-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 66ADC0BCEAA5D1CDC3136CC5F1BCF7C9 /* Pods-Bluejay-dummy.m */; };
-		332B7B21AD3A7A108868445545455F3B /* Pods-BluejayTests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A80B7FE3FB865CCCDAAC35D2202951 /* Pods-BluejayTests-dummy.m */; };
-		37A4E43E2E25CE6E756C873C5AF20FDE /* Pods-Bluejay-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 927295FD214B7CB0566D9F64478418D8 /* Pods-Bluejay-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		4B5EEFFFF407ECF5E1D806F12D637F8D /* TestDestination.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0748EA5B1F2375F9F78855D9E5C1268E /* TestDestination.swift */; };
-		4B981C058C2AEB8F45F8F4D147345DC6 /* FileNameFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAA5D7B1DB0AB1510FF904908885AFF3 /* FileNameFilter.swift */; };
-		55168E57A76742245CEFAB50D7BF36E1 /* PrePostFixLogFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95792341BA1CCA654B8153DA8FFEB57D /* PrePostFixLogFormatter.swift */; };
-		5AF232EB599E1360BF7299AAC065A938 /* DestinationProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 450CDD676D72656214A90108F073028A /* DestinationProtocol.swift */; };
-		63083B770BE6543CCBD2EB17579B55DB /* Base64LogFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93CC19D9B13DCB3C3F5DF1543AEC0906 /* Base64LogFormatter.swift */; };
-		66FE08EF0A07E7147408986301BC4FA5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBB3DE36805AF21409EC968A9691732F /* Foundation.framework */; };
-		6F26C1BD8C2C4634E8E1B86515D37CEE /* XcodeColorsLogFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43990419174E4CD63092AF25E975224C /* XcodeColorsLogFormatter.swift */; };
-		71117A684C08D057BDA81CCA2FD98688 /* ConsoleDestination.swift in Sources */ = {isa = PBXBuildFile; fileRef = 063C61276CBC75F9E99405C89F9E6148 /* ConsoleDestination.swift */; };
-		7A428E300C18E6314A8C258E48E51DEB /* ANSIColorLogFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8728B15B4DAB15F1FF5CFB2EF627232F /* ANSIColorLogFormatter.swift */; };
-		7B8B1FA8CDE4B5B85C6560EBBC106FBB /* XCGLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = 05E79BB7A9BD74E69C7319C2AE0BB261 /* XCGLogger.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		86E22A33204F8FDDA233F37FC1C5FE14 /* LogFormatterProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482947AE624526ED0D13DFE85F9DFE51 /* LogFormatterProtocol.swift */; };
-		8CD427F93FCDA271D1635F4B85E73267 /* DispatchQueue+XCGAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 488AF6BBA275C713F54EF7329EB0C486 /* DispatchQueue+XCGAdditions.swift */; };
-		967267096A8FADC8C37777F37E24D00D /* XCGLogger-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = F9938DAB29993A859C2947822EC4A019 /* XCGLogger-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		9B244CB635566CFE1D6D1E60AD19873F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBB3DE36805AF21409EC968A9691732F /* Foundation.framework */; };
-		9D17667045D375A12BCBE1E5C29C9EDE /* BaseDestination.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B2EEF47E8889CB85120BD13516C6663 /* BaseDestination.swift */; };
-		A513A01CD0A84C3369325CA21B88C86D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBB3DE36805AF21409EC968A9691732F /* Foundation.framework */; };
-		AE5556694A0F2CFD28F5533F21243CE7 /* TagFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 309DE086663982D5F34B54E0EB4F8CBF /* TagFilter.swift */; };
-		B519DB3E9935C54ECC11597FB71BB092 /* XCGLogger-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 5586564C3C9BFD07788CCAB4E3ABE93C /* XCGLogger-dummy.m */; };
-		B9A218D604154D6BF12A5C6D69C47C9D /* FilterProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16F8762A9E441F9959D175482135B8E7 /* FilterProtocol.swift */; };
-		CBDBE6591E300F55DDEB2F10E52DC3C6 /* AppleSystemLogDestination.swift in Sources */ = {isa = PBXBuildFile; fileRef = A725DC0B5DFDD73E47053EB7CABCF5F7 /* AppleSystemLogDestination.swift */; };
-		CF42E99A29B75EBADF74311881ECF7E0 /* UserInfoFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED8012965845598CBB7A75D0D00590DC /* UserInfoFilter.swift */; };
-		EF45BEF669375278E96789857A644F39 /* LogDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EC049956BECE5CF3B596081CE5DD16F /* LogDetails.swift */; };
-		EFE61DCDD6C2EF72A46FF76E03306E9C /* Pods-BluejayTests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 6317E59F53FC7DD35917C3C8B88714D0 /* Pods-BluejayTests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		F34E3AC22F0ADC5CE30F1D5F0A739FF6 /* XCGLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE0020108CA4748ACD00EFA27C17770D /* XCGLogger.swift */; };
+		0A28AC53783C38A02C8DDB05091E3A2A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBB3DE36805AF21409EC968A9691732F /* Foundation.framework */; };
+		0F23F1FB3AD975B2BCFDC6DDD2394F72 /* FilterProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EA4E8E957B38B74F66C549069BCCB23 /* FilterProtocol.swift */; };
+		1C2CE68C862AB49054D5279021BB1537 /* LogDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A07BDF87C37C8062B68A0711104C53B /* LogDetails.swift */; };
+		2166D29D4EFE4DC68439A83EA7410027 /* ANSIColorLogFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40947B4E8AD4B0B13E23F1DB8D93D976 /* ANSIColorLogFormatter.swift */; };
+		2D14555A47C7C009BBEB994C649C35A7 /* FileNameFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 283313C875F9AE0A2FC6BCBEC38FD850 /* FileNameFilter.swift */; };
+		32944CE1B276F78A70873134DC6B7068 /* UserInfoFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC035C1F4848C1CEB4D797B2F0F6E89F /* UserInfoFilter.swift */; };
+		37FF01E63491A5718A588AC09096E90D /* ConsoleDestination.swift in Sources */ = {isa = PBXBuildFile; fileRef = E72BBA4C0FDDC1EDFA6A6AE79828C235 /* ConsoleDestination.swift */; };
+		3C622CBA71F658F5CD2B7ECD3D6D329E /* XcodeColorsLogFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C580DADC7798FEF4922B7FE5C0FB4EA6 /* XcodeColorsLogFormatter.swift */; };
+		3C9D2D82C89F54CAC4DD66FA721FCEEC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBB3DE36805AF21409EC968A9691732F /* Foundation.framework */; };
+		442DF7354C37FE74542F318E7DBD5153 /* Base64LogFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EA6742BF00D4F5DDAA8A9B9577683B4 /* Base64LogFormatter.swift */; };
+		46F1366C25D7735D7D8BD40978FDF2CD /* DispatchQueue+XCGAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F822BC7B9C6C3A924AE48FF0833DFBCD /* DispatchQueue+XCGAdditions.swift */; };
+		4DB38E6D7A4256239D9B6BDB9750A5A9 /* DevFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6915A117286D660F64946A46F70B2B /* DevFilter.swift */; };
+		5CE46B2263E19AD755308598750F216A /* TestDestination.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0289879EAA52799201654BD20C6B0248 /* TestDestination.swift */; };
+		62722915ED4BF7472B23B43C5D0D335F /* BaseDestination.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208E9E3D2A4634FD175C7F96F3376D4B /* BaseDestination.swift */; };
+		6CBB825D95C2B9F520209517FC68C943 /* XCGLogger-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = D05DABE02FB568859F23BBE86CA56060 /* XCGLogger-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		7074C45CB4628963E3394E7D4BDB1882 /* SwiftyUserDefaults-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FAF205F1ACDAA9E2332AE90C178487D /* SwiftyUserDefaults-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		75E6B6A21C911AC83464C083109FEE65 /* AppleSystemLogDestination.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9603EE02D4520A7C07B67FE6D22E30FD /* AppleSystemLogDestination.swift */; };
+		848E9495DAD3F34C0B0A0A0C3F155D55 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBB3DE36805AF21409EC968A9691732F /* Foundation.framework */; };
+		9B864AD107B4F1D11708BAFCB35FE630 /* SwiftyUserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E9BD93981B1419FF2CE41252EC090B8 /* SwiftyUserDefaults.swift */; };
+		A0503BDF5A48F487380E58DF3A735F0C /* Pods-BluejayTests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A80B7FE3FB865CCCDAAC35D2202951 /* Pods-BluejayTests-dummy.m */; };
+		A8375FFDA9B3919658395ED270766681 /* FileDestination.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58669AAEB2335A05C09408628789EC6B /* FileDestination.swift */; };
+		A88A125F7BCDB90ADF3CA673E5449129 /* Pods-BluejayTests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 6317E59F53FC7DD35917C3C8B88714D0 /* Pods-BluejayTests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		AB8D071443FB550EBE55D2BD122079FA /* DestinationProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13E4B9E76565A861C7533B1750505F38 /* DestinationProtocol.swift */; };
+		AF1DBFDDBA668DB8B8229CEE48C0F907 /* XCGLogger-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 65A5DAAB2F860FF5558B61017207CD2A /* XCGLogger-dummy.m */; };
+		B3DB75EEC8355F065162636F0CB05EF2 /* XCGLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 864E6F975C0D45A5411ECCC46D96AFF5 /* XCGLogger.swift */; };
+		CC1223D7F956D889B3EC7C02E4915151 /* Pods-Bluejay-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 66ADC0BCEAA5D1CDC3136CC5F1BCF7C9 /* Pods-Bluejay-dummy.m */; };
+		CF8D559017F7E24265C72E873BD64FE0 /* TagFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 525ECBEDD6BE1D442B714DABE2ECE0C8 /* TagFilter.swift */; };
+		D4F94E27FE56FB2CB0A5C8E997C53D50 /* Pods-Bluejay-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 927295FD214B7CB0566D9F64478418D8 /* Pods-Bluejay-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D7F70AAECFA68E7440CCBD6DB398DE31 /* XCGLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = 21F47E50B0CE9F09603C91C3686C69CC /* XCGLogger.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DAEC510191DB8F2CBAC1FC2CD48C669D /* HelperFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A6574FE400F7B23E654D4A6D23A1DB /* HelperFunctions.swift */; };
+		EBBB44648EB4B475B343A53506B6863F /* PrePostFixLogFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 344FB2E283EF6F844F484C319EE8537C /* PrePostFixLogFormatter.swift */; };
+		F0077869230DF03057D6B5E7E60CFC3B /* LogFormatterProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7374A48F25406C1F3EEB4FB0873494F /* LogFormatterProtocol.swift */; };
+		F7BB99646D007B29800FFE0AD027BD85 /* SwiftyUserDefaults-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = AF81098CB891C163C061294FC6599F8E /* SwiftyUserDefaults-dummy.m */; };
+		FD869ED501FF085B924D71A052EECCFE /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBB3DE36805AF21409EC968A9691732F /* Foundation.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		AA69FA1F30F13D45475DCB69FCF9DEA3 /* PBXContainerItemProxy */ = {
+		77543FA48D638AA2B39F4663C86277CA /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 5930D013954697EC5188DC3C85FB0BE5;
+			remoteGlobalIDString = 625A2AD135B2410E9DE3E7B8E65A5A11;
 			remoteInfo = XCGLogger;
 		};
-		B951D56866A5AF68AC633A5AD41256D7 /* PBXContainerItemProxy */ = {
+		90B06C3DE0E41CF6F678C93B3D1ED40B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 5930D013954697EC5188DC3C85FB0BE5;
+			remoteGlobalIDString = 625A2AD135B2410E9DE3E7B8E65A5A11;
 			remoteInfo = XCGLogger;
+		};
+		E07592DBFC84E49BD917ED15C03640EF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 0A909ADA4EE55E45035DEE96A3204159;
+			remoteInfo = SwiftyUserDefaults;
+		};
+		E21D4D7DF897CDFF7E45778747B75BF3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 0A909ADA4EE55E45035DEE96A3204159;
+			remoteInfo = SwiftyUserDefaults;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0289879EAA52799201654BD20C6B0248 /* TestDestination.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TestDestination.swift; path = Sources/XCGLogger/Destinations/TestDestination.swift; sourceTree = "<group>"; };
 		03A80B7FE3FB865CCCDAAC35D2202951 /* Pods-BluejayTests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-BluejayTests-dummy.m"; sourceTree = "<group>"; };
-		05E79BB7A9BD74E69C7319C2AE0BB261 /* XCGLogger.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = XCGLogger.h; path = Sources/XCGLogger/XCGLogger.h; sourceTree = "<group>"; };
-		063C61276CBC75F9E99405C89F9E6148 /* ConsoleDestination.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConsoleDestination.swift; path = Sources/XCGLogger/Destinations/ConsoleDestination.swift; sourceTree = "<group>"; };
-		0748EA5B1F2375F9F78855D9E5C1268E /* TestDestination.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TestDestination.swift; path = Sources/XCGLogger/Destinations/TestDestination.swift; sourceTree = "<group>"; };
-		16F8762A9E441F9959D175482135B8E7 /* FilterProtocol.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = FilterProtocol.swift; path = Sources/XCGLogger/Filters/FilterProtocol.swift; sourceTree = "<group>"; };
+		0B3B0407476F1944EADE766749CB887F /* Pods_BluejayTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_BluejayTests.framework; path = "Pods-BluejayTests.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		13E4B9E76565A861C7533B1750505F38 /* DestinationProtocol.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DestinationProtocol.swift; path = Sources/XCGLogger/Destinations/DestinationProtocol.swift; sourceTree = "<group>"; };
+		17A6574FE400F7B23E654D4A6D23A1DB /* HelperFunctions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = HelperFunctions.swift; path = Sources/XCGLogger/Misc/HelperFunctions.swift; sourceTree = "<group>"; };
 		19CC15B114A6F3354448E3B56C58A43B /* Pods-BluejayTests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = "Pods-BluejayTests.modulemap"; sourceTree = "<group>"; };
+		1A07BDF87C37C8062B68A0711104C53B /* LogDetails.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LogDetails.swift; path = Sources/XCGLogger/Misc/LogDetails.swift; sourceTree = "<group>"; };
 		200926C46E539A453271286069CE1521 /* Pods-Bluejay-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-Bluejay-acknowledgements.markdown"; sourceTree = "<group>"; };
+		208E9E3D2A4634FD175C7F96F3376D4B /* BaseDestination.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BaseDestination.swift; path = Sources/XCGLogger/Destinations/BaseDestination.swift; sourceTree = "<group>"; };
+		21F47E50B0CE9F09603C91C3686C69CC /* XCGLogger.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = XCGLogger.h; path = Sources/XCGLogger/XCGLogger.h; sourceTree = "<group>"; };
 		27669F2DF6CB5028E361AD6BE4506CD0 /* Pods-Bluejay-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-Bluejay-resources.sh"; sourceTree = "<group>"; };
-		2EC049956BECE5CF3B596081CE5DD16F /* LogDetails.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LogDetails.swift; path = Sources/XCGLogger/Misc/LogDetails.swift; sourceTree = "<group>"; };
-		309DE086663982D5F34B54E0EB4F8CBF /* TagFilter.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TagFilter.swift; path = Sources/XCGLogger/Filters/TagFilter.swift; sourceTree = "<group>"; };
+		283313C875F9AE0A2FC6BCBEC38FD850 /* FileNameFilter.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = FileNameFilter.swift; path = Sources/XCGLogger/Filters/FileNameFilter.swift; sourceTree = "<group>"; };
+		2A67117614A1554495114827FA90BE12 /* SwiftyUserDefaults.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = SwiftyUserDefaults.framework; path = SwiftyUserDefaults.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		2BA25ACFA2948E21439A6207E7D030B9 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2E9BD93981B1419FF2CE41252EC090B8 /* SwiftyUserDefaults.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SwiftyUserDefaults.swift; path = Sources/SwiftyUserDefaults.swift; sourceTree = "<group>"; };
+		2EA4E8E957B38B74F66C549069BCCB23 /* FilterProtocol.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = FilterProtocol.swift; path = Sources/XCGLogger/Filters/FilterProtocol.swift; sourceTree = "<group>"; };
+		344FB2E283EF6F844F484C319EE8537C /* PrePostFixLogFormatter.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PrePostFixLogFormatter.swift; path = Sources/XCGLogger/LogFormatters/PrePostFixLogFormatter.swift; sourceTree = "<group>"; };
 		38DB048CFF99BE55CFF52466540C08CE /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3DB31A68043DEB6015C554B4D84E875E /* Pods-BluejayTests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-BluejayTests-acknowledgements.plist"; sourceTree = "<group>"; };
+		40947B4E8AD4B0B13E23F1DB8D93D976 /* ANSIColorLogFormatter.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ANSIColorLogFormatter.swift; path = Sources/XCGLogger/LogFormatters/ANSIColorLogFormatter.swift; sourceTree = "<group>"; };
 		4151BA00CB1301E540868BAE064CACE2 /* Pods-BluejayTests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-BluejayTests-acknowledgements.markdown"; sourceTree = "<group>"; };
-		43990419174E4CD63092AF25E975224C /* XcodeColorsLogFormatter.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = XcodeColorsLogFormatter.swift; path = Sources/XCGLogger/LogFormatters/XcodeColorsLogFormatter.swift; sourceTree = "<group>"; };
-		450CDD676D72656214A90108F073028A /* DestinationProtocol.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DestinationProtocol.swift; path = Sources/XCGLogger/Destinations/DestinationProtocol.swift; sourceTree = "<group>"; };
-		482947AE624526ED0D13DFE85F9DFE51 /* LogFormatterProtocol.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LogFormatterProtocol.swift; path = Sources/XCGLogger/LogFormatters/LogFormatterProtocol.swift; sourceTree = "<group>"; };
-		48484635D917BF6841EB9DE0BBA09387 /* DevFilter.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DevFilter.swift; path = Sources/XCGLogger/Filters/DevFilter.swift; sourceTree = "<group>"; };
-		488AF6BBA275C713F54EF7329EB0C486 /* DispatchQueue+XCGAdditions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "DispatchQueue+XCGAdditions.swift"; path = "Sources/XCGLogger/Extensions/DispatchQueue+XCGAdditions.swift"; sourceTree = "<group>"; };
 		4D07C3816BB544C7EBAECADFF3D1D761 /* Pods-Bluejay.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = "Pods-Bluejay.modulemap"; sourceTree = "<group>"; };
-		4D15C75DC7DDB217E4234FD44CBD1994 /* HelperFunctions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = HelperFunctions.swift; path = Sources/XCGLogger/Misc/HelperFunctions.swift; sourceTree = "<group>"; };
-		5586564C3C9BFD07788CCAB4E3ABE93C /* XCGLogger-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "XCGLogger-dummy.m"; sourceTree = "<group>"; };
-		5B2EEF47E8889CB85120BD13516C6663 /* BaseDestination.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BaseDestination.swift; path = Sources/XCGLogger/Destinations/BaseDestination.swift; sourceTree = "<group>"; };
+		4EA6742BF00D4F5DDAA8A9B9577683B4 /* Base64LogFormatter.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Base64LogFormatter.swift; path = Sources/XCGLogger/LogFormatters/Base64LogFormatter.swift; sourceTree = "<group>"; };
+		4FAF205F1ACDAA9E2332AE90C178487D /* SwiftyUserDefaults-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "SwiftyUserDefaults-umbrella.h"; sourceTree = "<group>"; };
+		525ECBEDD6BE1D442B714DABE2ECE0C8 /* TagFilter.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TagFilter.swift; path = Sources/XCGLogger/Filters/TagFilter.swift; sourceTree = "<group>"; };
+		56160454ED83582DDA2AA65A14F5679C /* SwiftyUserDefaults.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = SwiftyUserDefaults.xcconfig; sourceTree = "<group>"; };
+		58669AAEB2335A05C09408628789EC6B /* FileDestination.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = FileDestination.swift; path = Sources/XCGLogger/Destinations/FileDestination.swift; sourceTree = "<group>"; };
 		6317E59F53FC7DD35917C3C8B88714D0 /* Pods-BluejayTests-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-BluejayTests-umbrella.h"; sourceTree = "<group>"; };
+		65A5DAAB2F860FF5558B61017207CD2A /* XCGLogger-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "XCGLogger-dummy.m"; sourceTree = "<group>"; };
 		66ADC0BCEAA5D1CDC3136CC5F1BCF7C9 /* Pods-Bluejay-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-Bluejay-dummy.m"; sourceTree = "<group>"; };
+		69CC541A5AE3DD8A87886EC9713E3E24 /* Pods_Bluejay.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_Bluejay.framework; path = "Pods-Bluejay.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
 		774F80AD77BB9058EC712EA19E0E494D /* Pods-BluejayTests-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-BluejayTests-resources.sh"; sourceTree = "<group>"; };
-		82F3379CE5C088F72959571B071FC19F /* XCGLogger-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "XCGLogger-prefix.pch"; sourceTree = "<group>"; };
+		7B65ED4E0ED6CF9315A2F92B50FD7580 /* XCGLogger.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = XCGLogger.modulemap; sourceTree = "<group>"; };
+		80A738AA7831D9E6B58BAE871C411174 /* SwiftyUserDefaults-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "SwiftyUserDefaults-prefix.pch"; sourceTree = "<group>"; };
 		85BD00C480650BB0EB2EC6AF5F9AA841 /* Pods-BluejayTests-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-BluejayTests-frameworks.sh"; sourceTree = "<group>"; };
-		8728B15B4DAB15F1FF5CFB2EF627232F /* ANSIColorLogFormatter.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ANSIColorLogFormatter.swift; path = Sources/XCGLogger/LogFormatters/ANSIColorLogFormatter.swift; sourceTree = "<group>"; };
+		864E6F975C0D45A5411ECCC46D96AFF5 /* XCGLogger.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = XCGLogger.swift; path = Sources/XCGLogger/XCGLogger.swift; sourceTree = "<group>"; };
 		8762E1B2C997B108A34C7853EDED5C25 /* Pods-Bluejay-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-Bluejay-acknowledgements.plist"; sourceTree = "<group>"; };
-		89398B168CEAB5F02534D5C67FEBCFB0 /* XCGLogger.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = XCGLogger.modulemap; sourceTree = "<group>"; };
+		8FA514C094866371253DAE1BAA549F4A /* XCGLogger-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "XCGLogger-prefix.pch"; sourceTree = "<group>"; };
 		927295FD214B7CB0566D9F64478418D8 /* Pods-Bluejay-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-Bluejay-umbrella.h"; sourceTree = "<group>"; };
-		92E1170B090A65C6F80DBC3739783D71 /* XCGLogger.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = XCGLogger.xcconfig; sourceTree = "<group>"; };
 		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		93CC19D9B13DCB3C3F5DF1543AEC0906 /* Base64LogFormatter.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Base64LogFormatter.swift; path = Sources/XCGLogger/LogFormatters/Base64LogFormatter.swift; sourceTree = "<group>"; };
-		95792341BA1CCA654B8153DA8FFEB57D /* PrePostFixLogFormatter.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PrePostFixLogFormatter.swift; path = Sources/XCGLogger/LogFormatters/PrePostFixLogFormatter.swift; sourceTree = "<group>"; };
-		9E8CBAAC16260312179E453DEFB0C986 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9603EE02D4520A7C07B67FE6D22E30FD /* AppleSystemLogDestination.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AppleSystemLogDestination.swift; path = Sources/XCGLogger/Destinations/AppleSystemLogDestination.swift; sourceTree = "<group>"; };
+		9B22E839F98F3181747B53AA7FAA252F /* XCGLogger.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = XCGLogger.framework; path = XCGLogger.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A511150D4AEF3EA6E259967CFE23AB2B /* Pods-BluejayTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-BluejayTests.debug.xcconfig"; sourceTree = "<group>"; };
-		A725DC0B5DFDD73E47053EB7CABCF5F7 /* AppleSystemLogDestination.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AppleSystemLogDestination.swift; path = Sources/XCGLogger/Destinations/AppleSystemLogDestination.swift; sourceTree = "<group>"; };
-		BA6F486192EC2060652C622571965E1E /* Pods_BluejayTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_BluejayTests.framework; path = "Pods-BluejayTests.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
-		BAA5D7B1DB0AB1510FF904908885AFF3 /* FileNameFilter.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = FileNameFilter.swift; path = Sources/XCGLogger/Filters/FileNameFilter.swift; sourceTree = "<group>"; };
+		A6CDB32F259C938EFCE953D6987551EC /* XCGLogger.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = XCGLogger.xcconfig; sourceTree = "<group>"; };
+		AF81098CB891C163C061294FC6599F8E /* SwiftyUserDefaults-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "SwiftyUserDefaults-dummy.m"; sourceTree = "<group>"; };
+		B7374A48F25406C1F3EEB4FB0873494F /* LogFormatterProtocol.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LogFormatterProtocol.swift; path = Sources/XCGLogger/LogFormatters/LogFormatterProtocol.swift; sourceTree = "<group>"; };
+		B89D3A97B58053291F3AB03042B0F601 /* SwiftyUserDefaults.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = SwiftyUserDefaults.modulemap; sourceTree = "<group>"; };
 		BF21D292FF5DB5DD468C3012FD748D11 /* Pods-Bluejay.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Bluejay.release.xcconfig"; sourceTree = "<group>"; };
+		C580DADC7798FEF4922B7FE5C0FB4EA6 /* XcodeColorsLogFormatter.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = XcodeColorsLogFormatter.swift; path = Sources/XCGLogger/LogFormatters/XcodeColorsLogFormatter.swift; sourceTree = "<group>"; };
 		C60A08BE920E1474014DBE13DD512551 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CBB3DE36805AF21409EC968A9691732F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		CCBFCDDB449113354EC2FCB5336C6E4D /* Pods-Bluejay.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Bluejay.debug.xcconfig"; sourceTree = "<group>"; };
-		DD4B4B941652128C9FCC134C4DE02429 /* Pods_Bluejay.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_Bluejay.framework; path = "Pods-Bluejay.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D05DABE02FB568859F23BBE86CA56060 /* XCGLogger-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "XCGLogger-umbrella.h"; sourceTree = "<group>"; };
+		DC035C1F4848C1CEB4D797B2F0F6E89F /* UserInfoFilter.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = UserInfoFilter.swift; path = Sources/XCGLogger/Filters/UserInfoFilter.swift; sourceTree = "<group>"; };
 		E723E1F8A39413ABD84E67B8CBDD0157 /* Pods-BluejayTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-BluejayTests.release.xcconfig"; sourceTree = "<group>"; };
-		ED8012965845598CBB7A75D0D00590DC /* UserInfoFilter.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = UserInfoFilter.swift; path = Sources/XCGLogger/Filters/UserInfoFilter.swift; sourceTree = "<group>"; };
-		EE0020108CA4748ACD00EFA27C17770D /* XCGLogger.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = XCGLogger.swift; path = Sources/XCGLogger/XCGLogger.swift; sourceTree = "<group>"; };
-		F26ED850ECA068F2B8F9F527FC37188A /* FileDestination.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = FileDestination.swift; path = Sources/XCGLogger/Destinations/FileDestination.swift; sourceTree = "<group>"; };
-		F69C0F357DE0EB6FC8567F7828474902 /* XCGLogger.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = XCGLogger.framework; path = XCGLogger.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		F9938DAB29993A859C2947822EC4A019 /* XCGLogger-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "XCGLogger-umbrella.h"; sourceTree = "<group>"; };
+		E72BBA4C0FDDC1EDFA6A6AE79828C235 /* ConsoleDestination.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConsoleDestination.swift; path = Sources/XCGLogger/Destinations/ConsoleDestination.swift; sourceTree = "<group>"; };
+		F822BC7B9C6C3A924AE48FF0833DFBCD /* DispatchQueue+XCGAdditions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "DispatchQueue+XCGAdditions.swift"; path = "Sources/XCGLogger/Extensions/DispatchQueue+XCGAdditions.swift"; sourceTree = "<group>"; };
+		FA6915A117286D660F64946A46F70B2B /* DevFilter.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DevFilter.swift; path = Sources/XCGLogger/Filters/DevFilter.swift; sourceTree = "<group>"; };
+		FCAE21E952897F718E2678A7BB5A3525 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		49666F19D0E3B82BDD9264DFC6B86D4C /* Frameworks */ = {
+		1779D089CB5080309772B6CB76FA556C /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9B244CB635566CFE1D6D1E60AD19873F /* Foundation.framework in Frameworks */,
+				0A28AC53783C38A02C8DDB05091E3A2A /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		D08FC85440AFEEDD70C464C681099BA7 /* Frameworks */ = {
+		853E7819DA8E329043607CA679171819 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				66FE08EF0A07E7147408986301BC4FA5 /* Foundation.framework in Frameworks */,
+				848E9495DAD3F34C0B0A0A0C3F155D55 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		ED54E0C6B7B7167B51389FAD24D7D545 /* Frameworks */ = {
+		9BE9E9129A6708B16E48C45CDB3FE697 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A513A01CD0A84C3369325CA21B88C86D /* Foundation.framework in Frameworks */,
+				3C9D2D82C89F54CAC4DD66FA721FCEEC /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		ACA5CFC681F839DB291E27232AC4342A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FD869ED501FF085B924D71A052EECCFE /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		08B7B8F72986D8237918E6AC580D4DD4 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				69CC541A5AE3DD8A87886EC9713E3E24 /* Pods_Bluejay.framework */,
+				0B3B0407476F1944EADE766749CB887F /* Pods_BluejayTests.framework */,
+				2A67117614A1554495114827FA90BE12 /* SwiftyUserDefaults.framework */,
+				9B22E839F98F3181747B53AA7FAA252F /* XCGLogger.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		1D7750B9C3572ABE714E5C4FD3EEB8E4 /* XCGLogger */ = {
+			isa = PBXGroup;
+			children = (
+				A8FA55C3DDEC413E2C9ACBC0DD2F130A /* Core */,
+				90EA8A1B59C656978B26CEF092CF0616 /* Support Files */,
+			);
+			name = XCGLogger;
+			path = XCGLogger;
+			sourceTree = "<group>";
+		};
 		3CA2BDD9F5D508AC0B0A95DC6461D5D1 /* Pods-BluejayTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -156,64 +211,13 @@
 			path = "Target Support Files/Pods-BluejayTests";
 			sourceTree = "<group>";
 		};
-		544CA0361910DF46EAE495DA160B9981 /* Core */ = {
+		655814D1460D8FC85655BB911BED7221 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				8728B15B4DAB15F1FF5CFB2EF627232F /* ANSIColorLogFormatter.swift */,
-				A725DC0B5DFDD73E47053EB7CABCF5F7 /* AppleSystemLogDestination.swift */,
-				93CC19D9B13DCB3C3F5DF1543AEC0906 /* Base64LogFormatter.swift */,
-				5B2EEF47E8889CB85120BD13516C6663 /* BaseDestination.swift */,
-				063C61276CBC75F9E99405C89F9E6148 /* ConsoleDestination.swift */,
-				450CDD676D72656214A90108F073028A /* DestinationProtocol.swift */,
-				48484635D917BF6841EB9DE0BBA09387 /* DevFilter.swift */,
-				488AF6BBA275C713F54EF7329EB0C486 /* DispatchQueue+XCGAdditions.swift */,
-				F26ED850ECA068F2B8F9F527FC37188A /* FileDestination.swift */,
-				BAA5D7B1DB0AB1510FF904908885AFF3 /* FileNameFilter.swift */,
-				16F8762A9E441F9959D175482135B8E7 /* FilterProtocol.swift */,
-				4D15C75DC7DDB217E4234FD44CBD1994 /* HelperFunctions.swift */,
-				2EC049956BECE5CF3B596081CE5DD16F /* LogDetails.swift */,
-				482947AE624526ED0D13DFE85F9DFE51 /* LogFormatterProtocol.swift */,
-				95792341BA1CCA654B8153DA8FFEB57D /* PrePostFixLogFormatter.swift */,
-				309DE086663982D5F34B54E0EB4F8CBF /* TagFilter.swift */,
-				0748EA5B1F2375F9F78855D9E5C1268E /* TestDestination.swift */,
-				ED8012965845598CBB7A75D0D00590DC /* UserInfoFilter.swift */,
-				05E79BB7A9BD74E69C7319C2AE0BB261 /* XCGLogger.h */,
-				EE0020108CA4748ACD00EFA27C17770D /* XCGLogger.swift */,
-				43990419174E4CD63092AF25E975224C /* XcodeColorsLogFormatter.swift */,
-			);
-			name = Core;
-			sourceTree = "<group>";
-		};
-		5B38F34E769B260672981645F1146BA3 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				88E90913987817F15B3F93C6B69BD7EE /* XCGLogger */,
+				C3539D7D91E950344EA23A1FA73705B3 /* SwiftyUserDefaults */,
+				1D7750B9C3572ABE714E5C4FD3EEB8E4 /* XCGLogger */,
 			);
 			name = Pods;
-			sourceTree = "<group>";
-		};
-		5E9D73DFB90679FAEA79E050051110E0 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				DD4B4B941652128C9FCC134C4DE02429 /* Pods_Bluejay.framework */,
-				BA6F486192EC2060652C622571965E1E /* Pods_BluejayTests.framework */,
-				F69C0F357DE0EB6FC8567F7828474902 /* XCGLogger.framework */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		650891D6C64FD6F599F7D154668F2FD7 /* Support Files */ = {
-			isa = PBXGroup;
-			children = (
-				9E8CBAAC16260312179E453DEFB0C986 /* Info.plist */,
-				89398B168CEAB5F02534D5C67FEBCFB0 /* XCGLogger.modulemap */,
-				92E1170B090A65C6F80DBC3739783D71 /* XCGLogger.xcconfig */,
-				5586564C3C9BFD07788CCAB4E3ABE93C /* XCGLogger-dummy.m */,
-				82F3379CE5C088F72959571B071FC19F /* XCGLogger-prefix.pch */,
-				F9938DAB29993A859C2947822EC4A019 /* XCGLogger-umbrella.h */,
-			);
-			name = "Support Files";
-			path = "../Target Support Files/XCGLogger";
 			sourceTree = "<group>";
 		};
 		7531C8F8DE19F1AA3C8A7AC97A91DC29 /* iOS */ = {
@@ -229,20 +233,52 @@
 			children = (
 				93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */,
 				BC3CA7F9E30CC8F7E2DD044DD34432FC /* Frameworks */,
-				5B38F34E769B260672981645F1146BA3 /* Pods */,
-				5E9D73DFB90679FAEA79E050051110E0 /* Products */,
+				655814D1460D8FC85655BB911BED7221 /* Pods */,
+				08B7B8F72986D8237918E6AC580D4DD4 /* Products */,
 				DAD7A46BEA37B4703DB4D0701814E856 /* Targets Support Files */,
 			);
 			sourceTree = "<group>";
 		};
-		88E90913987817F15B3F93C6B69BD7EE /* XCGLogger */ = {
+		90EA8A1B59C656978B26CEF092CF0616 /* Support Files */ = {
 			isa = PBXGroup;
 			children = (
-				544CA0361910DF46EAE495DA160B9981 /* Core */,
-				650891D6C64FD6F599F7D154668F2FD7 /* Support Files */,
+				2BA25ACFA2948E21439A6207E7D030B9 /* Info.plist */,
+				7B65ED4E0ED6CF9315A2F92B50FD7580 /* XCGLogger.modulemap */,
+				A6CDB32F259C938EFCE953D6987551EC /* XCGLogger.xcconfig */,
+				65A5DAAB2F860FF5558B61017207CD2A /* XCGLogger-dummy.m */,
+				8FA514C094866371253DAE1BAA549F4A /* XCGLogger-prefix.pch */,
+				D05DABE02FB568859F23BBE86CA56060 /* XCGLogger-umbrella.h */,
 			);
-			name = XCGLogger;
-			path = XCGLogger;
+			name = "Support Files";
+			path = "../Target Support Files/XCGLogger";
+			sourceTree = "<group>";
+		};
+		A8FA55C3DDEC413E2C9ACBC0DD2F130A /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				40947B4E8AD4B0B13E23F1DB8D93D976 /* ANSIColorLogFormatter.swift */,
+				9603EE02D4520A7C07B67FE6D22E30FD /* AppleSystemLogDestination.swift */,
+				4EA6742BF00D4F5DDAA8A9B9577683B4 /* Base64LogFormatter.swift */,
+				208E9E3D2A4634FD175C7F96F3376D4B /* BaseDestination.swift */,
+				E72BBA4C0FDDC1EDFA6A6AE79828C235 /* ConsoleDestination.swift */,
+				13E4B9E76565A861C7533B1750505F38 /* DestinationProtocol.swift */,
+				FA6915A117286D660F64946A46F70B2B /* DevFilter.swift */,
+				F822BC7B9C6C3A924AE48FF0833DFBCD /* DispatchQueue+XCGAdditions.swift */,
+				58669AAEB2335A05C09408628789EC6B /* FileDestination.swift */,
+				283313C875F9AE0A2FC6BCBEC38FD850 /* FileNameFilter.swift */,
+				2EA4E8E957B38B74F66C549069BCCB23 /* FilterProtocol.swift */,
+				17A6574FE400F7B23E654D4A6D23A1DB /* HelperFunctions.swift */,
+				1A07BDF87C37C8062B68A0711104C53B /* LogDetails.swift */,
+				B7374A48F25406C1F3EEB4FB0873494F /* LogFormatterProtocol.swift */,
+				344FB2E283EF6F844F484C319EE8537C /* PrePostFixLogFormatter.swift */,
+				525ECBEDD6BE1D442B714DABE2ECE0C8 /* TagFilter.swift */,
+				0289879EAA52799201654BD20C6B0248 /* TestDestination.swift */,
+				DC035C1F4848C1CEB4D797B2F0F6E89F /* UserInfoFilter.swift */,
+				21F47E50B0CE9F09603C91C3686C69CC /* XCGLogger.h */,
+				864E6F975C0D45A5411ECCC46D96AFF5 /* XCGLogger.swift */,
+				C580DADC7798FEF4922B7FE5C0FB4EA6 /* XcodeColorsLogFormatter.swift */,
+			);
+			name = Core;
 			sourceTree = "<group>";
 		};
 		BC3CA7F9E30CC8F7E2DD044DD34432FC /* Frameworks */ = {
@@ -251,6 +287,16 @@
 				7531C8F8DE19F1AA3C8A7AC97A91DC29 /* iOS */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		C3539D7D91E950344EA23A1FA73705B3 /* SwiftyUserDefaults */ = {
+			isa = PBXGroup;
+			children = (
+				2E9BD93981B1419FF2CE41252EC090B8 /* SwiftyUserDefaults.swift */,
+				F93248A9257EEE78FF635070415DE468 /* Support Files */,
+			);
+			name = SwiftyUserDefaults;
+			path = SwiftyUserDefaults;
 			sourceTree = "<group>";
 		};
 		DAD7A46BEA37B4703DB4D0701814E856 /* Targets Support Files */ = {
@@ -279,44 +325,83 @@
 			path = "Target Support Files/Pods-Bluejay";
 			sourceTree = "<group>";
 		};
+		F93248A9257EEE78FF635070415DE468 /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				FCAE21E952897F718E2678A7BB5A3525 /* Info.plist */,
+				B89D3A97B58053291F3AB03042B0F601 /* SwiftyUserDefaults.modulemap */,
+				56160454ED83582DDA2AA65A14F5679C /* SwiftyUserDefaults.xcconfig */,
+				AF81098CB891C163C061294FC6599F8E /* SwiftyUserDefaults-dummy.m */,
+				80A738AA7831D9E6B58BAE871C411174 /* SwiftyUserDefaults-prefix.pch */,
+				4FAF205F1ACDAA9E2332AE90C178487D /* SwiftyUserDefaults-umbrella.h */,
+			);
+			name = "Support Files";
+			path = "../Target Support Files/SwiftyUserDefaults";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
-		4042F831EB9364DC610978BD8B5FA739 /* Headers */ = {
+		0B93FEA754FABE8616AB05E81E0C9A95 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				967267096A8FADC8C37777F37E24D00D /* XCGLogger-umbrella.h in Headers */,
-				7B8B1FA8CDE4B5B85C6560EBBC106FBB /* XCGLogger.h in Headers */,
+				D4F94E27FE56FB2CB0A5C8E997C53D50 /* Pods-Bluejay-umbrella.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		406B9D46BB9EA89834FF41F62552F028 /* Headers */ = {
+		1297F0F2020CC1E574F427E529546F9B /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				37A4E43E2E25CE6E756C873C5AF20FDE /* Pods-Bluejay-umbrella.h in Headers */,
+				7074C45CB4628963E3394E7D4BDB1882 /* SwiftyUserDefaults-umbrella.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		6D8A4ADFC7050DA0D4A6473DF0276AD5 /* Headers */ = {
+		B47D43FF44FF84AEC6CEED73433FCB02 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EFE61DCDD6C2EF72A46FF76E03306E9C /* Pods-BluejayTests-umbrella.h in Headers */,
+				6CBB825D95C2B9F520209517FC68C943 /* XCGLogger-umbrella.h in Headers */,
+				D7F70AAECFA68E7440CCBD6DB398DE31 /* XCGLogger.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D802A6245554BB16F344CCFC026B6360 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A88A125F7BCDB90ADF3CA673E5449129 /* Pods-BluejayTests-umbrella.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		5930D013954697EC5188DC3C85FB0BE5 /* XCGLogger */ = {
+		0A909ADA4EE55E45035DEE96A3204159 /* SwiftyUserDefaults */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = C9B4A44FE2B173B76B5B475C98426751 /* Build configuration list for PBXNativeTarget "XCGLogger" */;
+			buildConfigurationList = 5DAFC465AC441AEB23C2B2749C09E72F /* Build configuration list for PBXNativeTarget "SwiftyUserDefaults" */;
 			buildPhases = (
-				B4EB207F619F41BE2416CE6D83DEA41F /* Sources */,
-				49666F19D0E3B82BDD9264DFC6B86D4C /* Frameworks */,
-				4042F831EB9364DC610978BD8B5FA739 /* Headers */,
+				3344EE9D668246EC17BC38AB66983899 /* Sources */,
+				853E7819DA8E329043607CA679171819 /* Frameworks */,
+				1297F0F2020CC1E574F427E529546F9B /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SwiftyUserDefaults;
+			productName = SwiftyUserDefaults;
+			productReference = 2A67117614A1554495114827FA90BE12 /* SwiftyUserDefaults.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		625A2AD135B2410E9DE3E7B8E65A5A11 /* XCGLogger */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 03073C27B9CD2CA586BCD94A4A3CDFAA /* Build configuration list for PBXNativeTarget "XCGLogger" */;
+			buildPhases = (
+				E1639FD82DA37F153D08D169E319F4CA /* Sources */,
+				1779D089CB5080309772B6CB76FA556C /* Frameworks */,
+				B47D43FF44FF84AEC6CEED73433FCB02 /* Headers */,
 			);
 			buildRules = (
 			);
@@ -324,43 +409,45 @@
 			);
 			name = XCGLogger;
 			productName = XCGLogger;
-			productReference = F69C0F357DE0EB6FC8567F7828474902 /* XCGLogger.framework */;
+			productReference = 9B22E839F98F3181747B53AA7FAA252F /* XCGLogger.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		8ECC7361611EA8BD04D5C61F48182103 /* Pods-BluejayTests */ = {
+		A2207E9381D63C33C9F318D3E4C63994 /* Pods-BluejayTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 7B54B7CA58C0BF91D28594226F671399 /* Build configuration list for PBXNativeTarget "Pods-BluejayTests" */;
+			buildConfigurationList = 1008909E66EF19D51F67720930814D44 /* Build configuration list for PBXNativeTarget "Pods-BluejayTests" */;
 			buildPhases = (
-				CA3A8C12BF981CA8A372D87ACB6ADD65 /* Sources */,
-				ED54E0C6B7B7167B51389FAD24D7D545 /* Frameworks */,
-				6D8A4ADFC7050DA0D4A6473DF0276AD5 /* Headers */,
+				F770F054BD5B0A3940C466A6EC5123E1 /* Sources */,
+				9BE9E9129A6708B16E48C45CDB3FE697 /* Frameworks */,
+				D802A6245554BB16F344CCFC026B6360 /* Headers */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				21EF8EFAD5F561B52BBAEF442E6D42B0 /* PBXTargetDependency */,
+				C7C25EE40C01064773F4FF1A3675022A /* PBXTargetDependency */,
+				787E00084C30CC2F30E9C9415290F7B2 /* PBXTargetDependency */,
 			);
 			name = "Pods-BluejayTests";
 			productName = "Pods-BluejayTests";
-			productReference = BA6F486192EC2060652C622571965E1E /* Pods_BluejayTests.framework */;
+			productReference = 0B3B0407476F1944EADE766749CB887F /* Pods_BluejayTests.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		CCB79943C898B4F62318D36AA1D072AF /* Pods-Bluejay */ = {
+		BCE0FB1AD426B119A02BAAF55A319EB1 /* Pods-Bluejay */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 9CBFAA52CB79D002D8F2416CC3A41CAE /* Build configuration list for PBXNativeTarget "Pods-Bluejay" */;
+			buildConfigurationList = 7735F876863A4CE5A8A3E83D9F16E498 /* Build configuration list for PBXNativeTarget "Pods-Bluejay" */;
 			buildPhases = (
-				ED7136825B0C8270BCCADDD9F887C657 /* Sources */,
-				D08FC85440AFEEDD70C464C681099BA7 /* Frameworks */,
-				406B9D46BB9EA89834FF41F62552F028 /* Headers */,
+				5C835ED3DC900738A2CBC6D37478E4AC /* Sources */,
+				ACA5CFC681F839DB291E27232AC4342A /* Frameworks */,
+				0B93FEA754FABE8616AB05E81E0C9A95 /* Headers */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				DD884900AD62028D1609251174E0ECE8 /* PBXTargetDependency */,
+				3F768D85431BFF3DD05B9D71AB5B27F8 /* PBXTargetDependency */,
+				D09C5FB7475E98D4349098E93E5B088D /* PBXTargetDependency */,
 			);
 			name = "Pods-Bluejay";
 			productName = "Pods-Bluejay";
-			productReference = DD4B4B941652128C9FCC134C4DE02429 /* Pods_Bluejay.framework */;
+			productReference = 69CC541A5AE3DD8A87886EC9713E3E24 /* Pods_Bluejay.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 /* End PBXNativeTarget section */
@@ -380,81 +467,168 @@
 				en,
 			);
 			mainGroup = 7DB346D0F39D3F0E887471402A8071AB;
-			productRefGroup = 5E9D73DFB90679FAEA79E050051110E0 /* Products */;
+			productRefGroup = 08B7B8F72986D8237918E6AC580D4DD4 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				CCB79943C898B4F62318D36AA1D072AF /* Pods-Bluejay */,
-				8ECC7361611EA8BD04D5C61F48182103 /* Pods-BluejayTests */,
-				5930D013954697EC5188DC3C85FB0BE5 /* XCGLogger */,
+				BCE0FB1AD426B119A02BAAF55A319EB1 /* Pods-Bluejay */,
+				A2207E9381D63C33C9F318D3E4C63994 /* Pods-BluejayTests */,
+				0A909ADA4EE55E45035DEE96A3204159 /* SwiftyUserDefaults */,
+				625A2AD135B2410E9DE3E7B8E65A5A11 /* XCGLogger */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
-		B4EB207F619F41BE2416CE6D83DEA41F /* Sources */ = {
+		3344EE9D668246EC17BC38AB66983899 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7A428E300C18E6314A8C258E48E51DEB /* ANSIColorLogFormatter.swift in Sources */,
-				CBDBE6591E300F55DDEB2F10E52DC3C6 /* AppleSystemLogDestination.swift in Sources */,
-				63083B770BE6543CCBD2EB17579B55DB /* Base64LogFormatter.swift in Sources */,
-				9D17667045D375A12BCBE1E5C29C9EDE /* BaseDestination.swift in Sources */,
-				71117A684C08D057BDA81CCA2FD98688 /* ConsoleDestination.swift in Sources */,
-				5AF232EB599E1360BF7299AAC065A938 /* DestinationProtocol.swift in Sources */,
-				1C99E3432950F0D22B515AD1DE1AD1E0 /* DevFilter.swift in Sources */,
-				8CD427F93FCDA271D1635F4B85E73267 /* DispatchQueue+XCGAdditions.swift in Sources */,
-				19A637CF9AB26FB8434AEE3CB586A467 /* FileDestination.swift in Sources */,
-				4B981C058C2AEB8F45F8F4D147345DC6 /* FileNameFilter.swift in Sources */,
-				B9A218D604154D6BF12A5C6D69C47C9D /* FilterProtocol.swift in Sources */,
-				08BDCB79F233B11506E64544333106DD /* HelperFunctions.swift in Sources */,
-				EF45BEF669375278E96789857A644F39 /* LogDetails.swift in Sources */,
-				86E22A33204F8FDDA233F37FC1C5FE14 /* LogFormatterProtocol.swift in Sources */,
-				55168E57A76742245CEFAB50D7BF36E1 /* PrePostFixLogFormatter.swift in Sources */,
-				AE5556694A0F2CFD28F5533F21243CE7 /* TagFilter.swift in Sources */,
-				4B5EEFFFF407ECF5E1D806F12D637F8D /* TestDestination.swift in Sources */,
-				CF42E99A29B75EBADF74311881ECF7E0 /* UserInfoFilter.swift in Sources */,
-				B519DB3E9935C54ECC11597FB71BB092 /* XCGLogger-dummy.m in Sources */,
-				F34E3AC22F0ADC5CE30F1D5F0A739FF6 /* XCGLogger.swift in Sources */,
-				6F26C1BD8C2C4634E8E1B86515D37CEE /* XcodeColorsLogFormatter.swift in Sources */,
+				F7BB99646D007B29800FFE0AD027BD85 /* SwiftyUserDefaults-dummy.m in Sources */,
+				9B864AD107B4F1D11708BAFCB35FE630 /* SwiftyUserDefaults.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		CA3A8C12BF981CA8A372D87ACB6ADD65 /* Sources */ = {
+		5C835ED3DC900738A2CBC6D37478E4AC /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				332B7B21AD3A7A108868445545455F3B /* Pods-BluejayTests-dummy.m in Sources */,
+				CC1223D7F956D889B3EC7C02E4915151 /* Pods-Bluejay-dummy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		ED7136825B0C8270BCCADDD9F887C657 /* Sources */ = {
+		E1639FD82DA37F153D08D169E319F4CA /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2E1E5992DE6F6B4C0A9632EDC77819BE /* Pods-Bluejay-dummy.m in Sources */,
+				2166D29D4EFE4DC68439A83EA7410027 /* ANSIColorLogFormatter.swift in Sources */,
+				75E6B6A21C911AC83464C083109FEE65 /* AppleSystemLogDestination.swift in Sources */,
+				442DF7354C37FE74542F318E7DBD5153 /* Base64LogFormatter.swift in Sources */,
+				62722915ED4BF7472B23B43C5D0D335F /* BaseDestination.swift in Sources */,
+				37FF01E63491A5718A588AC09096E90D /* ConsoleDestination.swift in Sources */,
+				AB8D071443FB550EBE55D2BD122079FA /* DestinationProtocol.swift in Sources */,
+				4DB38E6D7A4256239D9B6BDB9750A5A9 /* DevFilter.swift in Sources */,
+				46F1366C25D7735D7D8BD40978FDF2CD /* DispatchQueue+XCGAdditions.swift in Sources */,
+				A8375FFDA9B3919658395ED270766681 /* FileDestination.swift in Sources */,
+				2D14555A47C7C009BBEB994C649C35A7 /* FileNameFilter.swift in Sources */,
+				0F23F1FB3AD975B2BCFDC6DDD2394F72 /* FilterProtocol.swift in Sources */,
+				DAEC510191DB8F2CBAC1FC2CD48C669D /* HelperFunctions.swift in Sources */,
+				1C2CE68C862AB49054D5279021BB1537 /* LogDetails.swift in Sources */,
+				F0077869230DF03057D6B5E7E60CFC3B /* LogFormatterProtocol.swift in Sources */,
+				EBBB44648EB4B475B343A53506B6863F /* PrePostFixLogFormatter.swift in Sources */,
+				CF8D559017F7E24265C72E873BD64FE0 /* TagFilter.swift in Sources */,
+				5CE46B2263E19AD755308598750F216A /* TestDestination.swift in Sources */,
+				32944CE1B276F78A70873134DC6B7068 /* UserInfoFilter.swift in Sources */,
+				AF1DBFDDBA668DB8B8229CEE48C0F907 /* XCGLogger-dummy.m in Sources */,
+				B3DB75EEC8355F065162636F0CB05EF2 /* XCGLogger.swift in Sources */,
+				3C622CBA71F658F5CD2B7ECD3D6D329E /* XcodeColorsLogFormatter.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F770F054BD5B0A3940C466A6EC5123E1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A0503BDF5A48F487380E58DF3A735F0C /* Pods-BluejayTests-dummy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		21EF8EFAD5F561B52BBAEF442E6D42B0 /* PBXTargetDependency */ = {
+		3F768D85431BFF3DD05B9D71AB5B27F8 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			name = XCGLogger;
-			target = 5930D013954697EC5188DC3C85FB0BE5 /* XCGLogger */;
-			targetProxy = AA69FA1F30F13D45475DCB69FCF9DEA3 /* PBXContainerItemProxy */;
+			name = SwiftyUserDefaults;
+			target = 0A909ADA4EE55E45035DEE96A3204159 /* SwiftyUserDefaults */;
+			targetProxy = E07592DBFC84E49BD917ED15C03640EF /* PBXContainerItemProxy */;
 		};
-		DD884900AD62028D1609251174E0ECE8 /* PBXTargetDependency */ = {
+		787E00084C30CC2F30E9C9415290F7B2 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = XCGLogger;
-			target = 5930D013954697EC5188DC3C85FB0BE5 /* XCGLogger */;
-			targetProxy = B951D56866A5AF68AC633A5AD41256D7 /* PBXContainerItemProxy */;
+			target = 625A2AD135B2410E9DE3E7B8E65A5A11 /* XCGLogger */;
+			targetProxy = 90B06C3DE0E41CF6F678C93B3D1ED40B /* PBXContainerItemProxy */;
+		};
+		C7C25EE40C01064773F4FF1A3675022A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = SwiftyUserDefaults;
+			target = 0A909ADA4EE55E45035DEE96A3204159 /* SwiftyUserDefaults */;
+			targetProxy = E21D4D7DF897CDFF7E45778747B75BF3 /* PBXContainerItemProxy */;
+		};
+		D09C5FB7475E98D4349098E93E5B088D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = XCGLogger;
+			target = 625A2AD135B2410E9DE3E7B8E65A5A11 /* XCGLogger */;
+			targetProxy = 77543FA48D638AA2B39F4663C86277CA /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		0BA21538DCB97E6BB9DCFFA89EDD05C9 /* Debug */ = {
+		408C0E8A3656EC334B30F26AE94D9C9D /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 56160454ED83582DDA2AA65A14F5679C /* SwiftyUserDefaults.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/SwiftyUserDefaults/SwiftyUserDefaults-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/SwiftyUserDefaults/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/SwiftyUserDefaults/SwiftyUserDefaults.modulemap";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = SwiftyUserDefaults;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		5322D62DD6CCD2C615EEF42632B1C297 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 56160454ED83582DDA2AA65A14F5679C /* SwiftyUserDefaults.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/SwiftyUserDefaults/SwiftyUserDefaults-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/SwiftyUserDefaults/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/SwiftyUserDefaults/SwiftyUserDefaults.modulemap";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_NAME = SwiftyUserDefaults;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		6585C3E359E47033B23B5F930307AC1C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = CCBFCDDB449113354EC2FCB5336C6E4D /* Pods-Bluejay.debug.xcconfig */;
 			buildSettings = {
@@ -484,109 +658,6 @@
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Debug;
-		};
-		21D4279852E23CAEF837475C8532FE0E /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = E723E1F8A39413ABD84E67B8CBDD0157 /* Pods-BluejayTests.release.xcconfig */;
-			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_NO_COMMON_BLOCKS = YES;
-				INFOPLIST_FILE = "Target Support Files/Pods-BluejayTests/Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MACH_O_TYPE = staticlib;
-				MODULEMAP_FILE = "Target Support Files/Pods-BluejayTests/Pods-BluejayTests.modulemap";
-				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = Pods_BluejayTests;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Release;
-		};
-		36B3AABE3654ABE5870A30DC73C5D61B /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = BF21D292FF5DB5DD468C3012FD748D11 /* Pods-Bluejay.release.xcconfig */;
-			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_NO_COMMON_BLOCKS = YES;
-				INFOPLIST_FILE = "Target Support Files/Pods-Bluejay/Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MACH_O_TYPE = staticlib;
-				MODULEMAP_FILE = "Target Support Files/Pods-Bluejay/Pods-Bluejay.modulemap";
-				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = Pods_Bluejay;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Release;
-		};
-		50A417FD07EAC1A9078876DC4B8942F4 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 92E1170B090A65C6F80DBC3739783D71 /* XCGLogger.xcconfig */;
-			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_PREFIX_HEADER = "Target Support Files/XCGLogger/XCGLogger-prefix.pch";
-				INFOPLIST_FILE = "Target Support Files/XCGLogger/Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MODULEMAP_FILE = "Target Support Files/XCGLogger/XCGLogger.modulemap";
-				MTL_ENABLE_DEBUG_INFO = YES;
-				PRODUCT_NAME = XCGLogger;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -633,39 +704,7 @@
 			};
 			name = Release;
 		};
-		963403EF13675F2B7D9E4DE57D7977D3 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 92E1170B090A65C6F80DBC3739783D71 /* XCGLogger.xcconfig */;
-			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_PREFIX_HEADER = "Target Support Files/XCGLogger/XCGLogger-prefix.pch";
-				INFOPLIST_FILE = "Target Support Files/XCGLogger/Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MODULEMAP_FILE = "Target Support Files/XCGLogger/XCGLogger.modulemap";
-				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_NAME = XCGLogger;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 3.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Release;
-		};
-		C8BAC6192AB2C93506D175C3F4BDBB6D /* Debug */ = {
+		67D9D678E251F558A47DEFC8AA2AE50D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = A511150D4AEF3EA6E259967CFE23AB2B /* Pods-BluejayTests.debug.xcconfig */;
 			buildSettings = {
@@ -695,6 +734,141 @@
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		75F7F81C19BCCCACCE6ADA6ADB3B5561 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = BF21D292FF5DB5DD468C3012FD748D11 /* Pods-Bluejay.release.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = "Target Support Files/Pods-Bluejay/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-Bluejay/Pods-Bluejay.modulemap";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = Pods_Bluejay;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		8165E9C8D1B477B63FD8904371F8880D /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = E723E1F8A39413ABD84E67B8CBDD0157 /* Pods-BluejayTests.release.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = "Target Support Files/Pods-BluejayTests/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-BluejayTests/Pods-BluejayTests.modulemap";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = Pods_BluejayTests;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		B3700A114F11C7C0AED397A83A143A1F /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = A6CDB32F259C938EFCE953D6987551EC /* XCGLogger.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/XCGLogger/XCGLogger-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/XCGLogger/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/XCGLogger/XCGLogger.modulemap";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = XCGLogger;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		D6AF4CAFCA72E5321D516A2535460E77 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = A6CDB32F259C938EFCE953D6987551EC /* XCGLogger.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/XCGLogger/XCGLogger-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/XCGLogger/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/XCGLogger/XCGLogger.modulemap";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_NAME = XCGLogger;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -748,6 +922,24 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		03073C27B9CD2CA586BCD94A4A3CDFAA /* Build configuration list for PBXNativeTarget "XCGLogger" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D6AF4CAFCA72E5321D516A2535460E77 /* Debug */,
+				B3700A114F11C7C0AED397A83A143A1F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1008909E66EF19D51F67720930814D44 /* Build configuration list for PBXNativeTarget "Pods-BluejayTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				67D9D678E251F558A47DEFC8AA2AE50D /* Debug */,
+				8165E9C8D1B477B63FD8904371F8880D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		2D8E8EC45A3A1A1D94AE762CB5028504 /* Build configuration list for PBXProject "Pods" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -757,29 +949,20 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		7B54B7CA58C0BF91D28594226F671399 /* Build configuration list for PBXNativeTarget "Pods-BluejayTests" */ = {
+		5DAFC465AC441AEB23C2B2749C09E72F /* Build configuration list for PBXNativeTarget "SwiftyUserDefaults" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				C8BAC6192AB2C93506D175C3F4BDBB6D /* Debug */,
-				21D4279852E23CAEF837475C8532FE0E /* Release */,
+				5322D62DD6CCD2C615EEF42632B1C297 /* Debug */,
+				408C0E8A3656EC334B30F26AE94D9C9D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		9CBFAA52CB79D002D8F2416CC3A41CAE /* Build configuration list for PBXNativeTarget "Pods-Bluejay" */ = {
+		7735F876863A4CE5A8A3E83D9F16E498 /* Build configuration list for PBXNativeTarget "Pods-Bluejay" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				0BA21538DCB97E6BB9DCFFA89EDD05C9 /* Debug */,
-				36B3AABE3654ABE5870A30DC73C5D61B /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		C9B4A44FE2B173B76B5B475C98426751 /* Build configuration list for PBXNativeTarget "XCGLogger" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				50A417FD07EAC1A9078876DC4B8942F4 /* Debug */,
-				963403EF13675F2B7D9E4DE57D7977D3 /* Release */,
+				6585C3E359E47033B23B5F930307AC1C /* Debug */,
+				75F7F81C19BCCCACCE6ADA6ADB3B5561 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
