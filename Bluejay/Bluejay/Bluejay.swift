@@ -322,6 +322,13 @@ extension Bluejay: CBCentralManagerDelegate {
         
         for observer in observers {
             observer.weakReference?.bluetoothAvailable(central.state == .poweredOn)
+            
+            if connectedPeripheral != nil {
+                observer.weakReference?.connected(connectedPeripheral!)
+            }
+            else {
+                observer.weakReference?.disconected()
+            }
         }
         
         UIApplication.shared.endBackgroundTask(backgroundTask)
