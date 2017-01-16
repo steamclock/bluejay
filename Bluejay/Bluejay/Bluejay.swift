@@ -80,6 +80,11 @@ public class Bluejay: NSObject {
             log.debug("Begin startup background task for restoring CoreBluetooth.")
             startupBackgroundTask = UIApplication.shared.beginBackgroundTask(expirationHandler: nil)
         }
+    }
+    
+    public func powerOn(withObserver observer: BluejayEventsObservable, andListenRestorable restorable: ListenRestorable) {
+        register(observer: observer)
+        listenRestorable = WeakListenRestorable(weakReference: restorable)
         
         cbCentralManager = CBCentralManager(
             delegate: self,
@@ -89,13 +94,6 @@ public class Bluejay: NSObject {
                 CBCentralManagerOptionRestoreIdentifierKey: "Bluejay"
             ]
         )
-    }
-    
-    /**
-        - Parameter listenRestorable: A delegate that is given an opportunity to restore the listening callbacks during Bluetooth state restoration. If Bluejay has no listen restorable delegate, previously active listens will all be cancelled in the event of a Bluetooth state restoration.
-     */
-    public func register(listenRestorable: ListenRestorable) {
-        self.listenRestorable = WeakListenRestorable(weakReference: listenRestorable)
     }
     
     public func clearLog() {
@@ -108,7 +106,12 @@ public class Bluejay: NSObject {
         observers = observers.filter { $0.weakReference != nil && $0.weakReference !== observer }
         observers.append(WeakBluejayEventsObservable(weakReference: observer))
         
-        observer.bluetoothAvailable(cbCentralManager.state == .poweredOn)
+        if cbCentralManager == nil {
+            observer.bluetoothAvailable(false)
+        }
+        else {
+            observer.bluetoothAvailable(cbCentralManager.state == .poweredOn)
+        }
         
         if let connectedPeripheral = connectedPeripheral {
             observer.connected(connectedPeripheral)

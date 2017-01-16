@@ -9,7 +9,7 @@
 import Foundation
 import XCGLogger
 
-let log = XCGLogger(identifier: "bluejayLogger", includeDefaultDestinations: false)
+public let log = XCGLogger(identifier: "bluejayLogger", includeDefaultDestinations: false)
 
 private let systemDestinationIdentifier = "bluejayLogger.systemDestination"
 private let fileDestinationIdentifier = "bluejayLogger.fileDestination"
