@@ -17,7 +17,7 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   Bluejay:
-    :commit: dd028adcce7a2654ff5dec8e9d66a7601e185161
+    :commit: 91003577c6948eda75b457d4bbac1735293de423
     :git: https://github.com/steamclock/bluejay.git
 
 SPEC CHECKSUMS:

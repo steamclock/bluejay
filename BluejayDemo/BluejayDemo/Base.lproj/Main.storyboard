@@ -37,24 +37,31 @@
                                 <rect key="frame" x="16" y="129" width="343" height="44"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JFZ-83-dbY">
-                                        <rect key="frame" x="0.0" y="0.0" width="114.5" height="44"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="86" height="44"/>
                                         <state key="normal" title="Scan"/>
                                         <connections>
                                             <action selector="scan" destination="BYZ-38-t0r" eventType="touchUpInside" id="hOz-OE-L8m"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="grW-Ze-dJR">
-                                        <rect key="frame" x="114.5" y="0.0" width="114" height="44"/>
+                                        <rect key="frame" x="86" y="0.0" width="85.5" height="44"/>
                                         <state key="normal" title="Read"/>
                                         <connections>
                                             <action selector="read" destination="BYZ-38-t0r" eventType="touchUpInside" id="mbp-db-5ud"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kTV-SB-FHn">
-                                        <rect key="frame" x="228.5" y="0.0" width="114.5" height="44"/>
+                                        <rect key="frame" x="171.5" y="0.0" width="86" height="44"/>
                                         <state key="normal" title="Write"/>
                                         <connections>
                                             <action selector="write" destination="BYZ-38-t0r" eventType="touchUpInside" id="S79-df-KbV"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="csp-04-Lzc">
+                                        <rect key="frame" x="257.5" y="0.0" width="85.5" height="44"/>
+                                        <state key="normal" title="Disconnect"/>
+                                        <connections>
+                                            <action selector="disconect" destination="BYZ-38-t0r" eventType="touchUpInside" id="vPr-jZ-Hyi"/>
                                         </connections>
                                     </button>
                                 </subviews>

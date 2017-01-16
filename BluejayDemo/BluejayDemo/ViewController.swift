@@ -75,6 +75,10 @@ class ViewController: UIViewController {
         }
     }
     
+    @IBAction func disconect() {
+        bluejay.disconnect()
+    }
+    
     @IBAction func listen() {
         bluejay.listen(to: heartRate) { (result: BluejayReadResult<IncomingInt>) in
             switch result {
