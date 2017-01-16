@@ -15,7 +15,7 @@ let heartRate = CharacteristicIdentifier(uuid: "2A37", service: heartRateService
 
 class ViewController: UIViewController {
 
-    private let bluejay = Bluejay()
+    private let bluejay = Bluejay.shared
     
     override func viewDidLoad() {
         super.viewDidLoad()

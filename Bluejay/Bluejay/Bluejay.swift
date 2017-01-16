@@ -97,7 +97,7 @@ public class Bluejay: NSObject {
     
     // MARK: - Events Registration
     
-    public func register(_ observer: BluejayEventsObservable) {
+    public func register(observer: BluejayEventsObservable) {
         observers = observers.filter { $0.weakReference != nil && $0.weakReference !== observer }
         observers.append(WeakBluejayEventsObservable(weakReference: observer))
         

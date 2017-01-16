@@ -8,9 +8,7 @@
 
 import Foundation
 
-/**
-    Uniquely identifies a peripheral to the current iOS device. The UUID changes and is different on different iOS devices.
-*/
+/// Uniquely identifies a peripheral to the current iOS device. The UUID changes and is different on different iOS devices.
 public struct PeripheralIdentifier {
     
     public private(set) var uuid: UUID

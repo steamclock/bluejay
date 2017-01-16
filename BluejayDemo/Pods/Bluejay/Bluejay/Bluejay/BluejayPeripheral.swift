@@ -8,14 +8,18 @@
 
 import Foundation
 import CoreBluetooth
+import SwiftyUserDefaults
 
 public class BluejayPeripheral: NSObject {
     
     // MARK: Properties
     
     private(set) var cbPeripheral: CBPeripheral
+    
     fileprivate var listeners: [CharacteristicIdentifier : (BluejayReadResult<Data?>) -> Void] = [:]
-    private var operations: [BluejayOperation] = []
+    fileprivate var listenersBeingCancelled: [CharacteristicIdentifier] = []
+    
+    fileprivate var operations: [BluejayOperation] = []
     
     // MARK: - Initialization
     
@@ -105,12 +109,16 @@ public class BluejayPeripheral: NSObject {
             "Cannot read from characteristic: \(characteristicIdentifier.uuid), which is already being listened on."
         )
         
+        log.debug("Queueing read to: \(characteristicIdentifier.uuid.uuidString)")
+        
         discoverCharactersitic(characteristicIdentifier)
         addOperation(ReadCharacteristic(characteristicIdentifier: characteristicIdentifier, callback: completion))
     }
     
     /// Write to a specified characteristic.
     public func write<S: BluejaySendable>(to characteristicIdentifier: CharacteristicIdentifier, value: S, completion: @escaping (BluejayWriteResult) -> Void) {
+        log.debug("Queueing write to: \(characteristicIdentifier.uuid.uuidString) with value of: \(value)")
+        
         discoverCharactersitic(characteristicIdentifier)
         addOperation(WriteCharacteristic(characteristicIdentifier: characteristicIdentifier, value: value, callback: completion))
     }
@@ -134,6 +142,9 @@ public class BluejayPeripheral: NSObject {
                 self.listeners[characteristicIdentifier] = { dataResult in
                     completion(BluejayReadResult<R>(dataResult: dataResult))
                 }
+                
+                // Make sure a successful listen is cached, so Bluejay can inform which characteristics need their listens restored on state restoration.
+                self.cache(listeningCharacteristic: characteristicIdentifier)
             case .failure(let error):
                 log.debug("Listen failed: \(characteristicIdentifier.uuid.uuidString)")
                 
@@ -143,17 +154,19 @@ public class BluejayPeripheral: NSObject {
     }
     
     /**
-        Cancel listening on a specified characteristic.
+     Cancel listening on a specified characteristic.
      
-        Provides the ability to suppress the failure message to the listen callback. This is useful in the internal implimentation of some of the listening logic, since we want to be able to share the clear logic on a .done exit, but don't need to send a failure in that case.
+     Provides the ability to suppress the failure message to the listen callback. This is useful in the internal implimentation of some of the listening logic, since we want to be able to share the clear logic on a .done exit, but don't need to send a failure in that case.
      
-        - Note
-        Currently this can also cancel a regular in-progress read as well, but that behaviour may change down the road.
-    */
+     - Note
+     Currently this can also cancel a regular in-progress read as well, but that behaviour may change down the road.
+     */
     public func cancelListen(to characteristicIdentifier: CharacteristicIdentifier, sendFailure: Bool, completion: ((BluejayWriteResult) -> Void)? = nil) {
         log.debug("Start cancelling listen: \(characteristicIdentifier.uuid.uuidString)")
         
         discoverCharactersitic(characteristicIdentifier)
+        
+        listenersBeingCancelled.append(characteristicIdentifier)
         
         addOperation(ListenCharacteristic(characteristicIdentifier: characteristicIdentifier, value: false, callback: { result in
             let listenCallback = self.listeners[characteristicIdentifier]
@@ -167,6 +180,9 @@ public class BluejayPeripheral: NSObject {
             log.debug("Cancellation of listen successful: \(characteristicIdentifier.uuid.uuidString)")
             
             completion?(result)
+            
+            // Make sure a cancelled listen does not exist in the cache, as we don't want to restore a cancelled listen on state restoration.
+            self.remove(listeningCharacteristic: characteristicIdentifier)
         }))
     }
     
@@ -180,8 +196,42 @@ public class BluejayPeripheral: NSObject {
         listeners[characteristicIdentifier] = { dataResult in
             completion(BluejayReadResult<R>(dataResult: dataResult))
         }
+        
+        // Make sure restored listens are cached again for future restoration. The cache method will handle any duplicate uuid, so this sanity check should not create any redundancy.
+        cache(listeningCharacteristic: characteristicIdentifier)
     }
     
+    private func cache(listeningCharacteristic: CharacteristicIdentifier) {
+        let serviceUuid = listeningCharacteristic.service.uuid.uuidString
+        let characteristicUuid = listeningCharacteristic.uuid.uuidString
+        
+        log.debug("Adding cached listen: \(characteristicUuid) for service: \(serviceUuid)")
+        
+        Defaults[.listeningCharacteristics][serviceUuid] = characteristicUuid
+        
+        // Don't want to open up any possibilities where the defaults are not saved immediately.
+        Defaults.synchronize()
+        
+        log.debug("Current cached listens: \(Defaults[.listeningCharacteristics])")
+    }
+    
+    private func remove(listeningCharacteristic: CharacteristicIdentifier) {
+        let serviceUuid = listeningCharacteristic.service.uuid.uuidString
+        let characteristicUuid = listeningCharacteristic.uuid.uuidString
+        
+        log.debug("Removing cached listen: \(characteristicUuid) for service: \(serviceUuid)")
+        
+        Defaults[.listeningCharacteristics][serviceUuid] = nil
+        
+        // Don't want to open up any possibilities where the defaults are not saved immediately.
+        Defaults.synchronize()
+        
+        listenersBeingCancelled = listenersBeingCancelled.filter { (characteristicIdentifier) -> Bool in
+            return characteristicIdentifier.uuid.uuidString != listeningCharacteristic.uuid.uuidString
+        }
+        
+        log.debug("Current cached listens: \(Defaults[.listeningCharacteristics])")
+    }
 }
 
 // MARK: - CBPeripheralDelegate
@@ -202,8 +252,21 @@ extension BluejayPeripheral: CBPeripheralDelegate {
     
     public func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
         guard let listener = listeners[CharacteristicIdentifier(characteristic)] else {
-            handleEvent(.didReadCharacteristic(characteristic, characteristic.value ?? Data()), error: error as NSError?)
-            return
+            
+            // Handle attempting to read a characteristic whose listen is being cancelled during state restoration.
+            let isCancellingListenOnCurrentRead = listenersBeingCancelled.contains(where: { (characteristicIdentifier) -> Bool in
+                return characteristicIdentifier.uuid.uuidString == characteristic.uuid.uuidString
+            })
+            
+            let isReadUnhandled = isCancellingListenOnCurrentRead || operations.isEmpty
+            
+            if isReadUnhandled {
+                return
+            }
+            else {
+                handleEvent(.didReadCharacteristic(characteristic, characteristic.value ?? Data()), error: error as NSError?)
+                return
+            }
         }
         
         if let error = error {
@@ -211,7 +274,7 @@ extension BluejayPeripheral: CBPeripheralDelegate {
         }
         else {
             listener(.success(characteristic.value))
-        }        
+        }
     }
     
     public func peripheral(_ peripheral: CBPeripheral, didUpdateNotificationStateFor characteristic: CBCharacteristic, error: Error?) {

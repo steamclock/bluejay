@@ -1,6 +1,8 @@
 PODS:
   - Bluejay (0.1.0):
+    - SwiftyUserDefaults
     - XCGLogger (~> 4.0.0)
+  - SwiftyUserDefaults (3.0.0)
   - XCGLogger (4.0.0):
     - XCGLogger/Core (= 4.0.0)
   - XCGLogger/Core (4.0.0)
@@ -15,11 +17,12 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   Bluejay:
-    :commit: 82cee886e50f81b622ddae51c61471f272552f62
+    :commit: a88cbf8cb8275cf988f63c93fbe18848b0292f5c
     :git: https://github.com/steamclock/bluejay.git
 
 SPEC CHECKSUMS:
-  Bluejay: 3bf74807da40d4ad2d4d02c806ac95365d9ea69d
+  Bluejay: 6ada34ad78920578e2040f5e3fdfd0e150eab57e
+  SwiftyUserDefaults: 0f1d45fc3aafb9064dac661e367f8f83fe21a4b4
   XCGLogger: 38063ea89b4c8b23232d18efd2e12eb0005f3ea4
 
 PODFILE CHECKSUM: 3b1c7da7641cbed29ec2f1441e9c2e428a547c7d

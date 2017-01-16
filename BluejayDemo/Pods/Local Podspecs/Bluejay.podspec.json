@@ -20,6 +20,9 @@
   },
   "requires_arc": true,
   "dependencies": {
+    "SwiftyUserDefaults": [
+
+    ],
     "XCGLogger": [
       "~> 4.0.0"
     ]
