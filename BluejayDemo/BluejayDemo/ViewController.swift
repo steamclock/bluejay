@@ -36,6 +36,9 @@ class ViewController: UIViewController {
         DispatchQueue.main.async {
             if let logContent = notification.userInfo?[bluejayLogContent] as? String {
                 self.logTextView.text = logContent
+                
+                // Scroll to the bottom.
+                self.logTextView.scrollRectToVisible(self.logTextView.caretRect(for: self.logTextView.endOfDocument), animated: true)
             }
         }
     }
@@ -90,6 +93,10 @@ class ViewController: UIViewController {
     
     @IBAction func crash() {
         kill(getpid(), SIGKILL)
+    }
+    
+    @IBAction func clearLog() {
+        bluejay.clearLog()
     }
     
     override func didReceiveMemoryWarning() {

@@ -155,7 +155,7 @@ class BluejayLogger {
             fileDescriptor: logFileDescriptor,
             eventMask: DispatchSource.FileSystemEvent.write,
             queue: logFileMonitorQueue
-        ) /*Migrator FIXME: Use DispatchSourceFileSystemObject to avoid the cast*/ as? DispatchSource
+            ) /*Migrator FIXME: Use DispatchSourceFileSystemObject to avoid the cast*/ as? DispatchSource
         
         guard let logFileMonitorSource = logFileMonitorSource else { return }
         
@@ -172,6 +172,17 @@ class BluejayLogger {
         }
         
         logFileMonitorSource.resume()
+    }
+    
+    func clearLog() {
+        let documentURLs = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        
+        if let documentURL = documentURLs.first {
+            let logFileURL = documentURL.appendingPathComponent(bluejayLogFileName)
+            
+            try? Data().write(to: URL(fileURLWithPath: logFileURL.path), options: [])
+            fetchLogs()
+        }
     }
     
 }

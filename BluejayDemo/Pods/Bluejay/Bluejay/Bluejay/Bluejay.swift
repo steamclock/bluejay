@@ -73,7 +73,7 @@ public class Bluejay: NSObject {
     
     override init() {
         super.init()
-                
+        
         shouldRestoreState = UIApplication.shared.applicationState == .background
         
         if shouldRestoreState {
@@ -96,6 +96,10 @@ public class Bluejay: NSObject {
      */
     public func register(listenRestorable: ListenRestorable) {
         self.listenRestorable = WeakListenRestorable(weakReference: listenRestorable)
+    }
+    
+    public func clearLog() {
+        logger.clearLog()
     }
     
     // MARK: - Events Registration
