@@ -174,4 +174,15 @@ class BluejayLogger {
         logFileMonitorSource.resume()
     }
     
+    func clearLog() {
+        let documentURLs = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        
+        if let documentURL = documentURLs.first {
+            let logFileURL = documentURL.appendingPathComponent(bluejayLogFileName)
+            
+            try? Data().write(to: URL(fileURLWithPath: logFileURL.path), options: [])
+            fetchLogs()
+        }
+    }
+    
 }

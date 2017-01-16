@@ -92,10 +92,14 @@ public class Bluejay: NSObject {
     }
     
     /**
-     - Parameter listenRestorable: A delegate that is given an opportunity to restore the listening callbacks during Bluetooth state restoration. If Bluejay has no listen restorable delegate, previously active listens will all be cancelled in the event of a Bluetooth state restoration.
+        - Parameter listenRestorable: A delegate that is given an opportunity to restore the listening callbacks during Bluetooth state restoration. If Bluejay has no listen restorable delegate, previously active listens will all be cancelled in the event of a Bluetooth state restoration.
      */
     public func register(listenRestorable: ListenRestorable) {
         self.listenRestorable = WeakListenRestorable(weakReference: listenRestorable)
+    }
+    
+    public func clearLog() {
+        logger.clearLog()
     }
     
     // MARK: - Events Registration
