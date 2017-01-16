@@ -42,6 +42,8 @@
 		B8C70FC11E1C80150006CF58 /* BluejayOperationState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C70FC01E1C80150006CF58 /* BluejayOperationState.swift */; };
 		B8D2078C1E26D446007E670A /* CBPeripheralState+ReturnString.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8D2078B1E26D446007E670A /* CBPeripheralState+ReturnString.swift */; };
 		B8D2078E1E26D702007E670A /* CBManagerState+ReturnString.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8D2078D1E26D702007E670A /* CBManagerState+ReturnString.swift */; };
+		B8F6DC531E2D6952004891D8 /* BluejayLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8F6DC521E2D6952004891D8 /* BluejayLogger.swift */; };
+		B8F6DC561E2D6A9C004891D8 /* Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8F6DC551E2D6A9C004891D8 /* Notifications.swift */; };
 		C963376F716F30DEAA2F47E9 /* Pods_BluejayTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B30F88AC6C11B812FB55A055 /* Pods_BluejayTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -97,6 +99,8 @@
 		B8C70FC01E1C80150006CF58 /* BluejayOperationState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BluejayOperationState.swift; sourceTree = "<group>"; };
 		B8D2078B1E26D446007E670A /* CBPeripheralState+ReturnString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CBPeripheralState+ReturnString.swift"; sourceTree = "<group>"; };
 		B8D2078D1E26D702007E670A /* CBManagerState+ReturnString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CBManagerState+ReturnString.swift"; sourceTree = "<group>"; };
+		B8F6DC521E2D6952004891D8 /* BluejayLogger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BluejayLogger.swift; sourceTree = "<group>"; };
+		B8F6DC551E2D6A9C004891D8 /* Notifications.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Notifications.swift; sourceTree = "<group>"; };
 		CA9D0DDBCE2F5733134B0ED6 /* Pods-BluejayTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BluejayTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BluejayTests/Pods-BluejayTests.debug.xcconfig"; sourceTree = "<group>"; };
 		D3A376B191A26044FDEBF5C5 /* Pods-Bluejay.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Bluejay.release.xcconfig"; path = "Pods/Target Support Files/Pods-Bluejay/Pods-Bluejay.release.xcconfig"; sourceTree = "<group>"; };
 		F9DA2BB8096DC083CD6AF996 /* Pods-BluejayTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BluejayTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-BluejayTests/Pods-BluejayTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -175,6 +179,7 @@
 				B8C70F8F1E1C505C0006CF58 /* Bluejay.swift */,
 				B8C70FBC1E1C7DB60006CF58 /* BluejayPeripheral.swift */,
 				B8022D991E1F041D00EA360B /* BluejaySyncPeripheral.swift */,
+				B8F6DC521E2D6952004891D8 /* BluejayLogger.swift */,
 				B8C70FB61E1C71880006CF58 /* BluejayHelper.swift */,
 				B8C70F961E1C5A4F0006CF58 /* BluejayError.swift */,
 				B88A0D9D1E1DCFA300A00FF8 /* Operations */,
@@ -182,6 +187,7 @@
 				B8C70FA61E1C68AD0006CF58 /* Structs */,
 				B8C70FA11E1C64D10006CF58 /* Enums */,
 				B8C70F931E1C56D80006CF58 /* Extensions */,
+				B8F6DC541E2D6A8B004891D8 /* Notifications */,
 				B8C70F791E1C22850006CF58 /* Info.plist */,
 			);
 			path = Bluejay;
@@ -251,6 +257,14 @@
 				B8C052021E28561700EA3D76 /* ListenRestorable.swift */,
 			);
 			name = Protocols;
+			sourceTree = "<group>";
+		};
+		B8F6DC541E2D6A8B004891D8 /* Notifications */ = {
+			isa = PBXGroup;
+			children = (
+				B8F6DC551E2D6A9C004891D8 /* Notifications.swift */,
+			);
+			name = Notifications;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -471,8 +485,10 @@
 				B8022D9C1E1F052F00EA360B /* BluejayListenAction.swift in Sources */,
 				B8C70F9B1E1C5A910006CF58 /* CharacteristicIdentifier.swift in Sources */,
 				B8D2078C1E26D446007E670A /* CBPeripheralState+ReturnString.swift in Sources */,
+				B8F6DC561E2D6A9C004891D8 /* Notifications.swift in Sources */,
 				B8C70FBF1E1C7F300006CF58 /* BluejayOperation.swift in Sources */,
 				B88A0D9C1E1DAA1600A00FF8 /* BluejayEvent.swift in Sources */,
+				B8F6DC531E2D6952004891D8 /* BluejayLogger.swift in Sources */,
 				B88A0DA51E1DD1A200A00FF8 /* WriteCharacteristic.swift in Sources */,
 				B880C09E1E270856007F065A /* UserDefaults.swift in Sources */,
 				B8C70FAB1E1C69C50006CF58 /* BluejaySendable.swift in Sources */,

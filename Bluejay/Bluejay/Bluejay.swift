@@ -9,11 +9,6 @@
 import Foundation
 import CoreBluetooth
 import SwiftyUserDefaults
-import XCGLogger
-
-// Setup XCGLogger
-let log = XCGLogger(identifier: "bluejayLogger", includeDefaultDestinations: false)
-let systemDestination = AppleSystemLogDestination(identifier: "bluejayLogger.systemDestination")
 
 private var standardConnectOptions: [String : AnyObject] = [
     CBConnectPeripheralOptionNotifyOnDisconnectionKey: true as AnyObject,
@@ -21,11 +16,13 @@ private var standardConnectOptions: [String : AnyObject] = [
 ]
 
 /**
-    Bluejay is a simple wrapper around CoreBluetooth that focuses on making a common usage case as striaghtforward as possible: a single 'paired' peripheral that the user is interacting with regularly (think most personal electronics devices that have an associated iPhone app: fitness trackers, etc).
-
-    It also supports a few other niceties for simplifying usage, including automatic discovery of characteristics as they are used, as well as supporting a background task mode where the interaction with the device can be written as synchronous calls running on a background thread to avoid callback pyramids of death, or heavily chained promises.
-*/
+ Bluejay is a simple wrapper around CoreBluetooth that focuses on making a common usage case as striaghtforward as possible: a single 'paired' peripheral that the user is interacting with regularly (think most personal electronics devices that have an associated iPhone app: fitness trackers, etc).
+ 
+ It also supports a few other niceties for simplifying usage, including automatic discovery of characteristics as they are used, as well as supporting a background task mode where the interaction with the device can be written as synchronous calls running on a background thread to avoid callback pyramids of death, or heavily chained promises.
+ */
 public class Bluejay: NSObject {
+    
+    public static let shared = Bluejay()
     
     // MARK: - Private Properties
     
@@ -70,22 +67,14 @@ public class Bluejay: NSObject {
     }
     
     // MARK: - Initialization
-
-    /**
-        - Parameter listenRestorable: A delegate that is given an opportunity to restore the listening callbacks during Bluetooth state restoration. If Bluejay has no listen restorable delegate, previously active listens will all be cancelled in the event of a Bluetooth state restoration.
-    */
-    public init(listenRestorable: ListenRestorable?) {
+    
+    override init() {
         super.init()
-        
-        setupLogger()
-        
-        self.listenRestorable = WeakListenRestorable(weakReference: listenRestorable)
         
         shouldRestoreState = UIApplication.shared.applicationState == .background
         
         if shouldRestoreState {
             log.debug("Begin startup background task for restoring CoreBluetooth.")
-            
             startupBackgroundTask = UIApplication.shared.beginBackgroundTask(expirationHandler: nil)
         }
         
@@ -99,19 +88,11 @@ public class Bluejay: NSObject {
         )
     }
     
-    // MARK: - Setup Logger
-    
-    private func setupLogger() {
-        systemDestination.outputLevel = .debug
-        systemDestination.showLogIdentifier = true
-        systemDestination.showFunctionName = true
-        systemDestination.showThreadName = true
-        systemDestination.showLevel = true
-        systemDestination.showFileName = true
-        systemDestination.showLineNumber = true
-        systemDestination.showDate = true
-        
-        log.add(destination: systemDestination)
+    /**
+        - Parameter listenRestorable: A delegate that is given an opportunity to restore the listening callbacks during Bluetooth state restoration. If Bluejay has no listen restorable delegate, previously active listens will all be cancelled in the event of a Bluetooth state restoration.
+     */
+    public func register(listenRestorable: ListenRestorable) {
+        self.listenRestorable = WeakListenRestorable(weakReference: listenRestorable)
     }
     
     // MARK: - Events Registration
@@ -269,10 +250,10 @@ public class Bluejay: NSObject {
     }
     
     /**
-        Run a background task using a syncrounous interface to the Bluetooth device.
+     Run a background task using a syncrounous interface to the Bluetooth device.
      
-        - Warning
-        Be careful not to access anything that is not thread safe from the background task callbacks.
+     - Warning
+     Be careful not to access anything that is not thread safe from the background task callbacks.
      */
     public func runTask<Params, Result>(
         _ params: Params,
@@ -309,6 +290,10 @@ extension Bluejay: CBCentralManagerDelegate {
     public func centralManagerDidUpdateState(_ central: CBCentralManager) {
         log.debug("State updated: \(central.state.string())")
         
+        if central.state == .poweredOn && connectedPeripheral != nil {
+            attemptListenRestoration()
+        }
+        
         let backgroundTask = UIApplication.shared.beginBackgroundTask(expirationHandler: nil)
         
         if central.state == .poweredOff {
@@ -329,20 +314,20 @@ extension Bluejay: CBCentralManagerDelegate {
             observer.weakReference?.bluetoothAvailable(central.state == .poweredOn)
         }
         
-        attemptListenRestoration()
-        
         UIApplication.shared.endBackgroundTask(backgroundTask)
     }
     
     private func attemptListenRestoration() {
         log.debug("Starting listen restoration.")
-
+        
         let cachedListens = Defaults[.listeningCharacteristics]
         
         if cachedListens.isEmpty {
             log.debug("Listen restoration finished: nothing to restore.")
             return
         }
+        
+        log.debug("Current cached listens: \(cachedListens)")
         
         for (serviceUuid, characteristicUuid) in cachedListens {
             let serviceIdentifier = ServiceIdentifier(uuid: serviceUuid)
@@ -372,16 +357,16 @@ extension Bluejay: CBCentralManagerDelegate {
         guard
             let peripherals = dict[CBCentralManagerRestoredStatePeripheralsKey] as? [CBPeripheral],
             let cbPeripheral = peripherals.first
-        else {
-            // Weird failure case that seems to happen sometime,
-            // restoring but don't have a device in the restore list
-            // try to trigger a reconnect if we have a stored
-            // peripheral
-            if let id = peripheralIdentifierToRestore {
-                connect(id, completion: { _ in })
-            }
-            
-            return
+            else {
+                // Weird failure case that seems to happen sometime,
+                // restoring but don't have a device in the restore list
+                // try to trigger a reconnect if we have a stored
+                // peripheral
+                if let id = peripheralIdentifierToRestore {
+                    connect(id, completion: { _ in })
+                }
+                
+                return
         }
         
         let peripheral = BluejayPeripheral(cbPeripheral: cbPeripheral)
