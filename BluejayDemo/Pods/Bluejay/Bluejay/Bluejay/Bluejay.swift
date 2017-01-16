@@ -24,6 +24,9 @@ public class Bluejay: NSObject {
     
     public static let shared = Bluejay()
     
+    // Initializes logging.
+    private let logger = BluejayLogger.shared
+    
     // MARK: - Private Properties
     
     /// Internal reference to CoreBluetooth's CBCentralManager.
@@ -70,7 +73,7 @@ public class Bluejay: NSObject {
     
     override init() {
         super.init()
-        
+                
         shouldRestoreState = UIApplication.shared.applicationState == .background
         
         if shouldRestoreState {

@@ -20,7 +20,7 @@ public let bluejayLogContent = "bluejayLogContent"
 
 class BluejayLogger {
     
-    static let sharedInstance = BluejayLogger()
+    static let shared = BluejayLogger()
     
     private var logFileMonitorSource: DispatchSource?
     private var logFileDescriptor: CInt = 0
@@ -155,7 +155,7 @@ class BluejayLogger {
             fileDescriptor: logFileDescriptor,
             eventMask: DispatchSource.FileSystemEvent.write,
             queue: logFileMonitorQueue
-        ) /*Migrator FIXME: Use DispatchSourceFileSystemObject to avoid the cast*/ as? DispatchSource
+            ) /*Migrator FIXME: Use DispatchSourceFileSystemObject to avoid the cast*/ as? DispatchSource
         
         guard let logFileMonitorSource = logFileMonitorSource else { return }
         

@@ -20,7 +20,7 @@ public let bluejayLogContent = "bluejayLogContent"
 
 class BluejayLogger {
     
-    static let sharedInstance = BluejayLogger()
+    static let shared = BluejayLogger()
     
     private var logFileMonitorSource: DispatchSource?
     private var logFileDescriptor: CInt = 0
