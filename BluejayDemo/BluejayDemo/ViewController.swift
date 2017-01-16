@@ -15,7 +15,7 @@ let heartRate = CharacteristicIdentifier(uuid: "2A37", service: heartRateService
 
 class ViewController: UIViewController {
 
-    private let bluejay = Bluejay.shared
+    fileprivate let bluejay = Bluejay.shared
     
     @IBOutlet var statusLabel: UILabel!
     @IBOutlet var deviceLabel: UILabel!
@@ -26,10 +26,9 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
-        bluejay.register(observer: self)
-        bluejay.register(listenRestorable: self)
-        
         NotificationCenter.default.addObserver(self, selector: #selector(ViewController.updateLog(notification:)), name: .logDidUpdate, object: nil)
+        
+        bluejay.powerOn(withObserver: self, andListenRestorable: self)
     }
     
     func updateLog(notification: Notification) {
@@ -47,9 +46,9 @@ class ViewController: UIViewController {
         bluejay.scan(service: heartRateService) { (result) in
             switch result {
             case .success(let peripheral):
-                print("Demo: Scan succeeded with peripheral: \(peripheral.name)")
+                log.debug("Scan succeeded with peripheral: \(peripheral.name)")
             case .failure(let error):
-                print("Demo: Scan failed with error: \(error.localizedDescription)")
+                log.debug("Scan failed with error: \(error.localizedDescription)")
             }
         }
     }
@@ -58,9 +57,9 @@ class ViewController: UIViewController {
         bluejay.read(from: bodySensorLocation) { (result: BluejayReadResult<IncomingString>) in
             switch result {
             case .success(let value):
-                print("Demo: Read succeeded with value: \(value.string)")
+                log.debug("Read succeeded with value: \(value.string)")
             case .failure(let error):
-                print("Demo: Read failed with error: \(error.localizedDescription)")
+                log.debug("Read failed with error: \(error.localizedDescription)")
             }
         }
     }
@@ -69,9 +68,9 @@ class ViewController: UIViewController {
         bluejay.write(to: bodySensorLocation, value: OutgoingString("Wrist")) { (result) in
             switch result {
             case .success:
-                print("Demo: Write succeeded.")
+                log.debug("Write succeeded.")
             case .failure(let error):
-                print("Demo: Write failed with error: \(error.localizedDescription)")
+                log.debug("Write failed with error: \(error.localizedDescription)")
             }
         }
     }
@@ -80,9 +79,9 @@ class ViewController: UIViewController {
         bluejay.listen(to: heartRate) { (result: BluejayReadResult<IncomingInt>) in
             switch result {
             case .success(let value):
-                print("Demo: Listen succeeded with value: \(value.int)")
+                log.debug("Listen succeeded with value: \(value.int)")
             case .failure(let error):
-                print("Demo: Listen failed with error: \(error.localizedDescription)")
+                log.debug("Listen failed with error: \(error.localizedDescription)")
             }
         }
     }
@@ -169,6 +168,19 @@ extension ViewController: BluejayEventsObservable {
 extension ViewController: ListenRestorable {
     
     func didFindRestorableListen(on characteristic: CharacteristicIdentifier) -> Bool {
+        if characteristic.uuid.uuidString == heartRate.uuid.uuidString {
+            bluejay.restoreListen(to: heartRate, completion: { (result: BluejayReadResult<IncomingInt>) in
+                switch result {
+                case .success(let value):
+                    log.debug("Listen succeeded with value: \(value.int)")
+                case .failure(let error):
+                    log.debug("Listen failed with error: \(error.localizedDescription)")
+                }
+            })
+            
+            return true
+        }
+        
         return false
     }
     
