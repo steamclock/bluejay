@@ -158,6 +158,10 @@ public class Bluejay: NSObject {
         
         connectionCallback?(.failure(BluejayError.unexpectedDisconnectError()))
         connectionCallback = nil
+        
+        for observer in observers {
+            observer.weakReference?.disconected()
+        }
     }
     
     /// Attempt to connect directly to a known peripheral.
@@ -187,19 +191,18 @@ public class Bluejay: NSObject {
     
     /// Disconnect the currently connected peripheral.
     public func disconnect() {
-        log.debug("Disconnecting.")
-        
-        shouldAutoReconnect = false
-        
         if let peripheralToDisconnect = connectedPeripheral {
-            connectingPeripheral = nil
-            connectedPeripheral = nil
+            log.debug("Disconnecting from: \(peripheralToDisconnect.name ?? peripheralToDisconnect.cbPeripheral.identifier.uuidString).")
+            
+            shouldAutoReconnect = false
+            connectionCallback = nil
             
             peripheralToDisconnect.cancelAllOperations(BluejayError.cancelledError())
             cbCentralManager.cancelPeripheralConnection(peripheralToDisconnect.cbPeripheral)
         }
-        
-        connectionCallback = nil
+        else {
+            log.debug("Cannot disconnect: there is no connected peripheral.")
+        }
     }
     
     // MARK: - Actions
@@ -448,19 +451,11 @@ extension Bluejay: CBCentralManagerDelegate {
         log.debug("Did disconnect from: \(peripheralString) with error: \(errorString)")
         
         if connectingPeripheral == nil && connectedPeripheral == nil {
-            log.debug("Disconnection is bogus, Bluejay has no connected peripheral.")
+            log.debug("Disconnection is either bogus or already handled, Bluejay has no connected peripheral.")
             return
         }
         
-        let wasConnected = connectedPeripheral != nil
-        
         cancelAllConnections()
-        
-        if(wasConnected) {
-            for observer in observers {
-                observer.weakReference?.disconected()
-            }
-        }
         
         log.debug("Should auto-reconnect: \(self.shouldAutoReconnect)")
         
