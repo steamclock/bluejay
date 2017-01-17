@@ -9,9 +9,9 @@
 import Foundation
 import CoreBluetooth
 
-class DiscoverCharacteristic: BluejayOperation {
+class DiscoverCharacteristic: Operation {
     
-    var state = BluejayOperationState.notStarted
+    var state = OperationState.notStarted
     
     private var characteristicIdentifier: CharacteristicIdentifier
     
@@ -21,7 +21,7 @@ class DiscoverCharacteristic: BluejayOperation {
     
     func start(_ peripheral: CBPeripheral) {
         guard let service = peripheral.service(with: characteristicIdentifier.service.uuid) else {
-            fail(BluejayError.missingServiceError(characteristicIdentifier.service))
+            fail(Error.missingServiceError(characteristicIdentifier.service))
             return
         }
         
@@ -34,15 +34,15 @@ class DiscoverCharacteristic: BluejayOperation {
         }
     }
     
-    func receivedEvent(_ event: BluejayEvent, peripheral: CBPeripheral) {
+    func receivedEvent(_ event: Event, peripheral: CBPeripheral) {
         guard let service = peripheral.service(with: characteristicIdentifier.service.uuid) else {
-            fail(BluejayError.missingServiceError(characteristicIdentifier.service))
+            fail(Error.missingServiceError(characteristicIdentifier.service))
             return
         }
         
         if case .didDiscoverCharacteristics = event {
             if service.characteristic(with: characteristicIdentifier.uuid) == nil {
-                fail(BluejayError.missingCharacteristicError(characteristicIdentifier))
+                fail(Error.missingCharacteristicError(characteristicIdentifier))
             }
             else {
                 state = .completed
@@ -53,7 +53,7 @@ class DiscoverCharacteristic: BluejayOperation {
         }
     }
     
-    func fail(_ error : NSError) {
+    func fail(_ error: NSError) {
         // TODO: Add missing error handling.
     }
     

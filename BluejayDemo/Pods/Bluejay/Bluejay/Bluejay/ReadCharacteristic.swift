@@ -9,14 +9,14 @@
 import Foundation
 import CoreBluetooth
 
-class ReadCharacteristic<T: BluejayReceivable>: BluejayOperation {
+class ReadCharacteristic<T: Receivable>: Operation {
     
-    var state = BluejayOperationState.notStarted
+    var state = OperationState.notStarted
     
     private var characteristicIdentifier: CharacteristicIdentifier
-    private var callback: (BluejayReadResult<T>) -> Void
+    private var callback: (ReadResult<T>) -> Void
     
-    init(characteristicIdentifier : CharacteristicIdentifier, callback: @escaping (BluejayReadResult<T>) -> Void) {
+    init(characteristicIdentifier: CharacteristicIdentifier, callback: @escaping (ReadResult<T>) -> Void) {
         self.characteristicIdentifier = characteristicIdentifier
         self.callback = callback
     }
@@ -26,7 +26,7 @@ class ReadCharacteristic<T: BluejayReceivable>: BluejayOperation {
             let service = peripheral.service(with: characteristicIdentifier.service.uuid),
             let characteristic = service.characteristic(with: characteristicIdentifier.uuid)
         else {
-            fail(BluejayError.missingCharacteristicError(characteristicIdentifier))
+            fail(Error.missingCharacteristicError(characteristicIdentifier))
             return
         }
         
@@ -34,13 +34,13 @@ class ReadCharacteristic<T: BluejayReceivable>: BluejayOperation {
         peripheral.readValue(for: characteristic)
     }
     
-    func receivedEvent(_ event: BluejayEvent, peripheral: CBPeripheral) {
+    func receivedEvent(_ event: Event, peripheral: CBPeripheral) {
         if case .didReadCharacteristic(let readFrom, let value) = event {
             if readFrom.uuid != characteristicIdentifier.uuid {
                 preconditionFailure("Expecting read from charactersitic: \(characteristicIdentifier.uuid), but actually read from: \(readFrom.uuid)")
             }
             
-            callback(BluejayReadResult<T>(dataResult: .success(value)))
+            callback(ReadResult<T>(dataResult: .success(value)))
             state = .completed
         }
         else {
@@ -48,7 +48,7 @@ class ReadCharacteristic<T: BluejayReceivable>: BluejayOperation {
         }
     }
     
-    func fail(_ error : NSError) {
+    func fail(_ error: NSError) {
         callback(.failure(error))
         state = .failed(error)
     }

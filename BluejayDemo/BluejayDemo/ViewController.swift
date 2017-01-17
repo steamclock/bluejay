@@ -54,7 +54,7 @@ class ViewController: UIViewController {
     }
     
     @IBAction func read() {
-        bluejay.read(from: bodySensorLocation) { (result: BluejayReadResult<IncomingString>) in
+        bluejay.read(from: bodySensorLocation) { (result: ReadResult<IncomingString>) in
             switch result {
             case .success(let value):
                 log.debug("Read succeeded with value: \(value.string)")
@@ -80,7 +80,7 @@ class ViewController: UIViewController {
     }
     
     @IBAction func listen() {
-        bluejay.listen(to: heartRate) { (result: BluejayReadResult<IncomingInt>) in
+        bluejay.listen(to: heartRate) { (result: ReadResult<IncomingInt>) in
             switch result {
             case .success(let value):
                 log.debug("Listen succeeded with value: \(value.int)")
@@ -109,7 +109,7 @@ class ViewController: UIViewController {
 
 }
 
-struct IncomingString: BluejayReceivable {
+struct IncomingString: Receivable {
     
     var string: String
     
@@ -119,7 +119,7 @@ struct IncomingString: BluejayReceivable {
     
 }
 
-struct OutgoingString: BluejaySendable {
+struct OutgoingString: Sendable {
     
     var string: String
     
@@ -133,7 +133,7 @@ struct OutgoingString: BluejaySendable {
     
 }
 
-struct IncomingInt: BluejayReceivable {
+struct IncomingInt: Receivable {
     
     var int: Int
     
@@ -147,7 +147,7 @@ struct IncomingInt: BluejayReceivable {
     
 }
 
-extension ViewController: BluejayEventsObservable {
+extension ViewController: EventsObservable {
     
     func bluetoothAvailable(_ available: Bool) {
         DispatchQueue.main.async {
@@ -155,7 +155,7 @@ extension ViewController: BluejayEventsObservable {
         }
     }
     
-    func connected(_ peripheral: BluejayPeripheral) {
+    func connected(_ peripheral: Peripheral) {
         DispatchQueue.main.async {
             self.deviceLabel.text = peripheral.name ?? "Connected"
         }
@@ -173,7 +173,7 @@ extension ViewController: ListenRestorable {
     
     func didFindRestorableListen(on characteristic: CharacteristicIdentifier) -> Bool {
         if characteristic.uuid.uuidString == heartRate.uuid.uuidString {
-            bluejay.restoreListen(to: heartRate, completion: { (result: BluejayReadResult<IncomingInt>) in
+            bluejay.restoreListen(to: heartRate, completion: { (result: ReadResult<IncomingInt>) in
                 switch result {
                 case .success(let value):
                     log.debug("Listen succeeded with value: \(value.int)")

@@ -1,5 +1,5 @@
 //
-//  BluejayPeripheral.swift
+//  Peripheral.swift
 //  Bluejay
 //
 //  Created by Jeremy Chiang on 2017-01-03.
@@ -10,16 +10,16 @@ import Foundation
 import CoreBluetooth
 import SwiftyUserDefaults
 
-public class BluejayPeripheral: NSObject {
+public class Peripheral: NSObject {
     
     // MARK: Properties
     
     private(set) var cbPeripheral: CBPeripheral
     
-    fileprivate var listeners: [CharacteristicIdentifier : (BluejayReadResult<Data?>) -> Void] = [:]
+    fileprivate var listeners: [CharacteristicIdentifier : (ReadResult<Data?>) -> Void] = [:]
     fileprivate var listenersBeingCancelled: [CharacteristicIdentifier] = []
     
-    fileprivate var operations: [BluejayOperation] = []
+    fileprivate var operations: [Operation] = []
     
     // MARK: - Initialization
     
@@ -56,7 +56,7 @@ public class BluejayPeripheral: NSObject {
     
     private func updateOperations() {
         if cbPeripheral.state == .disconnected {
-            cancelAllOperations(BluejayError.notConnectedError())
+            cancelAllOperations(Error.notConnectedError())
             return
         }
         
@@ -75,7 +75,7 @@ public class BluejayPeripheral: NSObject {
         }
     }
     
-    private func addOperation(_ operation: BluejayOperation) {
+    private func addOperation(_ operation: Operation) {
         operations.append(operation)
         updateOperations()
     }
@@ -88,7 +88,7 @@ public class BluejayPeripheral: NSObject {
     
     // MARK: - Bluetooth Event
     
-    fileprivate func handleEvent(_ event: BluejayEvent, error: NSError?) {
+    fileprivate func handleEvent(_ event: Event, error: NSError?) {
         precondition(operations.count > 0)
         
         if error == nil {
@@ -96,14 +96,14 @@ public class BluejayPeripheral: NSObject {
             updateOperations()
         }
         else {
-            cancelAllOperations(error ?? BluejayError.unknownError())
+            cancelAllOperations(error ?? Error.unknownError())
         }
     }
     
     // MARK: - Actions
     
     /// Read from a specified characteristic.
-    public func read<R: BluejayReceivable>(from characteristicIdentifier: CharacteristicIdentifier, completion: @escaping (BluejayReadResult<R>) -> Void) {
+    public func read<R: Receivable>(from characteristicIdentifier: CharacteristicIdentifier, completion: @escaping (ReadResult<R>) -> Void) {
         precondition(
             listeners[characteristicIdentifier] == nil,
             "Cannot read from characteristic: \(characteristicIdentifier.uuid), which is already being listened on."
@@ -116,7 +116,7 @@ public class BluejayPeripheral: NSObject {
     }
     
     /// Write to a specified characteristic.
-    public func write<S: BluejaySendable>(to characteristicIdentifier: CharacteristicIdentifier, value: S, completion: @escaping (BluejayWriteResult) -> Void) {
+    public func write<S: Sendable>(to characteristicIdentifier: CharacteristicIdentifier, value: S, completion: @escaping (WriteResult) -> Void) {
         log.debug("Queueing write to: \(characteristicIdentifier.uuid.uuidString) with value of: \(value)")
         
         discoverCharactersitic(characteristicIdentifier)
@@ -124,7 +124,7 @@ public class BluejayPeripheral: NSObject {
     }
     
     /// Listen for notifications on a specified characterstic.
-    public func listen<R: BluejayReceivable>(to characteristicIdentifier: CharacteristicIdentifier, completion: @escaping (BluejayReadResult<R>) -> Void) {
+    public func listen<R: Receivable>(to characteristicIdentifier: CharacteristicIdentifier, completion: @escaping (ReadResult<R>) -> Void) {
         log.debug("Start listening: \(characteristicIdentifier.uuid.uuidString)")
         
         discoverCharactersitic(characteristicIdentifier)
@@ -140,7 +140,7 @@ public class BluejayPeripheral: NSObject {
                 log.debug("Listen successful: \(characteristicIdentifier.uuid.uuidString)")
                 
                 self.listeners[characteristicIdentifier] = { dataResult in
-                    completion(BluejayReadResult<R>(dataResult: dataResult))
+                    completion(ReadResult<R>(dataResult: dataResult))
                 }
                 
                 // Make sure a successful listen is cached, so Bluejay can inform which characteristics need their listens restored on state restoration.
@@ -161,7 +161,7 @@ public class BluejayPeripheral: NSObject {
      - Note
      Currently this can also cancel a regular in-progress read as well, but that behaviour may change down the road.
      */
-    public func cancelListen(to characteristicIdentifier: CharacteristicIdentifier, sendFailure: Bool, completion: ((BluejayWriteResult) -> Void)? = nil) {
+    public func cancelListen(to characteristicIdentifier: CharacteristicIdentifier, sendFailure: Bool, completion: ((WriteResult) -> Void)? = nil) {
         log.debug("Start cancelling listen: \(characteristicIdentifier.uuid.uuidString)")
         
         discoverCharactersitic(characteristicIdentifier)
@@ -174,7 +174,7 @@ public class BluejayPeripheral: NSObject {
             
             if(sendFailure) {
                 log.debug("Sending listeners an error for cancelling the listen on: \(characteristicIdentifier.uuid.uuidString)")
-                listenCallback?(.failure(BluejayError.cancelledError()))
+                listenCallback?(.failure(Error.cancelledError()))
             }
             
             log.debug("Cancellation of listen successful: \(characteristicIdentifier.uuid.uuidString)")
@@ -187,14 +187,14 @@ public class BluejayPeripheral: NSObject {
     }
     
     /// Restore a (believed to be) active listening session, so if we start up in response to a notification, we can receive it.
-    public func restoreListen<R: BluejayReceivable>(to characteristicIdentifier: CharacteristicIdentifier, completion: @escaping (BluejayReadResult<R>) -> Void) {
+    public func restoreListen<R: Receivable>(to characteristicIdentifier: CharacteristicIdentifier, completion: @escaping (ReadResult<R>) -> Void) {
         precondition(
             listeners[characteristicIdentifier] == nil,
             "Cannot have multiple active listens against the same characteristic"
         )
         
         listeners[characteristicIdentifier] = { dataResult in
-            completion(BluejayReadResult<R>(dataResult: dataResult))
+            completion(ReadResult<R>(dataResult: dataResult))
         }
         
         // Make sure restored listens are cached again for future restoration. The cache method will handle any duplicate uuid, so this sanity check should not create any redundancy.
@@ -236,21 +236,21 @@ public class BluejayPeripheral: NSObject {
 
 // MARK: - CBPeripheralDelegate
 
-extension BluejayPeripheral: CBPeripheralDelegate {
+extension Peripheral: CBPeripheralDelegate {
     
-    public func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
+    public func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Swift.Error?) {
         handleEvent(.didDiscoverServices, error: error as NSError?)
     }
     
-    public func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
+    public func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Swift.Error?) {
         handleEvent(.didDiscoverCharacteristics, error: error as NSError?)
     }
     
-    public func peripheral(_ peripheral: CBPeripheral, didWriteValueFor characteristic: CBCharacteristic, error: Error?) {
+    public func peripheral(_ peripheral: CBPeripheral, didWriteValueFor characteristic: CBCharacteristic, error: Swift.Error?) {
         handleEvent(.didWriteCharacteristic(characteristic), error: error as NSError?)
     }
     
-    public func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
+    public func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Swift.Error?) {
         guard let listener = listeners[CharacteristicIdentifier(characteristic)] else {
             
             // Handle attempting to read a characteristic whose listen is being cancelled during state restoration.
@@ -277,7 +277,7 @@ extension BluejayPeripheral: CBPeripheralDelegate {
         }
     }
     
-    public func peripheral(_ peripheral: CBPeripheral, didUpdateNotificationStateFor characteristic: CBCharacteristic, error: Error?) {
+    public func peripheral(_ peripheral: CBPeripheral, didUpdateNotificationStateFor characteristic: CBCharacteristic, error: Swift.Error?) {
         handleEvent(.didUpdateCharacteristicNotificationState(characteristic), error: error as NSError?)
     }
     

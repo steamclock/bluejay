@@ -1,5 +1,5 @@
 //
-//  BluejayReadResult.swift
+//  ReadResult.swift
 //  Bluejay
 //
 //  Created by Jeremy Chiang on 2017-01-03.
@@ -9,15 +9,15 @@
 import Foundation
 
 /// Indicates a successful or failed read attempt, where the success case contains the value read.
-public enum BluejayReadResult<R> {
+public enum ReadResult<R> {
     case success(R)
-    case failure(Error)
+    case failure(Swift.Error)
 }
 
-extension BluejayReadResult where R: BluejayReceivable {
+extension ReadResult where R: Receivable {
     
     /// Create a typed read result from raw data.
-    init(dataResult: BluejayReadResult<Data?>) {
+    init(dataResult: ReadResult<Data?>) {
         switch dataResult {
         case .failure(let error):
             self = .failure(error)
@@ -26,7 +26,7 @@ extension BluejayReadResult where R: BluejayReceivable {
                 self = .success(R(bluetoothData: data))
             }
             else {
-                self = .failure(BluejayError.missingDataError())
+                self = .failure(Error.missingDataError())
             }
         }
     }

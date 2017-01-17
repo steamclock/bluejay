@@ -1,5 +1,5 @@
 //
-//  BluejayError.swift
+//  Error.swift
 //  Bluejay
 //
 //  Created by Jeremy Chiang on 2017-01-03.
@@ -11,7 +11,7 @@ import Foundation
 /**
     A class containing static factory methods for generating Bluejay-specific NSErrors.
  */
-struct BluejayError {
+struct Error {
     
     /// An unknown error should almost never happen, and if it does occur, it usually means there's something seriously wrong in either the internal implementation or the external usage of Bluejay.
     static func unknownError() -> NSError {

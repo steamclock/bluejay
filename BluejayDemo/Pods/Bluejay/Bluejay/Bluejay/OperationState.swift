@@ -1,5 +1,5 @@
 //
-//  BluejayOperationState.swift
+//  OperationState.swift
 //  Bluejay
 //
 //  Created by Jeremy Chiang on 2017-01-03.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum BluejayOperationState {
+enum OperationState {
     case notStarted
     case running
     case failed(NSError)

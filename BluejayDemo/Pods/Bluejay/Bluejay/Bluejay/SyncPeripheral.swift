@@ -1,5 +1,5 @@
 //
-//  BluejaySyncPeripheral.swift
+//  SyncPeripheral.swift
 //  Bluejay
 //
 //  Created by Jeremy Chiang on 2017-01-05.
@@ -12,28 +12,28 @@ import CoreBluetooth
 /**
     A synchronous interface to the Bluetooth peripheral, intended to be used from a background thread to perform multi-part operations without the need for a complicated callback or promise setup.
 */
-public class BluejaySyncPeripheral {
+public class SyncPeripheral {
     
     // MARK: - Properties
     
-    private var parent: BluejayPeripheral
+    private var parent: Peripheral
     
     // MARK: - Initialization
     
-    init(parent: BluejayPeripheral) {
+    init(parent: Peripheral) {
         self.parent = parent
     }
     
     // MARK: - Actions
     
     /// Read a value from the specified characteristic synchronously.
-    public func read<R: BluejayReceivable>(from characteristicIdentifier: CharacteristicIdentifier) throws -> R {
-        var finalResult: BluejayReadResult<R> = .failure(BluejayError.unknownError())
+    public func read<R: Receivable>(from characteristicIdentifier: CharacteristicIdentifier) throws -> R {
+        var finalResult: ReadResult<R> = .failure(Error.unknownError())
         
         let sem = DispatchSemaphore(value: 0)
         
         DispatchQueue.main.async {
-            self.parent.read(from: characteristicIdentifier, completion: { (result : BluejayReadResult<R>) in
+            self.parent.read(from: characteristicIdentifier, completion: { (result : ReadResult<R>) in
                 finalResult = result
                 sem.signal()
             })
@@ -51,8 +51,8 @@ public class BluejaySyncPeripheral {
     }
     
     /// Write a value from the specified characteristic synchronously.
-    public func write<S: BluejaySendable>(to characteristicIdentifier: CharacteristicIdentifier, value: S) throws {
-        var finalResult: BluejayWriteResult = .failure(BluejayError.unknownError())
+    public func write<S: Sendable>(to characteristicIdentifier: CharacteristicIdentifier, value: S) throws {
+        var finalResult: WriteResult = .failure(Error.unknownError())
         
         let sem = DispatchSemaphore(value: 0)
         
@@ -72,13 +72,13 @@ public class BluejaySyncPeripheral {
     }
     
     /// Listen for changes on a specified characterstic synchronously.
-    public func listen<R: BluejayReceivable>(to characteristicIdentifier: CharacteristicIdentifier, completion: @escaping (R) -> BluejayListenAction) throws {
+    public func listen<R: Receivable>(to characteristicIdentifier: CharacteristicIdentifier, completion: @escaping (R) -> ListenAction) throws {
         let sem = DispatchSemaphore(value: 0)
-        var error : Error?
+        var error : Swift.Error?
         
         DispatchQueue.main.async {
-            self.parent.listen(to: characteristicIdentifier, completion: { (result : BluejayReadResult<R>) in
-                var action = BluejayListenAction.done
+            self.parent.listen(to: characteristicIdentifier, completion: { (result : ReadResult<R>) in
+                var action = ListenAction.done
                 
                 switch result {
                 case .success(let r):
@@ -108,18 +108,18 @@ public class BluejaySyncPeripheral {
      
         Conceptually very similar to just calling write, then listen, except that the listen is set up before the write is issued, so that there should be no risks of data loss due to missed notifications, which there would be with calling them seperatly.
     */
-    public func writeAndListen<S: BluejaySendable, R: BluejayReceivable>(
+    public func writeAndListen<S: Sendable, R:Receivable>(
         writeTo charToWriteTo: CharacteristicIdentifier,
         value: S,
         listenTo charToListenTo: CharacteristicIdentifier,
-        completion: @escaping (R) -> BluejayListenAction) throws
+        completion: @escaping (R) -> ListenAction) throws
     {
         let sem = DispatchSemaphore(value: 0)
-        var error: Error?
+        var error: Swift.Error?
         
         DispatchQueue.main.sync {
-            self.parent.listen(to: charToListenTo, completion: { (result : BluejayReadResult<R>) in
-                var action = BluejayListenAction.done
+            self.parent.listen(to: charToListenTo, completion: { (result : ReadResult<R>) in
+                var action = ListenAction.done
                 
                 switch result {
                 case .success(let r):

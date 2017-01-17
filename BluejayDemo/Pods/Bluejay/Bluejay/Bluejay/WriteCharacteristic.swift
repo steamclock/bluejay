@@ -9,15 +9,15 @@
 import Foundation
 import CoreBluetooth
 
-class WriteCharacteristic<T : BluejaySendable> : BluejayOperation {
+class WriteCharacteristic<T: Sendable>: Operation {
     
-    var state = BluejayOperationState.notStarted
+    var state = OperationState.notStarted
     
     private var characteristicIdentifier: CharacteristicIdentifier
     private var value: T
-    private var callback: ((BluejayWriteResult) -> Void)?
+    private var callback: ((WriteResult) -> Void)?
     
-    init(characteristicIdentifier : CharacteristicIdentifier, value: T, callback: ((BluejayWriteResult) -> Void)?) {
+    init(characteristicIdentifier: CharacteristicIdentifier, value: T, callback: ((WriteResult) -> Void)?) {
         self.characteristicIdentifier = characteristicIdentifier
         self.callback = callback
         self.value = value
@@ -28,7 +28,7 @@ class WriteCharacteristic<T : BluejaySendable> : BluejayOperation {
             let service = peripheral.service(with: characteristicIdentifier.service.uuid),
             let characteristic = service.characteristic(with: characteristicIdentifier.uuid)
         else {
-            fail(BluejayError.missingCharacteristicError(characteristicIdentifier))
+            fail(Error.missingCharacteristicError(characteristicIdentifier))
             return
         }
         
@@ -36,7 +36,7 @@ class WriteCharacteristic<T : BluejaySendable> : BluejayOperation {
         peripheral.writeValue(value.toBluetoothData(), for: characteristic, type: .withResponse)
     }
     
-    func receivedEvent(_ event: BluejayEvent, peripheral: CBPeripheral) {
+    func receivedEvent(_ event: Event, peripheral: CBPeripheral) {
         if case .didWriteCharacteristic(let wroteTo) = event {
             if wroteTo.uuid != characteristicIdentifier.uuid {
                 preconditionFailure("Expecting write to charactersitic: \(characteristicIdentifier.uuid), but actually wrote to: \(wroteTo.uuid)")
@@ -50,7 +50,7 @@ class WriteCharacteristic<T : BluejaySendable> : BluejayOperation {
         }
     }
     
-    func fail(_ error : NSError) {
+    func fail(_ error: NSError) {
         callback?(.failure(error))
         state = .failed(error)
     }
