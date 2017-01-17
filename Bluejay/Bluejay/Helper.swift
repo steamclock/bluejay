@@ -1,5 +1,5 @@
 //
-//  BluejayHelper.swift
+//  Helper.swift
 //  Bluejay
 //
 //  Created by Jeremy Chiang on 2017-01-03.
@@ -11,7 +11,7 @@ import Foundation
 /**
     A class containing a variety of useful and common static functions that don't belong anywhere else.
 */
-public struct BluejayHelper {
+public struct Helper {
     
     /**
         Helper function to take an array of sendable objects and merge their data together.
@@ -20,7 +20,7 @@ public struct BluejayHelper {
      
         - Returns: The data of all the BluejaySendable objects joined together in the order of the passed in array.
     */
-    public static func join(sendables: [BluejaySendable]) -> Data {
+    public static func join(sendables: [Sendable]) -> Data {
         let data = NSMutableData()
         
         for sendable in sendables {

@@ -1,5 +1,5 @@
 //
-//  BluejayWriteResult.swift
+//  WriteResult.swift
 //  Bluejay
 //
 //  Created by Jeremy Chiang on 2017-01-05.
@@ -9,7 +9,7 @@
 import Foundation
 
 /// Indicates a successful or failed write attempt.
-public enum BluejayWriteResult {
+public enum WriteResult {
     case success
-    case failure(Error)
+    case failure(Swift.Error)
 }

@@ -1,5 +1,5 @@
 //
-//  BluejayEvent.swift
+//  Event.swift
 //  Bluejay
 //
 //  Created by Jeremy Chiang on 2017-01-04.
@@ -9,7 +9,7 @@
 import Foundation
 import CoreBluetooth
 
-enum BluejayEvent {
+enum Event {
     case didDiscoverServices
     case didDiscoverCharacteristics
     case didReadCharacteristic(CBCharacteristic, Data)

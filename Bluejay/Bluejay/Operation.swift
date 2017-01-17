@@ -1,5 +1,5 @@
 //
-//  BluejayOperation.swift
+//  Operation.swift
 //  Bluejay
 //
 //  Created by Jeremy Chiang on 2017-01-03.
@@ -9,12 +9,12 @@
 import Foundation
 import CoreBluetooth
 
-protocol BluejayOperation {
+protocol Operation {
     
-    var state: BluejayOperationState { get }
+    var state: OperationState { get }
     
     func start(_ peripheral: CBPeripheral)
-    func receivedEvent(_ event: BluejayEvent, peripheral: CBPeripheral)
+    func receivedEvent(_ event: Event, peripheral: CBPeripheral)
     func fail(_ error: NSError)
     
 }

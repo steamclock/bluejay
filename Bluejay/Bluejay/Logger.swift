@@ -1,5 +1,5 @@
 //
-//  BluejayLogger.swift
+//  Logger.swift
 //  Bluejay
 //
 //  Created by Jeremy Chiang on 2017-01-16.
@@ -18,9 +18,9 @@ private let bluejayLogFileName = "bluejay-log"
 
 public let bluejayLogContent = "bluejayLogContent"
 
-class BluejayLogger {
+class Logger {
     
-    static let shared = BluejayLogger()
+    static let shared = Logger()
     
     private var logFileMonitorSource: DispatchSource?
     private var logFileDescriptor: CInt = 0
@@ -34,7 +34,7 @@ class BluejayLogger {
     private func setupLogger() {
         NotificationCenter.default.addObserver(
             self,
-            selector: #selector(BluejayLogger.checkLogFileSize),
+            selector: #selector(Logger.checkLogFileSize),
             name: Notification.Name.UIApplicationDidBecomeActive,
             object: nil
         )

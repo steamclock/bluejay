@@ -9,15 +9,15 @@
 import Foundation
 import CoreBluetooth
 
-class ListenCharacteristic: BluejayOperation {
+class ListenCharacteristic: Operation {
     
-    var state = BluejayOperationState.notStarted
+    var state = OperationState.notStarted
     
     private var characteristicIdentifier: CharacteristicIdentifier
     private var value: Bool
-    private var callback: ((BluejayWriteResult) -> Void)?
+    private var callback: ((WriteResult) -> Void)?
     
-    init(characteristicIdentifier : CharacteristicIdentifier, value: Bool, callback: ((BluejayWriteResult) -> Void)?) {
+    init(characteristicIdentifier: CharacteristicIdentifier, value: Bool, callback: ((WriteResult) -> Void)?) {
         self.characteristicIdentifier = characteristicIdentifier
         self.callback = callback
         self.value = value
@@ -28,7 +28,7 @@ class ListenCharacteristic: BluejayOperation {
             let service = peripheral.service(with: characteristicIdentifier.service.uuid),
             let characteristic = service.characteristic(with: characteristicIdentifier.uuid)
         else {
-            fail(BluejayError.missingCharacteristicError(characteristicIdentifier))
+            fail(Error.missingCharacteristicError(characteristicIdentifier))
             return
         }
         
@@ -36,7 +36,7 @@ class ListenCharacteristic: BluejayOperation {
         peripheral.setNotifyValue(value, for: characteristic)
     }
     
-    func receivedEvent(_ event: BluejayEvent, peripheral: CBPeripheral) {
+    func receivedEvent(_ event: Event, peripheral: CBPeripheral) {
         if case .didUpdateCharacteristicNotificationState(let updated) = event {
             if updated.uuid != characteristicIdentifier.uuid {
                 preconditionFailure(
@@ -54,7 +54,7 @@ class ListenCharacteristic: BluejayOperation {
         }
     }
     
-    func fail(_ error : NSError) {
+    func fail(_ error: NSError) {
         callback?(.failure(error))
         state = .failed(error)
     }

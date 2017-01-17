@@ -1,5 +1,5 @@
 //
-//  BluejayEventsObservable.swift
+//  EventsObservable.swift
 //  Bluejay
 //
 //  Created by Jeremy Chiang on 2017-01-03.
@@ -20,24 +20,24 @@ import Foundation
     * `func connected(_ peripheral: BluejayPeripheral)`
     * `func disconected()`
 */
-public protocol BluejayEventsObservable: class {
+public protocol EventsObservable: class {
     
     /**
         Called whenever Bluetooth availability changes, as well as when an object first subscribes to observing Bluetooth events.
     */
     func bluetoothAvailable(_ available: Bool)
-    func connected(_ peripheral: BluejayPeripheral)
+    func connected(_ peripheral: Peripheral)
     func disconected()
 }
 
 /// Slightly less gross way to make the BluejayEventsObservable protocol's functions optional.
-extension BluejayEventsObservable {
+extension EventsObservable {
     public func bluetoothAvailable(_ available: Bool) {}
-    public func connected(_ peripheral: BluejayPeripheral) {}
+    public func connected(_ peripheral: Peripheral) {}
     public func disconected() {}
 }
 
 /// Allows creating weak references to BluejayEventsObservable objects, so that the Bluejay singleton does not prevent the deallocation of those objects.
-struct WeakBluejayEventsObservable {
-    weak var weakReference: BluejayEventsObservable?
+struct WeakEventsObservable {
+    weak var weakReference: EventsObservable?
 }

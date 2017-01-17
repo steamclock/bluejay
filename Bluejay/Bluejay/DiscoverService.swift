@@ -9,11 +9,11 @@
 import Foundation
 import CoreBluetooth
 
-class DiscoverService: BluejayOperation {
+class DiscoverService: Operation {
     
-    var state = BluejayOperationState.notStarted
+    var state = OperationState.notStarted
     
-    private var serviceIdentifier : ServiceIdentifier
+    private var serviceIdentifier: ServiceIdentifier
     
     init(serviceIdentifier: ServiceIdentifier) {
         self.serviceIdentifier = serviceIdentifier
@@ -29,10 +29,10 @@ class DiscoverService: BluejayOperation {
         }
     }
     
-    func receivedEvent(_ event: BluejayEvent, peripheral: CBPeripheral) {
+    func receivedEvent(_ event: Event, peripheral: CBPeripheral) {
         if case .didDiscoverServices = event {
             if peripheral.service(with: serviceIdentifier.uuid) == nil {
-                fail(BluejayError.missingServiceError(serviceIdentifier))
+                fail(Error.missingServiceError(serviceIdentifier))
             }
             else {
                 state = .completed

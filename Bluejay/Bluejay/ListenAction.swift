@@ -1,5 +1,5 @@
 //
-//  BluejayListenAction.swift
+//  ListenAction.swift
 //  Bluejay
 //
 //  Created by Jeremy Chiang on 2017-01-05.
@@ -9,7 +9,7 @@
 import Foundation
 
 /// Indicates whether the current listening action on a characteristic should continue or end.
-public enum BluejayListenAction {
+public enum ListenAction {
     case keepListening
     case done
 }

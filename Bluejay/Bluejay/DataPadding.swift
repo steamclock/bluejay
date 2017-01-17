@@ -9,7 +9,7 @@
 import Foundation
 
 /// Helper object to create padding in packets being constructed.
-public struct DataPadding: BluejaySendable {
+public struct DataPadding: Sendable {
     
     private var amount: Int
     

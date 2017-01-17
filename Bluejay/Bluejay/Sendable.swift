@@ -1,5 +1,5 @@
 //
-//  BluejaySendable.swift
+//  Sendable.swift
 //  Bluejay
 //
 //  Created by Jeremy Chiang on 2017-01-03.
@@ -9,6 +9,6 @@
 import Foundation
 
 /// Protocol to indicate that a type can be sent via the bluetooth connection.
-public protocol BluejaySendable {
+public protocol Sendable {
     func toBluetoothData() -> Data
 }
