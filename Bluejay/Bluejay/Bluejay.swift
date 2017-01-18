@@ -82,17 +82,30 @@ public class Bluejay: NSObject {
         }
     }
     
-    public func powerOn(withObserver observer: EventsObservable, andListenRestorable restorable: ListenRestorable) {
-        register(observer: observer)
-        listenRestorable = WeakListenRestorable(weakReference: restorable)
+    public func powerOn(
+        eventObserver observer: EventsObservable? = nil,
+        listenRestorable restorable: ListenRestorable? = nil,
+        enableBackgroundMode backgroundMode: Bool = false
+        )
+    {
+        if let observer = observer {
+            register(observer: observer)
+        }
+        
+        if let restorable = restorable {
+            listenRestorable = WeakListenRestorable(weakReference: restorable)
+        }
+        
+        var options: [String : Any] = [CBCentralManagerOptionShowPowerAlertKey : false]
+        
+        if backgroundMode {
+            options[CBCentralManagerOptionRestoreIdentifierKey] = "Bluejay"
+        }
         
         cbCentralManager = CBCentralManager(
             delegate: self,
             queue: DispatchQueue.main,
-            options: [
-                CBCentralManagerOptionShowPowerAlertKey: false,
-                CBCentralManagerOptionRestoreIdentifierKey: "Bluejay"
-            ]
+            options: options
         )
     }
     
