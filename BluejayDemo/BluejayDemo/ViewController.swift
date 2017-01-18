@@ -80,10 +80,10 @@ class ViewController: UIViewController {
     }
     
     @IBAction func listen() {
-        bluejay.listen(to: heartRate) { (result: ReadResult<IncomingInt>) in
+        bluejay.listen(to: heartRate) { (result: ReadResult<UInt8>) in
             switch result {
             case .success(let value):
-                log.debug("Listen succeeded with value: \(value.int)")
+                log.debug("Listen succeeded with value: \(value)")
             case .failure(let error):
                 log.debug("Listen failed with error: \(error.localizedDescription)")
             }
@@ -172,11 +172,11 @@ extension ViewController: EventsObservable {
 extension ViewController: ListenRestorable {
     
     func didFindRestorableListen(on characteristic: CharacteristicIdentifier) -> Bool {
-        if characteristic.uuid.uuidString == heartRate.uuid.uuidString {
-            bluejay.restoreListen(to: heartRate, completion: { (result: ReadResult<IncomingInt>) in
+        if characteristic == heartRate {
+            bluejay.restoreListen(to: heartRate, completion: { (result: ReadResult<UInt8>) in
                 switch result {
                 case .success(let value):
-                    log.debug("Listen succeeded with value: \(value.int)")
+                    log.debug("Listen succeeded with value: \(value)")
                 case .failure(let error):
                     log.debug("Listen failed with error: \(error.localizedDescription)")
                 }
