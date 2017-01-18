@@ -50,9 +50,13 @@ The Bluejay interface can be accessed through using the Bluejay singleton:
 
 Turn on Bluejay at the appropriate time during initialization. When it is appropriate depends on the context and requirement of your app. For example, in the demo app Bluejay is powered on inside `viewDidLoad` of the only existing view controller.
 
-`bluejay.powerOn(withObserver: self, andListenRestorable: self)`
+`bluejay.powerOn(eventObserver: self, listenRestorable: self, enableBackgroundMode: true)`
 
 Having to explicitly power on is important because this gives your app an opportunity to make sure that the two critical delegates are instantiated and available before the CoreBluetooth stack is initialized. This will ensure CoreBluetooth's startup and restoration events are being handled.
+
+Note:
+
+Background mode is disabled by default. In order to support background mode, you must set the parameter `enableBackgroundMode` to true in the above `powerOn` function, as well as turn on the "Background Modes" capability in your Xcode project with "Uses Bluetooth LE accessories" enabled.
 
 ### Bluetooth Events
 
@@ -76,13 +80,13 @@ public protocol ListenRestorable: class {
 }
 ```
 
-By default, if there is no `ListenRestorable` delegate available, or if the protocol function returns false, any previously active listens will be cancelled when state restoration occurs.
+By default, if there is no `ListenRestorable` delegate available, or if the protocol function returns false, then any previously active listens will be cancelled when state restoration occurs.
 
 If the function returns true, then the provided characteristic with a previously active listen must be restored using the `restoreListen` function:
 
 ```
 extension ViewController: ListenRestorable {
-    
+
     func didFindRestorableListen(on characteristic: CharacteristicIdentifier) -> Bool {
         if characteristic == heartRate {
             bluejay.restoreListen(to: heartRate, completion: { (result: ReadResult<UInt8>) in
@@ -93,13 +97,13 @@ extension ViewController: ListenRestorable {
                     log.debug("Listen failed with error: \(error.localizedDescription)")
                 }
             })
-            
+
             return true
         }
-        
+
         return false
     }
-    
+
 }
 ```
 
@@ -167,33 +171,33 @@ bluejay.listen(to: heartRate) { (result: ReadResult<UInt8>) in
 
 ### Receivable & Sendable
 
-The `Receivable` and `Sendable` protocols provide the blueprints to model the data packets being exchanged between the your app and the BLE peripheral, are are mandatory to type the results and the deliverables when using the `read` and `write` functions.
+The `Receivable` and `Sendable` protocols provide the blueprints to model the data packets being exchanged between the your app and the BLE peripheral, and are mandatory to type the results and the deliverables when using the `read` and `write` functions.
 
 Examples:
 
 ```
 struct IncomingString: Receivable {
-    
+
     var string: String
-    
+
     init(bluetoothData: Data) {
         string = String(data: bluetoothData, encoding: .utf8)!
     }
-    
+
 }
 
 struct OutgoingString: Sendable {
-    
+
     var string: String
-    
+
     init(_ string: String) {
         self.string = string
     }
-    
+
     func toBluetoothData() -> Data {
         return string.data(using: .utf8)!
     }
-    
+
 }
 ```
 

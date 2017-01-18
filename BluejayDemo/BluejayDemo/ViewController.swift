@@ -28,7 +28,7 @@ class ViewController: UIViewController {
         
         NotificationCenter.default.addObserver(self, selector: #selector(ViewController.updateLog(notification:)), name: .logDidUpdate, object: nil)
         
-        bluejay.powerOn(withObserver: self, andListenRestorable: self)
+        bluejay.powerOn(eventObserver: self, listenRestorable: self, enableBackgroundMode: true)
     }
     
     func updateLog(notification: Notification) {
