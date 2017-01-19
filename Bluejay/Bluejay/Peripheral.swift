@@ -24,7 +24,7 @@ public class Peripheral: NSObject {
     init(cbPeripheral: CBPeripheral) {
         self.cbPeripheral = cbPeripheral
         super.init()
-        cbPeripheral.delegate = self
+        self.cbPeripheral.delegate = self
     }
     
     // MARK: - Attributes
@@ -45,7 +45,7 @@ public class Peripheral: NSObject {
         }
         
         listeners = [:]
-    
+        
         Queue.shared.cancelAll(error)
     }
     
