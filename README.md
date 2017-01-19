@@ -109,15 +109,22 @@ extension ViewController: ListenRestorable {
 
 ### Scan & Connect
 
-Currently, a successful scan of a peripheral will result in the immediate connection to it. We have plans to separate these two operations and create a dedicated scanning API.
-
 ```
 bluejay.scan(service: heartRateService) { (result) in
     switch result {
     case .success(let peripheral):
-        log.debug("Scan succeeded with peripheral: \(peripheral.name)")
+	log.debug("Scan succeeded with peripheral: \(peripheral.name)")
+
+	self.bluejay.connect(PeripheralIdentifier(uuid: peripheral.identifier), completion: { (result) in
+	    switch result {
+	    case .success(let peripheral):
+		log.debug("Connect succeeded with peripheral: \(peripheral.name)")
+	    case .failure(let error):
+		log.debug("Connect failed with error: \(error.localizedDescription)")
+	    }
+	})
     case .failure(let error):
-        log.debug("Scan failed with error: \(error.localizedDescription)")
+	log.debug("Scan failed with error: \(error.localizedDescription)")
     }
 }
 ```
