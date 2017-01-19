@@ -11,6 +11,7 @@
 		B8022D981E1EEED900EA360B /* WriteResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8022D971E1EEED900EA360B /* WriteResult.swift */; };
 		B8022D9A1E1F041D00EA360B /* SyncPeripheral.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8022D991E1F041D00EA360B /* SyncPeripheral.swift */; };
 		B8022D9C1E1F052F00EA360B /* ListenAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8022D9B1E1F052F00EA360B /* ListenAction.swift */; };
+		B83271A91E313CA300D68581 /* Queueable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B83271A81E313CA300D68581 /* Queueable.swift */; };
 		B880C09E1E270856007F065A /* UserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = B880C09D1E270856007F065A /* UserDefaults.swift */; };
 		B88A0D9C1E1DAA1600A00FF8 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88A0D9B1E1DAA1600A00FF8 /* Event.swift */; };
 		B88A0D9F1E1DCFBF00A00FF8 /* DiscoverService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88A0D9E1E1DCFBF00A00FF8 /* DiscoverService.swift */; };
@@ -18,6 +19,10 @@
 		B88A0DA31E1DD18B00A00FF8 /* ReadCharacteristic.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88A0DA21E1DD18B00A00FF8 /* ReadCharacteristic.swift */; };
 		B88A0DA51E1DD1A200A00FF8 /* WriteCharacteristic.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88A0DA41E1DD1A200A00FF8 /* WriteCharacteristic.swift */; };
 		B88A0DA71E1DD1DE00A00FF8 /* ListenCharacteristic.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88A0DA61E1DD1DE00A00FF8 /* ListenCharacteristic.swift */; };
+		B89AA4791E302114006BA376 /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = B89AA4781E302114006BA376 /* Queue.swift */; };
+		B89AA4841E303634006BA376 /* Connection.swift in Sources */ = {isa = PBXBuildFile; fileRef = B89AA4831E303634006BA376 /* Connection.swift */; };
+		B89AA4881E30373D006BA376 /* ScanService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B89AA4871E30373D006BA376 /* ScanService.swift */; };
+		B89AA48A1E3040C5006BA376 /* ConnectPeripheral.swift in Sources */ = {isa = PBXBuildFile; fileRef = B89AA4891E3040C5006BA376 /* ConnectPeripheral.swift */; };
 		B8C052031E28561700EA3D76 /* ListenRestorable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C052021E28561700EA3D76 /* ListenRestorable.swift */; };
 		B8C70F7F1E1C22850006CF58 /* Bluejay.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B8C70F751E1C22850006CF58 /* Bluejay.framework */; };
 		B8C70F841E1C22850006CF58 /* BluejayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C70F831E1C22850006CF58 /* BluejayTests.swift */; };
@@ -64,6 +69,7 @@
 		B8022D971E1EEED900EA360B /* WriteResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WriteResult.swift; sourceTree = "<group>"; };
 		B8022D991E1F041D00EA360B /* SyncPeripheral.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SyncPeripheral.swift; sourceTree = "<group>"; };
 		B8022D9B1E1F052F00EA360B /* ListenAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListenAction.swift; sourceTree = "<group>"; };
+		B83271A81E313CA300D68581 /* Queueable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Queueable.swift; sourceTree = "<group>"; };
 		B880C09D1E270856007F065A /* UserDefaults.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDefaults.swift; sourceTree = "<group>"; };
 		B88A0D9B1E1DAA1600A00FF8 /* Event.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
 		B88A0D9E1E1DCFBF00A00FF8 /* DiscoverService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoverService.swift; sourceTree = "<group>"; };
@@ -71,6 +77,10 @@
 		B88A0DA21E1DD18B00A00FF8 /* ReadCharacteristic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReadCharacteristic.swift; sourceTree = "<group>"; };
 		B88A0DA41E1DD1A200A00FF8 /* WriteCharacteristic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WriteCharacteristic.swift; sourceTree = "<group>"; };
 		B88A0DA61E1DD1DE00A00FF8 /* ListenCharacteristic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListenCharacteristic.swift; sourceTree = "<group>"; };
+		B89AA4781E302114006BA376 /* Queue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Queue.swift; sourceTree = "<group>"; };
+		B89AA4831E303634006BA376 /* Connection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Connection.swift; sourceTree = "<group>"; };
+		B89AA4871E30373D006BA376 /* ScanService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScanService.swift; sourceTree = "<group>"; };
+		B89AA4891E3040C5006BA376 /* ConnectPeripheral.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectPeripheral.swift; sourceTree = "<group>"; };
 		B8C052021E28561700EA3D76 /* ListenRestorable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListenRestorable.swift; sourceTree = "<group>"; };
 		B8C70F751E1C22850006CF58 /* Bluejay.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Bluejay.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B8C70F781E1C22850006CF58 /* Bluejay.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Bluejay.h; sourceTree = "<group>"; };
@@ -141,15 +151,36 @@
 		B88A0D9D1E1DCFA300A00FF8 /* Operations */ = {
 			isa = PBXGroup;
 			children = (
-				B8C70FBE1E1C7F300006CF58 /* Operation.swift */,
+				B89AA4781E302114006BA376 /* Queue.swift */,
+				B83271A81E313CA300D68581 /* Queueable.swift */,
 				B8C70FC01E1C80150006CF58 /* OperationState.swift */,
+				B89AA4851E3036DE006BA376 /* Connection */,
+				B89AA4861E3036E7006BA376 /* Peripheral */,
+			);
+			name = Operations;
+			sourceTree = "<group>";
+		};
+		B89AA4851E3036DE006BA376 /* Connection */ = {
+			isa = PBXGroup;
+			children = (
+				B89AA4831E303634006BA376 /* Connection.swift */,
+				B89AA4871E30373D006BA376 /* ScanService.swift */,
+				B89AA4891E3040C5006BA376 /* ConnectPeripheral.swift */,
+			);
+			name = Connection;
+			sourceTree = "<group>";
+		};
+		B89AA4861E3036E7006BA376 /* Peripheral */ = {
+			isa = PBXGroup;
+			children = (
+				B8C70FBE1E1C7F300006CF58 /* Operation.swift */,
 				B88A0D9E1E1DCFBF00A00FF8 /* DiscoverService.swift */,
 				B88A0DA01E1DD15600A00FF8 /* DiscoverCharacteristic.swift */,
 				B88A0DA21E1DD18B00A00FF8 /* ReadCharacteristic.swift */,
 				B88A0DA41E1DD1A200A00FF8 /* WriteCharacteristic.swift */,
 				B88A0DA61E1DD1DE00A00FF8 /* ListenCharacteristic.swift */,
 			);
-			name = Operations;
+			name = Peripheral;
 			sourceTree = "<group>";
 		};
 		B8C70F6B1E1C22850006CF58 = {
@@ -472,9 +503,11 @@
 				B8C052031E28561700EA3D76 /* ListenRestorable.swift in Sources */,
 				B8C70FA31E1C65000006CF58 /* ConnectionResult.swift in Sources */,
 				B88A0DA11E1DD15600A00FF8 /* DiscoverCharacteristic.swift in Sources */,
+				B83271A91E313CA300D68581 /* Queueable.swift in Sources */,
 				B8C70F991E1C5A7F0006CF58 /* ServiceIdentifier.swift in Sources */,
 				B88A0DA31E1DD18B00A00FF8 /* ReadCharacteristic.swift in Sources */,
 				B8022D981E1EEED900EA360B /* WriteResult.swift in Sources */,
+				B89AA4881E30373D006BA376 /* ScanService.swift in Sources */,
 				B8C70FA91E1C69B60006CF58 /* Receivable.swift in Sources */,
 				B8C70FB71E1C71880006CF58 /* Helper.swift in Sources */,
 				B88A0DA71E1DD1DE00A00FF8 /* ListenCharacteristic.swift in Sources */,
@@ -488,10 +521,13 @@
 				B8F6DC561E2D6A9C004891D8 /* Notifications.swift in Sources */,
 				B8C70FBF1E1C7F300006CF58 /* Operation.swift in Sources */,
 				B88A0D9C1E1DAA1600A00FF8 /* Event.swift in Sources */,
+				B89AA4841E303634006BA376 /* Connection.swift in Sources */,
 				B8F6DC531E2D6952004891D8 /* Logger.swift in Sources */,
 				B88A0DA51E1DD1A200A00FF8 /* WriteCharacteristic.swift in Sources */,
 				B880C09E1E270856007F065A /* UserDefaults.swift in Sources */,
+				B89AA48A1E3040C5006BA376 /* ConnectPeripheral.swift in Sources */,
 				B8C70FAB1E1C69C50006CF58 /* Sendable.swift in Sources */,
+				B89AA4791E302114006BA376 /* Queue.swift in Sources */,
 				B8C70FB91E1C725C0006CF58 /* EventsObservable.swift in Sources */,
 				B8C70FA01E1C61BD0006CF58 /* PeripheralIdentifier.swift in Sources */,
 			);

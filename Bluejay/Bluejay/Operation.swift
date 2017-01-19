@@ -9,12 +9,8 @@
 import Foundation
 import CoreBluetooth
 
-protocol Operation {
+protocol Operation: Queueable {
     
-    var state: OperationState { get }
-    
-    func start(_ peripheral: CBPeripheral)
-    func receivedEvent(_ event: Event, peripheral: CBPeripheral)
-    func fail(_ error: NSError)
+    var peripheral: CBPeripheral { get }
     
 }

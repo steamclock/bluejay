@@ -12,14 +12,16 @@ import CoreBluetooth
 class DiscoverService: Operation {
     
     var state = OperationState.notStarted
+    var peripheral: CBPeripheral
     
     private var serviceIdentifier: ServiceIdentifier
     
-    init(serviceIdentifier: ServiceIdentifier) {
+    init(serviceIdentifier: ServiceIdentifier, peripheral: CBPeripheral) {
         self.serviceIdentifier = serviceIdentifier
+        self.peripheral = peripheral
     }
     
-    func start(_ peripheral: CBPeripheral) {
+    func start() {
         if peripheral.service(with: serviceIdentifier.uuid) != nil {
             state = .completed
         }
@@ -29,7 +31,7 @@ class DiscoverService: Operation {
         }
     }
     
-    func receivedEvent(_ event: Event, peripheral: CBPeripheral) {
+    func process(event: Event) {
         if case .didDiscoverServices = event {
             if peripheral.service(with: serviceIdentifier.uuid) == nil {
                 fail(Error.missingServiceError(serviceIdentifier))
