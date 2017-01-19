@@ -38,7 +38,7 @@ public class Bluejay: NSObject {
     
     /// Internal state allowing or disallowing reconnection attempts upon a disconnection. It should always be set to true, unless there is a manual and explicit disconnection request that is not caused by an error.
     fileprivate var shouldAutoReconnect = true
-        
+    
     fileprivate var startupBackgroundTask: UIBackgroundTaskIdentifier = UIBackgroundTaskInvalid
     fileprivate var peripheralIdentifierToRestore: PeripheralIdentifier?
     fileprivate var listenRestorable: WeakListenRestorable?
@@ -80,6 +80,8 @@ public class Bluejay: NSObject {
         enableBackgroundMode backgroundMode: Bool = false
         )
     {
+        register(observer: Queue.shared)
+        
         if let observer = observer {
             register(observer: observer)
         }
@@ -178,7 +180,7 @@ public class Bluejay: NSObject {
             log.debug("Found peripheral: \(cbPeripheral.name ?? cbPeripheral.identifier.uuidString), in state: \(cbPeripheral.state.string())")
             
             connectingPeripheral = Peripheral(cbPeripheral: cbPeripheral)
-
+            
             log.debug("Issuing connect request to: \(cbPeripheral.name ?? cbPeripheral.identifier.uuidString)")
             
             Queue.shared.add(connection: ConnectPeripheral(peripheral: cbPeripheral, manager: cbCentralManager, callback: completion))

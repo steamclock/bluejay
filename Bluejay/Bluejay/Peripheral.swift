@@ -60,7 +60,6 @@ public class Peripheral: NSObject {
     
     private func addOperation(_ operation: Operation) {
         Queue.shared.add(operation: operation)
-        Queue.shared.update()
     }
     
     /// Queue the necessary operations needed to discover the specified characteristic.

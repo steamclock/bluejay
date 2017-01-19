@@ -17,11 +17,7 @@ class Queue {
     private var connections = [Connection]()
     
     private var operations = [Operation]()
-    
-    init() {
-        Bluejay.shared.register(observer: self)
-    }
-    
+        
     func cancelAll(_ error: NSError) {
         for connection in connections {
             connection.fail(error)
@@ -39,19 +35,28 @@ class Queue {
         while connections.count > 0 {
             switch connections[0].state {
             case .notStarted:
+                log.debug("A connection in the queue is starting.")
                 connections[0].start()
             case .running:
+                log.debug("A connection in the queue is still running.")
                 return
             case .failed(let error):
+                log.debug("A connection in the queue has failed.")
                 connections.removeFirst()
                 cancelAll(error)
             case .completed:
+                log.debug("A connection in the queue has completed.")
                 connections.removeFirst()
             }
         }
     }
     
     func update() {
+        if connections.isEmpty && operations.isEmpty {
+            log.debug("Queue is empty, nothing to run.")
+            return
+        }
+        
         if !connections.isEmpty {
             log.debug("Operation queue is delayed in favour of handling the connection queue first.")
             attemptConnections()
@@ -66,13 +71,17 @@ class Queue {
         while operations.count > 0 {
             switch operations[0].state {
             case .notStarted:
+                log.debug("An operation in the queue is starting.")
                 operations[0].start()
             case .running:
+                log.debug("An operation in the queue is still running.")
                 return
             case .failed(let error):
+                log.debug("An operation in the queue has failed.")
                 operations.removeFirst()
                 cancelAll(error)
             case .completed:
+                log.debug("An operation in the queue has completed.")
                 operations.removeFirst()
             }
         }
@@ -89,7 +98,7 @@ class Queue {
     }
     
     func process(event: Event, error: NSError?) {
-        precondition(operations.count > 0, "Tried to process an operation when the queue has none.")
+        precondition(connections.count > 0 || operations.count > 0, "Tried to process an event when the queue is empty.")
         
         if error == nil {
             connections.count != 0 ?
@@ -112,11 +121,13 @@ extension Queue: EventsObservable {
     
     func bluetoothAvailable(_ available: Bool) {
         if available {
+            log.debug("Updating queue: Bluetooth available.")
             update()
         }
     }
     
     func connected(_ peripheral: Peripheral) {
+        log.debug("Updating queue: Connected to \(peripheral.name ?? peripheral.cbPeripheral.identifier.uuidString).")
         update()
     }
     
