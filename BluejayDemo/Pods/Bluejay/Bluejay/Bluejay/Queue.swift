@@ -17,7 +17,7 @@ class Queue {
     private var connections = [Connection]()
     
     private var operations = [Operation]()
-        
+    
     func cancelAll(_ error: NSError) {
         for connection in connections {
             connection.fail(error)
@@ -52,6 +52,11 @@ class Queue {
     }
     
     func update() {
+        if !Bluejay.shared.isBluetoothAvailable {
+            log.debug("Operation queue is paused because Bluetooth is not available yet.")
+            return
+        }
+        
         if connections.isEmpty && operations.isEmpty {
             log.debug("Queue is empty, nothing to run.")
             return

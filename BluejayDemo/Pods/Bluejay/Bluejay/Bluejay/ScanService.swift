@@ -32,10 +32,10 @@ class ScanService: Connection {
     
     func process(event: Event) {
         log.debug("Processing operation: ScanService")
-
+        
         if case .didDiscoverPeripheral(let peripheral) = event {
             manager.stopScan()
-            callback(.success(Peripheral(cbPeripheral: peripheral)))
+            callback(.success(peripheral))
             state = .completed
         }
         else {

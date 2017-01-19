@@ -48,7 +48,7 @@ class ViewController: UIViewController {
             case .success(let peripheral):
                 log.debug("Scan succeeded with peripheral: \(peripheral.name)")
                 
-                self.bluejay.connect(peripheral.uuid, completion: { (result) in
+                self.bluejay.connect(PeripheralIdentifier(uuid: peripheral.identifier), completion: { (result) in
                     switch result {
                     case .success(let peripheral):
                         log.debug("Connect succeeded with peripheral: \(peripheral.name)")

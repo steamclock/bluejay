@@ -7,9 +7,10 @@
 //
 
 import Foundation
+import CoreBluetooth
 
 /// Indicates a successful or failed connection attempt, where the success case contains the peripheral connected.
 public enum ConnectionResult {
-    case success(Peripheral)
+    case success(CBPeripheral)
     case failure(Swift.Error)
 }

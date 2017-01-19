@@ -37,9 +37,9 @@ class ConnectPeripheral: Connection {
     
     func process(event: Event) {
         log.debug("Processing operation: ConnectPeripheral")
-
+        
         if case .didConnectPeripheral(let peripheral) = event {
-            callback(.success(Peripheral(cbPeripheral: peripheral)))
+            callback(.success(peripheral))
             state = .completed
         }
         else {
