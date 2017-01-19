@@ -12,14 +12,18 @@ import CoreBluetooth
 class DiscoverCharacteristic: Operation {
     
     var state = OperationState.notStarted
+    var peripheral: CBPeripheral
     
     private var characteristicIdentifier: CharacteristicIdentifier
     
-    init(characteristicIdentifier: CharacteristicIdentifier) {
+    init(characteristicIdentifier: CharacteristicIdentifier, peripheral: CBPeripheral) {
         self.characteristicIdentifier = characteristicIdentifier
+        self.peripheral = peripheral
     }
     
-    func start(_ peripheral: CBPeripheral) {
+    func start() {
+        log.debug("Starting operation: DiscoverCharacteristic")
+
         guard let service = peripheral.service(with: characteristicIdentifier.service.uuid) else {
             fail(Error.missingServiceError(characteristicIdentifier.service))
             return
@@ -34,7 +38,9 @@ class DiscoverCharacteristic: Operation {
         }
     }
     
-    func receivedEvent(_ event: Event, peripheral: CBPeripheral) {
+    func process(event: Event) {
+        log.debug("Processing operation: DiscoverCharacteristic")
+
         guard let service = peripheral.service(with: characteristicIdentifier.service.uuid) else {
             fail(Error.missingServiceError(characteristicIdentifier.service))
             return

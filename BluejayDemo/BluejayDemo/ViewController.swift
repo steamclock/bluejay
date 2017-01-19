@@ -47,6 +47,15 @@ class ViewController: UIViewController {
             switch result {
             case .success(let peripheral):
                 log.debug("Scan succeeded with peripheral: \(peripheral.name)")
+                
+                self.bluejay.connect(peripheral.uuid, completion: { (result) in
+                    switch result {
+                    case .success(let peripheral):
+                        log.debug("Connect succeeded with peripheral: \(peripheral.name)")
+                    case .failure(let error):
+                        log.debug("Connect failed with error: \(error.localizedDescription)")
+                    }
+                })
             case .failure(let error):
                 log.debug("Scan failed with error: \(error.localizedDescription)")
             }

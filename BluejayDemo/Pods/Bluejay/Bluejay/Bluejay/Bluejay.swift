@@ -10,11 +10,6 @@ import Foundation
 import CoreBluetooth
 import SwiftyUserDefaults
 
-private var standardConnectOptions: [String : AnyObject] = [
-    CBConnectPeripheralOptionNotifyOnDisconnectionKey: true as AnyObject,
-    CBConnectPeripheralOptionNotifyOnConnectionKey: true as AnyObject
-]
-
 /**
  Bluejay is a simple wrapper around CoreBluetooth that focuses on making a common usage case as striaghtforward as possible: a single 'paired' peripheral that the user is interacting with regularly (think most personal electronics devices that have an associated iPhone app: fitness trackers, etc).
  
@@ -43,9 +38,6 @@ public class Bluejay: NSObject {
     
     /// Internal state allowing or disallowing reconnection attempts upon a disconnection. It should always be set to true, unless there is a manual and explicit disconnection request that is not caused by an error.
     fileprivate var shouldAutoReconnect = true
-    
-    /// The callback triggered at the end of connection related tasks, such as scanning, connecting, and disconnecting.
-    fileprivate var connectionCallback: ((ConnectionResult) -> Void)?
     
     fileprivate var startupBackgroundTask: UIBackgroundTaskIdentifier = UIBackgroundTaskInvalid
     fileprivate var peripheralIdentifierToRestore: PeripheralIdentifier?
@@ -88,6 +80,8 @@ public class Bluejay: NSObject {
         enableBackgroundMode backgroundMode: Bool = false
         )
     {
+        register(observer: Queue.shared)
+        
         if let observer = observer {
             register(observer: observer)
         }
@@ -139,13 +133,8 @@ public class Bluejay: NSObject {
     
     /// Start a scan for peripherals with the specified service, and Bluejay will attempt to connect to the peripheral once it is found.
     public func scan(service serviceIdentifier: ServiceIdentifier, completion: @escaping (ConnectionResult) -> Void) {
-        precondition(connectionCallback == nil, "Cannot have more than one active scan or connect request.")
-        
         log.debug("Starting scan.")
-        
-        connectionCallback = completion
-        
-        cbCentralManager.scanForPeripherals(withServices: [serviceIdentifier.uuid], options: [CBCentralManagerScanOptionAllowDuplicatesKey : false])
+        Queue.shared.add(connection: ScanService(serviceIdentifier: serviceIdentifier, manager: cbCentralManager, callback: completion))
     }
     
     /// Cancel oustanding peripheral scans.
@@ -153,6 +142,8 @@ public class Bluejay: NSObject {
         log.debug("Cancelling scan.")
         
         cbCentralManager.stopScan()
+        
+        // TODO: Need to notify the Queue in case it has an ongoing scan.
     }
     
     // MARK: - Connection
@@ -169,8 +160,7 @@ public class Bluejay: NSObject {
         connected?.cancelAllOperations(Error.unexpectedDisconnectError())
         connecting?.cancelAllOperations(Error.unexpectedDisconnectError())
         
-        connectionCallback?(.failure(Error.unexpectedDisconnectError()))
-        connectionCallback = nil
+        Queue.shared.cancelAll(Error.unexpectedDisconnectError())
         
         for observer in observers {
             observer.weakReference?.disconected()
@@ -179,8 +169,6 @@ public class Bluejay: NSObject {
     
     /// Attempt to connect directly to a known peripheral.
     public func connect(_ peripheralIdentifier: PeripheralIdentifier, completion: @escaping (ConnectionResult) -> Void) {
-        precondition(connectionCallback == nil, "Cannot have more than one active scan or connect request.")
-        
         // Block a connect request when restoring, restore should result in the peripheral being automatically connected.
         if (shouldRestoreState) {
             // Cache requested connect, in case restore messes up unexpectedly.
@@ -191,11 +179,11 @@ public class Bluejay: NSObject {
         if let cbPeripheral = cbCentralManager.retrievePeripherals(withIdentifiers: [peripheralIdentifier.uuid]).first {
             log.debug("Found peripheral: \(cbPeripheral.name ?? cbPeripheral.identifier.uuidString), in state: \(cbPeripheral.state.string())")
             
-            connectionCallback = completion
             connectingPeripheral = Peripheral(cbPeripheral: cbPeripheral)
-            cbCentralManager.connect(cbPeripheral, options: standardConnectOptions)
             
             log.debug("Issuing connect request to: \(cbPeripheral.name ?? cbPeripheral.identifier.uuidString)")
+            
+            Queue.shared.add(connection: ConnectPeripheral(peripheral: cbPeripheral, manager: cbCentralManager, callback: completion))
         }
         else {
             completion(.failure(Error.unknownPeripheralError(peripheralIdentifier)))
@@ -208,10 +196,11 @@ public class Bluejay: NSObject {
             log.debug("Disconnecting from: \(peripheralToDisconnect.name ?? peripheralToDisconnect.cbPeripheral.identifier.uuidString).")
             
             shouldAutoReconnect = false
-            connectionCallback = nil
-            
             peripheralToDisconnect.cancelAllOperations(Error.cancelledError())
+            
             cbCentralManager.cancelPeripheralConnection(peripheralToDisconnect.cbPeripheral)
+            
+            // TODO: Need to notify the Queue in case it has an ongoing connect.
         }
         else {
             log.debug("Cannot disconnect: there is no connected peripheral.")
@@ -443,8 +432,7 @@ extension Bluejay: CBCentralManagerDelegate {
         connectedPeripheral = connectingPeripheral
         connectingPeripheral = nil
         
-        connectionCallback?(.success(connectedPeripheral!))
-        connectionCallback = nil
+        Queue.shared.process(event: .didConnectPeripheral(peripheral), error: nil)
         
         for observer in observers {
             observer.weakReference?.connected(connectedPeripheral!)
@@ -474,7 +462,6 @@ extension Bluejay: CBCentralManagerDelegate {
         
         if shouldAutoReconnect {
             log.debug("Issuing reconnect to: \(peripheral.name ?? peripheral.identifier.uuidString)")
-            
             connect(PeripheralIdentifier(uuid: peripheral.identifier), completion: {_ in })
         }
         
@@ -497,9 +484,9 @@ extension Bluejay: CBCentralManagerDelegate {
         log.debug("Did discover: \(peripheralString)")
         log.debug("Connecting to: \(peripheralString)")
         
-        cbCentralManager.stopScan()
         connectingPeripheral = Peripheral(cbPeripheral: peripheral)
-        cbCentralManager.connect(peripheral, options: standardConnectOptions)
+        
+        Queue.shared.process(event: .didDiscoverPeripheral(peripheral), error: nil)
     }
     
 }

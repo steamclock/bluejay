@@ -12,6 +12,8 @@ import CoreBluetooth
 enum Event {
     case didDiscoverServices
     case didDiscoverCharacteristics
+    case didDiscoverPeripheral(CBPeripheral)
+    case didConnectPeripheral(CBPeripheral)
     case didReadCharacteristic(CBCharacteristic, Data)
     case didWriteCharacteristic(CBCharacteristic)
     case didUpdateCharacteristicNotificationState(CBCharacteristic)

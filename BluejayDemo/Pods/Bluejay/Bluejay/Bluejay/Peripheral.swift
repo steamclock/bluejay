@@ -19,8 +19,6 @@ public class Peripheral: NSObject {
     fileprivate var listeners: [CharacteristicIdentifier : (ReadResult<Data?>) -> Void] = [:]
     fileprivate var listenersBeingCancelled: [CharacteristicIdentifier] = []
     
-    fileprivate var operations: [Operation] = []
-    
     // MARK: - Initialization
     
     init(cbPeripheral: CBPeripheral) {
@@ -46,53 +44,35 @@ public class Peripheral: NSObject {
             callback(.failure(error))
         }
         
-        for operation in operations {
-            operation.fail(error)
-        }
-        
         listeners = [:]
-        operations = []
+    
+        Queue.shared.cancelAll(error)
     }
     
     private func updateOperations() {
         if cbPeripheral.state == .disconnected {
-            cancelAllOperations(Error.notConnectedError())
+            Queue.shared.cancelAll(Error.notConnectedError())
             return
         }
         
-        while operations.count > 0 {
-            switch operations[0].state {
-            case .notStarted:
-                operations[0].start(cbPeripheral)
-            case .running:
-                return
-            case .failed(let error):
-                operations.removeFirst()
-                cancelAllOperations(error)
-            case .completed:
-                operations.removeFirst()
-            }
-        }
+        Queue.shared.update()
     }
     
     private func addOperation(_ operation: Operation) {
-        operations.append(operation)
-        updateOperations()
+        Queue.shared.add(operation: operation)
     }
     
     /// Queue the necessary operations needed to discover the specified characteristic.
     private func discoverCharactersitic(_ characteristicIdentifier: CharacteristicIdentifier) {
-        addOperation(DiscoverService(serviceIdentifier: characteristicIdentifier.service))
-        addOperation(DiscoverCharacteristic(characteristicIdentifier: characteristicIdentifier))
+        addOperation(DiscoverService(serviceIdentifier: characteristicIdentifier.service, peripheral: cbPeripheral))
+        addOperation(DiscoverCharacteristic(characteristicIdentifier: characteristicIdentifier, peripheral: cbPeripheral))
     }
     
     // MARK: - Bluetooth Event
     
     fileprivate func handleEvent(_ event: Event, error: NSError?) {
-        precondition(operations.count > 0)
-        
         if error == nil {
-            operations[0].receivedEvent(event, peripheral: cbPeripheral)
+            Queue.shared.process(event: event, error: error)
             updateOperations()
         }
         else {
@@ -112,7 +92,7 @@ public class Peripheral: NSObject {
         log.debug("Queueing read to: \(characteristicIdentifier.uuid.uuidString)")
         
         discoverCharactersitic(characteristicIdentifier)
-        addOperation(ReadCharacteristic(characteristicIdentifier: characteristicIdentifier, callback: completion))
+        addOperation(ReadCharacteristic(characteristicIdentifier: characteristicIdentifier, peripheral: cbPeripheral, callback: completion))
     }
     
     /// Write to a specified characteristic.
@@ -120,7 +100,7 @@ public class Peripheral: NSObject {
         log.debug("Queueing write to: \(characteristicIdentifier.uuid.uuidString) with value of: \(value)")
         
         discoverCharactersitic(characteristicIdentifier)
-        addOperation(WriteCharacteristic(characteristicIdentifier: characteristicIdentifier, value: value, callback: completion))
+        addOperation(WriteCharacteristic(characteristicIdentifier: characteristicIdentifier, peripheral: cbPeripheral, value: value, callback: completion))
     }
     
     /// Listen for notifications on a specified characterstic.
@@ -129,7 +109,7 @@ public class Peripheral: NSObject {
         
         discoverCharactersitic(characteristicIdentifier)
         
-        addOperation(ListenCharacteristic(characteristicIdentifier: characteristicIdentifier, value: true, callback: { result in
+        addOperation(ListenCharacteristic(characteristicIdentifier: characteristicIdentifier, peripheral: cbPeripheral, value: true, callback: { result in
             precondition(
                 self.listeners[characteristicIdentifier] == nil,
                 "Cannot have multiple active listens against the same characteristic: \(characteristicIdentifier.uuid)"
@@ -168,7 +148,7 @@ public class Peripheral: NSObject {
         
         listenersBeingCancelled.append(characteristicIdentifier)
         
-        addOperation(ListenCharacteristic(characteristicIdentifier: characteristicIdentifier, value: false, callback: { result in
+        addOperation(ListenCharacteristic(characteristicIdentifier: characteristicIdentifier, peripheral: cbPeripheral, value: false, callback: { result in
             let listenCallback = self.listeners[characteristicIdentifier]
             self.listeners[characteristicIdentifier] = nil
             
@@ -258,7 +238,7 @@ extension Peripheral: CBPeripheralDelegate {
                 return characteristicIdentifier.uuid.uuidString == characteristic.uuid.uuidString
             })
             
-            let isReadUnhandled = isCancellingListenOnCurrentRead || operations.isEmpty
+            let isReadUnhandled = isCancellingListenOnCurrentRead || Queue.shared.isEmpty()
             
             if isReadUnhandled {
                 return

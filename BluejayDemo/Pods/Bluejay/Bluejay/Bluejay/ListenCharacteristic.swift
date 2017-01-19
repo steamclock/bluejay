@@ -12,18 +12,22 @@ import CoreBluetooth
 class ListenCharacteristic: Operation {
     
     var state = OperationState.notStarted
+    var peripheral: CBPeripheral
     
     private var characteristicIdentifier: CharacteristicIdentifier
     private var value: Bool
     private var callback: ((WriteResult) -> Void)?
     
-    init(characteristicIdentifier: CharacteristicIdentifier, value: Bool, callback: ((WriteResult) -> Void)?) {
+    init(characteristicIdentifier: CharacteristicIdentifier, peripheral: CBPeripheral, value: Bool, callback: ((WriteResult) -> Void)?) {
         self.characteristicIdentifier = characteristicIdentifier
-        self.callback = callback
+        self.peripheral = peripheral
         self.value = value
+        self.callback = callback
     }
     
-    func start(_ peripheral: CBPeripheral) {
+    func start() {
+        log.debug("Starting operation: ListenCharacteristic")
+
         guard
             let service = peripheral.service(with: characteristicIdentifier.service.uuid),
             let characteristic = service.characteristic(with: characteristicIdentifier.uuid)
@@ -36,7 +40,9 @@ class ListenCharacteristic: Operation {
         peripheral.setNotifyValue(value, for: characteristic)
     }
     
-    func receivedEvent(_ event: Event, peripheral: CBPeripheral) {
+    func process(event: Event) {
+        log.debug("Processing operation: ListenCharacteristic")
+
         if case .didUpdateCharacteristicNotificationState(let updated) = event {
             if updated.uuid != characteristicIdentifier.uuid {
                 preconditionFailure(
