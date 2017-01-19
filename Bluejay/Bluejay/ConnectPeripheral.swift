@@ -29,11 +29,15 @@ class ConnectPeripheral: Connection {
     }
     
     func start() {
+        log.debug("Starting operation: ConnectPeripheral")
+        
         state = .running
         manager.connect(peripheral, options: standardConnectOptions)
     }
     
     func process(event: Event) {
+        log.debug("Processing operation: ConnectPeripheral")
+
         if case .didConnectPeripheral(let peripheral) = event {
             callback(.success(Peripheral(cbPeripheral: peripheral)))
             state = .completed

@@ -24,11 +24,15 @@ class ScanService: Connection {
     }
     
     func start() {
+        log.debug("Starting operation: ScanService")
+        
         state = .running
         manager.scanForPeripherals(withServices: [serviceIdentifier.uuid], options: [CBCentralManagerScanOptionAllowDuplicatesKey : false])
     }
     
     func process(event: Event) {
+        log.debug("Processing operation: ScanService")
+
         if case .didDiscoverPeripheral(let peripheral) = event {
             manager.stopScan()
             callback(.success(Peripheral(cbPeripheral: peripheral)))

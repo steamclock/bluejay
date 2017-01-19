@@ -26,6 +26,8 @@ class WriteCharacteristic<T: Sendable>: Operation {
     }
     
     func start() {
+        log.debug("Starting operation: WriteCharacteristic")
+
         guard
             let service = peripheral.service(with: characteristicIdentifier.service.uuid),
             let characteristic = service.characteristic(with: characteristicIdentifier.uuid)
@@ -39,6 +41,8 @@ class WriteCharacteristic<T: Sendable>: Operation {
     }
     
     func process(event: Event) {
+        log.debug("Processing operation: ReadCharacteristic")
+        
         if case .didWriteCharacteristic(let wroteTo) = event {
             if wroteTo.uuid != characteristicIdentifier.uuid {
                 preconditionFailure("Expecting write to charactersitic: \(characteristicIdentifier.uuid), but actually wrote to: \(wroteTo.uuid)")

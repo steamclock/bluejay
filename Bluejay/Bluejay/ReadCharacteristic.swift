@@ -24,6 +24,8 @@ class ReadCharacteristic<T: Receivable>: Operation {
     }
     
     func start() {
+        log.debug("Starting operation: ReadCharacteristic")
+
         guard
             let service = peripheral.service(with: characteristicIdentifier.service.uuid),
             let characteristic = service.characteristic(with: characteristicIdentifier.uuid)
@@ -36,7 +38,9 @@ class ReadCharacteristic<T: Receivable>: Operation {
         peripheral.readValue(for: characteristic)
     }
     
-    func process(event: Event) {        
+    func process(event: Event) {
+        log.debug("Processing operation: ReadCharacteristic")
+
         if case .didReadCharacteristic(let readFrom, let value) = event {
             if readFrom.uuid != characteristicIdentifier.uuid {
                 preconditionFailure("Expecting read from charactersitic: \(characteristicIdentifier.uuid), but actually read from: \(readFrom.uuid)")
