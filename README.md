@@ -107,6 +107,22 @@ extension ViewController: ListenRestorable {
 }
 ```
 
+### Specifying Services & Characteristics
+
+On a high level, a Service is like a category, and a Characteristic is an attribute belonging to a category. For example, BLE peripherals that can detect heart rates usually have a Service named "Heart Rate" with a UUID of "180D". And inside that Service are Characteristics such as, "Body Sensor Location" with a UUID of "2A38", as well as "Heart Rate Measurement" with a UUID of "2A37".
+
+Many of these Services and Characteristics are standards specified by the Bluetooth SIG organization, and most hardware adopt their specifications. For example, a common Service that can be found in BLE peripherals is "Device Information" with a UUID of "180A", where Characteristics such as firmware version, serial number, and other hardware details can be read and written.
+
+Of course, there are many usage of BLE peripherals not covered by the Bluetooth Core Spec, and custom hardwares often have their own unique Services and Characteristics.
+
+Here is how you can specify Services and Characteristics for use in Bluejay:
+
+```
+let heartRateService = ServiceIdentifier(uuid: "180D")
+let bodySensorLocation = CharacteristicIdentifier(uuid: "2A38", service: heartRateService)
+let heartRate = CharacteristicIdentifier(uuid: "2A37", service: heartRateService)
+```
+
 ### Scan & Connect
 
 ```
