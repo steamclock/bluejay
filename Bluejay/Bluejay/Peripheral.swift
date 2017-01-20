@@ -134,15 +134,15 @@ public class Peripheral: NSObject {
     }
     
     /**
-     Cancel listening on a specified characteristic.
+     End listening on a specified characteristic.
      
      Provides the ability to suppress the failure message to the listen callback. This is useful in the internal implimentation of some of the listening logic, since we want to be able to share the clear logic on a .done exit, but don't need to send a failure in that case.
      
      - Note
      Currently this can also cancel a regular in-progress read as well, but that behaviour may change down the road.
      */
-    public func cancelListen(to characteristicIdentifier: CharacteristicIdentifier, sendFailure: Bool, completion: ((WriteResult) -> Void)? = nil) {
-        log.debug("Start cancelling listen: \(characteristicIdentifier.uuid.uuidString)")
+    public func endListen(to characteristicIdentifier: CharacteristicIdentifier, sendFailure: Bool, completion: ((WriteResult) -> Void)? = nil) {
+        log.debug("Ending listen: \(characteristicIdentifier.uuid.uuidString)")
         
         discoverCharactersitic(characteristicIdentifier)
         
@@ -153,11 +153,11 @@ public class Peripheral: NSObject {
             self.listeners[characteristicIdentifier] = nil
             
             if(sendFailure) {
-                log.debug("Sending listeners an error for cancelling the listen on: \(characteristicIdentifier.uuid.uuidString)")
+                log.debug("Sending listeners an error for ending the listen on: \(characteristicIdentifier.uuid.uuidString)")
                 listenCallback?(.failure(Error.cancelledError()))
             }
             
-            log.debug("Cancellation of listen successful: \(characteristicIdentifier.uuid.uuidString)")
+            log.debug("Ending of listen successful: \(characteristicIdentifier.uuid.uuidString)")
             
             completion?(result)
             

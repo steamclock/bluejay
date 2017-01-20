@@ -242,13 +242,13 @@ public class Bluejay: NSObject {
         }
     }
     
-    /// Cancel listening on a specified characteristic.
-    public func cancelListen(to characteristicIdentifier: CharacteristicIdentifier, completion: ((WriteResult) -> Void)? = nil) {
+    /// End listening on a specified characteristic.
+    public func endListen(to characteristicIdentifier: CharacteristicIdentifier, completion: ((WriteResult) -> Void)? = nil) {
         if let peripheral = connectedPeripheral {
-            peripheral.cancelListen(to: characteristicIdentifier, sendFailure: true, completion: completion)
+            peripheral.endListen(to: characteristicIdentifier, sendFailure: true, completion: completion)
         }
         else {
-            log.debug("Could not cancel listen to characteristic \(characteristicIdentifier.uuid.uuidString): Peripheral is not connected.")
+            log.debug("Could not end listen to characteristic \(characteristicIdentifier.uuid.uuidString): Peripheral is not connected.")
             completion?(.failure(Error.notConnectedError()))
         }
     }
@@ -359,12 +359,12 @@ extension Bluejay: CBCentralManagerDelegate {
                 // If true, assume the listen callback is restored.
                 if !listenRestorer.didFindRestorableListen(on: characteristicIdentifier) {
                     // If false, cancel the listening.
-                    cancelListen(to: characteristicIdentifier)
+                    endListen(to: characteristicIdentifier)
                 }
             }
             else {
                 // If there is no listen restorable delegate, cancel all active listening.
-                cancelListen(to: characteristicIdentifier)
+                endListen(to: characteristicIdentifier)
             }
         }
         

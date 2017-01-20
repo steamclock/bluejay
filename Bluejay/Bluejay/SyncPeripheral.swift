@@ -89,7 +89,7 @@ public class SyncPeripheral {
                 }
                 
                 if(error != nil || action == .done) {
-                    self.parent.cancelListen(to: characteristicIdentifier, sendFailure: true, completion: { result in
+                    self.parent.endListen(to: characteristicIdentifier, sendFailure: true, completion: { result in
                         sem.signal()
                     })
                 }
@@ -130,7 +130,7 @@ public class SyncPeripheral {
                 }
                 
                 if case .done = action {
-                    self.parent.cancelListen(to: charToListenTo, sendFailure: false, completion: { result in
+                    self.parent.endListen(to: charToListenTo, sendFailure: false, completion: { result in
                         sem.signal()
                     })
                 }
@@ -138,7 +138,7 @@ public class SyncPeripheral {
             
             self.parent.write(to: charToWriteTo, value: value, completion: { result in
                 if case .failure = result {
-                    self.parent.cancelListen(to: charToListenTo, sendFailure: true, completion: { result in
+                    self.parent.endListen(to: charToListenTo, sendFailure: true, completion: { result in
                         // TODO: Add missing error handling.
                     })
                 }
