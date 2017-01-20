@@ -20,7 +20,9 @@ Install using CocoaPods:
 
 Import using:
 
-`import Bluejay`
+```swift
+import Bluejay
+```
 
 ## Demo
 
@@ -44,48 +46,72 @@ Notes:
 
 The Bluejay interface can be accessed through using the Bluejay singleton:
 
-`fileprivate let bluejay = Bluejay.shared`
+```swift
+fileprivate let bluejay = Bluejay.shared
+```
 
 ### Initialization
 
-Turn on Bluejay at the appropriate time during initialization. When it is appropriate depends on the context and requirement of your app. For example, in the demo app Bluejay is powered on inside `viewDidLoad` of the only existing view controller.
+Start Bluejay at the appropriate time during initialization. When it is appropriate depends on the context and requirement of your app. For example, in the demo app Bluejay is started inside `viewDidLoad` of the only existing view controller.
 
-`bluejay.powerOn(eventObserver: self, listenRestorable: self, enableBackgroundMode: true)`
+```swift
+bluejay.start(connectionObserver: self, listenRestorer: self, enableBackgroundMode: true)
+```
 
-Having to explicitly power on is important because this gives your app an opportunity to make sure that the two critical delegates are instantiated and available before the CoreBluetooth stack is initialized. This will ensure CoreBluetooth's startup and restoration events are being handled.
+Having to explicitly start Bluejay is important because this gives your app an opportunity to make sure two critical delegates are instantiated and available before the CoreBluetooth stack is initialized. This will ensure CoreBluetooth's startup and restoration events are being handled.
 
 Note:
 
-Background mode is disabled by default. In order to support background mode, you must set the parameter `enableBackgroundMode` to true in the above `powerOn` function, as well as turn on the "Background Modes" capability in your Xcode project with "Uses Bluetooth LE accessories" enabled.
+Background mode is disabled by default. In order to support background mode, you must set the parameter `enableBackgroundMode` to true in the above `start` function, as well as turn on the "Background Modes" capability in your Xcode project with "Uses Bluetooth LE accessories" enabled.
 
 ### Bluetooth Events
 
-The `observer` conforms to the `EventsObservable` protocol, and allows the delegate to react to major connection-related events:
+The `observer` conforms to the `ConnectionObserver` protocol, and allows the delegate to react to major connection-related events:
 
-```
-public protocol EventsObservable: class {
+```swift
+public protocol ConnectionObserver: class {
     func bluetoothAvailable(_ available: Bool)
     func connected(_ peripheral: Peripheral)
     func disconected()
 }
 ```
 
+Beyond the `start` function, you can also add other observers using:
+
+```swift
+bluejay.register(observer: batteryLabel)
+```
+
+Unregistering an observer is not necessary, because Bluejay only holds weak references to registered observers. But if you require unregistering an observer explicitly, use:
+
+```swift
+bluejay.unregister(observer: batteryLabel)
+```
+
 ### Listen Restoration
 
-The `ListenRestorable` is a protocol allowing the restoration of previously active listens should CoreBluetooth decide that a state restoration is necessary.
+Listen restoration is only relevant if your app supports background modes.
 
-```
-public protocol ListenRestorable: class {
+From Apple's doc:
+
+> [CoreBluetooth can] preserve the state of your app’s central and peripheral managers and to continue performing certain Bluetooth-related tasks on their behalf, even when your app is no longer running. When one of these tasks completes, the system relaunches your app into the background and gives your app the opportunity to restore its state and to handle the event appropriately.
+
+Therefore, when your app has ceased running either due to memory pressure or by staying in the background past the allowed duration (max 3min since iOS 7), then the next time your app is launched, the `ListenRestorer` protocol provides an opportunity to restore the lost callbacks to the still ongoing listens.
+
+```swift
+public protocol ListenRestorer: class {
     func didFindRestorableListen(on characteristic: CharacteristicIdentifier) -> Bool
 }
 ```
 
-By default, if there is no `ListenRestorable` delegate available, or if the protocol function returns false, then any previously active listens will be cancelled when state restoration occurs.
+By default, if there is no `ListenRestorer` delegate provided in the `start` function, then **all** active listens will be ended during state restoration.
 
-If the function returns true, then the provided characteristic with a previously active listen must be restored using the `restoreListen` function:
+The listen restorer can only be provided to Bluejay via its `start` function, because the restorer must be available to respond before CoreBluetooth initiates state restoration.
 
-```
-extension ViewController: ListenRestorable {
+To restore the callback on the given characteristic, use the `restoreListen` function and return true, otherwise, return false and Bluejay will end listening on that characteristic for you:
+
+```swift
+extension ViewController: ListenRestorer {
 
     func didFindRestorableListen(on characteristic: CharacteristicIdentifier) -> Bool {
         if characteristic == heartRate {
@@ -117,7 +143,7 @@ Of course, there are many usage of BLE peripherals not covered by the Bluetooth 
 
 Here is how you can specify Services and Characteristics for use in Bluejay:
 
-```
+```swift
 let heartRateService = ServiceIdentifier(uuid: "180D")
 let bodySensorLocation = CharacteristicIdentifier(uuid: "2A38", service: heartRateService)
 let heartRate = CharacteristicIdentifier(uuid: "2A37", service: heartRateService)
@@ -125,12 +151,12 @@ let heartRate = CharacteristicIdentifier(uuid: "2A37", service: heartRateService
 
 ### Scan & Connect
 
-```
+```swift
 bluejay.scan(service: heartRateService) { (result) in
     switch result {
     case .success(let peripheral):
         log.debug("Scan succeeded with peripheral: \(peripheral.name)")
-                
+
         self.bluejay.connect(PeripheralIdentifier(uuid: peripheral.identifier), completion: { (result) in
             switch result {
             case .success(let peripheral):
@@ -147,11 +173,13 @@ bluejay.scan(service: heartRateService) { (result) in
 
 ### Disconnect
 
-`bluejay.disconnect()`
+```swift
+bluejay.disconnect()
+```
 
 ### Read
 
-```
+```swift
 bluejay.read(from: bodySensorLocation) { (result: ReadResult<IncomingString>) in
     switch result {
     case .success(let value):
@@ -164,7 +192,7 @@ bluejay.read(from: bodySensorLocation) { (result: ReadResult<IncomingString>) in
 
 ### Write
 
-```
+```swift
 bluejay.write(to: bodySensorLocation, value: OutgoingString("Wrist")) { (result) in
     switch result {
     case .success:
@@ -177,7 +205,7 @@ bluejay.write(to: bodySensorLocation, value: OutgoingString("Wrist")) { (result)
 
 ### Listen
 
-```
+```swift
 bluejay.listen(to: heartRate) { (result: ReadResult<UInt8>) in
     switch result {
     case .success(let value):
@@ -188,9 +216,11 @@ bluejay.listen(to: heartRate) { (result: ReadResult<UInt8>) in
 }
 ```
 
-### Cancel Listen
+### End Listen
 
-`bluejay.cancelListen(to: heartRate)`
+```swift
+bluejay.endListen(to: heartRate)
+```
 
 ### Receivable & Sendable
 
@@ -198,7 +228,7 @@ The `Receivable` and `Sendable` protocols provide the blueprints to model the da
 
 Examples:
 
-```
+```swift
 struct IncomingString: Receivable {
 
     var string: String

@@ -22,7 +22,7 @@ public protocol ListenRestorer: class {
         - Parameter on: the characterstic that is still being listened on when the CoreBluetooth stack is restored in the app.
         - Return: true if the characteristic's listen callback will be restored, false if the characteristic's listen should be cancelled and not restored.
     */
-    func didFindRestorableListen(on characteristic: CharacteristicIdentifier) -> Bool
+    func willRestoreListen(on characteristic: CharacteristicIdentifier) -> Bool
 }
 
 /// Allows creating a weak reference to a ListenRestorable object, so that the Bluejay instance does not prevent the deallocation of the delegate.

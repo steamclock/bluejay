@@ -166,7 +166,7 @@ extension ViewController: ConnectionObserver {
 
 extension ViewController: ListenRestorer {
     
-    func didFindRestorableListen(on characteristic: CharacteristicIdentifier) -> Bool {
+    func willRestoreListen(on characteristic: CharacteristicIdentifier) -> Bool {
         if characteristic == heartRate {
             bluejay.restoreListen(to: heartRate, completion: { (result: ReadResult<UInt8>) in
                 switch result {

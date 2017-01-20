@@ -357,7 +357,7 @@ extension Bluejay: CBCentralManagerDelegate {
             
             if let listenRestorer = listenRestorer?.weakReference {
                 // If true, assume the listen callback is restored.
-                if !listenRestorer.didFindRestorableListen(on: characteristicIdentifier) {
+                if !listenRestorer.willRestoreListen(on: characteristicIdentifier) {
                     // If false, cancel the listening.
                     endListen(to: characteristicIdentifier)
                 }
