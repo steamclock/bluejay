@@ -113,7 +113,7 @@ To restore the callback on the given characteristic, use the `restoreListen` fun
 ```swift
 extension ViewController: ListenRestorer {
 
-    func didFindRestorableListen(on characteristic: CharacteristicIdentifier) -> Bool {
+    func willRestoreListen(on characteristic: CharacteristicIdentifier) -> Bool {
         if characteristic == heartRate {
             bluejay.restoreListen(to: heartRate, completion: { (result: ReadResult<UInt8>) in
                 switch result {
