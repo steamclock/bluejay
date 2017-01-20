@@ -70,6 +70,18 @@ public protocol ConnectionObserver: class {
 }
 ```
 
+Beyond the `start` function, you can also add other observers using:
+
+```
+bluejay.register(observer: batteryLabel)
+```
+
+Unregistering an observer is not necessary, because Bluejay only holds weak references to registered observers. But if you require unregistering an observer explicitly, use:
+
+```
+bluejay.unregister(observer: batteryLabel)
+```
+
 ### Listen Restoration
 
 The `ListenRestorer` is a protocol allowing the restoration of previously active listens should CoreBluetooth decide that a state restoration is necessary.
