@@ -23,7 +23,7 @@
 		B89AA4841E303634006BA376 /* Connection.swift in Sources */ = {isa = PBXBuildFile; fileRef = B89AA4831E303634006BA376 /* Connection.swift */; };
 		B89AA4881E30373D006BA376 /* ScanService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B89AA4871E30373D006BA376 /* ScanService.swift */; };
 		B89AA48A1E3040C5006BA376 /* ConnectPeripheral.swift in Sources */ = {isa = PBXBuildFile; fileRef = B89AA4891E3040C5006BA376 /* ConnectPeripheral.swift */; };
-		B8C052031E28561700EA3D76 /* ListenRestorable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C052021E28561700EA3D76 /* ListenRestorable.swift */; };
+		B8C052031E28561700EA3D76 /* ListenRestorer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C052021E28561700EA3D76 /* ListenRestorer.swift */; };
 		B8C70F7F1E1C22850006CF58 /* Bluejay.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B8C70F751E1C22850006CF58 /* Bluejay.framework */; };
 		B8C70F841E1C22850006CF58 /* BluejayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C70F831E1C22850006CF58 /* BluejayTests.swift */; };
 		B8C70F861E1C22850006CF58 /* Bluejay.h in Headers */ = {isa = PBXBuildFile; fileRef = B8C70F781E1C22850006CF58 /* Bluejay.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -81,7 +81,7 @@
 		B89AA4831E303634006BA376 /* Connection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Connection.swift; sourceTree = "<group>"; };
 		B89AA4871E30373D006BA376 /* ScanService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScanService.swift; sourceTree = "<group>"; };
 		B89AA4891E3040C5006BA376 /* ConnectPeripheral.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectPeripheral.swift; sourceTree = "<group>"; };
-		B8C052021E28561700EA3D76 /* ListenRestorable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListenRestorable.swift; sourceTree = "<group>"; };
+		B8C052021E28561700EA3D76 /* ListenRestorer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListenRestorer.swift; sourceTree = "<group>"; };
 		B8C70F751E1C22850006CF58 /* Bluejay.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Bluejay.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B8C70F781E1C22850006CF58 /* Bluejay.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Bluejay.h; sourceTree = "<group>"; };
 		B8C70F791E1C22850006CF58 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -285,7 +285,7 @@
 				B8C70FA81E1C69B60006CF58 /* Receivable.swift */,
 				B8C70FAA1E1C69C50006CF58 /* Sendable.swift */,
 				B8C70FB81E1C725C0006CF58 /* ConnectionObserver.swift */,
-				B8C052021E28561700EA3D76 /* ListenRestorable.swift */,
+				B8C052021E28561700EA3D76 /* ListenRestorer.swift */,
 			);
 			name = Protocols;
 			sourceTree = "<group>";
@@ -500,7 +500,7 @@
 				B8C70FBD1E1C7DB60006CF58 /* Peripheral.swift in Sources */,
 				B8C70FA51E1C65A20006CF58 /* ReadResult.swift in Sources */,
 				B8C70FC11E1C80150006CF58 /* OperationState.swift in Sources */,
-				B8C052031E28561700EA3D76 /* ListenRestorable.swift in Sources */,
+				B8C052031E28561700EA3D76 /* ListenRestorer.swift in Sources */,
 				B8C70FA31E1C65000006CF58 /* ConnectionResult.swift in Sources */,
 				B88A0DA11E1DD15600A00FF8 /* DiscoverCharacteristic.swift in Sources */,
 				B83271A91E313CA300D68581 /* Queueable.swift in Sources */,

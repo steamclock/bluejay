@@ -41,7 +41,7 @@ public class Bluejay: NSObject {
     
     fileprivate var startupBackgroundTask: UIBackgroundTaskIdentifier = UIBackgroundTaskInvalid
     fileprivate var peripheralIdentifierToRestore: PeripheralIdentifier?
-    fileprivate var listenRestorable: WeakListenRestorable?
+    fileprivate var listenRestorer: WeakListenRestorer?
     fileprivate var shouldRestoreState = false
     
     // MARK: - Public Properties
@@ -76,7 +76,7 @@ public class Bluejay: NSObject {
     
     public func powerOn(
         connectionObserver observer: ConnectionObserver? = nil,
-        listenRestorable restorable: ListenRestorable? = nil,
+        listenRestorer restorer: ListenRestorer? = nil,
         enableBackgroundMode backgroundMode: Bool = false
         )
     {
@@ -86,8 +86,8 @@ public class Bluejay: NSObject {
             register(observer: observer)
         }
         
-        if let restorable = restorable {
-            listenRestorable = WeakListenRestorable(weakReference: restorable)
+        if let restorer = restorer {
+            listenRestorer = WeakListenRestorer(weakReference: restorer)
         }
         
         var options: [String : Any] = [CBCentralManagerOptionShowPowerAlertKey : false]
@@ -355,9 +355,9 @@ extension Bluejay: CBCentralManagerDelegate {
             let serviceIdentifier = ServiceIdentifier(uuid: serviceUuid)
             let characteristicIdentifier = CharacteristicIdentifier(uuid: characteristicUuid as! String, service: serviceIdentifier)
             
-            if let listenRestorable = listenRestorable?.weakReference {
+            if let listenRestorer = listenRestorer?.weakReference {
                 // If true, assume the listen callback is restored.
-                if !listenRestorable.didFindRestorableListen(on: characteristicIdentifier) {
+                if !listenRestorer.didFindRestorableListen(on: characteristicIdentifier) {
                     // If false, cancel the listening.
                     cancelListen(to: characteristicIdentifier)
                 }
