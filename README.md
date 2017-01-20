@@ -90,7 +90,13 @@ bluejay.unregister(observer: batteryLabel)
 
 ### Listen Restoration
 
-The `ListenRestorer` is a protocol allowing the restoration of previously active listens should CoreBluetooth decide that a state restoration is necessary.
+Listen restoration is only relevant if your app supports background modes.
+
+From Apple's doc:
+
+> [CoreBluetooth can] preserve the state of your app’s central and peripheral managers and to continue performing certain Bluetooth-related tasks on their behalf, even when your app is no longer running. When one of these tasks completes, the system relaunches your app into the background and gives your app the opportunity to restore its state and to handle the event appropriately.
+
+Therefore, when your app has ceased running either due to memory pressure or by staying in the background past the allowed duration (max 3min since iOS 7), then the next time your app is launched, the `ListenRestorer` protocol provides an opportunity to restore the lost callbacks to the still ongoing listens.
 
 ```swift
 public protocol ListenRestorer: class {
@@ -98,9 +104,11 @@ public protocol ListenRestorer: class {
 }
 ```
 
-By default, if there is no `ListenRestorer` delegate available, or if the protocol function returns false, then any previously active listens will be ended during state restoration.
+By default, if there is no `ListenRestorer` delegate provided in the `start` function, then **all** active listens will be ended during state restoration.
 
-If the function returns true, then the provided characteristic with a previously active listen must be restored using the `restoreListen` function:
+The listen restorer can only be provided to Bluejay via its `start` function, because the restorer must be available to respond before CoreBluetooth initiates state restoration.
+
+To restore the callback on the given characteristic, use the `restoreListen` function and return true, otherwise, return false and Bluejay will end listening on that characteristic for you:
 
 ```swift
 extension ViewController: ListenRestorer {
