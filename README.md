@@ -100,7 +100,7 @@ Therefore, when your app has ceased running either due to memory pressure or by 
 
 ```swift
 public protocol ListenRestorer: class {
-    func didFindRestorableListen(on characteristic: CharacteristicIdentifier) -> Bool
+    func willRestoreListen(on characteristic: CharacteristicIdentifier) -> Bool
 }
 ```
 
