@@ -28,7 +28,7 @@ public class Bluejay: NSObject {
     fileprivate var cbCentralManager: CBCentralManager!
     
     /// List of weak references to objects interested in receiving Bluejay's Bluetooth event callbacks.
-    fileprivate var observers: [WeakEventsObservable] = []
+    fileprivate var observers: [WeakConnectionObserver] = []
     
     /// Reference to a peripheral that is still connecting. If this is nil, then the peripheral should either be disconnected or connected. This is used to help determine the state of the peripheral's connection.
     fileprivate var connectingPeripheral: Peripheral?
@@ -41,7 +41,7 @@ public class Bluejay: NSObject {
     
     fileprivate var startupBackgroundTask: UIBackgroundTaskIdentifier = UIBackgroundTaskInvalid
     fileprivate var peripheralIdentifierToRestore: PeripheralIdentifier?
-    fileprivate var listenRestorable: WeakListenRestorable?
+    fileprivate var listenRestorer: WeakListenRestorer?
     fileprivate var shouldRestoreState = false
     
     // MARK: - Public Properties
@@ -74,9 +74,9 @@ public class Bluejay: NSObject {
         }
     }
     
-    public func powerOn(
-        eventObserver observer: EventsObservable? = nil,
-        listenRestorable restorable: ListenRestorable? = nil,
+    public func start(
+        connectionObserver observer: ConnectionObserver? = nil,
+        listenRestorer restorer: ListenRestorer? = nil,
         enableBackgroundMode backgroundMode: Bool = false
         )
     {
@@ -86,8 +86,8 @@ public class Bluejay: NSObject {
             register(observer: observer)
         }
         
-        if let restorable = restorable {
-            listenRestorable = WeakListenRestorable(weakReference: restorable)
+        if let restorer = restorer {
+            listenRestorer = WeakListenRestorer(weakReference: restorer)
         }
         
         var options: [String : Any] = [CBCentralManagerOptionShowPowerAlertKey : false]
@@ -109,9 +109,9 @@ public class Bluejay: NSObject {
     
     // MARK: - Events Registration
     
-    public func register(observer: EventsObservable) {
+    public func register(observer: ConnectionObserver) {
         observers = observers.filter { $0.weakReference != nil && $0.weakReference !== observer }
-        observers.append(WeakEventsObservable(weakReference: observer))
+        observers.append(WeakConnectionObserver(weakReference: observer))
         
         if cbCentralManager == nil {
             observer.bluetoothAvailable(false)
@@ -125,7 +125,7 @@ public class Bluejay: NSObject {
         }
     }
     
-    public func unregister(_ observer: EventsObservable) {
+    public func unregister(observer: ConnectionObserver) {
         observers = observers.filter { $0.weakReference != nil && $0.weakReference !== observer }
     }
     
@@ -242,13 +242,13 @@ public class Bluejay: NSObject {
         }
     }
     
-    /// Cancel listening on a specified characteristic.
-    public func cancelListen(to characteristicIdentifier: CharacteristicIdentifier, completion: ((WriteResult) -> Void)? = nil) {
+    /// End listening on a specified characteristic.
+    public func endListen(to characteristicIdentifier: CharacteristicIdentifier, completion: ((WriteResult) -> Void)? = nil) {
         if let peripheral = connectedPeripheral {
-            peripheral.cancelListen(to: characteristicIdentifier, sendFailure: true, completion: completion)
+            peripheral.endListen(to: characteristicIdentifier, sendFailure: true, completion: completion)
         }
         else {
-            log.debug("Could not cancel listen to characteristic \(characteristicIdentifier.uuid.uuidString): Peripheral is not connected.")
+            log.debug("Could not end listen to characteristic \(characteristicIdentifier.uuid.uuidString): Peripheral is not connected.")
             completion?(.failure(Error.notConnectedError()))
         }
     }
@@ -355,16 +355,16 @@ extension Bluejay: CBCentralManagerDelegate {
             let serviceIdentifier = ServiceIdentifier(uuid: serviceUuid)
             let characteristicIdentifier = CharacteristicIdentifier(uuid: characteristicUuid as! String, service: serviceIdentifier)
             
-            if let listenRestorable = listenRestorable?.weakReference {
+            if let listenRestorer = listenRestorer?.weakReference {
                 // If true, assume the listen callback is restored.
-                if !listenRestorable.didFindRestorableListen(on: characteristicIdentifier) {
+                if !listenRestorer.didFindRestorableListen(on: characteristicIdentifier) {
                     // If false, cancel the listening.
-                    cancelListen(to: characteristicIdentifier)
+                    endListen(to: characteristicIdentifier)
                 }
             }
             else {
                 // If there is no listen restorable delegate, cancel all active listening.
-                cancelListen(to: characteristicIdentifier)
+                endListen(to: characteristicIdentifier)
             }
         }
         

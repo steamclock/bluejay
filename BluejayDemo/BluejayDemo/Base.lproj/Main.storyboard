@@ -81,9 +81,9 @@
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZP6-i9-GSR">
                                         <rect key="frame" x="114.5" y="0.0" width="114" height="30"/>
-                                        <state key="normal" title="Cancel Listen"/>
+                                        <state key="normal" title="End Listen"/>
                                         <connections>
-                                            <action selector="cancelListen" destination="BYZ-38-t0r" eventType="touchUpInside" id="pnj-fn-PgQ"/>
+                                            <action selector="endListen" destination="BYZ-38-t0r" eventType="touchUpInside" id="VhG-QC-R6e"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="b3T-8y-dUu">

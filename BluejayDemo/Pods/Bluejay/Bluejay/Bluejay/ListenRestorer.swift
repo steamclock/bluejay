@@ -1,5 +1,5 @@
 //
-//  ListenRestorable.swift
+//  ListenRestorer.swift
 //  Bluejay
 //
 //  Created by Jeremy Chiang on 2017-01-12.
@@ -13,7 +13,7 @@ import Foundation
  
     Bluetooth state restoration occurs when the background mode capability is turned on, and if the app is backgrounded or even terminated while a Bluetooth operation is still ongoing, iOS may keep the Bluetooth state alive, and attempt to restore it on resuming the app, so that the connection and operation between the app and the Bluetooth accessory is not interrupted and severed.
 */
-public protocol ListenRestorable: class {
+public protocol ListenRestorer: class {
     /**
         Notify the conforming class that there is a characteristic being listened on, but it doesn't have any listen callbacks.
      
@@ -26,6 +26,6 @@ public protocol ListenRestorable: class {
 }
 
 /// Allows creating a weak reference to a ListenRestorable object, so that the Bluejay instance does not prevent the deallocation of the delegate.
-struct WeakListenRestorable {
-    weak var weakReference: ListenRestorable?
+struct WeakListenRestorer {
+    weak var weakReference: ListenRestorer?
 }

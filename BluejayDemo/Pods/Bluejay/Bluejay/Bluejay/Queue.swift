@@ -122,7 +122,7 @@ class Queue {
     
 }
 
-extension Queue: EventsObservable {
+extension Queue: ConnectionObserver {
     
     func bluetoothAvailable(_ available: Bool) {
         if available {

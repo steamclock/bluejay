@@ -28,7 +28,7 @@ class ViewController: UIViewController {
         
         NotificationCenter.default.addObserver(self, selector: #selector(ViewController.updateLog(notification:)), name: .logDidUpdate, object: nil)
         
-        bluejay.powerOn(eventObserver: self, listenRestorable: self, enableBackgroundMode: true)
+        bluejay.start(connectionObserver: self, listenRestorer: self, enableBackgroundMode: true)
     }
     
     func updateLog(notification: Notification) {
@@ -99,8 +99,8 @@ class ViewController: UIViewController {
         }
     }
     
-    @IBAction func cancelListen() {
-        bluejay.cancelListen(to: heartRate)
+    @IBAction func endListen() {
+        bluejay.endListen(to: heartRate)
     }
     
     @IBAction func crash() {
@@ -142,21 +142,7 @@ struct OutgoingString: Sendable {
     
 }
 
-struct IncomingInt: Receivable {
-    
-    var int: Int
-    
-    init(bluetoothData: Data) {
-        var value = 0
-        
-        (bluetoothData as NSData).getBytes(&value, range: NSRange(location: 0, length: 1))
-        
-        int = value
-    }
-    
-}
-
-extension ViewController: EventsObservable {
+extension ViewController: ConnectionObserver {
     
     func bluetoothAvailable(_ available: Bool) {
         DispatchQueue.main.async {
@@ -178,7 +164,7 @@ extension ViewController: EventsObservable {
     
 }
 
-extension ViewController: ListenRestorable {
+extension ViewController: ListenRestorer {
     
     func didFindRestorableListen(on characteristic: CharacteristicIdentifier) -> Bool {
         if characteristic == heartRate {
