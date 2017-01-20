@@ -74,7 +74,7 @@ public class Bluejay: NSObject {
         }
     }
     
-    public func powerOn(
+    public func start(
         connectionObserver observer: ConnectionObserver? = nil,
         listenRestorer restorer: ListenRestorer? = nil,
         enableBackgroundMode backgroundMode: Bool = false
