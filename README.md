@@ -20,7 +20,9 @@ Install using CocoaPods:
 
 Import using:
 
-`import Bluejay`
+```swift
+import Bluejay
+```
 
 ## Demo
 
@@ -44,13 +46,17 @@ Notes:
 
 The Bluejay interface can be accessed through using the Bluejay singleton:
 
-`fileprivate let bluejay = Bluejay.shared`
+```swift
+fileprivate let bluejay = Bluejay.shared
+```
 
 ### Initialization
 
 Start Bluejay at the appropriate time during initialization. When it is appropriate depends on the context and requirement of your app. For example, in the demo app Bluejay is started inside `viewDidLoad` of the only existing view controller.
 
-`bluejay.start(connectionObserver: self, listenRestorer: self, enableBackgroundMode: true)`
+```swift
+bluejay.start(connectionObserver: self, listenRestorer: self, enableBackgroundMode: true)
+```
 
 Having to explicitly start Bluejay is important because this gives your app an opportunity to make sure two critical delegates are instantiated and available before the CoreBluetooth stack is initialized. This will ensure CoreBluetooth's startup and restoration events are being handled.
 
@@ -62,7 +68,7 @@ Background mode is disabled by default. In order to support background mode, you
 
 The `observer` conforms to the `ConnectionObserver` protocol, and allows the delegate to react to major connection-related events:
 
-```
+```swift
 public protocol ConnectionObserver: class {
     func bluetoothAvailable(_ available: Bool)
     func connected(_ peripheral: Peripheral)
@@ -72,13 +78,13 @@ public protocol ConnectionObserver: class {
 
 Beyond the `start` function, you can also add other observers using:
 
-```
+```swift
 bluejay.register(observer: batteryLabel)
 ```
 
 Unregistering an observer is not necessary, because Bluejay only holds weak references to registered observers. But if you require unregistering an observer explicitly, use:
 
-```
+```swift
 bluejay.unregister(observer: batteryLabel)
 ```
 
@@ -86,7 +92,7 @@ bluejay.unregister(observer: batteryLabel)
 
 The `ListenRestorer` is a protocol allowing the restoration of previously active listens should CoreBluetooth decide that a state restoration is necessary.
 
-```
+```swift
 public protocol ListenRestorer: class {
     func didFindRestorableListen(on characteristic: CharacteristicIdentifier) -> Bool
 }
@@ -96,7 +102,7 @@ By default, if there is no `ListenRestorer` delegate available, or if the protoc
 
 If the function returns true, then the provided characteristic with a previously active listen must be restored using the `restoreListen` function:
 
-```
+```swift
 extension ViewController: ListenRestorer {
 
     func didFindRestorableListen(on characteristic: CharacteristicIdentifier) -> Bool {
@@ -129,7 +135,7 @@ Of course, there are many usage of BLE peripherals not covered by the Bluetooth 
 
 Here is how you can specify Services and Characteristics for use in Bluejay:
 
-```
+```swift
 let heartRateService = ServiceIdentifier(uuid: "180D")
 let bodySensorLocation = CharacteristicIdentifier(uuid: "2A38", service: heartRateService)
 let heartRate = CharacteristicIdentifier(uuid: "2A37", service: heartRateService)
@@ -137,7 +143,7 @@ let heartRate = CharacteristicIdentifier(uuid: "2A37", service: heartRateService
 
 ### Scan & Connect
 
-```
+```swift
 bluejay.scan(service: heartRateService) { (result) in
     switch result {
     case .success(let peripheral):
@@ -159,11 +165,13 @@ bluejay.scan(service: heartRateService) { (result) in
 
 ### Disconnect
 
-`bluejay.disconnect()`
+```swift
+bluejay.disconnect()
+```
 
 ### Read
 
-```
+```swift
 bluejay.read(from: bodySensorLocation) { (result: ReadResult<IncomingString>) in
     switch result {
     case .success(let value):
@@ -176,7 +184,7 @@ bluejay.read(from: bodySensorLocation) { (result: ReadResult<IncomingString>) in
 
 ### Write
 
-```
+```swift
 bluejay.write(to: bodySensorLocation, value: OutgoingString("Wrist")) { (result) in
     switch result {
     case .success:
@@ -189,7 +197,7 @@ bluejay.write(to: bodySensorLocation, value: OutgoingString("Wrist")) { (result)
 
 ### Listen
 
-```
+```swift
 bluejay.listen(to: heartRate) { (result: ReadResult<UInt8>) in
     switch result {
     case .success(let value):
@@ -202,7 +210,9 @@ bluejay.listen(to: heartRate) { (result: ReadResult<UInt8>) in
 
 ### End Listen
 
-`bluejay.endListen(to: heartRate)`
+```swift
+bluejay.endListen(to: heartRate)
+```
 
 ### Receivable & Sendable
 
@@ -210,7 +220,7 @@ The `Receivable` and `Sendable` protocols provide the blueprints to model the da
 
 Examples:
 
-```
+```swift
 struct IncomingString: Receivable {
 
     var string: String
