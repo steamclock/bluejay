@@ -28,7 +28,7 @@ public class Bluejay: NSObject {
     fileprivate var cbCentralManager: CBCentralManager!
     
     /// List of weak references to objects interested in receiving Bluejay's Bluetooth event callbacks.
-    fileprivate var observers: [WeakEventsObservable] = []
+    fileprivate var observers: [WeakConnectionObserver] = []
     
     /// Reference to a peripheral that is still connecting. If this is nil, then the peripheral should either be disconnected or connected. This is used to help determine the state of the peripheral's connection.
     fileprivate var connectingPeripheral: Peripheral?
@@ -75,7 +75,7 @@ public class Bluejay: NSObject {
     }
     
     public func powerOn(
-        eventObserver observer: EventsObservable? = nil,
+        connectionObserver observer: ConnectionObserver? = nil,
         listenRestorable restorable: ListenRestorable? = nil,
         enableBackgroundMode backgroundMode: Bool = false
         )
@@ -109,9 +109,9 @@ public class Bluejay: NSObject {
     
     // MARK: - Events Registration
     
-    public func register(observer: EventsObservable) {
+    public func register(observer: ConnectionObserver) {
         observers = observers.filter { $0.weakReference != nil && $0.weakReference !== observer }
-        observers.append(WeakEventsObservable(weakReference: observer))
+        observers.append(WeakConnectionObserver(weakReference: observer))
         
         if cbCentralManager == nil {
             observer.bluetoothAvailable(false)
@@ -125,7 +125,7 @@ public class Bluejay: NSObject {
         }
     }
     
-    public func unregister(_ observer: EventsObservable) {
+    public func unregister(observer: ConnectionObserver) {
         observers = observers.filter { $0.weakReference != nil && $0.weakReference !== observer }
     }
     
