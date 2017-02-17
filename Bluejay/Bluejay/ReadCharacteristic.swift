@@ -11,11 +11,11 @@ import CoreBluetooth
 
 class ReadCharacteristic<T: Receivable>: Operation {
     
-    var state = OperationState.notStarted
+    var state = OperationState.notStarted    
     var peripheral: CBPeripheral
     
     private var characteristicIdentifier: CharacteristicIdentifier
-    private var callback: (ReadResult<T>) -> Void
+    private var callback: ((ReadResult<T>) -> Void)?
     
     init(characteristicIdentifier: CharacteristicIdentifier, peripheral: CBPeripheral, callback: @escaping (ReadResult<T>) -> Void) {
         self.characteristicIdentifier = characteristicIdentifier
@@ -35,6 +35,7 @@ class ReadCharacteristic<T: Receivable>: Operation {
         }
         
         state = .running
+        
         peripheral.readValue(for: characteristic)
     }
     
@@ -46,8 +47,10 @@ class ReadCharacteristic<T: Receivable>: Operation {
                 preconditionFailure("Expecting read from charactersitic: \(characteristicIdentifier.uuid), but actually read from: \(readFrom.uuid)")
             }
             
-            callback(ReadResult<T>(dataResult: .success(value)))
             state = .completed
+            
+            callback?(ReadResult<T>(dataResult: .success(value)))
+            callback = nil
         }
         else {
             preconditionFailure("Expecting write to characteristic: \(characteristicIdentifier.uuid), but received event: \(event)")
@@ -55,8 +58,10 @@ class ReadCharacteristic<T: Receivable>: Operation {
     }
     
     func fail(_ error: NSError) {
-        callback(.failure(error))
         state = .failed(error)
+
+        callback?(.failure(error))
+        callback = nil        
     }
     
 }

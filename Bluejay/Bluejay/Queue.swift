@@ -13,101 +13,159 @@ class Queue {
     
     static let shared = Queue()
     
-    // Has priority over the peripheral's operations queue, so that any queued scan or connect requests can be handled first before attempting any peripheral operations.
-    private var connections = [Connection]()
-    
-    private var operations = [Operation]()
+    private var scan: Scan?
+    private var connectionQueue = [Connection]()
+    private var operationQueue = [Operation]()
     
     func cancelAll(_ error: NSError) {
-        for connection in connections {
+        stopScanning(error)
+        
+        for connection in connectionQueue where !connection.state.isCompleted {
             connection.fail(error)
+            update()
         }
         
-        for operation in operations {
+        for operation in operationQueue where !operation.state.isCompleted {
             operation.fail(error)
+            update()
         }
         
-        connections = []
-        operations = []
+        connectionQueue = []
+        operationQueue = []
     }
     
-    func attemptConnections() {
-        while connections.count > 0 {
-            switch connections[0].state {
+    func stopScanning(_ error: NSError) {
+        scan?.fail(error)
+        scan = nil
+    }
+    
+    private func startScanning() {
+        while scan != nil {
+            switch scan!.state {
             case .notStarted:
-                log.debug("A connection in the queue is starting.")
-                connections[0].start()
+                log.debug("Scan is starting.")
+                scan?.start()
             case .running:
-                log.debug("A connection in the queue is still running.")
+                log.debug("Scan is still running.")
                 return
             case .failed(let error):
-                log.debug("A connection in the queue has failed.")
-                connections.removeFirst()
+                log.debug("Scan has failed.")
+                stopScanning(error)
+            case .completed:
+                log.debug("Scan has completed.")
+                scan = nil
+                update()
+            }
+        }
+    }
+    
+    private func attemptConnections() {
+        while connectionQueue.count > 0 {
+            switch connectionQueue[0].state {
+            case .notStarted:
+                log.debug("A task in the connection queue is starting.")
+                connectionQueue[0].start()
+            case .running:
+                log.debug("A task in the connection queue is still running.")
+                return
+            case .failed(let error):
+                log.debug("A task in the connection queue has failed.")
+                connectionQueue.removeFirst()
                 cancelAll(error)
             case .completed:
-                log.debug("A connection in the queue has completed.")
-                connections.removeFirst()
+                log.debug("A task in the connection queue has completed.")
+                connectionQueue.removeFirst()
+                update()
+            }
+        }
+    }
+    
+    private func attemptOperations() {
+        while operationQueue.count > 0 {
+            switch operationQueue[0].state {
+            case .notStarted:
+                log.debug("A task in the operation queue is starting.")
+                operationQueue[0].start()
+            case .running:
+                log.debug("A task in the operation queue is still running.")
+                return
+            case .failed(let error):
+                log.debug("A task in the operation queue has failed.")
+                operationQueue.removeFirst()
+                cancelAll(error)
+            case .completed:
+                log.debug("A task in the operation queue has completed.")
+                operationQueue.removeFirst()
+                update()
             }
         }
     }
     
     func update() {
         if !Bluejay.shared.isBluetoothAvailable {
-            log.debug("Operation queue is paused because Bluetooth is not available yet.")
+            log.debug("Queue is paused because Bluetooth is not available yet.")
             return
         }
         
-        if connections.isEmpty && operations.isEmpty {
+        if scan == nil && connectionQueue.isEmpty && operationQueue.isEmpty {
             log.debug("Queue is empty, nothing to run.")
             return
         }
         
-        if !connections.isEmpty {
-            log.debug("Operation queue is delayed in favour of handling the connection queue first.")
+        if scan != nil {
+            log.debug("Queue will handle a scan.")
+            startScanning()
+            return
+        }
+        
+        if !connectionQueue.isEmpty {
+            log.debug("Queue will handle the connection queue.")
             attemptConnections()
             return
         }
         
         if !Bluejay.shared.isConnected {
-            log.debug("Operation queue is paused because no peripheral is connected yet.")
+            log.debug("Queue is paused because no peripheral is connected.")
             return
         }
         
-        while operations.count > 0 {
-            switch operations[0].state {
-            case .notStarted:
-                log.debug("An operation in the queue is starting.")
-                operations[0].start()
-            case .running:
-                log.debug("An operation in the queue is still running.")
-                return
-            case .failed(let error):
-                log.debug("An operation in the queue has failed.")
-                operations.removeFirst()
-                cancelAll(error)
-            case .completed:
-                log.debug("An operation in the queue has completed.")
-                operations.removeFirst()
-            }
-        }
+        log.debug("Queue will handle the operation queue.")
+        attemptOperations()
+    }
+    
+    func add(scan: Scan) {
+        // Cancel and reset the queue for the scan.
+        cancelAll(Error.cancelledError())
+        
+        self.scan = scan
+        update()
     }
     
     func add(connection: Connection) {
-        connections.append(connection)
+        connectionQueue.append(connection)
         update()
     }
     
     func add(operation: Operation) {
-        operations.append(operation)
+        operationQueue.append(operation)
         update()
     }
     
     func process(event: Event, error: NSError?) {
-        precondition(connections.count > 0 || operations.count > 0, "Tried to process an event when the queue is empty.")
+        precondition(scan != nil || connectionQueue.count > 0 || operationQueue.count > 0,
+            "Tried to process an event when the queue is empty."
+        )
         
         if error == nil {
-            connections.count != 0 ?
-                connections[0].process(event: event) : operations[0].process(event: event)
+            if scan != nil {
+                scan?.process(event: event)
+            }
+            else if !connectionQueue.isEmpty {
+                connectionQueue[0].process(event: event)
+            }
+            else if !operationQueue.isEmpty {
+                operationQueue[0].process(event: event)
+            }
             
             update()
         }
@@ -117,7 +175,11 @@ class Queue {
     }
     
     func isEmpty() -> Bool {
-        return operations.count == 0
+        return scan == nil && connectionQueue.isEmpty && operationQueue.isEmpty
+    }
+    
+    func isScanning() -> Bool {
+        return scan != nil
     }
     
 }

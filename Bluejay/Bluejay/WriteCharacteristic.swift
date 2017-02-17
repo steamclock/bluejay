@@ -11,14 +11,14 @@ import CoreBluetooth
 
 class WriteCharacteristic<T: Sendable>: Operation {
     
-    var state = OperationState.notStarted
+    var state = OperationState.notStarted    
     var peripheral: CBPeripheral
     
     private var characteristicIdentifier: CharacteristicIdentifier
     private var value: T
     private var callback: ((WriteResult) -> Void)?
     
-    init(characteristicIdentifier: CharacteristicIdentifier, peripheral: CBPeripheral, value: T, callback: ((WriteResult) -> Void)?) {
+    init(characteristicIdentifier: CharacteristicIdentifier, peripheral: CBPeripheral, value: T, callback: @escaping (WriteResult) -> Void) {
         self.characteristicIdentifier = characteristicIdentifier
         self.peripheral = peripheral
         self.value = value
@@ -37,6 +37,7 @@ class WriteCharacteristic<T: Sendable>: Operation {
         }
         
         state = .running
+        
         peripheral.writeValue(value.toBluetoothData(), for: characteristic, type: .withResponse)
     }
     
@@ -48,8 +49,10 @@ class WriteCharacteristic<T: Sendable>: Operation {
                 preconditionFailure("Expecting write to charactersitic: \(characteristicIdentifier.uuid), but actually wrote to: \(wroteTo.uuid)")
             }
             
-            callback?(.success)
             state = .completed
+            
+            callback?(.success)
+            callback = nil
         }
         else {
             preconditionFailure("Expecting write to characteristic: \(characteristicIdentifier.uuid), but received event: \(event)")
@@ -57,8 +60,10 @@ class WriteCharacteristic<T: Sendable>: Operation {
     }
     
     func fail(_ error: NSError) {
-        callback?(.failure(error))
         state = .failed(error)
+
+        callback?(.failure(error))
+        callback = nil        
     }
     
 }

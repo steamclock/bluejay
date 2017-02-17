@@ -8,6 +8,7 @@
 
 import UIKit
 import Bluejay
+import CoreBluetooth
 
 let heartRateService = ServiceIdentifier(uuid: "180D")
 let bodySensorLocation = CharacteristicIdentifier(uuid: "2A38", service: heartRateService)
@@ -43,19 +44,10 @@ class ViewController: UIViewController {
     }
     
     @IBAction func scan() {
-        bluejay.scan(service: heartRateService) { (result) in
+        bluejay.scan(serviceIdentifier: heartRateService, serialNumber: "qwerty") { (result) in
             switch result {
-            case .success(let peripheral):
-                log.debug("Scan succeeded with peripheral: \(peripheral.name)")
-                
-                self.bluejay.connect(PeripheralIdentifier(uuid: peripheral.identifier), completion: { (result) in
-                    switch result {
-                    case .success(let peripheral):
-                        log.debug("Connect succeeded with peripheral: \(peripheral.name)")
-                    case .failure(let error):
-                        log.debug("Connect failed with error: \(error.localizedDescription)")
-                    }
-                })
+            case .success(let scannedPeripherals):
+                log.debug("Scan succeeded with peripherals: \(scannedPeripherals)")
             case .failure(let error):
                 log.debug("Scan failed with error: \(error.localizedDescription)")
             }

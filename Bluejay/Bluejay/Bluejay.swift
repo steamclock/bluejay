@@ -61,6 +61,9 @@ public class Bluejay: NSObject {
         return connectedPeripheral != nil
     }
     
+    /// Allows checking whether Bluejay is currently disconnecting from a peripheral.
+    public var isDisconnecting: Bool = false
+    
     // MARK: - Initialization
     
     override init() {
@@ -131,19 +134,19 @@ public class Bluejay: NSObject {
     
     // MARK: - Scanning
     
-    /// Start a scan for peripherals with the specified service, and Bluejay will attempt to connect to the peripheral once it is found.
-    public func scan(service serviceIdentifier: ServiceIdentifier, completion: @escaping (ConnectionResult) -> Void) {
+    public func scan(serviceIdentifier: ServiceIdentifier, serialNumber: String? = nil, completion: @escaping (ScanResult) -> Void) {
         log.debug("Starting scan.")
-        Queue.shared.add(connection: ScanService(serviceIdentifier: serviceIdentifier, manager: cbCentralManager, callback: completion))
+        
+        Queue.shared.add(scan: Scan(serviceIdentifier: serviceIdentifier, serialNumber: serialNumber, manager: cbCentralManager, callback: completion))
     }
     
-    /// Cancel oustanding peripheral scans.
-    public func cancelScan() {
-        log.debug("Cancelling scan.")
+    public func stopScanning() {
+        log.debug("Stopping scan.")
         
         cbCentralManager.stopScan()
         
-        // TODO: Need to notify the Queue in case it has an ongoing scan.
+        Scan.blacklist = []
+        Queue.shared.stopScanning(Error.cancelledError())
     }
     
     // MARK: - Connection
@@ -157,10 +160,12 @@ public class Bluejay: NSObject {
         self.connectingPeripheral = nil
         self.connectedPeripheral = nil
         
-        connected?.cancelAllOperations(Error.unexpectedDisconnectError())
-        connecting?.cancelAllOperations(Error.unexpectedDisconnectError())
-        
-        Queue.shared.cancelAll(Error.unexpectedDisconnectError())
+        if !cbCentralManager.isScanning {
+            connected?.cancelAllOperations(Error.unexpectedDisconnectError())
+            connecting?.cancelAllOperations(Error.unexpectedDisconnectError())
+            
+            Queue.shared.cancelAll(Error.unexpectedDisconnectError())
+        }
         
         for observer in observers {
             observer.weakReference?.disconected()
@@ -183,7 +188,7 @@ public class Bluejay: NSObject {
             
             log.debug("Issuing connect request to: \(cbPeripheral.name ?? cbPeripheral.identifier.uuidString)")
             
-            Queue.shared.add(connection: ConnectPeripheral(peripheral: cbPeripheral, manager: cbCentralManager, callback: completion))
+            Queue.shared.add(connection: Connection(peripheral: cbPeripheral, manager: cbCentralManager, callback: completion))
         }
         else {
             completion(.failure(Error.unknownPeripheralError(peripheralIdentifier)))
@@ -191,19 +196,40 @@ public class Bluejay: NSObject {
     }
     
     /// Disconnect the currently connected peripheral.
-    public func disconnect() {
+    public func disconnect(completion: ((Bool)->Void)? = nil) {
+        if isDisconnecting {
+            log.debug("Bluejay is still disconnecting.")
+            return
+        }
+        
         if let peripheralToDisconnect = connectedPeripheral {
             log.debug("Disconnecting from: \(peripheralToDisconnect.name ?? peripheralToDisconnect.cbPeripheral.identifier.uuidString).")
             
+            isDisconnecting = true
             shouldAutoReconnect = false
+            
             peripheralToDisconnect.cancelAllOperations(Error.cancelledError())
             
-            cbCentralManager.cancelPeripheralConnection(peripheralToDisconnect.cbPeripheral)
-            
-            // TODO: Need to notify the Queue in case it has an ongoing connect.
+            Queue.shared.add(connection: Disconnection(peripheral: peripheralToDisconnect.cbPeripheral, manager: cbCentralManager, callback: { (result) in
+                switch result {
+                case .success(let peripheral):
+                    log.debug("Disconnected from \(peripheral.name)")
+                    self.isDisconnecting = false
+                    
+                    completion?(true)
+                case .failure(let error):
+                    log.debug("Failed to disconnect with error: \(error.localizedDescription)")
+                    self.isDisconnecting = false
+                    
+                    completion?(false)
+                }
+            }))
         }
         else {
             log.debug("Cannot disconnect: there is no connected peripheral.")
+            isDisconnecting = false
+            
+            completion?(false)
         }
     }
     
@@ -428,17 +454,20 @@ extension Bluejay: CBCentralManagerDelegate {
         let backgroundTask =  UIApplication.shared.beginBackgroundTask(expirationHandler: nil)
         
         log.debug("Did connect to: \(peripheral.name ?? peripheral.identifier.uuidString)")
-        
+
         connectedPeripheral = connectingPeripheral
         connectingPeripheral = nil
         
-        Queue.shared.process(event: .didConnectPeripheral(peripheral), error: nil)
-        
-        for observer in observers {
-            observer.weakReference?.connected(connectedPeripheral!)
+        // Do not notify observers if this connection is part of a scan operation, as the connection to the peripheral is only for inspection purposes.
+        if !Queue.shared.isScanning() {
+            for observer in observers {
+                observer.weakReference?.connected(connectedPeripheral!)
+            }
+            
+            shouldAutoReconnect = true
         }
         
-        shouldAutoReconnect = true
+        Queue.shared.process(event: .didConnectPeripheral(peripheral), error: nil)
         
         UIApplication.shared.endBackgroundTask(backgroundTask)
     }
@@ -450,6 +479,10 @@ extension Bluejay: CBCentralManagerDelegate {
         let errorString = error?.localizedDescription ?? ""
         
         log.debug("Did disconnect from: \(peripheralString) with error: \(errorString)")
+        
+        if !Queue.shared.isEmpty() {
+            Queue.shared.process(event: .didDisconnectPeripheral(peripheral), error: nil)
+        }
         
         if connectingPeripheral == nil && connectedPeripheral == nil {
             log.debug("Disconnection is either bogus or already handled, Bluejay has no connected peripheral.")
@@ -479,14 +512,11 @@ extension Bluejay: CBCentralManagerDelegate {
     }
     
     public func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
-        let peripheralString = peripheral.name ?? peripheral.identifier.uuidString
+        let peripheralString = advertisementData[CBAdvertisementDataLocalNameKey] ?? peripheral.identifier.uuidString
         
         log.debug("Did discover: \(peripheralString)")
-        log.debug("Connecting to: \(peripheralString)")
         
-        connectingPeripheral = Peripheral(cbPeripheral: peripheral)
-        
-        Queue.shared.process(event: .didDiscoverPeripheral(peripheral), error: nil)
+        Queue.shared.process(event: .didDiscoverPeripheral(peripheral, advertisementData), error: nil)
     }
     
 }

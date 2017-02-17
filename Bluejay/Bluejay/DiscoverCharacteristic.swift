@@ -11,14 +11,16 @@ import CoreBluetooth
 
 class DiscoverCharacteristic: Operation {
     
-    var state = OperationState.notStarted
+    var state = OperationState.notStarted    
     var peripheral: CBPeripheral
     
     private var characteristicIdentifier: CharacteristicIdentifier
+    private var callback: ((Bool) -> Void)?
     
-    init(characteristicIdentifier: CharacteristicIdentifier, peripheral: CBPeripheral) {
+    init(characteristicIdentifier: CharacteristicIdentifier, peripheral: CBPeripheral, callback: @escaping (Bool) -> Void) {
         self.characteristicIdentifier = characteristicIdentifier
         self.peripheral = peripheral
+        self.callback = callback
     }
     
     func start() {
@@ -30,10 +32,11 @@ class DiscoverCharacteristic: Operation {
         }
         
         if service.characteristic(with: characteristicIdentifier.uuid) != nil {
-            state = .completed
+            success()
         }
         else {
             state = .running
+            
             peripheral.discoverCharacteristics([characteristicIdentifier.uuid], for: service)
         }
     }
@@ -51,16 +54,26 @@ class DiscoverCharacteristic: Operation {
                 fail(Error.missingCharacteristicError(characteristicIdentifier))
             }
             else {
-                state = .completed
+                success()
             }
         }
         else {
-            precondition(false, "unexpected event response: \(event)")
+            precondition(false, "Unexpected event response: \(event)")
         }
     }
     
+    func success() {
+        state = .completed
+        
+        callback?(true)
+        callback = nil
+    }
+    
     func fail(_ error: NSError) {
-        // TODO: Add missing error handling.
+        state = .failed(error)
+
+        callback?(false)
+        callback = nil        
     }
     
 }

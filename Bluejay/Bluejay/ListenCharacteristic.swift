@@ -11,14 +11,14 @@ import CoreBluetooth
 
 class ListenCharacteristic: Operation {
     
-    var state = OperationState.notStarted
+    var state = OperationState.notStarted    
     var peripheral: CBPeripheral
     
     private var characteristicIdentifier: CharacteristicIdentifier
     private var value: Bool
     private var callback: ((WriteResult) -> Void)?
     
-    init(characteristicIdentifier: CharacteristicIdentifier, peripheral: CBPeripheral, value: Bool, callback: ((WriteResult) -> Void)?) {
+    init(characteristicIdentifier: CharacteristicIdentifier, peripheral: CBPeripheral, value: Bool, callback: @escaping (WriteResult) -> Void) {
         self.characteristicIdentifier = characteristicIdentifier
         self.peripheral = peripheral
         self.value = value
@@ -37,6 +37,7 @@ class ListenCharacteristic: Operation {
         }
         
         state = .running
+        
         peripheral.setNotifyValue(value, for: characteristic)
     }
     
@@ -50,8 +51,10 @@ class ListenCharacteristic: Operation {
                 )
             }
             
-            callback?(.success)
             state = .completed
+            
+            callback?(.success)
+            callback = nil
         }
         else {
             preconditionFailure(
@@ -61,8 +64,10 @@ class ListenCharacteristic: Operation {
     }
     
     func fail(_ error: NSError) {
-        callback?(.failure(error))
         state = .failed(error)
+
+        callback?(.failure(error))
+        callback = nil
     }
     
 }

@@ -13,4 +13,13 @@ enum OperationState {
     case running
     case failed(NSError)
     case completed
+    
+    var isCompleted: Bool {
+        switch self {
+        case .completed, .failed:
+            return true
+        default:
+            return false
+        }
+    }
 }
