@@ -193,6 +193,11 @@ extension Queue: ConnectionObserver {
             log.debug("Updating queue: Bluetooth available.")
             update()
         }
+        else {
+            if !isEmpty() {
+                cancelAll(Error.unexpectedDisconnectError())
+            }
+        }
     }
     
     func connected(_ peripheral: Peripheral) {
