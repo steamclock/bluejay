@@ -44,10 +44,19 @@ class ViewController: UIViewController {
     }
     
     @IBAction func scan() {
-        bluejay.scan(serviceIdentifier: heartRateService, serialNumber: "qwerty") { (result) in
+        bluejay.scan(serviceIdentifier: heartRateService) { (result) in
             switch result {
             case .success(let scannedPeripherals):
                 log.debug("Scan succeeded with peripherals: \(scannedPeripherals)")
+                
+                self.bluejay.connect(PeripheralIdentifier(uuid: "\(scannedPeripherals.first!.0.identifier)")!, completion: { (result) in
+                    switch result {
+                    case .success(let peripheral):
+                        log.debug("Connect succeeded with peripheral: \(peripheral)")
+                    case .failure(let error):
+                        log.debug("Connect failed with error: \(error.localizedDescription)")
+                    }
+                })
             case .failure(let error):
                 log.debug("Scan failed with error: \(error.localizedDescription)")
             }
@@ -55,10 +64,10 @@ class ViewController: UIViewController {
     }
     
     @IBAction func read() {
-        bluejay.read(from: bodySensorLocation) { (result: ReadResult<IncomingString>) in
+        bluejay.read(from: bodySensorLocation) { (result: ReadResult<String>) in
             switch result {
             case .success(let value):
-                log.debug("Read succeeded with value: \(value.string)")
+                log.debug("Read succeeded with value: \(value)")
             case .failure(let error):
                 log.debug("Read failed with error: \(error.localizedDescription)")
             }
@@ -66,7 +75,7 @@ class ViewController: UIViewController {
     }
     
     @IBAction func write() {
-        bluejay.write(to: bodySensorLocation, value: OutgoingString("Wrist")) { (result) in
+        bluejay.write(to: bodySensorLocation, value: "Wrist") { (result) in
             switch result {
             case .success:
                 log.debug("Write succeeded.")
@@ -106,30 +115,6 @@ class ViewController: UIViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
-    }
-    
-}
-
-struct IncomingString: Receivable {
-    
-    var string: String
-    
-    init(bluetoothData: Data) {
-        string = String(data: bluetoothData, encoding: .utf8)!
-    }
-    
-}
-
-struct OutgoingString: Sendable {
-    
-    var string: String
-    
-    init(_ string: String) {
-        self.string = string
-    }
-    
-    func toBluetoothData() -> Data {
-        return string.data(using: .utf8)!
     }
     
 }

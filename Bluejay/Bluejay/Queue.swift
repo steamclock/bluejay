@@ -37,9 +37,11 @@ class Queue {
     func stopScanning(_ error: NSError) {
         scan?.fail(error)
         scan = nil
+        
+        update()
     }
     
-    private func startScanning() {
+    private func attemptScanning() {
         while scan != nil {
             switch scan!.state {
             case .notStarted:
@@ -114,7 +116,7 @@ class Queue {
         
         if scan != nil {
             log.debug("Queue will handle a scan.")
-            startScanning()
+            attemptScanning()
             return
         }
         

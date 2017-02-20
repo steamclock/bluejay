@@ -76,6 +76,8 @@ class Scan: Queueable {
             else {
                 manager.stopScan()
                 state = .completed
+                
+                callback?(.success(scannedPeripherals))
             }
         }
         else {
