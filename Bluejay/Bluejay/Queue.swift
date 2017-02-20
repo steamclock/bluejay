@@ -17,6 +17,8 @@ class Queue {
     private var connectionQueue = [Connection]()
     private var operationQueue = [Operation]()
     
+    private var connectionTimer: Timer?
+    
     func cancelAll(_ error: NSError) {
         stopScanning(error)
         
@@ -66,20 +68,46 @@ class Queue {
             switch connectionQueue[0].state {
             case .notStarted:
                 log.debug("A task in the connection queue is starting.")
+                
+                stopConnectionTimer()
+                startConnectionTimer()
+                
                 connectionQueue[0].start()
             case .running:
                 log.debug("A task in the connection queue is still running.")
                 return
             case .failed(let error):
                 log.debug("A task in the connection queue has failed.")
+                
+                stopConnectionTimer()
+                
                 connectionQueue.removeFirst()
                 cancelAll(error)
             case .completed:
                 log.debug("A task in the connection queue has completed.")
+                
+                stopConnectionTimer()
+                
                 connectionQueue.removeFirst()
                 update()
             }
         }
+    }
+    
+    private func startConnectionTimer() {
+        log.debug("Starting a connection timer.")
+        
+        connectionTimer = Timer.scheduledTimer(withTimeInterval: 15, repeats: false, block: { (timer) in
+            log.debug("A task in the connection queue has timed out.")
+            self.cancelAll(Error.cancelledError())
+        })
+    }
+    
+    private func stopConnectionTimer() {
+        log.debug("Stopping a connection timer.")
+        
+        connectionTimer?.invalidate()
+        connectionTimer = nil
     }
     
     private func attemptOperations() {
