@@ -516,7 +516,7 @@ extension Bluejay: CBCentralManagerDelegate {
         
         log.debug("Did discover: \(peripheralString)")
         
-        Queue.shared.process(event: .didDiscoverPeripheral(peripheral, advertisementData), error: nil)
+        Queue.shared.process(event: .didDiscoverPeripheral(peripheral, advertisementData, RSSI), error: nil)
     }
     
 }

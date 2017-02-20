@@ -21,7 +21,7 @@ class Scan: Queueable {
     private let serialNumber: String?
     private var callback: ((ScanResult) -> Void)?
     
-    private var scannedPeripherals = [(CBPeripheral, [String : Any])]()
+    private var scannedPeripherals = [(CBPeripheral, [String : Any], NSNumber)]()
 
     static var blacklist = [CBPeripheral]()
     
@@ -43,13 +43,13 @@ class Scan: Queueable {
     func process(event: Event) {
         log.debug("Processing operation: Scan")
         
-        if case .didDiscoverPeripheral(let peripheral, let advertisementData) = event {
+        if case .didDiscoverPeripheral(let peripheral, let advertisementData, let rssi) = event {
             // Remove duplicates.
             scannedPeripherals = scannedPeripherals.filter({ (scannedPeripheral) -> Bool in
                 return scannedPeripheral.0.identifier != peripheral.identifier
             })
             
-            scannedPeripherals.append(peripheral, advertisementData)
+            scannedPeripherals.append(peripheral, advertisementData, rssi)
             
             if serialNumber != nil {
                 log.debug("Attempting to match serial number.")
@@ -69,6 +69,7 @@ class Scan: Queueable {
                         serialNumber: serialNumber!,
                         to: peripheral,
                         with: advertisementData,
+                        rssi: rssi,
                         callback: callback!
                         )
                 }
@@ -98,6 +99,7 @@ class Scan: Queueable {
         serialNumber: String,
         to peripheral: CBPeripheral,
         with advertisementData: [String : Any],
+        rssi: NSNumber,
         callback: @escaping ((ScanResult) -> Void))
     {
         Bluejay.shared.connect(PeripheralIdentifier(uuid: peripheral.identifier), completion: { (result) in
@@ -111,7 +113,7 @@ class Scan: Queueable {
                             
                             Scan.blacklist = []
                             
-                            callback(.success([(peripheral, advertisementData)]))
+                            callback(.success([(peripheral, advertisementData, rssi)]))
                         }
                         else {
                             log.debug("Serial number does not match.")

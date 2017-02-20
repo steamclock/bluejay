@@ -11,6 +11,6 @@ import CoreBluetooth
 
 /// Indicates a successful or failed scan attempt, where the success case contains a list of the peripherals scanned and their advertisement data.
 public enum ScanResult {
-    case success([(CBPeripheral, [String : Any])])
+    case success([(CBPeripheral, [String : Any], NSNumber)])
     case failure(Swift.Error)
 }
