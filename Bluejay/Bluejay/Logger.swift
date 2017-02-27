@@ -50,16 +50,16 @@ class Logger {
         
         log.add(destination: systemDestination)
         
-        let documentURLs = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-        
-        guard let documentURL = documentURLs.first else {
-            return
-        }
-        
-        let logFileURL = documentURL.appendingPathComponent(bluejayLogFileName)
-        addFileDestination(logFileURL)
-        
-        beginMonitoringLogFile()
+//        let documentURLs = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+//        
+//        guard let documentURL = documentURLs.first else {
+//            return
+//        }
+//        
+//        let logFileURL = documentURL.appendingPathComponent(bluejayLogFileName)
+//        addFileDestination(logFileURL)
+//        
+//        beginMonitoringLogFile()
     }
     
     private func addFileDestination(_ logFileURL: URL) {
@@ -93,35 +93,35 @@ class Logger {
     }
     
     @objc private func checkLogFileSize() {
-        let documentURLs = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-        
-        if let documentURL = documentURLs.first {
-            let logFileURL = documentURL.appendingPathComponent(bluejayLogFileName)
-            
-            do {
-                let fileAttributes : NSDictionary? = try FileManager.default.attributesOfItem(atPath: logFileURL.path) as NSDictionary?
-                
-                if let logFileAttributes = fileAttributes {
-                    log.debug("Log file size: \(logFileAttributes.fileSize())")
-                    
-                    if logFileAttributes.fileSize() > 102400 {
-                        log.debug("Log rolling over due file size exceeding 100KB.")
-                        
-                        // Remove log file destination before recreating the log file.
-                        log.remove(destinationWithIdentifier: fileDestinationIdentifier)
-                        
-                        // Create a new blank log file.
-                        FileManager.default.createFile(atPath: logFileURL.path, contents: nil, attributes: nil)
-                        
-                        // Re-add log file destination.
-                        addFileDestination(logFileURL)
-                    }
-                }
-            }
-            catch {
-                log.debug("Unable to read log file attributes.")
-            }
-        }
+//        let documentURLs = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+//        
+//        if let documentURL = documentURLs.first {
+//            let logFileURL = documentURL.appendingPathComponent(bluejayLogFileName)
+//            
+//            do {
+//                let fileAttributes : NSDictionary? = try FileManager.default.attributesOfItem(atPath: logFileURL.path) as NSDictionary?
+//                
+//                if let logFileAttributes = fileAttributes {
+//                    log.debug("Log file size: \(logFileAttributes.fileSize())")
+//                    
+//                    if logFileAttributes.fileSize() > 102400 {
+//                        log.debug("Log rolling over due file size exceeding 100KB.")
+//                        
+//                        // Remove log file destination before recreating the log file.
+//                        log.remove(destinationWithIdentifier: fileDestinationIdentifier)
+//                        
+//                        // Create a new blank log file.
+//                        FileManager.default.createFile(atPath: logFileURL.path, contents: nil, attributes: nil)
+//                        
+//                        // Re-add log file destination.
+//                        addFileDestination(logFileURL)
+//                    }
+//                }
+//            }
+//            catch {
+//                log.debug("Unable to read log file attributes.")
+//            }
+//        }
     }
     
     private func fetchLogs() {

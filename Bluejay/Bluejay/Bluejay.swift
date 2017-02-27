@@ -134,10 +134,26 @@ public class Bluejay: NSObject {
     
     // MARK: - Scanning
     
-    public func scan(serviceIdentifier: ServiceIdentifier, serialNumber: String? = nil, completion: @escaping (ScanResult) -> Void) {
+    public func scan(
+        duration: TimeInterval = 0,
+        allowDuplicates: Bool = false,
+        serviceIdentifiers: [ServiceIdentifier]?,
+        discovery: @escaping (ScanDiscovery, [ScanDiscovery]) -> (ScanAction),
+        stopped: @escaping ([ScanDiscovery], Swift.Error?) -> Void
+        )
+    {
         log.debug("Starting scan.")
         
-        Queue.shared.add(scan: Scan(serviceIdentifier: serviceIdentifier, serialNumber: serialNumber, manager: cbCentralManager, callback: completion))
+        let scanOperation = Scan(
+            duration: duration,
+            allowDuplicates: allowDuplicates,
+            serviceIdentifiers: serviceIdentifiers,
+            discovery: discovery,
+            stopped: stopped,
+            manager: cbCentralManager
+        )
+        
+        Queue.shared.add(scan: scanOperation)
     }
     
     public func stopScanning() {
@@ -145,7 +161,6 @@ public class Bluejay: NSObject {
         
         cbCentralManager.stopScan()
         
-        Scan.blacklist = []
         Queue.shared.stopScanning(Error.cancelledError())
     }
     
