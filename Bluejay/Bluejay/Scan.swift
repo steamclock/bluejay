@@ -62,6 +62,11 @@ class Scan: Queueable {
         if case .didDiscoverPeripheral(let peripheral, let advertisementData, let rssi) = event {
             let newDiscovery = ScanDiscovery(peripheral: peripheral, advertisementPacket: advertisementData, rssi: rssi.intValue)
             
+            // Only predict losing signals to broadcasting peripherals if allow duplicates is enabled, as that mode is mostly used in monitoring context where we need to keep track of advertising peripherals continously.
+            if allowDuplicates {
+                refreshTimer(identifier: newDiscovery.peripheral.identifier)
+            }
+            
             if let indexOfExistingDiscovery = discoveries.index(where: { (existingDiscovery) -> Bool in
                 return existingDiscovery.peripheral.identifier == peripheral.identifier
             })
@@ -79,11 +84,6 @@ class Scan: Queueable {
             }
             else {
                 discoveries.append(newDiscovery)
-            }
-            
-            // Only predict losing signals to broadcasting peripherals if allow duplicates is enabled, as that mode is mostly used in monitoring context where we need to keep track of advertising peripherals continously.
-            if allowDuplicates {
-                refreshTimer(identifier: newDiscovery.peripheral.identifier)
             }
             
             if discovery(newDiscovery, discoveries) == .stop {
