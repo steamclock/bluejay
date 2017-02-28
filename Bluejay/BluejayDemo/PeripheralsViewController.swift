@@ -19,6 +19,11 @@ class PeripheralsViewController: UITableViewController {
         super.viewDidLoad()
         
         bluejay.start()
+        
+        scan()
+    }
+    
+    @IBAction func scan() {
         bluejay.scan(
             allowDuplicates: true,
             serviceIdentifiers: nil,
@@ -29,6 +34,10 @@ class PeripheralsViewController: UITableViewController {
                 
                 weakSelf.peripherals = discoveries
                 weakSelf.tableView.reloadData()
+                
+                if discovery == nil {
+                    return .stop
+                }
                 
                 return .continue
         }) { (discoveries, error) in

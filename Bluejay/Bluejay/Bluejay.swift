@@ -138,7 +138,7 @@ public class Bluejay: NSObject {
         duration: TimeInterval = 0,
         allowDuplicates: Bool = false,
         serviceIdentifiers: [ServiceIdentifier]?,
-        discovery: @escaping (ScanDiscovery, [ScanDiscovery]) -> (ScanAction),
+        discovery: @escaping (ScanDiscovery?, [ScanDiscovery]) -> (ScanAction),
         stopped: @escaping ([ScanDiscovery], Swift.Error?) -> Void
         )
     {

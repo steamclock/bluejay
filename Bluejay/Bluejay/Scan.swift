@@ -20,15 +20,16 @@ class Scan: Queueable {
     private let duration: TimeInterval
     private let allowDuplicates: Bool
     private let serviceIdentifiers: [ServiceIdentifier]?
-    private let discovery: (ScanDiscovery, [ScanDiscovery]) -> (ScanAction)
+    private let discovery: (ScanDiscovery?, [ScanDiscovery]) -> (ScanAction)
     private let stopped: ([ScanDiscovery], Swift.Error?) -> Void
     
     private var discoveries = [ScanDiscovery]()
+    private var timers = [(UUID, Timer)]()
     
     init(duration: TimeInterval,
          allowDuplicates: Bool,
          serviceIdentifiers: [ServiceIdentifier]?,
-         discovery: @escaping (ScanDiscovery, [ScanDiscovery]) -> (ScanAction),
+         discovery: @escaping (ScanDiscovery?, [ScanDiscovery]) -> (ScanAction),
          stopped: @escaping ([ScanDiscovery], Swift.Error?) -> Void,
          manager: CBCentralManager)
     {
@@ -77,7 +78,14 @@ class Scan: Queueable {
                 discoveries.append(newDiscovery)
             }
             
+            // Only predict losing signals to broadcasting peripherals if allow duplicates is enabled, as that mode is mostly used in monitoring context where we need to keep track of advertising peripherals continously.
+            if allowDuplicates {
+                refreshTimer(identifier: newDiscovery.peripheral.identifier)
+            }
+            
             if discovery(newDiscovery, discoveries) == .stop {
+                clearTimers()
+                
                 manager.stopScan()
                 state = .completed
                 
@@ -90,10 +98,61 @@ class Scan: Queueable {
     }
     
     func fail(_ error : NSError) {
+        clearTimers()
+        
         manager.stopScan()
         state = .failed(error)
         
         stopped(discoveries, error)
+    }
+    
+    private func refreshTimer(identifier: UUID) {
+        if let indexOfExistingTimer = timers.index(where: { (uuid, timer) -> Bool in
+            return uuid == identifier
+        })
+        {
+            timers[indexOfExistingTimer].1.invalidate()
+            timers.remove(at: indexOfExistingTimer)
+        }
+        
+        let timer = Timer.scheduledTimer(withTimeInterval: 10, repeats: false) { [weak self] (timer) in
+            guard let weakSelf = self else {
+                return
+            }
+            
+            if weakSelf.state.isCompleted {
+                return
+            }
+            else {
+                if let indexOfExpiredDiscovery = weakSelf.discoveries.index(where: { (discovery) -> Bool in
+                    return discovery.peripheral.identifier == identifier
+                })
+                {
+                    weakSelf.discoveries.remove(at: indexOfExpiredDiscovery)
+                    
+                    if weakSelf.discovery(nil, weakSelf.discoveries) == .stop {
+                        DispatchQueue.main.async {
+                            weakSelf.clearTimers()
+                            
+                            weakSelf.manager.stopScan()
+                            weakSelf.state = .completed
+                            
+                            weakSelf.stopped(weakSelf.discoveries, nil)
+                        }
+                    }
+                }
+            }
+        }
+        
+        timers.append((identifier, timer))
+    }
+    
+    private func clearTimers() {
+        for timer in timers {
+            timer.1.invalidate()
+        }
+        
+        timers = []
     }
     
 }

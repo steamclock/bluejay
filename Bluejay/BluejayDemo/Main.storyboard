@@ -48,7 +48,14 @@
                             <outlet property="delegate" destination="Qrb-hZ-61r" id="eNJ-bz-ToZ"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Peripherals" id="Yzr-zd-PBM"/>
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" title="Peripherals" id="Yzr-zd-PBM">
+                        <barButtonItem key="rightBarButtonItem" title="Scan" id="kwO-te-dxh">
+                            <connections>
+                                <action selector="scan" destination="Qrb-hZ-61r" id="EbE-J3-knc"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kMH-cT-sbQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
