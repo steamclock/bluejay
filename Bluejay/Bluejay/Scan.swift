@@ -20,7 +20,8 @@ class Scan: Queueable {
     private let duration: TimeInterval
     private let allowDuplicates: Bool
     private let serviceIdentifiers: [ServiceIdentifier]?
-    private let discovery: (ScanDiscovery?, [ScanDiscovery]) -> (ScanAction)
+    private let discovery: (ScanDiscovery, [ScanDiscovery]) -> ScanAction
+    private let expired: ((ScanDiscovery, [ScanDiscovery]) -> ScanAction)?
     private let stopped: ([ScanDiscovery], Swift.Error?) -> Void
     
     private var discoveries = [ScanDiscovery]()
@@ -29,7 +30,8 @@ class Scan: Queueable {
     init(duration: TimeInterval,
          allowDuplicates: Bool,
          serviceIdentifiers: [ServiceIdentifier]?,
-         discovery: @escaping (ScanDiscovery?, [ScanDiscovery]) -> (ScanAction),
+         discovery: @escaping (ScanDiscovery, [ScanDiscovery]) -> ScanAction,
+         expired: ((ScanDiscovery, [ScanDiscovery]) -> ScanAction)?,
          stopped: @escaping ([ScanDiscovery], Swift.Error?) -> Void,
          manager: CBCentralManager)
     {
@@ -37,6 +39,7 @@ class Scan: Queueable {
         self.allowDuplicates = allowDuplicates
         self.serviceIdentifiers = serviceIdentifiers
         self.discovery = discovery
+        self.expired = expired
         self.stopped = stopped
         self.manager = manager
     }
@@ -65,7 +68,7 @@ class Scan: Queueable {
             {
                 let existingDiscovery = discoveries[indexOfExistingDiscovery]
                 
-                // Ignore discovery if RSSI change is insignificant.
+                // Throttle discovery by ignoring discovery if the change of RSSI is insignificant.
                 if abs(existingDiscovery.rssi - rssi.intValue) < 5 {
                     return
                 }
@@ -128,9 +131,10 @@ class Scan: Queueable {
                     return discovery.peripheral.identifier == identifier
                 })
                 {
+                    let expiredDiscovery = weakSelf.discoveries[indexOfExpiredDiscovery]
                     weakSelf.discoveries.remove(at: indexOfExpiredDiscovery)
                     
-                    if weakSelf.discovery(nil, weakSelf.discoveries) == .stop {
+                    if weakSelf.expired?(expiredDiscovery, weakSelf.discoveries) == .stop {
                         DispatchQueue.main.async {
                             weakSelf.clearTimers()
                             

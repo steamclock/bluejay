@@ -27,7 +27,7 @@ class PeripheralsViewController: UITableViewController {
         bluejay.scan(
             allowDuplicates: true,
             serviceIdentifiers: nil,
-            discovery: { [weak self] (discovery, discoveries) -> (ScanAction) in
+            discovery: { [weak self] (discovery, discoveries) -> ScanAction in
                 guard let weakSelf = self else {
                     return .stop
                 }
@@ -35,9 +35,17 @@ class PeripheralsViewController: UITableViewController {
                 weakSelf.peripherals = discoveries
                 weakSelf.tableView.reloadData()
                 
-                if discovery == nil {
+                return .continue
+            },
+            expired: { [weak self] (lostDiscovery, discoveries) -> ScanAction in
+                guard let weakSelf = self else {
                     return .stop
                 }
+                
+                debugPrint("Lost discovery: \(lostDiscovery)")
+                
+                weakSelf.peripherals = discoveries
+                weakSelf.tableView.reloadData()
                 
                 return .continue
         }) { (discoveries, error) in
