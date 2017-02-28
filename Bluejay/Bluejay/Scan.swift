@@ -118,7 +118,7 @@ class Scan: Queueable {
             timers.remove(at: indexOfExistingTimer)
         }
         
-        let timer = Timer.scheduledTimer(withTimeInterval: 10, repeats: false) { [weak self] (timer) in
+        let timer = Timer.scheduledTimer(withTimeInterval: 15, repeats: false) { [weak self] (timer) in
             guard let weakSelf = self else {
                 return
             }
