@@ -339,6 +339,31 @@ public class Bluejay: NSObject {
         }
     }
     
+    public func async<Result>(
+        jobs: @escaping (SyncPeripheral) throws -> Result,
+        completionOnMainThread: @escaping (ReadResult<Result>) -> Void)
+    {
+        if let peripheral = connectedPeripheral {
+            DispatchQueue.global().async {
+                do {
+                    let result = try jobs(SyncPeripheral(parent: peripheral))
+                    
+                    DispatchQueue.main.async {
+                        completionOnMainThread(.success(result))
+                    }
+                }
+                catch let error as NSError {
+                    DispatchQueue.main.async {
+                        completionOnMainThread(.failure(error))
+                    }
+                }
+            }
+        }
+        else {
+            completionOnMainThread(.failure(Error.notConnectedError()))
+        }
+    }
+    
 }
 
 // MARK: - CBCentralManagerDelegate
