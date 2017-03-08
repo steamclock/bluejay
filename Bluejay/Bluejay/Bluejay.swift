@@ -64,6 +64,11 @@ public class Bluejay: NSObject {
     /// Allows checking whether Bluejay is currently disconnecting from a peripheral.
     public var isDisconnecting: Bool = false
     
+    /// Allows checking whether Bluejay is currently scanning.
+    public var isScanning: Bool {
+        return cbCentralManager.isScanning
+    }
+    
     // MARK: - Initialization
     
     override init() {
