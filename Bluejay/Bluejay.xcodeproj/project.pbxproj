@@ -61,6 +61,7 @@
 		B8F6DC531E2D6952004891D8 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8F6DC521E2D6952004891D8 /* Logger.swift */; };
 		B8F6DC561E2D6A9C004891D8 /* Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8F6DC551E2D6A9C004891D8 /* Notifications.swift */; };
 		B8F8C0ED1E4E7CA300A0D0F7 /* Disconnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8F8C0EC1E4E7CA300A0D0F7 /* Disconnection.swift */; };
+		B8FE9DF51E73597A00D361CE /* RSSIObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8FE9DF41E73597A00D361CE /* RSSIObserver.swift */; };
 		C963376F716F30DEAA2F47E9 /* Pods_BluejayTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B30F88AC6C11B812FB55A055 /* Pods_BluejayTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -158,6 +159,7 @@
 		B8F6DC521E2D6952004891D8 /* Logger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		B8F6DC551E2D6A9C004891D8 /* Notifications.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Notifications.swift; sourceTree = "<group>"; };
 		B8F8C0EC1E4E7CA300A0D0F7 /* Disconnection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Disconnection.swift; sourceTree = "<group>"; };
+		B8FE9DF41E73597A00D361CE /* RSSIObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RSSIObserver.swift; sourceTree = "<group>"; };
 		CA9D0DDBCE2F5733134B0ED6 /* Pods-BluejayTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BluejayTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BluejayTests/Pods-BluejayTests.debug.xcconfig"; sourceTree = "<group>"; };
 		D3A376B191A26044FDEBF5C5 /* Pods-Bluejay.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Bluejay.release.xcconfig"; path = "Pods/Target Support Files/Pods-Bluejay/Pods-Bluejay.release.xcconfig"; sourceTree = "<group>"; };
 		F9DA2BB8096DC083CD6AF996 /* Pods-BluejayTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BluejayTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-BluejayTests/Pods-BluejayTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -350,6 +352,7 @@
 				B8C70FA81E1C69B60006CF58 /* Receivable.swift */,
 				B8C70FAA1E1C69C50006CF58 /* Sendable.swift */,
 				B8C70FB81E1C725C0006CF58 /* ConnectionObserver.swift */,
+				B8FE9DF41E73597A00D361CE /* RSSIObserver.swift */,
 				B8C052021E28561700EA3D76 /* ListenRestorer.swift */,
 			);
 			name = Protocols;
@@ -680,6 +683,7 @@
 				B88A0DA31E1DD18B00A00FF8 /* ReadCharacteristic.swift in Sources */,
 				B8022D981E1EEED900EA360B /* WriteResult.swift in Sources */,
 				B89AA4881E30373D006BA376 /* Scan.swift in Sources */,
+				B8FE9DF51E73597A00D361CE /* RSSIObserver.swift in Sources */,
 				B8C70FA91E1C69B60006CF58 /* Receivable.swift in Sources */,
 				B8C70FB71E1C71880006CF58 /* Helper.swift in Sources */,
 				B88A0DA71E1DD1DE00A00FF8 /* ListenCharacteristic.swift in Sources */,

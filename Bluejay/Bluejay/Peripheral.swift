@@ -19,6 +19,8 @@ public class Peripheral: NSObject {
     fileprivate var listeners: [CharacteristicIdentifier : (ReadResult<Data?>) -> Void] = [:]
     fileprivate var listenersBeingCancelled: [CharacteristicIdentifier] = []
     
+    fileprivate var observers: [WeakRSSIObserver] = []
+    
     // MARK: - Initialization
     
     init(cbPeripheral: CBPeripheral) {
@@ -96,6 +98,17 @@ public class Peripheral: NSObject {
         else {
             cancelAllOperations(error ?? Error.unknownError())
         }
+    }
+    
+    // MARK: - RSSI Event
+    
+    public func register(observer: RSSIObserver) {
+        observers = observers.filter { $0.weakReference != nil && $0.weakReference !== observer }
+        observers.append(WeakRSSIObserver(weakReference: observer))
+    }
+    
+    public func unregister(observer: RSSIObserver) {
+        observers = observers.filter { $0.weakReference != nil && $0.weakReference !== observer }
     }
     
     // MARK: - Actions
@@ -308,6 +321,12 @@ extension Peripheral: CBPeripheralDelegate {
     
     public func peripheral(_ peripheral: CBPeripheral, didUpdateNotificationStateFor characteristic: CBCharacteristic, error: Swift.Error?) {
         handleEvent(.didUpdateCharacteristicNotificationState(characteristic), error: error as NSError?)
+    }
+    
+    public func peripheral(_ peripheral: CBPeripheral, didReadRSSI RSSI: NSNumber, error: Swift.Error?) {
+        for observer in observers {
+            observer.weakReference?.peripheral(peripheral, didReadRSSI: RSSI, error: error)
+        }
     }
     
 }
