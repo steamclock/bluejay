@@ -102,6 +102,10 @@ public class Peripheral: NSObject {
     
     // MARK: - RSSI Event
     
+    public func readRSSI() {
+        cbPeripheral.readRSSI()
+    }
+    
     public func register(observer: RSSIObserver) {
         observers = observers.filter { $0.weakReference != nil && $0.weakReference !== observer }
         observers.append(WeakRSSIObserver(weakReference: observer))
