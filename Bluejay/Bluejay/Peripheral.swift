@@ -124,7 +124,7 @@ public class Peripheral: NSObject {
             "Cannot read from characteristic: \(characteristicIdentifier.uuid), which is already being listened on."
         )
         
-        log.debug("Queueing read to: \(characteristicIdentifier.uuid.uuidString)")
+        // log.debug("Queueing read to: \(characteristicIdentifier.uuid.uuidString)")
         
         discoverCharactersitic(characteristicIdentifier, callback: { [weak self] success in
             guard let weakSelf = self else {
@@ -144,7 +144,7 @@ public class Peripheral: NSObject {
     
     /// Write to a specified characteristic.
     public func write<S: Sendable>(to characteristicIdentifier: CharacteristicIdentifier, value: S, completion: @escaping (WriteResult) -> Void) {
-        log.debug("Queueing write to: \(characteristicIdentifier.uuid.uuidString) with value of: \(value)")
+        // log.debug("Queueing write to: \(characteristicIdentifier.uuid.uuidString) with value of: \(value)")
         
         discoverCharactersitic(characteristicIdentifier, callback: { [weak self] success in
             guard let weakSelf = self else {
@@ -159,7 +159,7 @@ public class Peripheral: NSObject {
     
     /// Listen for notifications on a specified characterstic.
     public func listen<R: Receivable>(to characteristicIdentifier: CharacteristicIdentifier, completion: @escaping (ReadResult<R>) -> Void) {
-        log.debug("Start listening: \(characteristicIdentifier.uuid.uuidString)")
+        // log.debug("Start listening: \(characteristicIdentifier.uuid.uuidString)")
         
         discoverCharactersitic(characteristicIdentifier, callback: { [weak self] success in
             guard let weakSelf = self else {
@@ -176,7 +176,7 @@ public class Peripheral: NSObject {
                 
                 switch result {
                 case .success:
-                    log.debug("Listen successful: \(characteristicIdentifier.uuid.uuidString)")
+                    // log.debug("Listen successful: \(characteristicIdentifier.uuid.uuidString)")
                     
                     weakSelf.listeners[characteristicIdentifier] = { dataResult in
                         completion(ReadResult<R>(dataResult: dataResult))
@@ -185,7 +185,7 @@ public class Peripheral: NSObject {
                     // Make sure a successful listen is cached, so Bluejay can inform which characteristics need their listens restored on state restoration.
                     weakSelf.cache(listeningCharacteristic: characteristicIdentifier)
                 case .failure(let error):
-                    log.debug("Listen failed: \(characteristicIdentifier.uuid.uuidString)")
+                    // log.debug("Listen failed: \(characteristicIdentifier.uuid.uuidString)")
                     
                     completion(.failure(error))
                 }
@@ -202,7 +202,7 @@ public class Peripheral: NSObject {
      Currently this can also cancel a regular in-progress read as well, but that behaviour may change down the road.
      */
     public func endListen(to characteristicIdentifier: CharacteristicIdentifier, sendFailure: Bool, completion: ((WriteResult) -> Void)? = nil) {
-        log.debug("Ending listen: \(characteristicIdentifier.uuid.uuidString)")
+        // log.debug("Ending listen: \(characteristicIdentifier.uuid.uuidString)")
         
         discoverCharactersitic(characteristicIdentifier, callback: { [weak self] success in
             guard let weakSelf = self else {
@@ -218,11 +218,11 @@ public class Peripheral: NSObject {
                 weakSelf.listeners[characteristicIdentifier] = nil
                 
                 if(sendFailure) {
-                    log.debug("Sending listeners an error for ending the listen on: \(characteristicIdentifier.uuid.uuidString)")
+                    // log.debug("Sending listeners an error for ending the listen on: \(characteristicIdentifier.uuid.uuidString)")
                     listenCallback?(.failure(Error.cancelledError()))
                 }
                 
-                log.debug("Ending of listen successful: \(characteristicIdentifier.uuid.uuidString)")
+                // log.debug("Ending of listen successful: \(characteristicIdentifier.uuid.uuidString)")
                 
                 completion?(result)
                 
@@ -251,21 +251,21 @@ public class Peripheral: NSObject {
         let serviceUuid = listeningCharacteristic.service.uuid.uuidString
         let characteristicUuid = listeningCharacteristic.uuid.uuidString
         
-        log.debug("Adding cached listen: \(characteristicUuid) for service: \(serviceUuid)")
+        // log.debug("Adding cached listen: \(characteristicUuid) for service: \(serviceUuid)")
         
         Defaults[.listeningCharacteristics][serviceUuid] = characteristicUuid
         
         // Don't want to open up any possibilities where the defaults are not saved immediately.
         Defaults.synchronize()
         
-        log.debug("Current cached listens: \(Defaults[.listeningCharacteristics])")
+        // log.debug("Current cached listens: \(Defaults[.listeningCharacteristics])")
     }
     
     private func remove(listeningCharacteristic: CharacteristicIdentifier) {
         let serviceUuid = listeningCharacteristic.service.uuid.uuidString
         let characteristicUuid = listeningCharacteristic.uuid.uuidString
         
-        log.debug("Removing cached listen: \(characteristicUuid) for service: \(serviceUuid)")
+        // log.debug("Removing cached listen: \(characteristicUuid) for service: \(serviceUuid)")
         
         Defaults[.listeningCharacteristics][serviceUuid] = nil
         
@@ -276,7 +276,7 @@ public class Peripheral: NSObject {
             return characteristicIdentifier.uuid.uuidString != listeningCharacteristic.uuid.uuidString
         }
         
-        log.debug("Current cached listens: \(Defaults[.listeningCharacteristics])")
+        // log.debug("Current cached listens: \(Defaults[.listeningCharacteristics])")
     }
 }
 

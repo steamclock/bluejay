@@ -24,7 +24,7 @@ class DiscoverService: Operation {
     }
     
     func start() {
-        log.debug("Starting operation: DiscoverService")
+        // log.debug("Starting operation: DiscoverService")
 
         if peripheral.service(with: serviceIdentifier.uuid) != nil {
             success()
@@ -37,7 +37,7 @@ class DiscoverService: Operation {
     }
     
     func process(event: Event) {
-        log.debug("Processing operation: DiscoverService")
+        // log.debug("Processing operation: DiscoverService")
 
         if case .didDiscoverServices = event {
             if peripheral.service(with: serviceIdentifier.uuid) == nil {

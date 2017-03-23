@@ -47,16 +47,16 @@ class Queue {
         while scan != nil {
             switch scan!.state {
             case .notStarted:
-                log.debug("Scan is starting.")
+                // log.debug("Scan is starting.")
                 scan?.start()
             case .running:
-                log.debug("Scan is still running.")
+                // log.debug("Scan is still running.")
                 return
             case .failed(let error):
-                log.debug("Scan has failed.")
+                // log.debug("Scan has failed.")
                 stopScanning(error)
             case .completed:
-                log.debug("Scan has completed.")
+                // log.debug("Scan has completed.")
                 scan = nil
                 update()
             }
@@ -67,24 +67,24 @@ class Queue {
         while connectionQueue.count > 0 {
             switch connectionQueue[0].state {
             case .notStarted:
-                log.debug("A task in the connection queue is starting.")
+                // log.debug("A task in the connection queue is starting.")
                 
                 stopConnectionTimer()
                 startConnectionTimer()
                 
                 connectionQueue[0].start()
             case .running:
-                log.debug("A task in the connection queue is still running.")
+                // log.debug("A task in the connection queue is still running.")
                 return
             case .failed(let error):
-                log.debug("A task in the connection queue has failed.")
+                // log.debug("A task in the connection queue has failed.")
                 
                 stopConnectionTimer()
                 
                 connectionQueue.removeFirst()
                 cancelAll(error)
             case .completed:
-                log.debug("A task in the connection queue has completed.")
+                // log.debug("A task in the connection queue has completed.")
                 
                 stopConnectionTimer()
                 
@@ -95,16 +95,16 @@ class Queue {
     }
     
     private func startConnectionTimer() {
-        log.debug("Starting a connection timer.")
+        // log.debug("Starting a connection timer.")
         
         connectionTimer = Timer.scheduledTimer(withTimeInterval: 15, repeats: false, block: { (timer) in
-            log.debug("A task in the connection queue has timed out.")
+            // log.debug("A task in the connection queue has timed out.")
             self.cancelAll(Error.cancelledError())
         })
     }
     
     private func stopConnectionTimer() {
-        log.debug("Stopping a connection timer.")
+        // log.debug("Stopping a connection timer.")
         
         connectionTimer?.invalidate()
         connectionTimer = nil
@@ -114,17 +114,17 @@ class Queue {
         while operationQueue.count > 0 {
             switch operationQueue[0].state {
             case .notStarted:
-                log.debug("A task in the operation queue is starting.")
+                // log.debug("A task in the operation queue is starting.")
                 operationQueue[0].start()
             case .running:
-                log.debug("A task in the operation queue is still running.")
+                // log.debug("A task in the operation queue is still running.")
                 return
             case .failed(let error):
-                log.debug("A task in the operation queue has failed.")
+                // log.debug("A task in the operation queue has failed.")
                 operationQueue.removeFirst()
                 cancelAll(error)
             case .completed:
-                log.debug("A task in the operation queue has completed.")
+                // log.debug("A task in the operation queue has completed.")
                 operationQueue.removeFirst()
                 update()
             }
@@ -133,33 +133,33 @@ class Queue {
     
     func update() {
         if !Bluejay.shared.isBluetoothAvailable {
-            log.debug("Queue is paused because Bluetooth is not available yet.")
+            // log.debug("Queue is paused because Bluetooth is not available yet.")
             return
         }
         
         if scan == nil && connectionQueue.isEmpty && operationQueue.isEmpty {
-            log.debug("Queue is empty, nothing to run.")
+            // log.debug("Queue is empty, nothing to run.")
             return
         }
         
         if scan != nil {
-            log.debug("Queue will handle a scan.")
+            // log.debug("Queue will handle a scan.")
             attemptScanning()
             return
         }
         
         if !connectionQueue.isEmpty {
-            log.debug("Queue will handle the connection queue.")
+            // log.debug("Queue will handle the connection queue.")
             attemptConnections()
             return
         }
         
         if !Bluejay.shared.isConnected {
-            log.debug("Queue is paused because no peripheral is connected.")
+            // log.debug("Queue is paused because no peripheral is connected.")
             return
         }
         
-        log.debug("Queue will handle the operation queue.")
+        // log.debug("Queue will handle the operation queue.")
         attemptOperations()
     }
     

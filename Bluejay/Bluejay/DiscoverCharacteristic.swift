@@ -24,7 +24,7 @@ class DiscoverCharacteristic: Operation {
     }
     
     func start() {
-        log.debug("Starting operation: DiscoverCharacteristic")
+        // log.debug("Starting operation: DiscoverCharacteristic")
 
         guard let service = peripheral.service(with: characteristicIdentifier.service.uuid) else {
             fail(Error.missingServiceError(characteristicIdentifier.service))
@@ -42,7 +42,7 @@ class DiscoverCharacteristic: Operation {
     }
     
     func process(event: Event) {
-        log.debug("Processing operation: DiscoverCharacteristic")
+        // log.debug("Processing operation: DiscoverCharacteristic")
 
         guard let service = peripheral.service(with: characteristicIdentifier.service.uuid) else {
             fail(Error.missingServiceError(characteristicIdentifier.service))
