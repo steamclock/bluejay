@@ -87,9 +87,9 @@ public class SyncPeripheral {
                 case .failure(let e):
                     error = e
                 }
-                
+                                
                 if(error != nil || action == .done) {
-                    self.parent.endListen(to: characteristicIdentifier, sendFailure: true, completion: { result in
+                    self.parent.endListen(to: characteristicIdentifier, sendFailure: error != nil, completion: { result in
                         sem.signal()
                     })
                 }
