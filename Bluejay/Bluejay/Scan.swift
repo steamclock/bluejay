@@ -57,7 +57,7 @@ class Scan: Queueable {
     }
     
     func process(event: Event) {
-        log.debug("Processing operation: Scan")
+        // log.debug("Processing operation: Scan")
         
         if case .didDiscoverPeripheral(let peripheral, let advertisementData, let rssi) = event {
             let newDiscovery = ScanDiscovery(peripheral: peripheral, advertisementPacket: advertisementData, rssi: rssi.intValue)
