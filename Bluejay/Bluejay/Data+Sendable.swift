@@ -15,3 +15,11 @@ extension Data: Sendable {
     }
     
 }
+
+extension Data: Receivable {
+    
+    public init(bluetoothData: Data) {
+        self = bluetoothData
+    }
+    
+}
