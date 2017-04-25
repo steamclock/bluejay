@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "A02EB5A5DC90ADE8F23A33787219293B5FFD18AA",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "0C08291DEAF40D5C17D0D0D4926443593D33F3ED" : 9223372036854775807,
+    "A02EB5A5DC90ADE8F23A33787219293B5FFD18AA" : 9223372036854775807
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "177B4E51-79FB-463F-942F-C9BABC43E59A",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "0C08291DEAF40D5C17D0D0D4926443593D33F3ED" : "",
+    "A02EB5A5DC90ADE8F23A33787219293B5FFD18AA" : "bluejay\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "Bluejay",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "Bluejay\/Bluejay.xcworkspace",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/steamclock\/firstlight.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "0C08291DEAF40D5C17D0D0D4926443593D33F3ED"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/steamclock\/bluejay.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "A02EB5A5DC90ADE8F23A33787219293B5FFD18AA"
+    }
+  ]
+}

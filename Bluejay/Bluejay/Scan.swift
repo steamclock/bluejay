@@ -17,19 +17,31 @@ class Scan: Queueable {
     var state = OperationState.notStarted
     var manager: CBCentralManager
     
-    private let serviceIdentifier: ServiceIdentifier
-    private let serialNumber: String?
-    private var callback: ((ScanResult) -> Void)?
+    private let duration: TimeInterval
+    private let allowDuplicates: Bool
+    private let serviceIdentifiers: [ServiceIdentifier]?
+    private let discovery: (ScanDiscovery, [ScanDiscovery]) -> ScanAction
+    private let expired: ((ScanDiscovery, [ScanDiscovery]) -> ScanAction)?
+    private let stopped: ([ScanDiscovery], Swift.Error?) -> Void
     
-    private var scannedPeripherals = [(CBPeripheral, [String : Any])]()
-
-    static var blacklist = [CBPeripheral]()
+    private var discoveries = [ScanDiscovery]()
+    private var timers = [(UUID, Timer)]()
     
-    init(serviceIdentifier: ServiceIdentifier, serialNumber: String? = nil, manager: CBCentralManager, callback: @escaping ((ScanResult) -> Void)) {
-        self.serviceIdentifier = serviceIdentifier
-        self.serialNumber = serialNumber
+    init(duration: TimeInterval,
+         allowDuplicates: Bool,
+         serviceIdentifiers: [ServiceIdentifier]?,
+         discovery: @escaping (ScanDiscovery, [ScanDiscovery]) -> ScanAction,
+         expired: ((ScanDiscovery, [ScanDiscovery]) -> ScanAction)?,
+         stopped: @escaping ([ScanDiscovery], Swift.Error?) -> Void,
+         manager: CBCentralManager)
+    {
+        self.duration = duration
+        self.allowDuplicates = allowDuplicates
+        self.serviceIdentifiers = serviceIdentifiers
+        self.discovery = discovery
+        self.expired = expired
+        self.stopped = stopped
         self.manager = manager
-        self.callback = callback
     }
     
     func start() {
@@ -37,47 +49,50 @@ class Scan: Queueable {
         
         state = .running
         
-        manager.scanForPeripherals(withServices: [serviceIdentifier.uuid], options: [CBCentralManagerScanOptionAllowDuplicatesKey : false])
+        let services = serviceIdentifiers?.map({ (element) -> CBUUID in
+            return element.uuid
+        })
+        
+        manager.scanForPeripherals(withServices: services, options: [CBCentralManagerScanOptionAllowDuplicatesKey : allowDuplicates])
     }
     
     func process(event: Event) {
-        log.debug("Processing operation: Scan")
+        // log.debug("Processing operation: Scan")
         
-        if case .didDiscoverPeripheral(let peripheral, let advertisementData) = event {
-            // Remove duplicates.
-            scannedPeripherals = scannedPeripherals.filter({ (scannedPeripheral) -> Bool in
-                return scannedPeripheral.0.identifier != peripheral.identifier
+        if case .didDiscoverPeripheral(let peripheral, let advertisementData, let rssi) = event {
+            let newDiscovery = ScanDiscovery(peripheral: peripheral, advertisementPacket: advertisementData, rssi: rssi.intValue)
+            
+            // Only predict losing signals to broadcasting peripherals if allow duplicates is enabled, as that mode is mostly used in monitoring context where we need to keep track of advertising peripherals continously.
+            if allowDuplicates {
+                refreshTimer(identifier: newDiscovery.peripheral.identifier)
+            }
+            
+            if let indexOfExistingDiscovery = discoveries.index(where: { (existingDiscovery) -> Bool in
+                return existingDiscovery.peripheral.identifier == peripheral.identifier
             })
-            
-            scannedPeripherals.append(peripheral, advertisementData)
-            
-            if serialNumber != nil {
-                log.debug("Attempting to match serial number.")
+            {
+                let existingDiscovery = discoveries[indexOfExistingDiscovery]
                 
-                if Scan.blacklist.contains(where: { (blacklistedPeripheral) -> Bool in
-                    return blacklistedPeripheral.identifier == peripheral.identifier
-                }) {
-                    log.debug("Serial number does not match, blacklisted peripheral.")
+                // Throttle discovery by ignoring discovery if the change of RSSI is insignificant.
+                if abs(existingDiscovery.rssi - rssi.intValue) < 5 {
                     return
                 }
-                else {
-                    manager.stopScan()
-                    state = .completed
-                    
-                    match(
-                        serviceIdentifier: serviceIdentifier,
-                        serialNumber: serialNumber!,
-                        to: peripheral,
-                        with: advertisementData,
-                        callback: callback!
-                        )
-                }
+                
+                // Update existing discovery.
+                discoveries.remove(at: indexOfExistingDiscovery)
+                discoveries.insert(newDiscovery, at: indexOfExistingDiscovery)
             }
             else {
+                discoveries.append(newDiscovery)
+            }
+            
+            if discovery(newDiscovery, discoveries) == .stop {
+                clearTimers()
+                
                 manager.stopScan()
                 state = .completed
                 
-                callback?(.success(scannedPeripherals))
+                stopped(discoveries, nil)
             }
         }
         else {
@@ -86,68 +101,62 @@ class Scan: Queueable {
     }
     
     func fail(_ error : NSError) {
+        clearTimers()
+        
         manager.stopScan()
         state = .failed(error)
         
-        callback?(.failure(error))
-        callback = nil
+        stopped(discoveries, error)
     }
     
-    private func match(
-        serviceIdentifier: ServiceIdentifier,
-        serialNumber: String,
-        to peripheral: CBPeripheral,
-        with advertisementData: [String : Any],
-        callback: @escaping ((ScanResult) -> Void))
-    {
-        Bluejay.shared.connect(PeripheralIdentifier(uuid: peripheral.identifier), completion: { (result) in
-            switch result {
-            case .success(_):
-                Bluejay.shared.read(from: serialNumberCharacteristic, completion: { (result: ReadResult<String>) in
-                    switch result {
-                    case .success(let value):
-                        if value == serialNumber {
-                            log.debug("Serial number matches.")
+    private func refreshTimer(identifier: UUID) {
+        if let indexOfExistingTimer = timers.index(where: { (uuid, timer) -> Bool in
+            return uuid == identifier
+        })
+        {
+            timers[indexOfExistingTimer].1.invalidate()
+            timers.remove(at: indexOfExistingTimer)
+        }
+        
+        let timer = Timer.scheduledTimer(withTimeInterval: 15, repeats: false) { [weak self] (timer) in
+            guard let weakSelf = self else {
+                return
+            }
+            
+            if weakSelf.state.isCompleted {
+                return
+            }
+            else {
+                if let indexOfExpiredDiscovery = weakSelf.discoveries.index(where: { (discovery) -> Bool in
+                    return discovery.peripheral.identifier == identifier
+                })
+                {
+                    let expiredDiscovery = weakSelf.discoveries[indexOfExpiredDiscovery]
+                    weakSelf.discoveries.remove(at: indexOfExpiredDiscovery)
+                    
+                    if weakSelf.expired?(expiredDiscovery, weakSelf.discoveries) == .stop {
+                        DispatchQueue.main.async {
+                            weakSelf.clearTimers()
                             
-                            Scan.blacklist = []
+                            weakSelf.manager.stopScan()
+                            weakSelf.state = .completed
                             
-                            callback(.success([(peripheral, advertisementData)]))
-                        }
-                        else {
-                            log.debug("Serial number does not match.")
-                            
-                            Scan.blacklist.append(peripheral)
-                            
-                            Bluejay.shared.disconnect() { isDisconnectionSuccessful in
-                                if isDisconnectionSuccessful {
-                                    Bluejay.shared.scan(
-                                        serviceIdentifier: serviceIdentifier,
-                                        serialNumber: serialNumber,
-                                        completion: callback
-                                    )
-                                }
-                            }
-                        }
-                    case .failure(let error):
-                        log.debug("Failed to match serial number with error: \(error.localizedDescription)")
-                        
-                        Scan.blacklist.append(peripheral)
-                        
-                        Bluejay.shared.disconnect() { isDisconnectionSuccessful in
-                            if isDisconnectionSuccessful {
-                                Bluejay.shared.scan(
-                                    serviceIdentifier: serviceIdentifier,
-                                    serialNumber: serialNumber,
-                                    completion: callback
-                                )
-                            }
+                            weakSelf.stopped(weakSelf.discoveries, nil)
                         }
                     }
-                })
-            case .failure(let error):
-                log.debug("Failed to match serial number with error: \(error.localizedDescription)")
+                }
             }
-        })
+        }
+        
+        timers.append((identifier, timer))
+    }
+    
+    private func clearTimers() {
+        for timer in timers {
+            timer.1.invalidate()
+        }
+        
+        timers = []
     }
     
 }

@@ -64,6 +64,11 @@ public class Bluejay: NSObject {
     /// Allows checking whether Bluejay is currently disconnecting from a peripheral.
     public var isDisconnecting: Bool = false
     
+    /// Allows checking whether Bluejay is currently scanning.
+    public var isScanning: Bool {
+        return cbCentralManager.isScanning
+    }
+    
     // MARK: - Initialization
     
     override init() {
@@ -134,10 +139,28 @@ public class Bluejay: NSObject {
     
     // MARK: - Scanning
     
-    public func scan(serviceIdentifier: ServiceIdentifier, serialNumber: String? = nil, completion: @escaping (ScanResult) -> Void) {
+    public func scan(
+        duration: TimeInterval = 0,
+        allowDuplicates: Bool = false,
+        serviceIdentifiers: [ServiceIdentifier]?,
+        discovery: @escaping (ScanDiscovery, [ScanDiscovery]) -> ScanAction,
+        expired: ((ScanDiscovery, [ScanDiscovery]) -> ScanAction)? = nil,
+        stopped: @escaping ([ScanDiscovery], Swift.Error?) -> Void
+        )
+    {
         log.debug("Starting scan.")
         
-        Queue.shared.add(scan: Scan(serviceIdentifier: serviceIdentifier, serialNumber: serialNumber, manager: cbCentralManager, callback: completion))
+        let scanOperation = Scan(
+            duration: duration,
+            allowDuplicates: allowDuplicates,
+            serviceIdentifiers: serviceIdentifiers,
+            discovery: discovery,
+            expired: expired,
+            stopped: stopped,
+            manager: cbCentralManager
+        )
+        
+        Queue.shared.add(scan: scanOperation)
     }
     
     public func stopScanning() {
@@ -145,7 +168,6 @@ public class Bluejay: NSObject {
         
         cbCentralManager.stopScan()
         
-        Scan.blacklist = []
         Queue.shared.stopScanning(Error.cancelledError())
     }
     
@@ -319,6 +341,31 @@ public class Bluejay: NSObject {
         }
         else {
             mainThread(.failure(Error.notConnectedError()))
+        }
+    }
+    
+    public func async<Result>(
+        jobs: @escaping (SyncPeripheral) throws -> Result,
+        completionOnMainThread: @escaping (ReadResult<Result>) -> Void)
+    {
+        if let peripheral = connectedPeripheral {
+            DispatchQueue.global().async {
+                do {
+                    let result = try jobs(SyncPeripheral(parent: peripheral))
+                    
+                    DispatchQueue.main.async {
+                        completionOnMainThread(.success(result))
+                    }
+                }
+                catch let error as NSError {
+                    DispatchQueue.main.async {
+                        completionOnMainThread(.failure(error))
+                    }
+                }
+            }
+        }
+        else {
+            completionOnMainThread(.failure(Error.notConnectedError()))
         }
     }
     
@@ -516,7 +563,7 @@ extension Bluejay: CBCentralManagerDelegate {
         
         log.debug("Did discover: \(peripheralString)")
         
-        Queue.shared.process(event: .didDiscoverPeripheral(peripheral, advertisementData), error: nil)
+        Queue.shared.process(event: .didDiscoverPeripheral(peripheral, advertisementData, RSSI), error: nil)
     }
     
 }

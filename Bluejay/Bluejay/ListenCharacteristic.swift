@@ -26,7 +26,7 @@ class ListenCharacteristic: Operation {
     }
     
     func start() {
-        log.debug("Starting operation: ListenCharacteristic")
+        // log.debug("Starting operation: ListenCharacteristic")
 
         guard
             let service = peripheral.service(with: characteristicIdentifier.service.uuid),
@@ -42,7 +42,7 @@ class ListenCharacteristic: Operation {
     }
     
     func process(event: Event) {
-        log.debug("Processing operation: ListenCharacteristic")
+        // log.debug("Processing operation: ListenCharacteristic")
 
         if case .didUpdateCharacteristicNotificationState(let updated) = event {
             if updated.uuid != characteristicIdentifier.uuid {

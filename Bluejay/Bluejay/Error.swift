@@ -85,4 +85,11 @@ struct Error {
         )
     }
     
+    static func timeoutError() -> NSError {
+        return NSError(
+            domain: "Bluejay",
+            code: 8,
+            userInfo: [NSLocalizedDescriptionKey: "Operation timed out."]
+        )
+    }
 }

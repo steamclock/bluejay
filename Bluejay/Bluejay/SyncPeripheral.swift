@@ -87,9 +87,9 @@ public class SyncPeripheral {
                 case .failure(let e):
                     error = e
                 }
-                
+                                
                 if(error != nil || action == .done) {
-                    self.parent.endListen(to: characteristicIdentifier, sendFailure: true, completion: { result in
+                    self.parent.endListen(to: characteristicIdentifier, sendFailure: error != nil, completion: { result in
                         sem.signal()
                     })
                 }
@@ -112,13 +112,18 @@ public class SyncPeripheral {
         writeTo charToWriteTo: CharacteristicIdentifier,
         value: S,
         listenTo charToListenTo: CharacteristicIdentifier,
+        timeoutInSeconds: Int = 0,
         completion: @escaping (R) -> ListenAction) throws
     {
         let sem = DispatchSemaphore(value: 0)
+        
+        var listenResult: ReadResult<R>?
         var error: Swift.Error?
         
         DispatchQueue.main.sync {
             self.parent.listen(to: charToListenTo, completion: { (result : ReadResult<R>) in
+                listenResult = result
+                
                 var action = ListenAction.done
                 
                 switch result {
@@ -147,10 +152,16 @@ public class SyncPeripheral {
             return
         }
         
-        _ = sem.wait(timeout: DispatchTime.distantFuture);
+        _ = sem.wait(timeout: timeoutInSeconds == 0 ? DispatchTime.distantFuture : DispatchTime.now() + .seconds(timeoutInSeconds));
         
         if let error = error {
             throw error
         }
+        
+        if listenResult == nil {
+            parent.endListen(to: charToListenTo, sendFailure: false, completion: nil)
+            throw Error.timeoutError()
+        }
+        
     }
 }
