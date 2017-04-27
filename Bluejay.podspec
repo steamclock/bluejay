@@ -9,7 +9,7 @@ Pod::Spec.new do |spec|
   spec.source = { git: 'https://github.com/steamclock/bluejay.git' }
   spec.source_files = 'Bluejay/Bluejay/*.{h,swift}'
   spec.framework = 'SystemConfiguration'
-  spec.platform = :ios, '8.0'
+  spec.platform = :ios, '9.0'
   spec.requires_arc = true
 
   spec.dependency 'SwiftyUserDefaults'

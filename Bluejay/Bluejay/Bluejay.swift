@@ -376,7 +376,11 @@ public class Bluejay: NSObject {
 extension Bluejay: CBCentralManagerDelegate {
     
     public func centralManagerDidUpdateState(_ central: CBCentralManager) {
-        log.debug("State updated: \(central.state.string())")
+        if #available(iOS 10.0, *) {
+            log.debug("State updated: \(central.state.string())")
+        } else {
+            // Fallback on earlier versions
+        }
         
         if central.state == .poweredOn && connectedPeripheral != nil {
             attemptListenRestoration()

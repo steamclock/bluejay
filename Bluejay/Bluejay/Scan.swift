@@ -118,37 +118,57 @@ class Scan: Queueable {
             timers.remove(at: indexOfExistingTimer)
         }
         
-        let timer = Timer.scheduledTimer(withTimeInterval: 15, repeats: false) { [weak self] (timer) in
-            guard let weakSelf = self else {
-                return
+        var timer: Timer?
+        
+        if #available(iOS 10.0, *) {
+            timer = Timer.scheduledTimer(withTimeInterval: 15, repeats: false) { [weak self] (timer) in
+                guard let weakSelf = self else {
+                    return
+                }
+                weakSelf.refresh(identifier: identifier)
             }
+        } else {
+            // Fallback on earlier versions
+            timer = Timer.scheduledTimer(
+                timeInterval: 15,
+                target: self,
+                selector: #selector(refresh(timer:)),
+                userInfo: identifier,
+                repeats: false
+            )
+        }
+        
+        timers.append((identifier, timer!))
+    }
+    
+    private func refresh(identifier: UUID) {
+        if state.isCompleted {
+            return
+        }
+        
+        if let indexOfExpiredDiscovery = discoveries.index(where: { (discovery) -> Bool in
+            return discovery.peripheral.identifier == identifier
+        })
+        {
+            let expiredDiscovery = discoveries[indexOfExpiredDiscovery]
+            discoveries.remove(at: indexOfExpiredDiscovery)
             
-            if weakSelf.state.isCompleted {
-                return
-            }
-            else {
-                if let indexOfExpiredDiscovery = weakSelf.discoveries.index(where: { (discovery) -> Bool in
-                    return discovery.peripheral.identifier == identifier
-                })
-                {
-                    let expiredDiscovery = weakSelf.discoveries[indexOfExpiredDiscovery]
-                    weakSelf.discoveries.remove(at: indexOfExpiredDiscovery)
+            if expired?(expiredDiscovery, discoveries) == .stop {
+                DispatchQueue.main.async {
+                    self.clearTimers()
                     
-                    if weakSelf.expired?(expiredDiscovery, weakSelf.discoveries) == .stop {
-                        DispatchQueue.main.async {
-                            weakSelf.clearTimers()
-                            
-                            weakSelf.manager.stopScan()
-                            weakSelf.state = .completed
-                            
-                            weakSelf.stopped(weakSelf.discoveries, nil)
-                        }
-                    }
+                    self.manager.stopScan()
+                    self.state = .completed
+                    
+                    self.stopped(self.discoveries, nil)
                 }
             }
         }
-        
-        timers.append((identifier, timer))
+    }
+    
+    @objc func refresh(timer: Timer) {
+        let identifier = timer.userInfo as! UUID
+        refresh(identifier: identifier)
     }
     
     private func clearTimers() {

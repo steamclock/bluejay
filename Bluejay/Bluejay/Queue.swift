@@ -19,7 +19,7 @@ class Queue {
     
     private var connectionTimer: Timer?
     
-    func cancelAll(_ error: NSError) {
+    @objc func cancelAll(_ error: NSError = Error.cancelledError()) {
         stopScanning(error)
         
         for connection in connectionQueue where !connection.state.isCompleted {
@@ -97,10 +97,21 @@ class Queue {
     private func startConnectionTimer() {
         // log.debug("Starting a connection timer.")
         
-        connectionTimer = Timer.scheduledTimer(withTimeInterval: 15, repeats: false, block: { (timer) in
-            // log.debug("A task in the connection queue has timed out.")
-            self.cancelAll(Error.cancelledError())
-        })
+        if #available(iOS 10.0, *) {
+            connectionTimer = Timer.scheduledTimer(withTimeInterval: 15, repeats: false, block: { (timer) in
+                // log.debug("A task in the connection queue has timed out.")
+                self.cancelAll(Error.cancelledError())
+            })
+        } else {
+            // Fallback on earlier versions
+            connectionTimer = Timer.scheduledTimer(
+                timeInterval: 15,
+                target: self,
+                selector: #selector(cancelAll(_:)),
+                userInfo: nil,
+                repeats: false
+            )
+        }
     }
     
     private func stopConnectionTimer() {
