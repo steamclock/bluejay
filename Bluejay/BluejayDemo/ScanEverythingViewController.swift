@@ -10,20 +10,22 @@ import Foundation
 import UIKit
 import Bluejay
 
-class PeripheralsViewController: UITableViewController {
+class ScanEverythingViewController: UITableViewController {
     
     private let bluejay = Bluejay.shared
-    private var peripherals = [ScanDiscovery]()
+    private var peripherals = [ScanDiscovery]() {
+        didSet {
+            peripherals.sort { (a, b) -> Bool in
+                return a.rssi < b.rssi
+            }
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         bluejay.start()
         
-        scan()
-    }
-    
-    @IBAction func scan() {
         bluejay.scan(
             allowDuplicates: true,
             serviceIdentifiers: nil,

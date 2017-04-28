@@ -24,13 +24,14 @@
 		B88A0DA71E1DD1DE00A00FF8 /* ListenCharacteristic.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88A0DA61E1DD1DE00A00FF8 /* ListenCharacteristic.swift */; };
 		B88F50EE1EB3E73D00D11CD8 /* ListenCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88F50ED1EB3E73D00D11CD8 /* ListenCache.swift */; };
 		B88F50F01EB3E81E00D11CD8 /* Constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88F50EF1EB3E81E00D11CD8 /* Constant.swift */; };
+		B88F50F21EB3FA4100D11CD8 /* SelectDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88F50F11EB3FA4100D11CD8 /* SelectDemoViewController.swift */; };
 		B89AA4791E302114006BA376 /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = B89AA4781E302114006BA376 /* Queue.swift */; };
 		B89AA4841E303634006BA376 /* Connection.swift in Sources */ = {isa = PBXBuildFile; fileRef = B89AA4831E303634006BA376 /* Connection.swift */; };
 		B89AA4881E30373D006BA376 /* Scan.swift in Sources */ = {isa = PBXBuildFile; fileRef = B89AA4871E30373D006BA376 /* Scan.swift */; };
 		B8C052031E28561700EA3D76 /* ListenRestorer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C052021E28561700EA3D76 /* ListenRestorer.swift */; };
 		B8C5E7131E64D6860094A708 /* ScanAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C5E7121E64D6860094A708 /* ScanAction.swift */; };
 		B8C5E7151E64D93C0094A708 /* ScanDiscovery.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C5E7141E64D93C0094A708 /* ScanDiscovery.swift */; };
-		B8C5E7191E64E1D50094A708 /* PeripheralsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C5E7181E64E1D50094A708 /* PeripheralsViewController.swift */; };
+		B8C5E7191E64E1D50094A708 /* ScanEverythingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C5E7181E64E1D50094A708 /* ScanEverythingViewController.swift */; };
 		B8C70F7F1E1C22850006CF58 /* Bluejay.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B8C70F751E1C22850006CF58 /* Bluejay.framework */; };
 		B8C70F841E1C22850006CF58 /* BluejayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C70F831E1C22850006CF58 /* BluejayTests.swift */; };
 		B8C70F861E1C22850006CF58 /* Bluejay.h in Headers */ = {isa = PBXBuildFile; fileRef = B8C70F781E1C22850006CF58 /* Bluejay.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -118,13 +119,14 @@
 		B88A0DA61E1DD1DE00A00FF8 /* ListenCharacteristic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListenCharacteristic.swift; sourceTree = "<group>"; };
 		B88F50ED1EB3E73D00D11CD8 /* ListenCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListenCache.swift; sourceTree = "<group>"; };
 		B88F50EF1EB3E81E00D11CD8 /* Constant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constant.swift; sourceTree = "<group>"; };
+		B88F50F11EB3FA4100D11CD8 /* SelectDemoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectDemoViewController.swift; sourceTree = "<group>"; };
 		B89AA4781E302114006BA376 /* Queue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Queue.swift; sourceTree = "<group>"; };
 		B89AA4831E303634006BA376 /* Connection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Connection.swift; sourceTree = "<group>"; };
 		B89AA4871E30373D006BA376 /* Scan.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Scan.swift; sourceTree = "<group>"; };
 		B8C052021E28561700EA3D76 /* ListenRestorer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListenRestorer.swift; sourceTree = "<group>"; };
 		B8C5E7121E64D6860094A708 /* ScanAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScanAction.swift; sourceTree = "<group>"; };
 		B8C5E7141E64D93C0094A708 /* ScanDiscovery.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScanDiscovery.swift; sourceTree = "<group>"; };
-		B8C5E7181E64E1D50094A708 /* PeripheralsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeripheralsViewController.swift; sourceTree = "<group>"; };
+		B8C5E7181E64E1D50094A708 /* ScanEverythingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScanEverythingViewController.swift; sourceTree = "<group>"; };
 		B8C70F751E1C22850006CF58 /* Bluejay.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Bluejay.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B8C70F781E1C22850006CF58 /* Bluejay.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Bluejay.h; sourceTree = "<group>"; };
 		B8C70F791E1C22850006CF58 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -362,7 +364,8 @@
 			isa = PBXGroup;
 			children = (
 				B8DEDE631E4A4B5800B2244D /* AppDelegate.swift */,
-				B8C5E7181E64E1D50094A708 /* PeripheralsViewController.swift */,
+				B88F50F11EB3FA4100D11CD8 /* SelectDemoViewController.swift */,
+				B8C5E7181E64E1D50094A708 /* ScanEverythingViewController.swift */,
 				B850D0001E4A5015005F31C5 /* Main.storyboard */,
 				B8DEDE6A1E4A4B5800B2244D /* Assets.xcassets */,
 				B8DEDE6C1E4A4B5800B2244D /* LaunchScreen.storyboard */,
@@ -721,7 +724,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B8C5E7191E64E1D50094A708 /* PeripheralsViewController.swift in Sources */,
+				B88F50F21EB3FA4100D11CD8 /* SelectDemoViewController.swift in Sources */,
+				B8C5E7191E64E1D50094A708 /* ScanEverythingViewController.swift in Sources */,
 				B8DEDE641E4A4B5800B2244D /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
