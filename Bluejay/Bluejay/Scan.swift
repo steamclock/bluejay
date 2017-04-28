@@ -44,9 +44,7 @@ class Scan: Queueable {
         self.manager = manager
     }
     
-    func start() {
-        log.debug("Starting operation: Scan")
-        
+    func start() {        
         state = .running
         
         let services = serviceIdentifiers?.map({ (element) -> CBUUID in

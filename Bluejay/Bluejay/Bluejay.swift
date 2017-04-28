@@ -8,19 +8,15 @@
 
 import Foundation
 import CoreBluetooth
-import SwiftyUserDefaults
 
 /**
- Bluejay is a simple wrapper around CoreBluetooth that focuses on making a common usage case as striaghtforward as possible: a single 'paired' peripheral that the user is interacting with regularly (think most personal electronics devices that have an associated iPhone app: fitness trackers, etc).
+ Bluejay is a simple wrapper around CoreBluetooth that focuses on making a common usage case as straight forward as possible: a single connected peripheral that the user is interacting with regularly (think most personal electronics devices that have an associated iOS app: fitness trackers, etc).
  
  It also supports a few other niceties for simplifying usage, including automatic discovery of characteristics as they are used, as well as supporting a background task mode where the interaction with the device can be written as synchronous calls running on a background thread to avoid callback pyramids of death, or heavily chained promises.
  */
 public class Bluejay: NSObject {
     
     public static let shared = Bluejay()
-    
-    // Initializes logging.
-    private let logger = Logger.shared
     
     // MARK: - Private Properties
     
@@ -45,6 +41,9 @@ public class Bluejay: NSObject {
     fileprivate var shouldRestoreState = false
     
     // MARK: - Public Properties
+    
+    /// Helps distinguish one Bluejay instance from another.
+    public var uuid = UUID()
     
     /// Allows checking whether the device's Bluetooth is powered on.
     public var isBluetoothAvailable: Bool {
@@ -77,7 +76,7 @@ public class Bluejay: NSObject {
         shouldRestoreState = UIApplication.shared.applicationState == .background
         
         if shouldRestoreState {
-            log.debug("Begin startup background task for restoring CoreBluetooth.")
+            debugPrint("Begin startup background task for restoring CoreBluetooth.")
             startupBackgroundTask = UIApplication.shared.beginBackgroundTask(expirationHandler: nil)
         }
     }
@@ -109,10 +108,6 @@ public class Bluejay: NSObject {
             queue: DispatchQueue.main,
             options: options
         )
-    }
-    
-    public func clearLog() {
-        logger.clearLog()
     }
     
     // MARK: - Events Registration
@@ -148,8 +143,6 @@ public class Bluejay: NSObject {
         stopped: @escaping ([ScanDiscovery], Swift.Error?) -> Void
         )
     {
-        log.debug("Starting scan.")
-        
         let scanOperation = Scan(
             duration: duration,
             allowDuplicates: allowDuplicates,
@@ -164,18 +157,13 @@ public class Bluejay: NSObject {
     }
     
     public func stopScanning() {
-        log.debug("Stopping scan.")
-        
         cbCentralManager.stopScan()
-        
         Queue.shared.stopScanning(Error.cancelledError())
     }
     
     // MARK: - Connection
     
     public func cancelAllConnections() {
-        log.debug("Cancelling all connections.")
-        
         let connected = connectedPeripheral
         let connecting = connectedPeripheral
         
@@ -204,12 +192,7 @@ public class Bluejay: NSObject {
         }
         
         if let cbPeripheral = cbCentralManager.retrievePeripherals(withIdentifiers: [peripheralIdentifier.uuid]).first {
-            log.debug("Found peripheral: \(cbPeripheral.name ?? cbPeripheral.identifier.uuidString), in state: \(cbPeripheral.state.string())")
-            
-            connectingPeripheral = Peripheral(cbPeripheral: cbPeripheral)
-            
-            log.debug("Issuing connect request to: \(cbPeripheral.name ?? cbPeripheral.identifier.uuidString)")
-            
+            connectingPeripheral = Peripheral(bluejay: self, cbPeripheral: cbPeripheral)
             Queue.shared.add(connection: Connection(peripheral: cbPeripheral, manager: cbCentralManager, callback: completion))
         }
         else {
@@ -220,13 +203,10 @@ public class Bluejay: NSObject {
     /// Disconnect the currently connected peripheral.
     public func disconnect(completion: ((Bool)->Void)? = nil) {
         if isDisconnecting {
-            log.debug("Bluejay is still disconnecting.")
             return
         }
         
         if let peripheralToDisconnect = connectedPeripheral {
-            log.debug("Disconnecting from: \(peripheralToDisconnect.name ?? peripheralToDisconnect.cbPeripheral.identifier.uuidString).")
-            
             isDisconnecting = true
             shouldAutoReconnect = false
             
@@ -235,12 +215,12 @@ public class Bluejay: NSObject {
             Queue.shared.add(connection: Disconnection(peripheral: peripheralToDisconnect.cbPeripheral, manager: cbCentralManager, callback: { (result) in
                 switch result {
                 case .success(let peripheral):
-                    log.debug("Disconnected from \(peripheral.name)")
+                    debugPrint("Disconnected from \(String(describing: peripheral.name)).")
                     self.isDisconnecting = false
                     
                     completion?(true)
                 case .failure(let error):
-                    log.debug("Failed to disconnect with error: \(error.localizedDescription)")
+                    debugPrint("Failed to disconnect with error: \(error.localizedDescription)")
                     self.isDisconnecting = false
                     
                     completion?(false)
@@ -248,7 +228,7 @@ public class Bluejay: NSObject {
             }))
         }
         else {
-            log.debug("Cannot disconnect: there is no connected peripheral.")
+            debugPrint("Cannot disconnect: there is no connected peripheral.")
             isDisconnecting = false
             
             completion?(false)
@@ -263,7 +243,7 @@ public class Bluejay: NSObject {
             peripheral.read(from: characteristicIdentifier, completion: completion)
         }
         else {
-            log.debug("Could not read characteristic \(characteristicIdentifier.uuid.uuidString): Peripheral is not connected.")
+            debugPrint("Could not read characteristic \(characteristicIdentifier.uuid.uuidString): Peripheral is not connected.")
             completion(.failure(Error.notConnectedError()))
         }
     }
@@ -274,7 +254,7 @@ public class Bluejay: NSObject {
             peripheral.write(to: characteristicIdentifier, value: value, completion: completion)
         }
         else {
-            log.debug("Could not write to characteristic \(characteristicIdentifier.uuid.uuidString): Peripheral is not connected.")
+            debugPrint("Could not write to characteristic \(characteristicIdentifier.uuid.uuidString): Peripheral is not connected.")
             completion(.failure(Error.notConnectedError()))
         }
     }
@@ -285,7 +265,7 @@ public class Bluejay: NSObject {
             peripheral.listen(to: characteristicIdentifier, completion: completion)
         }
         else {
-            log.debug("Could not listen to characteristic \(characteristicIdentifier.uuid.uuidString): Peripheral is not connected.")
+            debugPrint("Could not listen to characteristic \(characteristicIdentifier.uuid.uuidString): Peripheral is not connected.")
             completion(.failure(Error.notConnectedError()))
         }
     }
@@ -296,7 +276,7 @@ public class Bluejay: NSObject {
             peripheral.endListen(to: characteristicIdentifier, sendFailure: true, completion: completion)
         }
         else {
-            log.debug("Could not end listen to characteristic \(characteristicIdentifier.uuid.uuidString): Peripheral is not connected.")
+            debugPrint("Could not end listen to characteristic \(characteristicIdentifier.uuid.uuidString): Peripheral is not connected.")
             completion?(.failure(Error.notConnectedError()))
         }
     }
@@ -307,7 +287,7 @@ public class Bluejay: NSObject {
             peripheral.restoreListen(to: characteristicIdentifier, completion: completion)
         }
         else {
-            log.debug("Could not restore listen to characteristic \(characteristicIdentifier.uuid.uuidString): Peripheral is not connected.")
+            debugPrint("Could not restore listen to characteristic \(characteristicIdentifier.uuid.uuidString): Peripheral is not connected.")
             completion(.failure(Error.notConnectedError()))
         }
     }
@@ -377,7 +357,7 @@ extension Bluejay: CBCentralManagerDelegate {
     
     public func centralManagerDidUpdateState(_ central: CBCentralManager) {
         if #available(iOS 10.0, *) {
-            log.debug("State updated: \(central.state.string())")
+            debugPrint("State updated: \(central.state.string())")
         } else {
             // Fallback on earlier versions
         }
@@ -417,39 +397,38 @@ extension Bluejay: CBCentralManagerDelegate {
     }
     
     private func attemptListenRestoration() {
-        log.debug("Starting listen restoration.")
+        debugPrint("Starting listen restoration.")
         
-        let cachedListens = Defaults[.listeningCharacteristics]
-        
-        if cachedListens.isEmpty {
-            log.debug("Listen restoration finished: nothing to restore.")
+        guard
+            let listenCaches = UserDefaults.standard.dictionary(forKey: Constant.listenCaches),
+            let listenCache = listenCaches[uuid.uuidString] as? ListenCache
+        else {
+            debugPrint("No listens to restore.")
             return
         }
         
-        log.debug("Current cached listens: \(cachedListens)")
+        debugPrint("Listen cache to restore: \(listenCache)")
         
-        for (serviceUuid, characteristicUuid) in cachedListens {
-            let serviceIdentifier = ServiceIdentifier(uuid: serviceUuid)
-            let characteristicIdentifier = CharacteristicIdentifier(uuid: characteristicUuid as! String, service: serviceIdentifier)
+        for (serviceUUID, characteristicUUID) in listenCache {
+            let serviceIdentifier = ServiceIdentifier(uuid: serviceUUID)
+            let characteristicIdentifier = CharacteristicIdentifier(uuid: characteristicUUID, service: serviceIdentifier)
             
             if let listenRestorer = listenRestorer?.weakReference {
-                // If true, assume the listen callback is restored.
                 if !listenRestorer.willRestoreListen(on: characteristicIdentifier) {
-                    // If false, cancel the listening.
                     endListen(to: characteristicIdentifier)
                 }
             }
             else {
-                // If there is no listen restorable delegate, cancel all active listening.
+                // If there is no listen restorable delegate, end all active listening.
                 endListen(to: characteristicIdentifier)
             }
         }
         
-        log.debug("Listen restoration finished.")
+        debugPrint("Listen restoration finished.")
     }
     
     public func centralManager(_ central: CBCentralManager, willRestoreState dict: [String : Any]) {
-        log.debug("Will restore state.")
+        debugPrint("Will restore state.")
         
         shouldRestoreState = false
         
@@ -468,11 +447,11 @@ extension Bluejay: CBCentralManagerDelegate {
                 return
         }
         
-        let peripheral = Peripheral(cbPeripheral: cbPeripheral)
+        let peripheral = Peripheral(bluejay: self, cbPeripheral: cbPeripheral)
         
         precondition(peripherals.count == 1, "Invalid number of peripheral to restore.")
         
-        log.debug("Peripheral state to restore: \(cbPeripheral.state.string())")
+        debugPrint("Peripheral state to restore: \(cbPeripheral.state.string())")
         
         switch cbPeripheral.state {
         case .connecting:
@@ -492,11 +471,10 @@ extension Bluejay: CBCentralManagerDelegate {
                          "Connecting and connected peripherals are not nil during willRestoreState for state: disconnected.")
         }
         
-        log.debug("State restoration finished.")
+        debugPrint("State restoration finished.")
         
         if startupBackgroundTask != UIBackgroundTaskInvalid {
-            log.debug("Cancelling startup background task.")
-            
+            debugPrint("Cancelling startup background task.")
             UIApplication.shared.endBackgroundTask(startupBackgroundTask)
         }
     }
@@ -504,7 +482,7 @@ extension Bluejay: CBCentralManagerDelegate {
     public func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
         let backgroundTask =  UIApplication.shared.beginBackgroundTask(expirationHandler: nil)
         
-        log.debug("Did connect to: \(peripheral.name ?? peripheral.identifier.uuidString)")
+        debugPrint("Did connect to: \(peripheral.name ?? peripheral.identifier.uuidString)")
 
         connectedPeripheral = connectingPeripheral
         connectingPeripheral = nil
@@ -529,23 +507,23 @@ extension Bluejay: CBCentralManagerDelegate {
         let peripheralString = peripheral.name ?? peripheral.identifier.uuidString
         let errorString = error?.localizedDescription ?? ""
         
-        log.debug("Did disconnect from: \(peripheralString) with error: \(errorString)")
+        debugPrint("Did disconnect from: \(peripheralString) with error: \(errorString)")
         
         if !Queue.shared.isEmpty() {
             Queue.shared.process(event: .didDisconnectPeripheral(peripheral), error: nil)
         }
         
         if connectingPeripheral == nil && connectedPeripheral == nil {
-            log.debug("Disconnection is either bogus or already handled, Bluejay has no connected peripheral.")
+            debugPrint("Disconnection is either bogus or already handled, Bluejay has no connected peripheral.")
             return
         }
         
         cancelAllConnections()
         
-        log.debug("Should auto-reconnect: \(self.shouldAutoReconnect)")
+        debugPrint("Should auto-reconnect: \(self.shouldAutoReconnect)")
         
         if shouldAutoReconnect {
-            log.debug("Issuing reconnect to: \(peripheral.name ?? peripheral.identifier.uuidString)")
+            debugPrint("Issuing reconnect to: \(peripheral.name ?? peripheral.identifier.uuidString)")
             connect(PeripheralIdentifier(uuid: peripheral.identifier), completion: {_ in })
         }
         
@@ -556,7 +534,7 @@ extension Bluejay: CBCentralManagerDelegate {
         let peripheralString = peripheral.name ?? peripheral.identifier.uuidString
         let errorString = error?.localizedDescription ?? ""
         
-        log.debug("Did fail to connect to: \(peripheralString) with error: \(errorString)")
+        debugPrint("Did fail to connect to: \(peripheralString) with error: \(errorString)")
         
         // Use the same clean up logic provided in the did disconnect callback.
         centralManager(central, didDisconnectPeripheral: peripheral, error: error)
@@ -565,7 +543,7 @@ extension Bluejay: CBCentralManagerDelegate {
     public func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
         let peripheralString = advertisementData[CBAdvertisementDataLocalNameKey] ?? peripheral.identifier.uuidString
         
-        log.debug("Did discover: \(peripheralString)")
+        debugPrint("Did discover: \(peripheralString)")
         
         Queue.shared.process(event: .didDiscoverPeripheral(peripheral, advertisementData, RSSI), error: nil)
     }

@@ -229,7 +229,6 @@ extension Queue: ConnectionObserver {
     
     func bluetoothAvailable(_ available: Bool) {
         if available {
-            log.debug("Updating queue: Bluetooth available.")
             update()
         }
         else {
@@ -240,7 +239,6 @@ extension Queue: ConnectionObserver {
     }
     
     func connected(_ peripheral: Peripheral) {
-        log.debug("Updating queue: Connected to \(peripheral.name ?? peripheral.cbPeripheral.identifier.uuidString).")
         update()
     }
     

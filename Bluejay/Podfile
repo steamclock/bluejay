@@ -6,8 +6,14 @@ def core_pods
   use_frameworks!
 
   # Pods for Bluejay
-  pod 'SwiftyUserDefaults'
-  pod 'XCGLogger', '~> 4.0.0'
+  # Not using any pods for now to minimize dependency conflicts
+end
+
+def demo_pods
+  # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
+  use_frameworks!
+
+  # Pods for BluejayDemo
 
 end
 
@@ -24,6 +30,6 @@ end
 
 target 'BluejayDemo' do
 
-  core_pods
+  demo_pods
 
 end

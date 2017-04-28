@@ -8,12 +8,12 @@
 
 import Foundation
 import CoreBluetooth
-import SwiftyUserDefaults
 
 public class Peripheral: NSObject {
     
     // MARK: Properties
     
+    private(set) var bluejay: Bluejay
     private(set) var cbPeripheral: CBPeripheral
     
     fileprivate var listeners: [CharacteristicIdentifier : (ReadResult<Data?>) -> Void] = [:]
@@ -23,9 +23,12 @@ public class Peripheral: NSObject {
     
     // MARK: - Initialization
     
-    init(cbPeripheral: CBPeripheral) {
+    init(bluejay: Bluejay, cbPeripheral: CBPeripheral) {
+        self.bluejay = bluejay
         self.cbPeripheral = cbPeripheral
+        
         super.init()
+        
         self.cbPeripheral.delegate = self
     }
     
@@ -248,35 +251,71 @@ public class Peripheral: NSObject {
     }
     
     private func cache(listeningCharacteristic: CharacteristicIdentifier) {
-        let serviceUuid = listeningCharacteristic.service.uuid.uuidString
-        let characteristicUuid = listeningCharacteristic.uuid.uuidString
+        let serviceUUID = listeningCharacteristic.service.uuid.uuidString
+        let characteristicUUID = listeningCharacteristic.uuid.uuidString
         
-        // log.debug("Adding cached listen: \(characteristicUuid) for service: \(serviceUuid)")
+        // Create a new entry in user defaults if none exists.
+        guard let listenCaches = UserDefaults.standard.dictionary(forKey: Constant.listenCaches) else {
+            var newListenCache = ListenCache()
+            newListenCache.append((serviceUUID: serviceUUID, characteristicUUID: characteristicUUID))
+            
+            UserDefaults.standard.set([bluejay.uuid.uuidString : newListenCache], forKey: Constant.listenCaches)
+            UserDefaults.standard.synchronize()
+            return
+        }
         
-        Defaults[.listeningCharacteristics][serviceUuid] = characteristicUuid
+        // Create a new listen cache if none exists.
+        guard
+            let listenCache = listenCaches[bluejay.uuid.uuidString] as? ListenCache
+        else {
+            var newListenCache = ListenCache()
+            newListenCache.append((serviceUUID: serviceUUID, characteristicUUID: characteristicUUID))
+            
+            var newListenCaches = listenCaches
+            newListenCaches[bluejay.uuid.uuidString] = newListenCache
+            
+            UserDefaults.standard.set(newListenCaches, forKey: Constant.listenCaches)
+            UserDefaults.standard.synchronize()
+            return
+        }
         
-        // Don't want to open up any possibilities where the defaults are not saved immediately.
-        Defaults.synchronize()
+        // Add to existing listen cache.
+        var newListenCache = listenCache
+        newListenCache.append((serviceUUID: serviceUUID, characteristicUUID: characteristicUUID))
         
-        // log.debug("Current cached listens: \(Defaults[.listeningCharacteristics])")
+        var newListenCaches = listenCaches
+        newListenCaches[bluejay.uuid.uuidString] = newListenCache
+        
+        UserDefaults.standard.set(newListenCaches, forKey: Constant.listenCaches)
+        UserDefaults.standard.synchronize()
     }
     
     private func remove(listeningCharacteristic: CharacteristicIdentifier) {
-        let serviceUuid = listeningCharacteristic.service.uuid.uuidString
-        let characteristicUuid = listeningCharacteristic.uuid.uuidString
+        let serviceUUID = listeningCharacteristic.service.uuid.uuidString
+        let characteristicUUID = listeningCharacteristic.uuid.uuidString
         
-        // log.debug("Removing cached listen: \(characteristicUuid) for service: \(serviceUuid)")
+        guard
+            let listenCaches = UserDefaults.standard.dictionary(forKey: Constant.listenCaches),
+            let listenCache = listenCaches[bluejay.uuid.uuidString] as? ListenCache
+        else {
+            // Nothing to remove.
+            return
+        }
         
-        Defaults[.listeningCharacteristics][serviceUuid] = nil
+        var newListenCache = listenCache
+        newListenCache = newListenCache.filter { (service, characteristic) -> Bool in
+            return (service != serviceUUID) && (characteristic != characteristicUUID)
+        }
         
-        // Don't want to open up any possibilities where the defaults are not saved immediately.
-        Defaults.synchronize()
+        var newListenCaches = listenCaches
+        newListenCaches[bluejay.uuid.uuidString] = newListenCache
+
+        UserDefaults.standard.set(newListenCaches, forKey: Constant.listenCaches)
+        UserDefaults.standard.synchronize()
         
         listenersBeingCancelled = listenersBeingCancelled.filter { (characteristicIdentifier) -> Bool in
             return characteristicIdentifier.uuid.uuidString != listeningCharacteristic.uuid.uuidString
         }
-        
-        // log.debug("Current cached listens: \(Defaults[.listeningCharacteristics])")
     }
 }
 

@@ -12,16 +12,11 @@ import CoreBluetooth
 class Disconnection: Connection {
     
     override func start() {
-        log.debug("Starting operation: Disconnection")
-        
         state = .running
-        
         manager.cancelPeripheralConnection(peripheral)
     }
     
     override func process(event: Event) {
-        log.debug("Processing operation: Disconnection")
-        
         if case .didDisconnectPeripheral(let peripheral) = event {
             success(peripheral)
         }

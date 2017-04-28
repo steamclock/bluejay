@@ -29,16 +29,11 @@ class Connection: Queueable {
     }
     
     func start() {
-        log.debug("Starting operation: ConnectPeripheral")
-        
         state = .running
-        
         manager.connect(peripheral, options: standardConnectOptions)
     }
     
-    func process(event: Event) {
-        log.debug("Processing operation: ConnectPeripheral")
-        
+    func process(event: Event) {        
         if case .didConnectPeripheral(let peripheral) = event {
             success(peripheral)
         }
