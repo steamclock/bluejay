@@ -13,6 +13,7 @@ import Bluejay
 class ScanEverythingViewController: UITableViewController {
     
     private let bluejay = Bluejay.shared
+    
     private var peripherals = [ScanDiscovery]() {
         didSet {
             peripherals.sort { (a, b) -> Bool in
@@ -23,6 +24,8 @@ class ScanEverythingViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        Bluejay.combine(sendables: [Data()])
         
         bluejay.start()
         

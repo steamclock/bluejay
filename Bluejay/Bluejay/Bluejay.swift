@@ -349,6 +349,25 @@ public class Bluejay: NSObject {
         }
     }
     
+    // MARK: - Helpers
+    
+    /**
+     Helper function to take an array of Sendables and combine their data together.
+     
+     - Parameter sendables: An array of Sendables whose Data should be appended in the order of the given array.
+     
+     - Returns: The resulting data of all the Sendables combined in the order of the passed in array.
+     */
+    public static func combine(sendables: [Sendable]) -> Data {
+        let data = NSMutableData()
+        
+        for sendable in sendables {
+            data.append(sendable.toBluetoothData())
+        }
+        
+        return data as Data
+    }
+    
 }
 
 // MARK: - CBCentralManagerDelegate

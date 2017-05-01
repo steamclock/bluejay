@@ -48,7 +48,6 @@
 		B8C70FAB1E1C69C50006CF58 /* Sendable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C70FAA1E1C69C50006CF58 /* Sendable.swift */; };
 		B8C70FAF1E1C6C780006CF58 /* Integer+Transferable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C70FAE1E1C6C780006CF58 /* Integer+Transferable.swift */; };
 		B8C70FB11E1C6F150006CF58 /* DataPadding.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C70FB01E1C6F150006CF58 /* DataPadding.swift */; };
-		B8C70FB71E1C71880006CF58 /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C70FB61E1C71880006CF58 /* Helper.swift */; };
 		B8C70FB91E1C725C0006CF58 /* ConnectionObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C70FB81E1C725C0006CF58 /* ConnectionObserver.swift */; };
 		B8C70FBD1E1C7DB60006CF58 /* Peripheral.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C70FBC1E1C7DB60006CF58 /* Peripheral.swift */; };
 		B8C70FBF1E1C7F300006CF58 /* Operation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C70FBE1E1C7F300006CF58 /* Operation.swift */; };
@@ -147,7 +146,6 @@
 		B8C70FAA1E1C69C50006CF58 /* Sendable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sendable.swift; sourceTree = "<group>"; };
 		B8C70FAE1E1C6C780006CF58 /* Integer+Transferable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Integer+Transferable.swift"; sourceTree = "<group>"; };
 		B8C70FB01E1C6F150006CF58 /* DataPadding.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataPadding.swift; sourceTree = "<group>"; };
-		B8C70FB61E1C71880006CF58 /* Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
 		B8C70FB81E1C725C0006CF58 /* ConnectionObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionObserver.swift; sourceTree = "<group>"; };
 		B8C70FBC1E1C7DB60006CF58 /* Peripheral.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Peripheral.swift; sourceTree = "<group>"; };
 		B8C70FBE1E1C7F300006CF58 /* Operation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operation.swift; sourceTree = "<group>"; };
@@ -276,7 +274,6 @@
 				B8C70F8F1E1C505C0006CF58 /* Bluejay.swift */,
 				B8C70FBC1E1C7DB60006CF58 /* Peripheral.swift */,
 				B8022D991E1F041D00EA360B /* SyncPeripheral.swift */,
-				B8C70FB61E1C71880006CF58 /* Helper.swift */,
 				B8C70F961E1C5A4F0006CF58 /* Error.swift */,
 				B88F50EF1EB3E81E00D11CD8 /* Constant.swift */,
 				B88A0D9D1E1DCFA300A00FF8 /* Operations */,
@@ -688,7 +685,6 @@
 				B89AA4881E30373D006BA376 /* Scan.swift in Sources */,
 				B8FE9DF51E73597A00D361CE /* RSSIObserver.swift in Sources */,
 				B8C70FA91E1C69B60006CF58 /* Receivable.swift in Sources */,
-				B8C70FB71E1C71880006CF58 /* Helper.swift in Sources */,
 				B88A0DA71E1DD1DE00A00FF8 /* ListenCharacteristic.swift in Sources */,
 				B8C70F971E1C5A4F0006CF58 /* Error.swift in Sources */,
 				B88F50EE1EB3E73D00D11CD8 /* ListenCache.swift in Sources */,
