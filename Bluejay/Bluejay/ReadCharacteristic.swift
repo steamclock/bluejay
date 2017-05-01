@@ -11,13 +11,16 @@ import CoreBluetooth
 
 class ReadCharacteristic<T: Receivable>: Operation {
     
-    var state = OperationState.notStarted    
+    var state: QueueableState
+
     var peripheral: CBPeripheral
     
     private var characteristicIdentifier: CharacteristicIdentifier
     private var callback: ((ReadResult<T>) -> Void)?
     
     init(characteristicIdentifier: CharacteristicIdentifier, peripheral: CBPeripheral, callback: @escaping (ReadResult<T>) -> Void) {
+        self.state = .notStarted
+        
         self.characteristicIdentifier = characteristicIdentifier
         self.peripheral = peripheral
         self.callback = callback

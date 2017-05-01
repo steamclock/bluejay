@@ -51,20 +51,20 @@ public class Peripheral: NSObject {
         
         listeners = [:]
         
-        Queue.shared.cancelAll(error)
+        bluejay.queue.cancelAll(error)
     }
     
     private func updateOperations() {
         if cbPeripheral.state == .disconnected {
-            Queue.shared.cancelAll(Error.notConnectedError())
+            bluejay.queue.cancelAll(Error.notConnectedError())
             return
         }
         
-        Queue.shared.update()
+        bluejay.queue.update()
     }
     
     private func addOperation(_ operation: Operation) {
-        Queue.shared.add(operation: operation)
+        bluejay.queue.add(operation: operation)
     }
     
     /// Queue the necessary operations needed to discover the specified characteristic.
@@ -95,7 +95,7 @@ public class Peripheral: NSObject {
     
     fileprivate func handleEvent(_ event: Event, error: NSError?) {
         if error == nil {
-            Queue.shared.process(event: event, error: error)
+            bluejay.queue.process(event: event, error: error)
             updateOperations()
         }
         else {
@@ -343,7 +343,7 @@ extension Peripheral: CBPeripheralDelegate {
                 return characteristicIdentifier.uuid.uuidString == characteristic.uuid.uuidString
             })
             
-            let isReadUnhandled = isCancellingListenOnCurrentRead || Queue.shared.isEmpty()
+            let isReadUnhandled = isCancellingListenOnCurrentRead || bluejay.queue.isEmpty()
             
             if isReadUnhandled {
                 return

@@ -10,13 +10,11 @@ import Foundation
 import CoreBluetooth
 
 /**
- Bluejay is a simple wrapper around CoreBluetooth that focuses on making a common usage case as straight forward as possible: a single connected peripheral that the user is interacting with regularly (think most personal electronics devices that have an associated iOS app: fitness trackers, etc).
+ Bluejay is a simple wrapper around CoreBluetooth that focuses on making a common usage case as straight forward as possible: a single connected peripheral that the user is interacting with regularly (think most personal electronics devices that have an associated iOS app: fitness trackers, guitar amps, etc).
  
  It also supports a few other niceties for simplifying usage, including automatic discovery of characteristics as they are used, as well as supporting a background task mode where the interaction with the device can be written as synchronous calls running on a background thread to avoid callback pyramids of death, or heavily chained promises.
  */
 public class Bluejay: NSObject {
-    
-    public static let shared = Bluejay()
     
     // MARK: - Private Properties
     
@@ -24,7 +22,7 @@ public class Bluejay: NSObject {
     fileprivate var cbCentralManager: CBCentralManager!
     
     /// List of weak references to objects interested in receiving Bluejay's Bluetooth event callbacks.
-    fileprivate var observers: [WeakConnectionObserver] = []
+    fileprivate var observers = [WeakConnectionObserver]()
     
     /// Reference to a peripheral that is still connecting. If this is nil, then the peripheral should either be disconnected or connected. This is used to help determine the state of the peripheral's connection.
     fileprivate var connectingPeripheral: Peripheral?
@@ -39,6 +37,11 @@ public class Bluejay: NSObject {
     fileprivate var peripheralIdentifierToRestore: PeripheralIdentifier?
     fileprivate var listenRestorer: WeakListenRestorer?
     fileprivate var shouldRestoreState = false
+    
+    // MARK: - Internal Properties
+    
+    /// Contains the operations to execute in FIFO order.
+    var queue: Queue!
     
     // MARK: - Public Properties
     
@@ -70,7 +73,7 @@ public class Bluejay: NSObject {
     
     // MARK: - Initialization
     
-    override init() {
+    public override init() {
         super.init()
         
         shouldRestoreState = UIApplication.shared.applicationState == .background
@@ -79,6 +82,13 @@ public class Bluejay: NSObject {
             debugPrint("Begin startup background task for restoring CoreBluetooth.")
             startupBackgroundTask = UIApplication.shared.beginBackgroundTask(expirationHandler: nil)
         }
+        
+        queue = Queue(bluejay: self)
+    }
+    
+    deinit {
+        // FIXME: Tear down gracefully.
+        debugPrint("Deinit Bluejay with UUID: \(uuid.uuidString)")
     }
     
     public func start(
@@ -87,7 +97,7 @@ public class Bluejay: NSObject {
         enableBackgroundMode backgroundMode: Bool = false
         )
     {
-        register(observer: Queue.shared)
+        register(observer: queue)
         
         if let observer = observer {
             register(observer: observer)
@@ -153,12 +163,12 @@ public class Bluejay: NSObject {
             manager: cbCentralManager
         )
         
-        Queue.shared.add(scan: scanOperation)
+        queue.add(scan: scanOperation)
     }
     
     public func stopScanning() {
         cbCentralManager.stopScan()
-        Queue.shared.stopScanning(Error.cancelledError())
+        queue.stopScanning(Error.cancelledError())
     }
     
     // MARK: - Connection
@@ -174,7 +184,7 @@ public class Bluejay: NSObject {
             connected?.cancelAllOperations(Error.unexpectedDisconnectError())
             connecting?.cancelAllOperations(Error.unexpectedDisconnectError())
             
-            Queue.shared.cancelAll(Error.unexpectedDisconnectError())
+            queue.cancelAll(Error.unexpectedDisconnectError())
         }
         
         for observer in observers {
@@ -193,7 +203,7 @@ public class Bluejay: NSObject {
         
         if let cbPeripheral = cbCentralManager.retrievePeripherals(withIdentifiers: [peripheralIdentifier.uuid]).first {
             connectingPeripheral = Peripheral(bluejay: self, cbPeripheral: cbPeripheral)
-            Queue.shared.add(connection: Connection(peripheral: cbPeripheral, manager: cbCentralManager, callback: completion))
+            queue.add(connection: Connection(peripheral: cbPeripheral, manager: cbCentralManager, callback: completion))
         }
         else {
             completion(.failure(Error.unknownPeripheralError(peripheralIdentifier)))
@@ -212,7 +222,7 @@ public class Bluejay: NSObject {
             
             peripheralToDisconnect.cancelAllOperations(Error.cancelledError())
             
-            Queue.shared.add(connection: Disconnection(peripheral: peripheralToDisconnect.cbPeripheral, manager: cbCentralManager, callback: { (result) in
+            queue.add(connection: Disconnection(peripheral: peripheralToDisconnect.cbPeripheral, manager: cbCentralManager, callback: { (result) in
                 switch result {
                 case .success(let peripheral):
                     debugPrint("Disconnected from \(String(describing: peripheral.name)).")
@@ -507,7 +517,7 @@ extension Bluejay: CBCentralManagerDelegate {
         connectingPeripheral = nil
         
         // Do not notify observers if this connection is part of a scan operation, as the connection to the peripheral is only for inspection purposes.
-        if !Queue.shared.isScanning() {
+        if !queue.isScanning() {
             for observer in observers {
                 observer.weakReference?.connected(connectedPeripheral!)
             }
@@ -515,7 +525,7 @@ extension Bluejay: CBCentralManagerDelegate {
             shouldAutoReconnect = true
         }
         
-        Queue.shared.process(event: .didConnectPeripheral(peripheral), error: nil)
+        queue.process(event: .didConnectPeripheral(peripheral), error: nil)
         
         UIApplication.shared.endBackgroundTask(backgroundTask)
     }
@@ -528,8 +538,8 @@ extension Bluejay: CBCentralManagerDelegate {
         
         debugPrint("Did disconnect from: \(peripheralString) with error: \(errorString)")
         
-        if !Queue.shared.isEmpty() {
-            Queue.shared.process(event: .didDisconnectPeripheral(peripheral), error: nil)
+        if !queue.isEmpty() {
+            queue.process(event: .didDisconnectPeripheral(peripheral), error: nil)
         }
         
         if connectingPeripheral == nil && connectedPeripheral == nil {
@@ -563,7 +573,7 @@ extension Bluejay: CBCentralManagerDelegate {
         // let peripheralString = advertisementData[CBAdvertisementDataLocalNameKey] ?? peripheral.identifier.uuidString
         // debugPrint("Did discover: \(peripheralString)")
         
-        Queue.shared.process(event: .didDiscoverPeripheral(peripheral, advertisementData, RSSI), error: nil)
+        queue.process(event: .didDiscoverPeripheral(peripheral, advertisementData, RSSI), error: nil)
     }
     
 }

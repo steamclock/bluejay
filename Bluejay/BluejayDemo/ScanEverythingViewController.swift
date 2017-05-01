@@ -12,7 +12,7 @@ import Bluejay
 
 class ScanEverythingViewController: UITableViewController {
     
-    private let bluejay = Bluejay.shared
+    private let bluejay = Bluejay()
     
     private var peripherals = [ScanDiscovery]() {
         didSet {
@@ -24,9 +24,7 @@ class ScanEverythingViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        Bluejay.combine(sendables: [Data()])
-        
+                
         bluejay.start()
         
         bluejay.scan(

@@ -14,8 +14,9 @@ private let serialNumberCharacteristic = CharacteristicIdentifier(uuid: "2A25", 
 
 class Scan: Queueable {
     
-    var state = OperationState.notStarted
-    var manager: CBCentralManager
+    var state: QueueableState
+    
+    private let manager: CBCentralManager
     
     private let duration: TimeInterval
     private let allowDuplicates: Bool
@@ -35,6 +36,8 @@ class Scan: Queueable {
          stopped: @escaping ([ScanDiscovery], Swift.Error?) -> Void,
          manager: CBCentralManager)
     {
+        self.state = .notStarted
+        
         self.duration = duration
         self.allowDuplicates = allowDuplicates
         self.serviceIdentifiers = serviceIdentifiers

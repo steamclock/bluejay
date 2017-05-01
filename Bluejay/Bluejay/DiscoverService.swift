@@ -11,13 +11,16 @@ import CoreBluetooth
 
 class DiscoverService: Operation {
     
-    var state = OperationState.notStarted    
+    var state: QueueableState
+    
     var peripheral: CBPeripheral
     
     private var serviceIdentifier: ServiceIdentifier
     private var callback: ((Bool) -> Void)?
 
     init(serviceIdentifier: ServiceIdentifier, peripheral: CBPeripheral, callback: @escaping (Bool) -> Void) {
+        self.state = .notStarted
+        
         self.serviceIdentifier = serviceIdentifier
         self.peripheral = peripheral
         self.callback = callback

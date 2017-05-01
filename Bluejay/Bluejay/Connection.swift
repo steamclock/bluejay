@@ -16,15 +16,19 @@ var standardConnectOptions: [String : AnyObject] = [
 
 class Connection: Queueable {
     
-    var state = OperationState.notStarted    
+    var state: QueueableState
+    
+    var peripheral: CBPeripheral
     var manager: CBCentralManager
     
-    let peripheral: CBPeripheral
     var callback: ((ConnectionResult) -> Void)?
     
     init(peripheral: CBPeripheral, manager: CBCentralManager, callback: @escaping (ConnectionResult) -> Void) {
+        self.state = .notStarted
+        
         self.peripheral = peripheral
         self.manager = manager
+        
         self.callback = callback
     }
     

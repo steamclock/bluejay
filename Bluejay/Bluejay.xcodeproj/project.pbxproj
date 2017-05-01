@@ -25,6 +25,7 @@
 		B88F50EE1EB3E73D00D11CD8 /* ListenCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88F50ED1EB3E73D00D11CD8 /* ListenCache.swift */; };
 		B88F50F01EB3E81E00D11CD8 /* Constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88F50EF1EB3E81E00D11CD8 /* Constant.swift */; };
 		B88F50F21EB3FA4100D11CD8 /* SelectDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88F50F11EB3FA4100D11CD8 /* SelectDemoViewController.swift */; };
+		B88F79951EB7DB420094D8D1 /* Operation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88F79941EB7DB420094D8D1 /* Operation.swift */; };
 		B89AA4791E302114006BA376 /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = B89AA4781E302114006BA376 /* Queue.swift */; };
 		B89AA4841E303634006BA376 /* Connection.swift in Sources */ = {isa = PBXBuildFile; fileRef = B89AA4831E303634006BA376 /* Connection.swift */; };
 		B89AA4881E30373D006BA376 /* Scan.swift in Sources */ = {isa = PBXBuildFile; fileRef = B89AA4871E30373D006BA376 /* Scan.swift */; };
@@ -50,8 +51,7 @@
 		B8C70FB11E1C6F150006CF58 /* DataPadding.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C70FB01E1C6F150006CF58 /* DataPadding.swift */; };
 		B8C70FB91E1C725C0006CF58 /* ConnectionObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C70FB81E1C725C0006CF58 /* ConnectionObserver.swift */; };
 		B8C70FBD1E1C7DB60006CF58 /* Peripheral.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C70FBC1E1C7DB60006CF58 /* Peripheral.swift */; };
-		B8C70FBF1E1C7F300006CF58 /* Operation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C70FBE1E1C7F300006CF58 /* Operation.swift */; };
-		B8C70FC11E1C80150006CF58 /* OperationState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C70FC01E1C80150006CF58 /* OperationState.swift */; };
+		B8C70FC11E1C80150006CF58 /* QueueableState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C70FC01E1C80150006CF58 /* QueueableState.swift */; };
 		B8D2078C1E26D446007E670A /* CBPeripheralState+ReturnString.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8D2078B1E26D446007E670A /* CBPeripheralState+ReturnString.swift */; };
 		B8D2078E1E26D702007E670A /* CBManagerState+ReturnString.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8D2078D1E26D702007E670A /* CBManagerState+ReturnString.swift */; };
 		B8DEDE641E4A4B5800B2244D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8DEDE631E4A4B5800B2244D /* AppDelegate.swift */; };
@@ -119,6 +119,7 @@
 		B88F50ED1EB3E73D00D11CD8 /* ListenCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListenCache.swift; sourceTree = "<group>"; };
 		B88F50EF1EB3E81E00D11CD8 /* Constant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constant.swift; sourceTree = "<group>"; };
 		B88F50F11EB3FA4100D11CD8 /* SelectDemoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectDemoViewController.swift; sourceTree = "<group>"; };
+		B88F79941EB7DB420094D8D1 /* Operation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operation.swift; sourceTree = "<group>"; };
 		B89AA4781E302114006BA376 /* Queue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Queue.swift; sourceTree = "<group>"; };
 		B89AA4831E303634006BA376 /* Connection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Connection.swift; sourceTree = "<group>"; };
 		B89AA4871E30373D006BA376 /* Scan.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Scan.swift; sourceTree = "<group>"; };
@@ -148,8 +149,7 @@
 		B8C70FB01E1C6F150006CF58 /* DataPadding.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataPadding.swift; sourceTree = "<group>"; };
 		B8C70FB81E1C725C0006CF58 /* ConnectionObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionObserver.swift; sourceTree = "<group>"; };
 		B8C70FBC1E1C7DB60006CF58 /* Peripheral.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Peripheral.swift; sourceTree = "<group>"; };
-		B8C70FBE1E1C7F300006CF58 /* Operation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operation.swift; sourceTree = "<group>"; };
-		B8C70FC01E1C80150006CF58 /* OperationState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OperationState.swift; sourceTree = "<group>"; };
+		B8C70FC01E1C80150006CF58 /* QueueableState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QueueableState.swift; sourceTree = "<group>"; };
 		B8D2078B1E26D446007E670A /* CBPeripheralState+ReturnString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CBPeripheralState+ReturnString.swift"; sourceTree = "<group>"; };
 		B8D2078D1E26D702007E670A /* CBManagerState+ReturnString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CBManagerState+ReturnString.swift"; sourceTree = "<group>"; };
 		B8DEDE611E4A4B5800B2244D /* BluejayDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BluejayDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -211,28 +211,44 @@
 		B88A0D9D1E1DCFA300A00FF8 /* Operations */ = {
 			isa = PBXGroup;
 			children = (
+				B88F79911EB7D7590094D8D1 /* Queue */,
 				B8C5E7111E64D6590094A708 /* Scanning */,
-				B89AA4781E302114006BA376 /* Queue.swift */,
-				B83271A81E313CA300D68581 /* Queueable.swift */,
-				B8C70FC01E1C80150006CF58 /* OperationState.swift */,
-				B89AA4831E303634006BA376 /* Connection.swift */,
-				B8F8C0EC1E4E7CA300A0D0F7 /* Disconnection.swift */,
-				B89AA4861E3036E7006BA376 /* Peripheral */,
+				B88F79901EB7D38C0094D8D1 /* Connectivity */,
+				B89AA4861E3036E7006BA376 /* Interaction */,
 			);
 			name = Operations;
 			sourceTree = "<group>";
 		};
-		B89AA4861E3036E7006BA376 /* Peripheral */ = {
+		B88F79901EB7D38C0094D8D1 /* Connectivity */ = {
 			isa = PBXGroup;
 			children = (
-				B8C70FBE1E1C7F300006CF58 /* Operation.swift */,
+				B89AA4831E303634006BA376 /* Connection.swift */,
+				B8F8C0EC1E4E7CA300A0D0F7 /* Disconnection.swift */,
+			);
+			name = Connectivity;
+			sourceTree = "<group>";
+		};
+		B88F79911EB7D7590094D8D1 /* Queue */ = {
+			isa = PBXGroup;
+			children = (
+				B89AA4781E302114006BA376 /* Queue.swift */,
+				B83271A81E313CA300D68581 /* Queueable.swift */,
+				B8C70FC01E1C80150006CF58 /* QueueableState.swift */,
+			);
+			name = Queue;
+			sourceTree = "<group>";
+		};
+		B89AA4861E3036E7006BA376 /* Interaction */ = {
+			isa = PBXGroup;
+			children = (
+				B88F79941EB7DB420094D8D1 /* Operation.swift */,
 				B88A0D9E1E1DCFBF00A00FF8 /* DiscoverService.swift */,
 				B88A0DA01E1DD15600A00FF8 /* DiscoverCharacteristic.swift */,
 				B88A0DA21E1DD18B00A00FF8 /* ReadCharacteristic.swift */,
 				B88A0DA41E1DD1A200A00FF8 /* WriteCharacteristic.swift */,
 				B88A0DA61E1DD1DE00A00FF8 /* ListenCharacteristic.swift */,
 			);
-			name = Peripheral;
+			name = Interaction;
 			sourceTree = "<group>";
 		};
 		B8C5E7111E64D6590094A708 /* Scanning */ = {
@@ -670,7 +686,7 @@
 				B8D2078E1E26D702007E670A /* CBManagerState+ReturnString.swift in Sources */,
 				B8C70FBD1E1C7DB60006CF58 /* Peripheral.swift in Sources */,
 				B8C70FA51E1C65A20006CF58 /* ReadResult.swift in Sources */,
-				B8C70FC11E1C80150006CF58 /* OperationState.swift in Sources */,
+				B8C70FC11E1C80150006CF58 /* QueueableState.swift in Sources */,
 				B8C5E7151E64D93C0094A708 /* ScanDiscovery.swift in Sources */,
 				B8C052031E28561700EA3D76 /* ListenRestorer.swift in Sources */,
 				B8C5E7131E64D6860094A708 /* ScanAction.swift in Sources */,
@@ -696,8 +712,8 @@
 				B869A2971E721D50003C1278 /* Data+Sendable.swift in Sources */,
 				B8D2078C1E26D446007E670A /* CBPeripheralState+ReturnString.swift in Sources */,
 				B8F6DC561E2D6A9C004891D8 /* Notifications.swift in Sources */,
+				B88F79951EB7DB420094D8D1 /* Operation.swift in Sources */,
 				B88F50F01EB3E81E00D11CD8 /* Constant.swift in Sources */,
-				B8C70FBF1E1C7F300006CF58 /* Operation.swift in Sources */,
 				B88A0D9C1E1DAA1600A00FF8 /* Event.swift in Sources */,
 				B89AA4841E303634006BA376 /* Connection.swift in Sources */,
 				B88A0DA51E1DD1A200A00FF8 /* WriteCharacteristic.swift in Sources */,

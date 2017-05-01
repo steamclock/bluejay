@@ -9,7 +9,7 @@
 import Foundation
 
 /**
-    A class containing static factory methods for generating Bluejay-specific NSErrors.
+    A struct for generating Bluejay-specific errors.
  */
 struct Error {
     

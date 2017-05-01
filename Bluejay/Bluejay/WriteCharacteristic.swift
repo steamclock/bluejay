@@ -11,7 +11,8 @@ import CoreBluetooth
 
 class WriteCharacteristic<T: Sendable>: Operation {
     
-    var state = OperationState.notStarted    
+    var state: QueueableState
+    
     var peripheral: CBPeripheral
     
     private var characteristicIdentifier: CharacteristicIdentifier
@@ -19,6 +20,8 @@ class WriteCharacteristic<T: Sendable>: Operation {
     private var callback: ((WriteResult) -> Void)?
     
     init(characteristicIdentifier: CharacteristicIdentifier, peripheral: CBPeripheral, value: T, callback: @escaping (WriteResult) -> Void) {
+        self.state = .notStarted
+        
         self.characteristicIdentifier = characteristicIdentifier
         self.peripheral = peripheral
         self.value = value

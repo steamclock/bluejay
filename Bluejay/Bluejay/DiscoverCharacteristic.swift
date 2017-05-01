@@ -10,14 +10,17 @@ import Foundation
 import CoreBluetooth
 
 class DiscoverCharacteristic: Operation {
+
+    var state: QueueableState
     
-    var state = OperationState.notStarted    
     var peripheral: CBPeripheral
     
     private var characteristicIdentifier: CharacteristicIdentifier
     private var callback: ((Bool) -> Void)?
     
     init(characteristicIdentifier: CharacteristicIdentifier, peripheral: CBPeripheral, callback: @escaping (Bool) -> Void) {
+        self.state = .notStarted
+
         self.characteristicIdentifier = characteristicIdentifier
         self.peripheral = peripheral
         self.callback = callback

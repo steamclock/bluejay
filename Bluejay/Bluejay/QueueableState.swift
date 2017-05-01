@@ -1,5 +1,5 @@
 //
-//  OperationState.swift
+//  QueueableState.swift
 //  Bluejay
 //
 //  Created by Jeremy Chiang on 2017-01-03.
@@ -8,7 +8,11 @@
 
 import Foundation
 
-enum OperationState {
+/**
+ Defines the possible states of a Queueable.
+ */
+enum QueueableState {
+    
     case notStarted
     case running
     case failed(NSError)
@@ -22,4 +26,5 @@ enum OperationState {
             return false
         }
     }
+    
 }

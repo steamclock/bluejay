@@ -11,13 +11,17 @@ import CoreBluetooth
 
 class Queue {
     
-    static let shared = Queue()
+    private weak var bluejay: Bluejay?
     
     private var scan: Scan?
     private var connectionQueue = [Connection]()
     private var operationQueue = [Operation]()
     
     private var connectionTimer: Timer?
+    
+    init(bluejay: Bluejay) {
+        self.bluejay = bluejay
+    }
     
     @objc func cancelAll(_ error: NSError = Error.cancelledError()) {
         stopScanning(error)
@@ -143,34 +147,37 @@ class Queue {
     }
     
     func update() {
-        if !Bluejay.shared.isBluetoothAvailable {
-            // log.debug("Queue is paused because Bluetooth is not available yet.")
+        guard let bluejay = bluejay else {
+            cancelAll()
+            return
+        }
+        
+        if !bluejay.isBluetoothAvailable {
+            // Queue is paused because Bluetooth is not available yet.
             return
         }
         
         if scan == nil && connectionQueue.isEmpty && operationQueue.isEmpty {
-            // log.debug("Queue is empty, nothing to run.")
+            // Queue is empty, nothing to run.
             return
         }
         
         if scan != nil {
-            // log.debug("Queue will handle a scan.")
             attemptScanning()
             return
         }
         
         if !connectionQueue.isEmpty {
-            // log.debug("Queue will handle the connection queue.")
             attemptConnections()
             return
         }
         
-        if !Bluejay.shared.isConnected {
-            // log.debug("Queue is paused because no peripheral is connected.")
+        if !bluejay.isConnected {
+            // Queue is paused because no peripheral is connected.
             return
         }
         
-        // log.debug("Queue will handle the operation queue.")
+        // Queue will handle the operation queue.
         attemptOperations()
     }
     

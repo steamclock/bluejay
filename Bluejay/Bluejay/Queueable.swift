@@ -7,13 +7,23 @@
 //
 
 import Foundation
+import CoreBluetooth
 
-protocol Queueable {
+/**
+ Defines the properties and behaviours of all Bluetooth operations that can be added to the Bluejay queue for ordered execution.
+ */
+protocol Queueable: class {
     
-    var state: OperationState { get }
+    /// The state of the operation in the queue.
+    var state: QueueableState { get }
     
+    /// Called when the queue would like to start the operation in question.
     func start()
+    
+    /// Called when the queue would like to notify the operation in question that there is a Bluetooth response.
     func process(event: Event)
+    
+    /// Called when the queue has determined that the operation in question has failed.
     func fail(_ error: NSError)
     
 }
