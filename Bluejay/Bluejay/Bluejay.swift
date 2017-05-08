@@ -430,17 +430,20 @@ extension Bluejay: CBCentralManagerDelegate {
         
         guard
             let listenCaches = UserDefaults.standard.dictionary(forKey: Constant.listenCaches),
-            let listenCache = listenCaches[uuid.uuidString] as? ListenCache
+            let cacheData = listenCaches[uuid.uuidString] as? [Data]
         else {
             debugPrint("No listens to restore.")
             return
         }
         
-        debugPrint("Listen cache to restore: \(listenCache)")
-        
-        for (serviceUUID, characteristicUUID) in listenCache {
-            let serviceIdentifier = ServiceIdentifier(uuid: serviceUUID)
-            let characteristicIdentifier = CharacteristicIdentifier(uuid: characteristicUUID, service: serviceIdentifier)
+        for data in cacheData {
+            let listenCache = (NSKeyedUnarchiver.unarchiveObject(with: data) as? (ListenCache.Coding))!
+                .decoded as! ListenCache
+            
+            debugPrint("Listen cache to restore: \(listenCache)")
+            
+            let serviceIdentifier = ServiceIdentifier(uuid: listenCache.serviceUUID)
+            let characteristicIdentifier = CharacteristicIdentifier(uuid: listenCache.characteristicUUID, service: serviceIdentifier)
             
             if let listenRestorer = listenRestorer?.weakReference {
                 if !listenRestorer.willRestoreListen(on: characteristicIdentifier) {

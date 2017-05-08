@@ -256,23 +256,25 @@ public class Peripheral: NSObject {
         
         // Create a new entry in user defaults if none exists.
         guard let listenCaches = UserDefaults.standard.dictionary(forKey: Constant.listenCaches) else {
-            var newListenCache = ListenCache()
-            newListenCache.append((serviceUUID: serviceUUID, characteristicUUID: characteristicUUID))
+            let cacheData = NSKeyedArchiver.archivedData(
+                withRootObject: ListenCache(serviceUUID: serviceUUID, characteristicUUID: characteristicUUID).encoded!
+            )
             
-            UserDefaults.standard.set([bluejay.uuid.uuidString : newListenCache], forKey: Constant.listenCaches)
+            UserDefaults.standard.set([bluejay.uuid.uuidString : [cacheData]], forKey: Constant.listenCaches)
             UserDefaults.standard.synchronize()
             return
         }
         
         // Create a new listen cache if none exists.
         guard
-            let listenCache = listenCaches[bluejay.uuid.uuidString] as? ListenCache
+            let listenCacheData = listenCaches[bluejay.uuid.uuidString] as? [Data]
         else {
-            var newListenCache = ListenCache()
-            newListenCache.append((serviceUUID: serviceUUID, characteristicUUID: characteristicUUID))
+            let cacheData = NSKeyedArchiver.archivedData(
+                withRootObject: ListenCache(serviceUUID: serviceUUID, characteristicUUID: characteristicUUID).encoded!
+            )
             
             var newListenCaches = listenCaches
-            newListenCaches[bluejay.uuid.uuidString] = newListenCache
+            newListenCaches[bluejay.uuid.uuidString] = [cacheData]
             
             UserDefaults.standard.set(newListenCaches, forKey: Constant.listenCaches)
             UserDefaults.standard.synchronize()
@@ -280,11 +282,15 @@ public class Peripheral: NSObject {
         }
         
         // Add to existing listen cache.
-        var newListenCache = listenCache
-        newListenCache.append((serviceUUID: serviceUUID, characteristicUUID: characteristicUUID))
+        let cacheData = NSKeyedArchiver.archivedData(
+            withRootObject: ListenCache(serviceUUID: serviceUUID, characteristicUUID: characteristicUUID).encoded!
+        )
+        
+        var newListenCacheData = listenCacheData
+        newListenCacheData.append(cacheData)
         
         var newListenCaches = listenCaches
-        newListenCaches[bluejay.uuid.uuidString] = newListenCache
+        newListenCaches[bluejay.uuid.uuidString] = newListenCacheData
         
         UserDefaults.standard.set(newListenCaches, forKey: Constant.listenCaches)
         UserDefaults.standard.synchronize()
@@ -296,19 +302,21 @@ public class Peripheral: NSObject {
         
         guard
             let listenCaches = UserDefaults.standard.dictionary(forKey: Constant.listenCaches),
-            let listenCache = listenCaches[bluejay.uuid.uuidString] as? ListenCache
+            let cacheData = listenCaches[bluejay.uuid.uuidString] as? [Data]
         else {
             // Nothing to remove.
             return
         }
         
-        var newListenCache = listenCache
-        newListenCache = newListenCache.filter { (service, characteristic) -> Bool in
-            return (service != serviceUUID) && (characteristic != characteristicUUID)
+        var newCacheData = cacheData
+        newCacheData = newCacheData.filter { (data) -> Bool in
+            let listenCache = (NSKeyedUnarchiver.unarchiveObject(with: data) as? (ListenCache.Coding))!
+                .decoded as! ListenCache
+            return (listenCache.serviceUUID != serviceUUID) && (listenCache.characteristicUUID != characteristicUUID)
         }
         
         var newListenCaches = listenCaches
-        newListenCaches[bluejay.uuid.uuidString] = newListenCache
+        newListenCaches[bluejay.uuid.uuidString] = newCacheData
 
         UserDefaults.standard.set(newListenCaches, forKey: Constant.listenCaches)
         UserDefaults.standard.synchronize()

@@ -293,6 +293,7 @@
 				B8C70F961E1C5A4F0006CF58 /* Error.swift */,
 				B88F50EF1EB3E81E00D11CD8 /* Constant.swift */,
 				B88A0D9D1E1DCFA300A00FF8 /* Operations */,
+				B8D2AADF1EC0F39E00F4F27C /* Listen Restoration */,
 				B8C70FA71E1C696A0006CF58 /* Protocols */,
 				B8C70FA61E1C68AD0006CF58 /* Structs */,
 				B8C70FA11E1C64D10006CF58 /* Enums */,
@@ -356,7 +357,6 @@
 				B8C70F9A1E1C5A910006CF58 /* CharacteristicIdentifier.swift */,
 				B8C70F9F1E1C61BD0006CF58 /* PeripheralIdentifier.swift */,
 				B8C70FB01E1C6F150006CF58 /* DataPadding.swift */,
-				B88F50ED1EB3E73D00D11CD8 /* ListenCache.swift */,
 			);
 			name = Structs;
 			sourceTree = "<group>";
@@ -368,9 +368,17 @@
 				B8C70FAA1E1C69C50006CF58 /* Sendable.swift */,
 				B8C70FB81E1C725C0006CF58 /* ConnectionObserver.swift */,
 				B8FE9DF41E73597A00D361CE /* RSSIObserver.swift */,
-				B8C052021E28561700EA3D76 /* ListenRestorer.swift */,
 			);
 			name = Protocols;
+			sourceTree = "<group>";
+		};
+		B8D2AADF1EC0F39E00F4F27C /* Listen Restoration */ = {
+			isa = PBXGroup;
+			children = (
+				B88F50ED1EB3E73D00D11CD8 /* ListenCache.swift */,
+				B8C052021E28561700EA3D76 /* ListenRestorer.swift */,
+			);
+			name = "Listen Restoration";
 			sourceTree = "<group>";
 		};
 		B8DEDE621E4A4B5800B2244D /* BluejayDemo */ = {
