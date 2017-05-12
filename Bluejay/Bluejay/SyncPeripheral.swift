@@ -27,7 +27,7 @@ public class SyncPeripheral {
     // MARK: - Actions
     
     /// Read a value from the specified characteristic synchronously.
-    public func read<R: Receivable>(from characteristicIdentifier: CharacteristicIdentifier) throws -> R {
+    public func read<R: Receivable>(from characteristicIdentifier: CharacteristicIdentifier) throws -> R? {
         var finalResult: ReadResult<R> = .failure(Error.unknownError())
         
         let sem = DispatchSemaphore(value: 0)
@@ -45,6 +45,8 @@ public class SyncPeripheral {
         switch finalResult {
         case .success(let r):
             return r
+        case .cancelled:
+            throw Error.cancelled()
         case .failure(let error):
             throw error
         }
@@ -66,7 +68,10 @@ public class SyncPeripheral {
         
         _ = sem.wait(timeout: DispatchTime.distantFuture);
         
-        if case .failure(let error) = finalResult {
+        if case .cancelled = finalResult {
+            throw Error.cancelled()
+        }
+        else if case .failure(let error) = finalResult {
             throw error
         }
     }
@@ -82,16 +87,16 @@ public class SyncPeripheral {
                 
                 switch result {
                 case .success(let r):
-                    // TODO: callback shouldn't really be running on the main thread here. It shouldn't do any harm, but should probably make it run on a background thread eventually for consistancy.
                     action = completion(r)
+                case .cancelled:
+                    sem.signal()
                 case .failure(let e):
                     error = e
                 }
                                 
-                if(error != nil || action == .done) {
-                    self.parent.endListen(to: characteristicIdentifier, sendFailure: error != nil, completion: { result in
-                        sem.signal()
-                    })
+                if error != nil || action == .done {
+                    // TODO: Handle end listen failures.
+                    self.parent.endListen(to: characteristicIdentifier)
                 }
             })
         }
@@ -123,33 +128,32 @@ public class SyncPeripheral {
         DispatchQueue.main.sync {
             self.parent.listen(to: charToListenTo, completion: { (result : ReadResult<R>) in
                 listenResult = result
-                
                 var action = ListenAction.done
                 
                 switch result {
                 case .success(let r):
-                    // TODO: callback shouldn't really be running on the main thread here. It shouldn't do any harm, but should probably make it run on a background thread eventually for consistancy.
                     action = completion(r)
+                case .cancelled:
+                    sem.signal()
                 case .failure(let e):
                     error = e
                 }
                 
-                if case .done = action {
-                    self.parent.endListen(to: charToListenTo, sendFailure: false, completion: { result in
-                        sem.signal()
-                    })
+                if error != nil || action == .done {
+                    // TODO: Handle end listen failures.
+                    self.parent.endListen(to: charToListenTo)
                 }
             })
             
             self.parent.write(to: charToWriteTo, value: value, completion: { result in
-                if case .failure = result {
-                    self.parent.endListen(to: charToListenTo, sendFailure: true, completion: { result in
-                        // TODO: Add missing error handling.
-                    })
+                if case .failure(let e) = result {
+                    error = e
+                    
+                    // TODO: Handle end listen failures.
+                    self.parent.endListen(to: charToListenTo)
                 }
             })
             
-            return
         }
         
         _ = sem.wait(timeout: timeoutInSeconds == 0 ? DispatchTime.distantFuture : DispatchTime.now() + .seconds(timeoutInSeconds));
@@ -157,11 +161,10 @@ public class SyncPeripheral {
         if let error = error {
             throw error
         }
-        
-        if listenResult == nil {
-            parent.endListen(to: charToListenTo, sendFailure: false, completion: nil)
-            throw Error.timeoutError()
+        else if listenResult == nil {
+            // TODO: Handle end listen failures.
+            parent.endListen(to: charToListenTo)
+            throw Error.listenTimedOut()
         }
-        
     }
 }

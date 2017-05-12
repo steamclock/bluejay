@@ -29,6 +29,7 @@
 		B89AA4791E302114006BA376 /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = B89AA4781E302114006BA376 /* Queue.swift */; };
 		B89AA4841E303634006BA376 /* Connection.swift in Sources */ = {isa = PBXBuildFile; fileRef = B89AA4831E303634006BA376 /* Connection.swift */; };
 		B89AA4881E30373D006BA376 /* Scan.swift in Sources */ = {isa = PBXBuildFile; fileRef = B89AA4871E30373D006BA376 /* Scan.swift */; };
+		B8A947491EB93B5800347FF5 /* DiscoveryResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8A947481EB93B5800347FF5 /* DiscoveryResult.swift */; };
 		B8C052031E28561700EA3D76 /* ListenRestorer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C052021E28561700EA3D76 /* ListenRestorer.swift */; };
 		B8C5E7131E64D6860094A708 /* ScanAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C5E7121E64D6860094A708 /* ScanAction.swift */; };
 		B8C5E7151E64D93C0094A708 /* ScanDiscovery.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C5E7141E64D93C0094A708 /* ScanDiscovery.swift */; };
@@ -123,6 +124,7 @@
 		B89AA4781E302114006BA376 /* Queue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Queue.swift; sourceTree = "<group>"; };
 		B89AA4831E303634006BA376 /* Connection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Connection.swift; sourceTree = "<group>"; };
 		B89AA4871E30373D006BA376 /* Scan.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Scan.swift; sourceTree = "<group>"; };
+		B8A947481EB93B5800347FF5 /* DiscoveryResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryResult.swift; sourceTree = "<group>"; };
 		B8C052021E28561700EA3D76 /* ListenRestorer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListenRestorer.swift; sourceTree = "<group>"; };
 		B8C5E7121E64D6860094A708 /* ScanAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScanAction.swift; sourceTree = "<group>"; };
 		B8C5E7141E64D93C0094A708 /* ScanDiscovery.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScanDiscovery.swift; sourceTree = "<group>"; };
@@ -224,6 +226,7 @@
 			children = (
 				B89AA4831E303634006BA376 /* Connection.swift */,
 				B8F8C0EC1E4E7CA300A0D0F7 /* Disconnection.swift */,
+				B8C70FA21E1C65000006CF58 /* ConnectionResult.swift */,
 			);
 			name = Connectivity;
 			sourceTree = "<group>";
@@ -234,6 +237,7 @@
 				B89AA4781E302114006BA376 /* Queue.swift */,
 				B83271A81E313CA300D68581 /* Queueable.swift */,
 				B8C70FC01E1C80150006CF58 /* QueueableState.swift */,
+				B88A0D9B1E1DAA1600A00FF8 /* Event.swift */,
 			);
 			name = Queue;
 			sourceTree = "<group>";
@@ -244,9 +248,13 @@
 				B88F79941EB7DB420094D8D1 /* Operation.swift */,
 				B88A0D9E1E1DCFBF00A00FF8 /* DiscoverService.swift */,
 				B88A0DA01E1DD15600A00FF8 /* DiscoverCharacteristic.swift */,
+				B8A947481EB93B5800347FF5 /* DiscoveryResult.swift */,
 				B88A0DA21E1DD18B00A00FF8 /* ReadCharacteristic.swift */,
+				B8C70FA41E1C65A20006CF58 /* ReadResult.swift */,
 				B88A0DA41E1DD1A200A00FF8 /* WriteCharacteristic.swift */,
+				B8022D971E1EEED900EA360B /* WriteResult.swift */,
 				B88A0DA61E1DD1DE00A00FF8 /* ListenCharacteristic.swift */,
+				B8022D9B1E1F052F00EA360B /* ListenAction.swift */,
 			);
 			name = Interaction;
 			sourceTree = "<group>";
@@ -296,7 +304,6 @@
 				B8D2AADF1EC0F39E00F4F27C /* Listen Restoration */,
 				B8C70FA71E1C696A0006CF58 /* Protocols */,
 				B8C70FA61E1C68AD0006CF58 /* Structs */,
-				B8C70FA11E1C64D10006CF58 /* Enums */,
 				B8C70F931E1C56D80006CF58 /* Extensions */,
 				B8F6DC541E2D6A8B004891D8 /* Notifications */,
 				B8C70F791E1C22850006CF58 /* Info.plist */,
@@ -336,18 +343,6 @@
 				8D160102397E85DC10B5ACF7 /* Pods_BluejayDemo.framework */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		B8C70FA11E1C64D10006CF58 /* Enums */ = {
-			isa = PBXGroup;
-			children = (
-				B8C70FA21E1C65000006CF58 /* ConnectionResult.swift */,
-				B8C70FA41E1C65A20006CF58 /* ReadResult.swift */,
-				B8022D971E1EEED900EA360B /* WriteResult.swift */,
-				B8022D9B1E1F052F00EA360B /* ListenAction.swift */,
-				B88A0D9B1E1DAA1600A00FF8 /* Event.swift */,
-			);
-			name = Enums;
 			sourceTree = "<group>";
 		};
 		B8C70FA61E1C68AD0006CF58 /* Structs */ = {
@@ -711,6 +706,7 @@
 				B8C70FA91E1C69B60006CF58 /* Receivable.swift in Sources */,
 				B88A0DA71E1DD1DE00A00FF8 /* ListenCharacteristic.swift in Sources */,
 				B8C70F971E1C5A4F0006CF58 /* Error.swift in Sources */,
+				B8A947491EB93B5800347FF5 /* DiscoveryResult.swift in Sources */,
 				B88F50EE1EB3E73D00D11CD8 /* ListenCache.swift in Sources */,
 				B88A0D9F1E1DCFBF00A00FF8 /* DiscoverService.swift in Sources */,
 				B8022D9A1E1F041D00EA360B /* SyncPeripheral.swift in Sources */,

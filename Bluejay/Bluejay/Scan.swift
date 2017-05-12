@@ -14,6 +14,7 @@ private let serialNumberCharacteristic = CharacteristicIdentifier(uuid: "2A25", 
 
 class Scan: Queueable {
     
+    var queue: Queue?
     var state: QueueableState
     
     private let manager: CBCentralManager
@@ -46,7 +47,7 @@ class Scan: Queueable {
         self.stopped = stopped
         self.manager = manager
     }
-    
+        
     func start() {        
         state = .running
         
@@ -58,8 +59,6 @@ class Scan: Queueable {
     }
     
     func process(event: Event) {
-        // log.debug("Processing operation: Scan")
-        
         if case .didDiscoverPeripheral(let peripheral, let advertisementData, let rssi) = event {
             let newDiscovery = ScanDiscovery(peripheral: peripheral, advertisementPacket: advertisementData, rssi: rssi.intValue)
             
@@ -94,11 +93,28 @@ class Scan: Queueable {
                 state = .completed
                 
                 stopped(discoveries, nil)
+                
+                updateQueue()
             }
         }
         else {
             preconditionFailure("Unexpected event response: \(event)")
         }
+    }
+    
+    func cancel() {
+        cancelled()
+    }
+    
+    func cancelled() {
+        state = .cancelled
+        
+        clearTimers()
+        manager.stopScan()
+        
+        stopped(discoveries, nil)
+        
+        updateQueue()
     }
     
     func fail(_ error : NSError) {
@@ -108,6 +124,8 @@ class Scan: Queueable {
         state = .failed(error)
         
         stopped(discoveries, error)
+        
+        updateQueue()
     }
     
     private func refreshTimer(identifier: UUID) {
@@ -143,7 +161,7 @@ class Scan: Queueable {
     }
     
     private func refresh(identifier: UUID) {
-        if state.isCompleted {
+        if state.isFinished {
             return
         }
         

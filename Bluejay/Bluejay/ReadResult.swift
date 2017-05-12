@@ -11,6 +11,7 @@ import Foundation
 /// Indicates a successful or failed read attempt, where the success case contains the value read.
 public enum ReadResult<R> {
     case success(R)
+    case cancelled
     case failure(Swift.Error)
 }
 
@@ -19,8 +20,6 @@ extension ReadResult where R: Receivable {
     /// Create a typed read result from raw data.
     init(dataResult: ReadResult<Data?>) {
         switch dataResult {
-        case .failure(let error):
-            self = .failure(error)
         case .success(let data):
             if let data = data {
                 self = .success(R(bluetoothData: data))
@@ -28,6 +27,10 @@ extension ReadResult where R: Receivable {
             else {
                 self = .failure(Error.missingDataError())
             }
+        case .cancelled:
+            self = .cancelled
+        case .failure(let error):
+            self = .failure(error)
         }
     }
     

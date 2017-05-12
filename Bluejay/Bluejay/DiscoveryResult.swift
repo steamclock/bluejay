@@ -1,15 +1,14 @@
 //
-//  WriteResult.swift
+//  DiscoveryResult.swift
 //  Bluejay
 //
-//  Created by Jeremy Chiang on 2017-01-05.
+//  Created by Jeremy Chiang on 2017-05-02.
 //  Copyright © 2017 Steamclock Software. All rights reserved.
 //
 
 import Foundation
 
-/// Indicates a successful or failed write attempt.
-public enum WriteResult {
+public enum DiscoveryResult {
     case success
     case cancelled
     case failure(Swift.Error)

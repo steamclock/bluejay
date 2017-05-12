@@ -11,14 +11,15 @@ import CoreBluetooth
 
 class DiscoverCharacteristic: Operation {
 
+    var queue: Queue?
     var state: QueueableState
     
     var peripheral: CBPeripheral
     
     private var characteristicIdentifier: CharacteristicIdentifier
-    private var callback: ((Bool) -> Void)?
+    private var callback: ((DiscoveryResult) -> Void)?
     
-    init(characteristicIdentifier: CharacteristicIdentifier, peripheral: CBPeripheral, callback: @escaping (Bool) -> Void) {
+    init(characteristicIdentifier: CharacteristicIdentifier, peripheral: CBPeripheral, callback: @escaping (DiscoveryResult) -> Void) {
         self.state = .notStarted
 
         self.characteristicIdentifier = characteristicIdentifier
@@ -27,10 +28,8 @@ class DiscoverCharacteristic: Operation {
     }
     
     func start() {
-        // log.debug("Starting operation: DiscoverCharacteristic")
-
         guard let service = peripheral.service(with: characteristicIdentifier.service.uuid) else {
-            fail(Error.missingServiceError(characteristicIdentifier.service))
+            fail(Error.missingService(characteristicIdentifier.service))
             return
         }
         
@@ -45,16 +44,14 @@ class DiscoverCharacteristic: Operation {
     }
     
     func process(event: Event) {
-        // log.debug("Processing operation: DiscoverCharacteristic")
-
         guard let service = peripheral.service(with: characteristicIdentifier.service.uuid) else {
-            fail(Error.missingServiceError(characteristicIdentifier.service))
+            fail(Error.missingService(characteristicIdentifier.service))
             return
         }
         
         if case .didDiscoverCharacteristics = event {
             if service.characteristic(with: characteristicIdentifier.uuid) == nil {
-                fail(Error.missingCharacteristicError(characteristicIdentifier))
+                fail(Error.missingCharacteristic(characteristicIdentifier))
             }
             else {
                 success()
@@ -68,15 +65,32 @@ class DiscoverCharacteristic: Operation {
     func success() {
         state = .completed
         
-        callback?(true)
+        callback?(.success)
         callback = nil
+        
+        updateQueue()
+    }
+    
+    func cancel() {
+        cancelled()
+    }
+    
+    func cancelled() {
+        state = .cancelled
+        
+        callback?(.cancelled)
+        callback = nil
+        
+        updateQueue()
     }
     
     func fail(_ error: NSError) {
         state = .failed(error)
 
-        callback?(false)
-        callback = nil        
+        callback?(.failure(error))
+        callback = nil
+        
+        updateQueue()
     }
     
 }

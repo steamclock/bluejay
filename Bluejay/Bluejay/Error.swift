@@ -13,6 +13,78 @@ import Foundation
  */
 struct Error {
     
+    static func bluetoothUnavailable() -> NSError {
+        return NSError(
+            domain: "Bluejay",
+            code: 0,
+            userInfo: [NSLocalizedDescriptionKey: "Bluetooth unavailable."]
+        )
+    }
+    
+    static func multipleScan() -> NSError {
+        return NSError(
+            domain: "Bluejay",
+            code: 1,
+            userInfo: [NSLocalizedDescriptionKey: "Multiple scan is not allowed."]
+        )
+    }
+    
+    static func multipleConnect() -> NSError {
+        return NSError(
+            domain: "Bluejay",
+            code: 2,
+            userInfo: [NSLocalizedDescriptionKey: "Multiple connect is not allowed."]
+        )
+    }
+    
+    static func connectionTimedOut() -> NSError {
+        return NSError(
+            domain: "Bluejay",
+            code: 3,
+            userInfo: [NSLocalizedDescriptionKey: "Connection timed out."]
+        )
+    }
+    
+    static func notConnected() -> NSError {
+        return NSError(
+            domain: "Bluejay",
+            code: 4,
+            userInfo: [NSLocalizedDescriptionKey: "Not connected to a peripheral."]
+        )
+    }
+    
+    static func missingService(_ service: ServiceIdentifier) -> NSError {
+        return NSError(
+            domain: "Bluejay",
+            code: 5,
+            userInfo: [NSLocalizedDescriptionKey: "Service not found: \(service.uuid)."]
+        )
+    }
+    
+    static func missingCharacteristic(_ char: CharacteristicIdentifier) -> NSError {
+        return NSError(
+            domain: "Bluejay",
+            code: 6,
+            userInfo: [NSLocalizedDescriptionKey: "Characteristic not found: \(char.uuid)."]
+        )
+    }
+    
+    static func cancelled() -> NSError {
+        return NSError(
+            domain: "Bluejay",
+            code: 7,
+            userInfo: [NSLocalizedDescriptionKey: "Cancelled."]
+        )
+    }
+    
+    static func listenTimedOut() -> NSError {
+        return NSError(
+            domain: "Bluejay",
+            code: 8,
+            userInfo: [NSLocalizedDescriptionKey: "Listen timed out."]
+        )
+    }
+        
     /// An unknown error should almost never happen, and if it does occur, it usually means there's something seriously wrong in either the internal implementation or the external usage of Bluejay.
     static func unknownError() -> NSError {
         return NSError(
@@ -30,16 +102,7 @@ struct Error {
             userInfo: [NSLocalizedDescriptionKey: "No data from peripheral."]
         )
     }
-    
-    /// A cancelled error usually indicates that a read or write or listen operation has been cancelled programmatically.
-    static func cancelledError() -> NSError {
-        return NSError(
-            domain: "Bluejay",
-            code: 2,
-            userInfo: [NSLocalizedDescriptionKey: "Operation cancelled."]
-        )
-    }
-    
+        
     /// An unknown peripheral error usually indicates that the peripheral about to be worked with is not the expected peripheral.
     static func unknownPeripheralError(_ peripheral: PeripheralIdentifier) -> NSError {
         return NSError(
@@ -48,16 +111,7 @@ struct Error {
             userInfo: [NSLocalizedDescriptionKey: "Unknown peripheral: \(peripheral.uuid)"]
         )
     }
-    
-    /// A not connected error usually indicates that there is no connected peripheral for the attempted operation.
-    static func notConnectedError() -> NSError {
-        return NSError(
-            domain: "Bluejay",
-            code: 4,
-            userInfo: [NSLocalizedDescriptionKey: "Peripheral is not connected."]
-        )
-    }
-    
+        
     /// An unexpected disconnection error usually indicates that a connection to a peripheral has been forcefully disconnected either purposely or unpurposely.
     static func unexpectedDisconnectError() -> NSError {
         return NSError(
@@ -67,29 +121,4 @@ struct Error {
         )
     }
     
-    /// A missing service error usually indicates that the requested Bluetooth Service cannot be found.
-    static func missingServiceError(_ service: ServiceIdentifier) -> NSError {
-        return NSError(
-            domain: "Bluejay",
-            code: 6,
-            userInfo: [NSLocalizedDescriptionKey: "Service not found: \(service.uuid)"]
-        )
-    }
-    
-    /// A missing characteristic error usually indicates that the requested Bluetooth Characteristic cannot be found.
-    static func missingCharacteristicError(_ char: CharacteristicIdentifier) -> NSError {
-        return NSError(
-            domain: "Bluejay",
-            code: 7,
-            userInfo: [NSLocalizedDescriptionKey: "Characteristic not found: \(char.uuid)"]
-        )
-    }
-    
-    static func timeoutError() -> NSError {
-        return NSError(
-            domain: "Bluejay",
-            code: 8,
-            userInfo: [NSLocalizedDescriptionKey: "Operation timed out."]
-        )
-    }
 }

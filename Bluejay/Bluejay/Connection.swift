@@ -16,12 +16,16 @@ var standardConnectOptions: [String : AnyObject] = [
 
 class Connection: Queueable {
     
+    var queue: Queue?
     var state: QueueableState
     
-    var peripheral: CBPeripheral
-    var manager: CBCentralManager
+    let peripheral: CBPeripheral
+    let manager: CBCentralManager
     
     var callback: ((ConnectionResult) -> Void)?
+    
+    private var connectionTimer: Timer?
+    private let timeoutInterval: TimeInterval = 15
     
     init(peripheral: CBPeripheral, manager: CBCentralManager, callback: @escaping (ConnectionResult) -> Void) {
         self.state = .notStarted
@@ -35,11 +39,31 @@ class Connection: Queueable {
     func start() {
         state = .running
         manager.connect(peripheral, options: standardConnectOptions)
+        
+        cancelTimer()
+        
+        if #available(iOS 10.0, *) {
+            connectionTimer = Timer.scheduledTimer(withTimeInterval: timeoutInterval, repeats: false, block: { (timer) in
+                self.timedOut()
+            })
+        } else {
+            // Fallback on earlier versions
+            connectionTimer = Timer.scheduledTimer(
+                timeInterval: timeoutInterval,
+                target: self,
+                selector: #selector(timedOut),
+                userInfo: nil,
+                repeats: false
+            )
+        }
     }
     
     func process(event: Event) {        
         if case .didConnectPeripheral(let peripheral) = event {
             success(peripheral)
+        }
+        else if case .didDisconnectPeripheral = event {
+            cancelled()
         }
         else {
             preconditionFailure("Unexpected event response: \(event)")
@@ -47,17 +71,62 @@ class Connection: Queueable {
     }
     
     func success(_ peripheral: CBPeripheral) {
+        cancelTimer()
+        
         state = .completed
         
         callback?(.success(peripheral))
         callback = nil
+        
+        updateQueue()
+    }
+    
+    func cancel() {
+        cancelTimer()
+        
+        if case .running = state {
+            state = .cancelling
+            manager.cancelPeripheralConnection(peripheral)
+        }
+        else {
+            cancelled()
+        }
+    }
+    
+    func cancelled() {
+        cancelTimer()
+        
+        if case .running = state {
+            state = .cancelling
+            manager.cancelPeripheralConnection(peripheral)
+        }
+        
+        state = .cancelled
+        
+        callback?(.cancelled)
+        callback = nil
+        
+        updateQueue()
     }
     
     func fail(_ error: NSError) {
+        cancelTimer()
+        
         state = .failed(error)
 
         callback?(.failure(error))
-        callback = nil        
+        callback = nil
+        
+        updateQueue()
+    }
+    
+    private func cancelTimer() {
+        connectionTimer?.invalidate()
+        connectionTimer = nil
+    }
+    
+    @objc private func timedOut() {
+        fail(Error.connectionTimedOut())
     }
     
 }

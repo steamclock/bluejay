@@ -14,216 +14,130 @@ class Queue {
     private weak var bluejay: Bluejay?
     
     private var scan: Scan?
-    private var connectionQueue = [Connection]()
-    private var operationQueue = [Operation]()
+    private var queue = [Queueable]()
     
-    private var connectionTimer: Timer?
+    /// Helps distinguish one Queue instance from another.
+    private var uuid = UUID()
+    
+    private var isCBCentralManagerReady = false
     
     init(bluejay: Bluejay) {
         self.bluejay = bluejay
+        log("Queue initialized with UUID: \(uuid.uuidString).")
     }
     
-    @objc func cancelAll(_ error: NSError = Error.cancelledError()) {
+    deinit {
+        log("Deinit Queue with UUID: \(uuid.uuidString).")
+    }
+    
+    func start() {
+        if !isCBCentralManagerReady {
+            log("Starting queue with UUID: \(uuid.uuidString)")
+            isCBCentralManagerReady = true
+            update()
+        }
+    }
+    
+    func add(_ queueable: Queueable) {
+        precondition(bluejay != nil, "Cannot enqueue: Bluejay instance is nil.")
+        
+        queueable.queue = self
+        queue.append(queueable)
+        
+        update()
+    }
+    
+    // MARK: - Cancellation
+    
+    @objc func cancelAll(_ error: NSError? = nil) {
         stopScanning(error)
         
-        for connection in connectionQueue where !connection.state.isCompleted {
-            connection.fail(error)
-            update()
+        for queueable in queue where !queueable.state.isFinished {
+            if let error = error {
+                queueable.fail(error)
+            }
+            else {
+                queueable.cancelled()
+            }            
         }
         
-        for operation in operationQueue where !operation.state.isCompleted {
-            operation.fail(error)
-            update()
-        }
-        
-        connectionQueue = []
-        operationQueue = []
+        queue = []
     }
     
-    func stopScanning(_ error: NSError) {
-        scan?.fail(error)
+    func stopScanning(_ error: NSError? = nil) {
+        if let error = error {
+            scan?.fail(error)
+        }
+        else {
+            scan?.cancel()
+        }
+        
         scan = nil
-        
-        update()
     }
     
-    private func attemptScanning() {
-        while scan != nil {
-            switch scan!.state {
-            case .notStarted:
-                // log.debug("Scan is starting.")
-                scan?.start()
-            case .running:
-                // log.debug("Scan is still running.")
-                return
-            case .failed(let error):
-                // log.debug("Scan has failed.")
-                stopScanning(error)
-            case .completed:
-                // log.debug("Scan has completed.")
-                scan = nil
-                update()
-            }
-        }
-    }
-    
-    private func attemptConnections() {
-        while connectionQueue.count > 0 {
-            switch connectionQueue[0].state {
-            case .notStarted:
-                // log.debug("A task in the connection queue is starting.")
-                
-                stopConnectionTimer()
-                startConnectionTimer()
-                
-                connectionQueue[0].start()
-            case .running:
-                // log.debug("A task in the connection queue is still running.")
-                return
-            case .failed(let error):
-                // log.debug("A task in the connection queue has failed.")
-                
-                stopConnectionTimer()
-                
-                connectionQueue.removeFirst()
-                cancelAll(error)
-            case .completed:
-                // log.debug("A task in the connection queue has completed.")
-                
-                stopConnectionTimer()
-                
-                connectionQueue.removeFirst()
-                update()
-            }
-        }
-    }
-    
-    private func startConnectionTimer() {
-        // log.debug("Starting a connection timer.")
-        
-        if #available(iOS 10.0, *) {
-            connectionTimer = Timer.scheduledTimer(withTimeInterval: 15, repeats: false, block: { (timer) in
-                // log.debug("A task in the connection queue has timed out.")
-                self.cancelAll(Error.cancelledError())
-            })
-        } else {
-            // Fallback on earlier versions
-            connectionTimer = Timer.scheduledTimer(
-                timeInterval: 15,
-                target: self,
-                selector: #selector(cancelAll(_:)),
-                userInfo: nil,
-                repeats: false
-            )
-        }
-    }
-    
-    private func stopConnectionTimer() {
-        // log.debug("Stopping a connection timer.")
-        
-        connectionTimer?.invalidate()
-        connectionTimer = nil
-    }
-    
-    private func attemptOperations() {
-        while operationQueue.count > 0 {
-            switch operationQueue[0].state {
-            case .notStarted:
-                // log.debug("A task in the operation queue is starting.")
-                operationQueue[0].start()
-            case .running:
-                // log.debug("A task in the operation queue is still running.")
-                return
-            case .failed(let error):
-                // log.debug("A task in the operation queue has failed.")
-                operationQueue.removeFirst()
-                cancelAll(error)
-            case .completed:
-                // log.debug("A task in the operation queue has completed.")
-                operationQueue.removeFirst()
-                update()
-            }
-        }
-    }
+    // MARK: - Queue
     
     func update() {
-        guard let bluejay = bluejay else {
-            cancelAll()
+        if queue.isEmpty {
+            log("Queue is empty, nothing to run.")
             return
         }
         
-        if !bluejay.isBluetoothAvailable {
-            // Queue is paused because Bluetooth is not available yet.
+        if !isCBCentralManagerReady {
+            log("Queue is paused because CBCentralManager is not ready yet.")
             return
         }
         
-        if scan == nil && connectionQueue.isEmpty && operationQueue.isEmpty {
-            // Queue is empty, nothing to run.
-            return
+        if let queuable = queue.first {
+            if queuable.state.isFinished {
+                if queuable is Scan {
+                    scan = nil
+                }
+                
+                queue.removeFirst()
+                update()
+                
+                return
+            }
+            
+            if let bluejay = bluejay {
+                if !bluejay.isBluetoothAvailable {
+                    queuable.fail(Error.bluetoothUnavailable())
+                }
+                else if !bluejay.isConnected && !(queuable is Scan) {
+                    queuable.fail(Error.notConnected())
+                }
+                else if case .notStarted = queuable.state {
+                    queuable.start()
+                }
+            }
+            else {
+                preconditionFailure("Queue failure: Bluejay is nil.")
+            }
         }
-        
-        if scan != nil {
-            attemptScanning()
-            return
-        }
-        
-        if !connectionQueue.isEmpty {
-            attemptConnections()
-            return
-        }
-        
-        if !bluejay.isConnected {
-            // Queue is paused because no peripheral is connected.
-            return
-        }
-        
-        // Queue will handle the operation queue.
-        attemptOperations()
-    }
-    
-    func add(scan: Scan) {
-        // Cancel and reset the queue for the scan.
-        cancelAll(Error.cancelledError())
-        
-        self.scan = scan
-        update()
-    }
-    
-    func add(connection: Connection) {
-        connectionQueue.append(connection)
-        update()
-    }
-    
-    func add(operation: Operation) {
-        operationQueue.append(operation)
-        update()
     }
     
     func process(event: Event, error: NSError?) {
-        precondition(scan != nil || connectionQueue.count > 0 || operationQueue.count > 0,
-            "Tried to process an event when the queue is empty."
-        )
-        
-        if error == nil {
-            if scan != nil {
-                scan?.process(event: event)
-            }
-            else if !connectionQueue.isEmpty {
-                connectionQueue[0].process(event: event)
-            }
-            else if !operationQueue.isEmpty {
-                operationQueue[0].process(event: event)
-            }
-            
-            update()
+        if isEmpty() {
+            log("Queue is empty but received an event: \(event)")
+            return
         }
-        else {
-            cancelAll(error ?? Error.unknownError())
+        
+        if let queueable = queue.first {
+            if let error = error {
+                queueable.fail(error)
+            }
+            else {
+                queueable.process(event: event)
+
+            }
         }
     }
     
+    // MARK: - States
+    
     func isEmpty() -> Bool {
-        return scan == nil && connectionQueue.isEmpty && operationQueue.isEmpty
+        return queue.isEmpty
     }
     
     func isScanning() -> Bool {
@@ -240,7 +154,7 @@ extension Queue: ConnectionObserver {
         }
         else {
             if !isEmpty() {
-                cancelAll(Error.unexpectedDisconnectError())
+                cancelAll(Error.bluetoothUnavailable())
             }
         }
     }

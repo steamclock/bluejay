@@ -11,6 +11,7 @@ import CoreBluetooth
 
 class ReadCharacteristic<T: Receivable>: Operation {
     
+    var queue: Queue?
     var state: QueueableState
 
     var peripheral: CBPeripheral
@@ -31,7 +32,7 @@ class ReadCharacteristic<T: Receivable>: Operation {
             let service = peripheral.service(with: characteristicIdentifier.service.uuid),
             let characteristic = service.characteristic(with: characteristicIdentifier.uuid)
         else {
-            fail(Error.missingCharacteristicError(characteristicIdentifier))
+            fail(Error.missingCharacteristic(characteristicIdentifier))
             return
         }
         
@@ -50,17 +51,34 @@ class ReadCharacteristic<T: Receivable>: Operation {
             
             callback?(ReadResult<T>(dataResult: .success(value)))
             callback = nil
+            
+            updateQueue()
         }
         else {
             preconditionFailure("Expecting write to characteristic: \(characteristicIdentifier.uuid), but received event: \(event)")
         }
     }
     
+    func cancel() {
+        cancelled()
+    }
+    
+    func cancelled() {
+        state = .cancelled
+        
+        callback?(.cancelled)
+        callback = nil
+        
+        updateQueue()
+    }
+    
     func fail(_ error: NSError) {
         state = .failed(error)
 
         callback?(.failure(error))
-        callback = nil        
+        callback = nil
+        
+        updateQueue()
     }
     
 }

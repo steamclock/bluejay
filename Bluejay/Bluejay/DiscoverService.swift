@@ -11,14 +11,15 @@ import CoreBluetooth
 
 class DiscoverService: Operation {
     
+    var queue: Queue?
     var state: QueueableState
     
     var peripheral: CBPeripheral
     
     private var serviceIdentifier: ServiceIdentifier
-    private var callback: ((Bool) -> Void)?
+    private var callback: ((DiscoveryResult) -> Void)?
 
-    init(serviceIdentifier: ServiceIdentifier, peripheral: CBPeripheral, callback: @escaping (Bool) -> Void) {
+    init(serviceIdentifier: ServiceIdentifier, peripheral: CBPeripheral, callback: @escaping (DiscoveryResult) -> Void) {
         self.state = .notStarted
         
         self.serviceIdentifier = serviceIdentifier
@@ -27,8 +28,6 @@ class DiscoverService: Operation {
     }
     
     func start() {
-        // log.debug("Starting operation: DiscoverService")
-
         if peripheral.service(with: serviceIdentifier.uuid) != nil {
             success()
         }
@@ -40,11 +39,9 @@ class DiscoverService: Operation {
     }
     
     func process(event: Event) {
-        // log.debug("Processing operation: DiscoverService")
-
         if case .didDiscoverServices = event {
             if peripheral.service(with: serviceIdentifier.uuid) == nil {
-                fail(Error.missingServiceError(serviceIdentifier))
+                fail(Error.missingService(serviceIdentifier))
             }
             else {
                 success()
@@ -58,15 +55,32 @@ class DiscoverService: Operation {
     func success() {
         state = .completed
         
-        callback?(true)
+        callback?(.success)
         callback = nil
+        
+        updateQueue()
     }
     
-    func fail(_ error : NSError) {
+    func cancel() {
+        cancelled()
+    }
+    
+    func cancelled() {
+        state = .cancelled
+        
+        callback?(.cancelled)
+        callback = nil
+        
+        updateQueue()
+    }
+    
+    func fail(_ error: NSError) {
         state = .failed(error)
 
-        callback?(false)
-        callback = nil        
+        callback?(.failure(error))
+        callback = nil
+        
+        updateQueue()
     }
     
 }

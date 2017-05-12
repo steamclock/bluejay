@@ -24,5 +24,9 @@ class Disconnection: Connection {
             preconditionFailure("Unexpected event response: \(event)")
         }
     }
+
+    override func cancel() {
+        cancelled()
+    }
     
 }

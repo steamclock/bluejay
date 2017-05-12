@@ -15,12 +15,14 @@ enum QueueableState {
     
     case notStarted
     case running
+    case cancelling
+    case cancelled
     case failed(NSError)
     case completed
     
-    var isCompleted: Bool {
+    var isFinished: Bool {
         switch self {
-        case .completed, .failed:
+        case .completed, .cancelled, .failed:
             return true
         default:
             return false

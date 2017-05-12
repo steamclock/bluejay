@@ -18,7 +18,7 @@ import Foundation
     Available callbacks:
     * `func bluetoothAvailable(_ available: Bool)`
     * `func connected(_ peripheral: BluejayPeripheral)`
-    * `func disconected()`
+    * `func disconnected()`
 */
 public protocol ConnectionObserver: class {
     
@@ -27,14 +27,14 @@ public protocol ConnectionObserver: class {
     */
     func bluetoothAvailable(_ available: Bool)
     func connected(_ peripheral: Peripheral)
-    func disconected()
+    func disconnected()
 }
 
 /// Slightly less gross way to make the BluejayEventsObservable protocol's functions optional.
 extension ConnectionObserver {
     public func bluetoothAvailable(_ available: Bool) {}
     public func connected(_ peripheral: Peripheral) {}
-    public func disconected() {}
+    public func disconnected() {}
 }
 
 /// Allows creating weak references to BluejayEventsObservable objects, so that the Bluejay singleton does not prevent the deallocation of those objects.
