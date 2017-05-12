@@ -27,7 +27,7 @@ public class SyncPeripheral {
     // MARK: - Actions
     
     /// Read a value from the specified characteristic synchronously.
-    public func read<R: Receivable>(from characteristicIdentifier: CharacteristicIdentifier) throws -> R? {
+    public func read<R: Receivable>(from characteristicIdentifier: CharacteristicIdentifier) throws -> R {
         var finalResult: ReadResult<R> = .failure(Error.unknownError())
         
         let sem = DispatchSemaphore(value: 0)

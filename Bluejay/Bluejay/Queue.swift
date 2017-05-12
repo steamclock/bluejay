@@ -44,6 +44,10 @@ class Queue {
         queueable.queue = self
         queue.append(queueable)
         
+        if queueable is Scan {
+            scan = queueable as? Scan
+        }
+        
         update()
     }
     
@@ -79,7 +83,7 @@ class Queue {
     
     func update() {
         if queue.isEmpty {
-            log("Queue is empty, nothing to run.")
+            // log("Queue is empty, nothing to run.")
             return
         }
         
@@ -104,7 +108,7 @@ class Queue {
                 if !bluejay.isBluetoothAvailable {
                     queuable.fail(Error.bluetoothUnavailable())
                 }
-                else if !bluejay.isConnected && !(queuable is Scan) {
+                else if !bluejay.isConnected && !(queuable is Scan) && !(queuable is Connection) {
                     queuable.fail(Error.notConnected())
                 }
                 else if case .notStarted = queuable.state {
