@@ -36,7 +36,7 @@ class ScanHeartRateSensorsViewController: UITableViewController {
                 guard let weakSelf = self else {
                     return .stop
                 }
-                
+                                
                 weakSelf.peripherals = discoveries
                 weakSelf.tableView.reloadData()
                 
@@ -82,17 +82,6 @@ class ScanHeartRateSensorsViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let peripheral = peripherals[indexPath.row].peripheral
-        
-        bluejay.connect(PeripheralIdentifier(uuid: peripheral.identifier)) { (result) in
-            switch result {
-            case .success(let peripheral):
-                debugPrint("Connection to \(peripheral.identifier) successful.")
-            case .cancelled:
-                debugPrint("Connection to \(peripheral.identifier) cancelled.")
-            case .failure(let error):
-                debugPrint("Connection to \(peripheral.identifier) failed with error: \(error.localizedDescription)")
-            }
-        }
         
         bluejay.connect(PeripheralIdentifier(uuid: peripheral.identifier)) { (result) in
             switch result {

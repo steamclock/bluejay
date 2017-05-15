@@ -512,23 +512,23 @@ extension Bluejay: CBCentralManagerDelegate {
         let peripheralString = peripheral.name ?? peripheral.identifier.uuidString
         let errorString = error?.localizedDescription ?? ""
         
-        debugPrint("Did disconnect from: \(peripheralString) with error: \(errorString)")
+        log("Did disconnect from: \(peripheralString) with error: \(errorString)")
         
         if !queue.isEmpty() {
             queue.process(event: .didDisconnectPeripheral(peripheral), error: nil)
         }
         
         if connectingPeripheral == nil && connectedPeripheral == nil {
-            debugPrint("Disconnection is either bogus or already handled, Bluejay has no connected peripheral.")
+            log("Disconnection is either bogus or already handled, Bluejay has no connected peripheral.")
             return
         }
         
         cancelAllConnections()
         
-        debugPrint("Should auto-reconnect: \(self.shouldAutoReconnect)")
+        log("Should auto-reconnect: \(self.shouldAutoReconnect)")
         
         if shouldAutoReconnect {
-            debugPrint("Issuing reconnect to: \(peripheral.name ?? peripheral.identifier.uuidString)")
+            log("Issuing reconnect to: \(peripheral.name ?? peripheral.identifier.uuidString)")
             connect(PeripheralIdentifier(uuid: peripheral.identifier), completion: {_ in })
         }
         
@@ -536,11 +536,6 @@ extension Bluejay: CBCentralManagerDelegate {
     }
     
     public func centralManager(_ central: CBCentralManager, didFailToConnect peripheral: CBPeripheral, error: Swift.Error?) {
-        let peripheralString = peripheral.name ?? peripheral.identifier.uuidString
-        let errorString = error?.localizedDescription ?? ""
-        
-        debugPrint("Did fail to connect to: \(peripheralString) with error: \(errorString)")
-        
         // Use the same clean up logic provided in the did disconnect callback.
         centralManager(central, didDisconnectPeripheral: peripheral, error: error)
     }

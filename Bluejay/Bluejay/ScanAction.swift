@@ -10,5 +10,6 @@ import Foundation
 
 public enum ScanAction {
     case `continue`
+    case blacklist
     case stop
 }

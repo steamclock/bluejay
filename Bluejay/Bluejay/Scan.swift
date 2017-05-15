@@ -27,6 +27,7 @@ class Scan: Queueable {
     private let stopped: ([ScanDiscovery], Swift.Error?) -> Void
     
     private var discoveries = [ScanDiscovery]()
+    private var blacklist = [ScanDiscovery]()
     private var timers = [(UUID, Timer)]()
     
     init(duration: TimeInterval,
@@ -63,6 +64,20 @@ class Scan: Queueable {
     func process(event: Event) {
         if case .didDiscoverPeripheral(let peripheral, let advertisementData, let rssi) = event {
             let newDiscovery = ScanDiscovery(peripheral: peripheral, advertisementPacket: advertisementData, rssi: rssi.intValue)
+            
+            // Ignore discovery if it is blacklisted.
+            if blacklist.contains(where: { (blacklistedDiscovery) -> Bool in
+                return newDiscovery.peripheral.identifier == blacklistedDiscovery.peripheral.identifier
+            })
+            {
+                return
+            }
+            
+            // Exit function early if discovery is to be blacklisted.
+            if discovery(newDiscovery, discoveries) == .blacklist {
+                blacklist.append(newDiscovery)
+                return
+            }
             
             // Only predict losing signals to broadcasting peripherals if allow duplicates is enabled, as that mode is mostly used in monitoring context where we need to keep track of advertising peripherals continously.
             if allowDuplicates {
