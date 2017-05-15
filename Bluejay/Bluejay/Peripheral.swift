@@ -13,7 +13,7 @@ public class Peripheral: NSObject {
     
     // MARK: Properties
     
-    private(set) var bluejay: Bluejay
+    private(set) weak var bluejay: Bluejay?
     private(set) var cbPeripheral: CBPeripheral
     
     fileprivate var listeners: [CharacteristicIdentifier : (ReadResult<Data?>) -> Void] = [:]
@@ -56,10 +56,18 @@ public class Peripheral: NSObject {
         
         listeners = [:]
         
+        guard let bluejay = bluejay else {
+            preconditionFailure("Cannot cancel all operations: Bluejay is nil.")
+        }
+        
         bluejay.queue.cancelAll(error)
     }
     
     private func updateOperations() {
+        guard let bluejay = bluejay else {
+            preconditionFailure("Cannot update operation: Bluejay is nil.")
+        }
+        
         if cbPeripheral.state == .disconnected {
             bluejay.queue.cancelAll(Error.notConnected())
             return
@@ -69,6 +77,10 @@ public class Peripheral: NSObject {
     }
     
     private func addOperation(_ operation: Operation) {
+        guard let bluejay = bluejay else {
+            preconditionFailure("Cannot add operation: Bluejay is nil.")
+        }
+        
         bluejay.queue.add(operation)
     }
     
@@ -103,6 +115,10 @@ public class Peripheral: NSObject {
     // MARK: - Bluetooth Event
     
     fileprivate func handleEvent(_ event: Event, error: NSError?) {
+        guard let bluejay = bluejay else {
+            preconditionFailure("Cannot handle event: Bluejay is nil.")
+        }
+        
         if error == nil {
             bluejay.queue.process(event: event, error: error)
             updateOperations()
@@ -259,6 +275,10 @@ public class Peripheral: NSObject {
     }
     
     private func cache(listeningCharacteristic: CharacteristicIdentifier) {
+        guard let bluejay = bluejay else {
+            preconditionFailure("Cannot cache listening on: \(listeningCharacteristic.uuid.uuidString): Bluejay is nil.")
+        }
+        
         let serviceUUID = listeningCharacteristic.service.uuid.uuidString
         let characteristicUUID = listeningCharacteristic.uuid.uuidString
         
@@ -305,6 +325,10 @@ public class Peripheral: NSObject {
     }
     
     private func remove(listeningCharacteristic: CharacteristicIdentifier) {
+        guard let bluejay = bluejay else {
+            preconditionFailure("Cannot remove listening on \(listeningCharacteristic.uuid.uuidString): Bluejay is nil.")
+        }
+        
         let serviceUUID = listeningCharacteristic.service.uuid.uuidString
         let characteristicUUID = listeningCharacteristic.uuid.uuidString
         
@@ -352,8 +376,11 @@ extension Peripheral: CBPeripheralDelegate {
     }
     
     public func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Swift.Error?) {
+        guard let bluejay = bluejay else {
+            preconditionFailure("Cannot handle did update value for \(characteristic.uuid.uuidString): Bluejay is nil.")
+        }
+        
         guard let listener = listeners[CharacteristicIdentifier(characteristic)] else {
-            
             // Handle attempting to read a characteristic whose listen is being cancelled during state restoration.
             let isCancellingListenOnCurrentRead = listenersBeingCancelled.contains(where: { (characteristicIdentifier) -> Bool in
                 return characteristicIdentifier.uuid.uuidString == characteristic.uuid.uuidString
