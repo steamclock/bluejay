@@ -90,6 +90,11 @@ public class Bluejay: NSObject {
     
     deinit {
         queue.cancelAll()
+        
+        if let connectedPeripheral = connectedPeripheral {
+            cbCentralManager.cancelPeripheralConnection(connectedPeripheral.cbPeripheral)
+        }
+        
         log("Deinit Bluejay with UUID: \(uuid.uuidString).")
     }
     
