@@ -32,7 +32,7 @@ class Queue {
     
     func start() {
         if !isCBCentralManagerReady {
-            log("Starting queue with UUID: \(uuid.uuidString)")
+            log("Starting queue with UUID: \(uuid.uuidString).")
             isCBCentralManagerReady = true
             update()
         }
@@ -44,8 +44,34 @@ class Queue {
         queueable.queue = self
         queue.append(queueable)
         
+        /*
+         Don't log the enqueuing of discovering services and discovering characteristics,
+         as they are not exactly interesting and of importance in most cases.
+         */
+        if !(queueable is DiscoverService) && !(queueable is DiscoverCharacteristic) {
+            // Log more readable details for enqueued ListenCharacteristic queueable.
+            if queueable is ListenCharacteristic {
+                let listen = (queueable as! ListenCharacteristic)
+                
+                let name = listen.value ? "Listen" : "End Listen"
+                let char = listen.characteristicIdentifier.uuid.uuidString
+                
+                log("\(name) for \(char) added to queue with UUID: \(uuid.uuidString).")
+            }
+            else {
+                log("\(queueable) added to queue with UUID: \(uuid.uuidString).")
+            }
+        }
+        
         if queueable is Scan {
             scan = queueable as? Scan
+        }
+        else if queueable is Connection {
+            // Stop scanning when a connection is enqueued while a scan is still active.
+            if isScanning() {
+                stopScanning()
+                return
+            }
         }
         
         update()
@@ -83,6 +109,7 @@ class Queue {
     
     func update() {
         if queue.isEmpty {
+            // TODO: Minimize redundant calls to update, especially when queue is empty.
             // log("Queue is empty, nothing to run.")
             return
         }
@@ -92,9 +119,10 @@ class Queue {
             return
         }
         
-        if let queuable = queue.first {
-            if queuable.state.isFinished {
-                if queuable is Scan {
+        if let queueable = queue.first {
+            // Remove current queueable if finished.
+            if queueable.state.isFinished {
+                if queueable is Scan {
                     scan = nil
                 }
                 
@@ -106,13 +134,23 @@ class Queue {
             
             if let bluejay = bluejay {
                 if !bluejay.isBluetoothAvailable {
-                    queuable.fail(Error.bluetoothUnavailable())
+                    // Fail any queuable if Bluetooth is not even available.
+                    queueable.fail(Error.bluetoothUnavailable())
                 }
-                else if !bluejay.isConnected && !(queuable is Scan) && !(queuable is Connection) {
-                    queuable.fail(Error.notConnected())
+                else if !bluejay.isConnected && !(queueable is Scan) && !(queueable is Connection) {
+                    // Fail any queueable that is not a Scan nor a Connection if no peripheral is connected.
+                    queueable.fail(Error.notConnected())
                 }
-                else if case .notStarted = queuable.state {
-                    queuable.start()
+                else if case .running = queueable.state {
+                    // Do nothing if the current queueable is still running.
+                    return
+                }
+                else if bluejay.isConnected && queueable is Connection {
+                    // Fail the connection queuable if a peripheral is still connected.
+                    queueable.fail(Error.multipleConnect())
+                }
+                else if case .notStarted = queueable.state {
+                    queueable.start()
                 }
             }
             else {

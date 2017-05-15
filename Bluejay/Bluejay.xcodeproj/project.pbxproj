@@ -12,6 +12,7 @@
 		B8022D981E1EEED900EA360B /* WriteResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8022D971E1EEED900EA360B /* WriteResult.swift */; };
 		B8022D9A1E1F041D00EA360B /* SyncPeripheral.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8022D991E1F041D00EA360B /* SyncPeripheral.swift */; };
 		B8022D9C1E1F052F00EA360B /* ListenAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8022D9B1E1F052F00EA360B /* ListenAction.swift */; };
+		B80535741ECA239D002E5493 /* ScanHeartRateSensorsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B80535731ECA239D002E5493 /* ScanHeartRateSensorsViewController.swift */; };
 		B83271A91E313CA300D68581 /* Queueable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B83271A81E313CA300D68581 /* Queueable.swift */; };
 		B842AAF81E4CF74300BB32EE /* String+Transferable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B842AAF71E4CF74300BB32EE /* String+Transferable.swift */; };
 		B850D0011E4A5015005F31C5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B850D0001E4A5015005F31C5 /* Main.storyboard */; };
@@ -107,6 +108,7 @@
 		B8022D971E1EEED900EA360B /* WriteResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WriteResult.swift; sourceTree = "<group>"; };
 		B8022D991E1F041D00EA360B /* SyncPeripheral.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SyncPeripheral.swift; sourceTree = "<group>"; };
 		B8022D9B1E1F052F00EA360B /* ListenAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListenAction.swift; sourceTree = "<group>"; };
+		B80535731ECA239D002E5493 /* ScanHeartRateSensorsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScanHeartRateSensorsViewController.swift; sourceTree = "<group>"; };
 		B83271A81E313CA300D68581 /* Queueable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Queueable.swift; sourceTree = "<group>"; };
 		B842AAF71E4CF74300BB32EE /* String+Transferable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Transferable.swift"; sourceTree = "<group>"; };
 		B850D0001E4A5015005F31C5 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
@@ -382,6 +384,7 @@
 				B8DEDE631E4A4B5800B2244D /* AppDelegate.swift */,
 				B88F50F11EB3FA4100D11CD8 /* SelectDemoViewController.swift */,
 				B8C5E7181E64E1D50094A708 /* ScanEverythingViewController.swift */,
+				B80535731ECA239D002E5493 /* ScanHeartRateSensorsViewController.swift */,
 				B850D0001E4A5015005F31C5 /* Main.storyboard */,
 				B8DEDE6A1E4A4B5800B2244D /* Assets.xcassets */,
 				B8DEDE6C1E4A4B5800B2244D /* LaunchScreen.storyboard */,
@@ -740,6 +743,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B80535741ECA239D002E5493 /* ScanHeartRateSensorsViewController.swift in Sources */,
 				B88F50F21EB3FA4100D11CD8 /* SelectDemoViewController.swift in Sources */,
 				B8C5E7191E64E1D50094A708 /* ScanEverythingViewController.swift in Sources */,
 				B8DEDE641E4A4B5800B2244D /* AppDelegate.swift in Sources */,

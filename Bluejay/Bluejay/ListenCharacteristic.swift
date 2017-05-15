@@ -16,8 +16,9 @@ class ListenCharacteristic: Operation {
     
     var peripheral: CBPeripheral
     
-    private var characteristicIdentifier: CharacteristicIdentifier
-    private var value: Bool
+    var characteristicIdentifier: CharacteristicIdentifier
+    var value: Bool
+    
     private var callback: ((WriteResult) -> Void)?
     
     private var characteristic: CBCharacteristic?

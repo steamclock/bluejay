@@ -169,6 +169,10 @@ public class Peripheral: NSObject {
         })
     }
     
+    public func isListening(to characteristicIdentifier: CharacteristicIdentifier) -> Bool {
+        return listeners.keys.contains(characteristicIdentifier)
+    }
+    
     /// Listen for notifications on a specified characterstic.
     public func listen<R: Receivable>(to characteristicIdentifier: CharacteristicIdentifier, completion: @escaping (ReadResult<R>) -> Void) {
         discoverCharactersitic(characteristicIdentifier, callback: { [weak self] success in

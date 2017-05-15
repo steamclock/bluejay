@@ -16,8 +16,9 @@ class WriteCharacteristic<T: Sendable>: Operation {
     
     var peripheral: CBPeripheral
     
-    private var characteristicIdentifier: CharacteristicIdentifier
-    private var value: T
+    var characteristicIdentifier: CharacteristicIdentifier
+    var value: T
+    
     private var callback: ((WriteResult) -> Void)?
     
     init(characteristicIdentifier: CharacteristicIdentifier, peripheral: CBPeripheral, value: T, callback: @escaping (WriteResult) -> Void) {

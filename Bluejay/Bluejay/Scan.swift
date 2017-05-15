@@ -56,6 +56,8 @@ class Scan: Queueable {
         })
         
         manager.scanForPeripherals(withServices: services, options: [CBCentralManagerScanOptionAllowDuplicatesKey : allowDuplicates])
+        
+        log("Started scanning.")
     }
     
     func process(event: Event) {
@@ -92,6 +94,8 @@ class Scan: Queueable {
                 manager.stopScan()
                 state = .completed
                 
+                log("Finished scanning.")
+                
                 stopped(discoveries, nil)
                 
                 updateQueue()
@@ -112,16 +116,20 @@ class Scan: Queueable {
         clearTimers()
         manager.stopScan()
         
+        log("Cancelled scanning.")
+        
         stopped(discoveries, nil)
         
         updateQueue()
     }
     
     func fail(_ error : NSError) {
-        clearTimers()
-        
-        manager.stopScan()
         state = .failed(error)
+
+        clearTimers()        
+        manager.stopScan()
+        
+        log("Failed scanning with error: \(error.localizedDescription).")
         
         stopped(discoveries, error)
         

@@ -56,6 +56,8 @@ class Connection: Queueable {
                 repeats: false
             )
         }
+        
+        log("Started connecting.")
     }
     
     func process(event: Event) {        
@@ -74,6 +76,8 @@ class Connection: Queueable {
         cancelTimer()
         
         state = .completed
+        
+        log("Connected to: \(peripheral.name ?? peripheral.identifier.uuidString).")
         
         callback?(.success(peripheral))
         callback = nil
@@ -103,6 +107,8 @@ class Connection: Queueable {
         
         state = .cancelled
         
+        log("Cancelled connection to: \(peripheral.name ?? peripheral.identifier.uuidString).")
+        
         callback?(.cancelled)
         callback = nil
         
@@ -113,6 +119,8 @@ class Connection: Queueable {
         cancelTimer()
         
         state = .failed(error)
+        
+        log("Failed connecting to: \(peripheral.name ?? peripheral.identifier.uuidString) with error: \(error.localizedDescription).")
 
         callback?(.failure(error))
         callback = nil

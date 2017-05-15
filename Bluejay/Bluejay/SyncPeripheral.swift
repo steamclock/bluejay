@@ -95,8 +95,10 @@ public class SyncPeripheral {
                 }
                                 
                 if error != nil || action == .done {
-                    // TODO: Handle end listen failures.
-                    self.parent.endListen(to: characteristicIdentifier)
+                    if self.parent.isListening(to: characteristicIdentifier) {
+                        // TODO: Handle end listen failures.
+                        self.parent.endListen(to: characteristicIdentifier)
+                    }
                 }
             })
         }
@@ -140,8 +142,10 @@ public class SyncPeripheral {
                 }
                 
                 if error != nil || action == .done {
-                    // TODO: Handle end listen failures.
-                    self.parent.endListen(to: charToListenTo)
+                    if self.parent.isListening(to: charToListenTo) {
+                        // TODO: Handle end listen failures.
+                        self.parent.endListen(to: charToListenTo)
+                    }
                 }
             })
             
@@ -149,8 +153,10 @@ public class SyncPeripheral {
                 if case .failure(let e) = result {
                     error = e
                     
-                    // TODO: Handle end listen failures.
-                    self.parent.endListen(to: charToListenTo)
+                    if self.parent.isListening(to: charToListenTo) {
+                        // TODO: Handle end listen failures.
+                        self.parent.endListen(to: charToListenTo)
+                    }
                 }
             })
             
@@ -162,8 +168,11 @@ public class SyncPeripheral {
             throw error
         }
         else if listenResult == nil {
-            // TODO: Handle end listen failures.
-            parent.endListen(to: charToListenTo)
+            if self.parent.isListening(to: charToListenTo) {
+                // TODO: Handle end listen failures.
+                self.parent.endListen(to: charToListenTo)
+            }
+            
             throw Error.listenTimedOut()
         }
     }

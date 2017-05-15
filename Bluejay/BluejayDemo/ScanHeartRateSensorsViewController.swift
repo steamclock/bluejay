@@ -1,15 +1,15 @@
 //
-//  PeripheralsViewController.swift
+//  ScanHeartRateSensorsViewController.swift
 //  Bluejay
 //
-//  Created by Jeremy Chiang on 2017-02-27.
+//  Created by Jeremy Chiang on 2017-05-15.
 //  Copyright © 2017 Steamclock Software. All rights reserved.
 //
 
 import UIKit
 import Bluejay
 
-class ScanEverythingViewController: UITableViewController {
+class ScanHeartRateSensorsViewController: UITableViewController {
     
     private let bluejay = Bluejay()
     
@@ -23,12 +23,15 @@ class ScanEverythingViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-                
+        
         bluejay.start()
+        
+        let heartRateService = ServiceIdentifier(uuid: "180D")
+        let heartRateMeasurement = CharacteristicIdentifier(uuid: "2A37", service: heartRateService)
         
         bluejay.scan(
             allowDuplicates: true,
-            serviceIdentifiers: nil,
+            serviceIdentifiers: [heartRateService],
             discovery: { [weak self] (discovery, discoveries) -> ScanAction in
                 guard let weakSelf = self else {
                     return .stop
@@ -69,12 +72,38 @@ class ScanEverythingViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "peripheralCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "heartCell", for: indexPath)
         
         cell.textLabel?.text = peripherals[indexPath.row].peripheral.name ?? "Unknown"
         cell.detailTextLabel?.text = "RSSI: \(peripherals[indexPath.row].rssi)"
         
         return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let peripheral = peripherals[indexPath.row].peripheral
+        
+        bluejay.connect(PeripheralIdentifier(uuid: peripheral.identifier)) { (result) in
+            switch result {
+            case .success(let peripheral):
+                debugPrint("Connection to \(peripheral.identifier) successful.")
+            case .cancelled:
+                debugPrint("Connection to \(peripheral.identifier) cancelled.")
+            case .failure(let error):
+                debugPrint("Connection to \(peripheral.identifier) failed with error: \(error.localizedDescription)")
+            }
+        }
+        
+        bluejay.connect(PeripheralIdentifier(uuid: peripheral.identifier)) { (result) in
+            switch result {
+            case .success(let peripheral):
+                debugPrint("Connection to \(peripheral.identifier) successful.")
+            case .cancelled:
+                debugPrint("Connection to \(peripheral.identifier) cancelled.")
+            case .failure(let error):
+                debugPrint("Connection to \(peripheral.identifier) failed with error: \(error.localizedDescription)")
+            }
+        }
     }
     
 }
