@@ -226,16 +226,13 @@ public class Bluejay: NSObject {
             
             queue.add(Disconnection(peripheral: peripheralToDisconnect.cbPeripheral, manager: cbCentralManager, callback: { (result) in
                 switch result {
-                case .success(let peripheral):
-                    log("Disconnected from \(String(describing: peripheral.name)).")
+                case .success:
                     self.isDisconnecting = false
                     completion?(true)
                 case .cancelled:
-                    log("Disconnection from \(String(describing: peripheralToDisconnect.name)) cancelled.")
                     self.isDisconnecting = false
                     completion?(false)
-                case .failure(let error):
-                    log("Failed to disconnect with error: \(error.localizedDescription)")
+                case .failure:
                     self.isDisconnecting = false
                     completion?(false)
                 }
