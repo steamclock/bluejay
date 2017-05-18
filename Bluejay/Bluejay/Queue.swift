@@ -9,6 +9,10 @@
 import Foundation
 import CoreBluetooth
 
+protocol QueueObserver: class {
+    func willConnect(to peripheral: CBPeripheral)
+}
+
 class Queue {
     
     private weak var bluejay: Bluejay?
@@ -150,6 +154,10 @@ class Queue {
                     queueable.fail(Error.multipleConnect())
                 }
                 else if case .notStarted = queueable.state {
+                    if let connection = queueable as? Connection {
+                        bluejay.willConnect(to: connection.peripheral)
+                    }
+                    
                     queueable.start()
                 }
             }

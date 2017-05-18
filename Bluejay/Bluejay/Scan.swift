@@ -74,7 +74,7 @@ class Scan: Queueable {
             }
             
             // Exit function early if discovery is to be blacklisted.
-            if discovery(newDiscovery, discoveries) == .blacklist {
+            if case .blacklist = discovery(newDiscovery, discoveries) {
                 blacklist.append(newDiscovery)
                 return
             }
@@ -103,7 +103,7 @@ class Scan: Queueable {
                 discoveries.append(newDiscovery)
             }
             
-            if discovery(newDiscovery, discoveries) == .stop {
+            if case .stop = discovery(newDiscovery, discoveries) {
                 clearTimers()
                 
                 manager.stopScan()
@@ -114,6 +114,30 @@ class Scan: Queueable {
                 stopped(discoveries, nil)
                 
                 updateQueue()
+            }
+            else if case .connect(let discovery, let completion) = discovery(newDiscovery, discoveries) {
+                clearTimers()
+                
+                manager.stopScan()
+                state = .completed
+                
+                log("Finished scanning.")
+                
+                stopped(discoveries, nil)
+                
+                updateQueue()
+                
+                if let queue = queue {
+                    if let cbPeripheral = manager.retrievePeripherals(withIdentifiers: [discovery.peripheral.identifier]).first {
+                        queue.add(Connection(peripheral: cbPeripheral, manager: manager, callback: completion))
+                    }
+                    else {
+                        completion(.failure(Error.unknownPeripheralError(PeripheralIdentifier(uuid: discovery.peripheral.identifier))))
+                    }
+                }
+                else {
+                    preconditionFailure("Could not connect at the end of a scan: queue is nil.")
+                }
             }
         }
         else {
@@ -195,14 +219,16 @@ class Scan: Queueable {
             let expiredDiscovery = discoveries[indexOfExpiredDiscovery]
             discoveries.remove(at: indexOfExpiredDiscovery)
             
-            if expired?(expiredDiscovery, discoveries) == .stop {
-                DispatchQueue.main.async {
-                    self.clearTimers()
-                    
-                    self.manager.stopScan()
-                    self.state = .completed
-                    
-                    self.stopped(self.discoveries, nil)
+            if let expired = expired {
+                if case .stop = expired(expiredDiscovery, discoveries) {
+                    DispatchQueue.main.async {
+                        self.clearTimers()
+                        
+                        self.manager.stopScan()
+                        self.state = .completed
+                        
+                        self.stopped(self.discoveries, nil)
+                    }
                 }
             }
         }

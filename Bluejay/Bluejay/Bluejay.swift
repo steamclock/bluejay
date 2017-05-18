@@ -209,7 +209,6 @@ public class Bluejay: NSObject {
         }
         
         if let cbPeripheral = cbCentralManager.retrievePeripherals(withIdentifiers: [peripheralIdentifier.uuid]).first {
-            connectingPeripheral = Peripheral(bluejay: self, cbPeripheral: cbPeripheral)
             queue.add(Connection(peripheral: cbPeripheral, manager: cbCentralManager, callback: completion))
         }
         else {
@@ -550,6 +549,14 @@ extension Bluejay: CBCentralManagerDelegate {
         // debugPrint("Did discover: \(peripheralString)")
         
         queue.process(event: .didDiscoverPeripheral(peripheral, advertisementData, RSSI), error: nil)
+    }
+    
+}
+
+extension Bluejay: QueueObserver {
+    
+    func willConnect(to peripheral: CBPeripheral) {
+        connectingPeripheral = Peripheral(bluejay: self, cbPeripheral: peripheral)
     }
     
 }

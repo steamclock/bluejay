@@ -12,4 +12,5 @@ public enum ScanAction {
     case `continue`
     case blacklist
     case stop
+    case connect(ScanDiscovery, (ConnectionResult) -> Void)
 }
