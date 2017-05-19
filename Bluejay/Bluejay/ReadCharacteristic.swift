@@ -39,6 +39,8 @@ class ReadCharacteristic<T: Receivable>: Operation {
         state = .running
         
         peripheral.readValue(for: characteristic)
+        
+        log("Started read for \(characteristicIdentifier.uuid) on \(peripheral.identifier).")
     }
     
     func process(event: Event) {
@@ -48,6 +50,8 @@ class ReadCharacteristic<T: Receivable>: Operation {
             }
             
             state = .completed
+            
+            log("Read for \(characteristicIdentifier.uuid) on \(peripheral.identifier) is successful.")
             
             callback?(ReadResult<T>(dataResult: .success(value)))
             callback = nil
@@ -66,6 +70,8 @@ class ReadCharacteristic<T: Receivable>: Operation {
     func cancelled() {
         state = .cancelled
         
+        log("Cancelled read for \(characteristicIdentifier.uuid) on \(peripheral.identifier).")
+        
         callback?(.cancelled)
         callback = nil
         
@@ -74,6 +80,8 @@ class ReadCharacteristic<T: Receivable>: Operation {
     
     func fail(_ error: NSError) {
         state = .failed(error)
+        
+        log("Failed reading for \(characteristicIdentifier.uuid) on \(peripheral.identifier) with error: \(error.localizedDescription)")
 
         callback?(.failure(error))
         callback = nil

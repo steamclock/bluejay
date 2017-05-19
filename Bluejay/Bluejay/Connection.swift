@@ -57,7 +57,7 @@ class Connection: Queueable {
             )
         }
         
-        log("Started connecting.")
+        log("Started connecting to \(peripheral.name ?? peripheral.identifier.uuidString).")
     }
     
     func process(event: Event) {        
@@ -120,7 +120,7 @@ class Connection: Queueable {
         
         state = .failed(error)
         
-        log("Failed connecting to: \(peripheral.name ?? peripheral.identifier.uuidString) with error: \(error.localizedDescription).")
+        log("Failed connecting to: \(peripheral.name ?? peripheral.identifier.uuidString) with error: \(error.localizedDescription)")
 
         callback?(.failure(error))
         callback = nil

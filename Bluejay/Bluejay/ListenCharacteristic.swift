@@ -46,6 +46,13 @@ class ListenCharacteristic: Operation {
         peripheral.setNotifyValue(value, for: characteristic)
         
         self.characteristic = characteristic
+        
+        if value {
+            log("Will start listening to \(characteristicIdentifier.uuid) on \(peripheral.name ?? peripheral.identifier.uuidString).")
+        }
+        else {
+            log("Will stop listening to \(characteristicIdentifier.uuid) on \(peripheral.name ?? peripheral.identifier.uuidString).")
+        }
     }
     
     func process(event: Event) {        
@@ -57,6 +64,13 @@ class ListenCharacteristic: Operation {
             }
             
             state = .completed
+            
+            if value {
+                log("Listening to \(characteristicIdentifier.uuid) on \(peripheral.name ?? peripheral.identifier.uuidString).")
+            }
+            else {
+                log("Stopped listening to \(characteristicIdentifier.uuid) on \(peripheral.name ?? peripheral.identifier.uuidString).")
+            }
             
             callback?(.success)
             callback = nil
@@ -81,6 +95,8 @@ class ListenCharacteristic: Operation {
             peripheral.setNotifyValue(false, for: characteristic)
         }
         
+        log("Cancelled listen to \(characteristicIdentifier.uuid) on \(peripheral.name ?? peripheral.identifier.uuidString).")
+        
         callback?(.cancelled)
         callback = nil
         
@@ -89,6 +105,8 @@ class ListenCharacteristic: Operation {
     
     func fail(_ error: NSError) {
         state = .failed(error)
+        
+        log("Failed listening to \(characteristicIdentifier.uuid) on \(peripheral.name ?? peripheral.identifier.uuidString) with error: \(error.localizedDescription)")
         
         callback?(.failure(error))
         callback = nil

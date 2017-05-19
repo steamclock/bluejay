@@ -42,6 +42,8 @@ class WriteCharacteristic<T: Sendable>: Operation {
         state = .running
         
         peripheral.writeValue(value.toBluetoothData(), for: characteristic, type: .withResponse)
+        
+        log("Started write to \(characteristicIdentifier.uuid) on \(peripheral.identifier).")
     }
     
     func process(event: Event) {
@@ -51,6 +53,8 @@ class WriteCharacteristic<T: Sendable>: Operation {
             }
             
             state = .completed
+            
+            log("Write to \(characteristicIdentifier.uuid) on \(peripheral.identifier) is successful.")
             
             callback?(.success)
             callback = nil
@@ -69,6 +73,8 @@ class WriteCharacteristic<T: Sendable>: Operation {
     func cancelled() {
         state = .cancelled
         
+        log("Cancelled write to \(characteristicIdentifier.uuid) on \(peripheral.identifier).")
+        
         callback?(.cancelled)
         callback = nil
         
@@ -77,6 +83,8 @@ class WriteCharacteristic<T: Sendable>: Operation {
     
     func fail(_ error: NSError) {
         state = .failed(error)
+        
+        log("Failed writing to \(characteristicIdentifier.uuid) on \(peripheral.identifier) with error: \(error.localizedDescription)")
 
         callback?(.failure(error))
         callback = nil
