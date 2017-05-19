@@ -44,6 +44,7 @@
                     <connections>
                         <segue destination="Qrb-hZ-61r" kind="show" identifier="showScanEverything" id="HhF-DM-cIT"/>
                         <segue destination="rAc-RZ-gIN" kind="show" identifier="showHeartSensor" id="6Sf-kF-nfS"/>
+                        <segue destination="V17-8q-4OO" kind="show" identifier="showConnect" id="orx-b1-YWR"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="y0q-JK-aTz" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -93,6 +94,24 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="EVc-Dr-2lH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="814" y="77"/>
+        </scene>
+        <!--Connect Using Serial Number View Controller-->
+        <scene sceneID="7Fb-ou-Sww">
+            <objects>
+                <viewController id="V17-8q-4OO" customClass="ConnectUsingSerialNumberViewController" customModule="BluejayDemo" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="IVP-yC-BBh"/>
+                        <viewControllerLayoutGuide type="bottom" id="leS-nV-cYT"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="6Ix-uS-GZA">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="krS-bd-bHr" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="814" y="842"/>
         </scene>
         <!--Peripherals-->
         <scene sceneID="Zp4-vp-l7i">

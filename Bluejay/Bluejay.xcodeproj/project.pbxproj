@@ -31,6 +31,7 @@
 		B89AA4841E303634006BA376 /* Connection.swift in Sources */ = {isa = PBXBuildFile; fileRef = B89AA4831E303634006BA376 /* Connection.swift */; };
 		B89AA4881E30373D006BA376 /* Scan.swift in Sources */ = {isa = PBXBuildFile; fileRef = B89AA4871E30373D006BA376 /* Scan.swift */; };
 		B8A947491EB93B5800347FF5 /* DiscoveryResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8A947481EB93B5800347FF5 /* DiscoveryResult.swift */; };
+		B8BA76F51ECF70BE002DDDB0 /* ConnectUsingSerialNumberViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8BA76F41ECF70BE002DDDB0 /* ConnectUsingSerialNumberViewController.swift */; };
 		B8C052031E28561700EA3D76 /* ListenRestorer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C052021E28561700EA3D76 /* ListenRestorer.swift */; };
 		B8C5E7131E64D6860094A708 /* ScanAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C5E7121E64D6860094A708 /* ScanAction.swift */; };
 		B8C5E7151E64D93C0094A708 /* ScanDiscovery.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C5E7141E64D93C0094A708 /* ScanDiscovery.swift */; };
@@ -127,6 +128,7 @@
 		B89AA4831E303634006BA376 /* Connection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Connection.swift; sourceTree = "<group>"; };
 		B89AA4871E30373D006BA376 /* Scan.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Scan.swift; sourceTree = "<group>"; };
 		B8A947481EB93B5800347FF5 /* DiscoveryResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryResult.swift; sourceTree = "<group>"; };
+		B8BA76F41ECF70BE002DDDB0 /* ConnectUsingSerialNumberViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectUsingSerialNumberViewController.swift; sourceTree = "<group>"; };
 		B8C052021E28561700EA3D76 /* ListenRestorer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListenRestorer.swift; sourceTree = "<group>"; };
 		B8C5E7121E64D6860094A708 /* ScanAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScanAction.swift; sourceTree = "<group>"; };
 		B8C5E7141E64D93C0094A708 /* ScanDiscovery.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScanDiscovery.swift; sourceTree = "<group>"; };
@@ -385,6 +387,7 @@
 				B88F50F11EB3FA4100D11CD8 /* SelectDemoViewController.swift */,
 				B8C5E7181E64E1D50094A708 /* ScanEverythingViewController.swift */,
 				B80535731ECA239D002E5493 /* ScanHeartRateSensorsViewController.swift */,
+				B8BA76F41ECF70BE002DDDB0 /* ConnectUsingSerialNumberViewController.swift */,
 				B850D0001E4A5015005F31C5 /* Main.storyboard */,
 				B8DEDE6A1E4A4B5800B2244D /* Assets.xcassets */,
 				B8DEDE6C1E4A4B5800B2244D /* LaunchScreen.storyboard */,
@@ -745,6 +748,7 @@
 			files = (
 				B80535741ECA239D002E5493 /* ScanHeartRateSensorsViewController.swift in Sources */,
 				B88F50F21EB3FA4100D11CD8 /* SelectDemoViewController.swift in Sources */,
+				B8BA76F51ECF70BE002DDDB0 /* ConnectUsingSerialNumberViewController.swift in Sources */,
 				B8C5E7191E64E1D50094A708 /* ScanEverythingViewController.swift in Sources */,
 				B8DEDE641E4A4B5800B2244D /* AppDelegate.swift in Sources */,
 			);

@@ -21,7 +21,7 @@ class SelectDemoViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 2
+        return 3
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -36,6 +36,8 @@ class SelectDemoViewController: UITableViewController {
             cell.textLabel?.text = "Scan Everything"
         case 1:
             cell.textLabel?.text = "Heart Rate Sensor"
+        case 2:
+            cell.textLabel?.text = "Connect using Serial Number"
         default:
             cell.textLabel?.text = ""
         }
@@ -49,6 +51,8 @@ class SelectDemoViewController: UITableViewController {
             performSegue(withIdentifier: "showScanEverything", sender: self)
         case 1:
             performSegue(withIdentifier: "showHeartSensor", sender: self)
+        case 2:
+            performSegue(withIdentifier: "showConnect", sender: self)
         default:
             break
         }

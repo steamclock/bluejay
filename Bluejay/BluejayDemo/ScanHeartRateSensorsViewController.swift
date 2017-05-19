@@ -40,22 +40,6 @@ class ScanHeartRateSensorsViewController: UITableViewController {
                 weakSelf.peripherals = discoveries
                 weakSelf.tableView.reloadData()
                 
-//                if !discoveries.isEmpty {
-//                    return .connect(discovery, { result in
-//                        switch result {
-//                        case .success(let peripheral):
-//                            debugPrint("Connection to \(peripheral.identifier) successful.")
-//                        case .cancelled:
-//                            debugPrint("Connection to \(discovery.peripheral.identifier) cancelled.")
-//                        case .failure(let error):
-//                            debugPrint("Connection to \(discovery.peripheral.identifier) failed with error: \(error.localizedDescription)")
-//                        }
-//                    })
-//                }
-//                else {
-//                    return .continue
-//                }
-                
                 return .continue
             },
             expired: { [weak self] (lostDiscovery, discoveries) -> ScanAction in
