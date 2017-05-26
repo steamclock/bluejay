@@ -31,6 +31,7 @@
 		B89AA4841E303634006BA376 /* Connection.swift in Sources */ = {isa = PBXBuildFile; fileRef = B89AA4831E303634006BA376 /* Connection.swift */; };
 		B89AA4881E30373D006BA376 /* Scan.swift in Sources */ = {isa = PBXBuildFile; fileRef = B89AA4871E30373D006BA376 /* Scan.swift */; };
 		B8A947491EB93B5800347FF5 /* DiscoveryResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8A947481EB93B5800347FF5 /* DiscoveryResult.swift */; };
+		B8B5708F1ED8AEAA00603C0B /* Data+Extractable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8B5708E1ED8AEAA00603C0B /* Data+Extractable.swift */; };
 		B8BA76F51ECF70BE002DDDB0 /* ConnectUsingSerialNumberViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8BA76F41ECF70BE002DDDB0 /* ConnectUsingSerialNumberViewController.swift */; };
 		B8C052031E28561700EA3D76 /* ListenRestorer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C052021E28561700EA3D76 /* ListenRestorer.swift */; };
 		B8C5E7131E64D6860094A708 /* ScanAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C5E7121E64D6860094A708 /* ScanAction.swift */; };
@@ -128,6 +129,7 @@
 		B89AA4831E303634006BA376 /* Connection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Connection.swift; sourceTree = "<group>"; };
 		B89AA4871E30373D006BA376 /* Scan.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Scan.swift; sourceTree = "<group>"; };
 		B8A947481EB93B5800347FF5 /* DiscoveryResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoveryResult.swift; sourceTree = "<group>"; };
+		B8B5708E1ED8AEAA00603C0B /* Data+Extractable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Data+Extractable.swift"; sourceTree = "<group>"; };
 		B8BA76F41ECF70BE002DDDB0 /* ConnectUsingSerialNumberViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectUsingSerialNumberViewController.swift; sourceTree = "<group>"; };
 		B8C052021E28561700EA3D76 /* ListenRestorer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListenRestorer.swift; sourceTree = "<group>"; };
 		B8C5E7121E64D6860094A708 /* ScanAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScanAction.swift; sourceTree = "<group>"; };
@@ -334,6 +336,7 @@
 				B8C70FAE1E1C6C780006CF58 /* Integer+Transferable.swift */,
 				B842AAF71E4CF74300BB32EE /* String+Transferable.swift */,
 				B869A2961E721D50003C1278 /* Data+Sendable.swift */,
+				B8B5708E1ED8AEAA00603C0B /* Data+Extractable.swift */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -709,6 +712,7 @@
 				B8022D981E1EEED900EA360B /* WriteResult.swift in Sources */,
 				B89AA4881E30373D006BA376 /* Scan.swift in Sources */,
 				B8FE9DF51E73597A00D361CE /* RSSIObserver.swift in Sources */,
+				B8B5708F1ED8AEAA00603C0B /* Data+Extractable.swift in Sources */,
 				B8C70FA91E1C69B60006CF58 /* Receivable.swift in Sources */,
 				B88A0DA71E1DD1DE00A00FF8 /* ListenCharacteristic.swift in Sources */,
 				B8C70F971E1C5A4F0006CF58 /* Error.swift in Sources */,
