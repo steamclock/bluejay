@@ -10,7 +10,7 @@ import Foundation
 
 extension Data {
     
-    func extract<T>(start: Int, length: Int) -> T {
+    public func extract<T>(start: Int, length: Int) -> T {
         return self.subdata(in: start..<start+length).withUnsafeBytes { $0.pointee }
     }
     
