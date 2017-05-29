@@ -106,12 +106,32 @@
                     <view key="view" contentMode="scaleToFill" id="6Ix-uS-GZA">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="quf-rP-vua">
+                                <rect key="frame" x="16" y="273.5" width="343" height="120"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="120" id="U8K-0I-fRA"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="quf-rP-vua" firstAttribute="centerX" secondItem="6Ix-uS-GZA" secondAttribute="centerX" id="2yi-wo-wah"/>
+                            <constraint firstAttribute="trailing" secondItem="quf-rP-vua" secondAttribute="trailing" constant="16" id="CM4-nz-5oK"/>
+                            <constraint firstItem="quf-rP-vua" firstAttribute="leading" secondItem="6Ix-uS-GZA" secondAttribute="leading" constant="16" id="Paa-1T-Zdt"/>
+                            <constraint firstItem="quf-rP-vua" firstAttribute="centerY" secondItem="6Ix-uS-GZA" secondAttribute="centerY" id="a3j-4d-Zdm"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="statusLabel" destination="quf-rP-vua" id="wiY-m5-9cD"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="krS-bd-bHr" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="814" y="842"/>
+            <point key="canvasLocation" x="813.60000000000002" y="841.52923538230891"/>
         </scene>
         <!--Peripherals-->
         <scene sceneID="Zp4-vp-l7i">

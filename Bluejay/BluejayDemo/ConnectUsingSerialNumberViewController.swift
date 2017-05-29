@@ -19,21 +19,68 @@ struct Charactersitics {
 
 class ConnectUsingSerialNumberViewController: UIViewController {
     
+    @IBOutlet var statusLabel: UILabel!
+    
     private let bluejay = Bluejay()
     
     private var blacklistedDiscoveries = [ScanDiscovery]()
     
-    private let targetSerialNumber = "ASDF1234"
+    private var targetSerialNumber: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        statusLabel.text = "Waiting"
+        
         bluejay.start()
         
-        scan(services: [Services.deviceInfo])
+        askForSerialNumber()
     }
     
-    private func scan(services: [ServiceIdentifier]) {
+    private func askForSerialNumber() {
+        let alert = UIAlertController(
+            title: "Enter Serial Number",
+            message: "Please enter the serial number of the peripheral you wish to connect to.",
+            preferredStyle: .alert
+        )
+        
+        alert.addTextField { (textField) in
+            textField.placeholder = "ASDF1234"
+        }
+        
+        let connect = UIAlertAction(title: "Connect", style: .default) { [weak self] (action) in
+            guard let weakSelf = self else {
+                return
+            }
+            
+            if let serialNumber = alert.textFields?.first?.text {
+                if serialNumber.isEmpty {
+                    weakSelf.askForSerialNumber()
+                }
+                else {
+                    weakSelf.targetSerialNumber = serialNumber
+                    weakSelf.scan(services: [Services.deviceInfo], serialNumber:serialNumber)
+                }
+            }
+        }
+        
+        let cancel = UIAlertAction(title: "Cancel", style: .cancel) { [weak self] (action) in
+            if let weakSelf = self {
+                weakSelf.navigationController?.popViewController(animated: true)
+            }
+        }
+        
+        alert.addAction(connect)
+        alert.addAction(cancel)
+        
+        navigationController?.present(alert, animated: true, completion: nil)
+    }
+    
+    private func scan(services: [ServiceIdentifier], serialNumber: String) {
+        debugPrint("Looking for peripheral with serial number \(serialNumber) to connect to.")
+        
+        statusLabel.text = "Searching..."
+        
         bluejay.scan(
             allowDuplicates: false,
             serviceIdentifiers: services,
@@ -59,6 +106,8 @@ class ConnectUsingSerialNumberViewController: UIViewController {
                                 case .success(let serialNumber):
                                     if serialNumber == weakSelf.targetSerialNumber {
                                         debugPrint("Serial number matched.")
+                                        
+                                        weakSelf.statusLabel.text = "Connected"
                                     }
                                     else {
                                         debugPrint("Serial number mismatch.")
@@ -68,34 +117,48 @@ class ConnectUsingSerialNumberViewController: UIViewController {
                                         weakSelf.bluejay.disconnect(completion: { (isSuccessful) in
                                             precondition(isSuccessful, "Disconnection from \(discovery.peripheral.identifier) failed.")
                                             
-                                            weakSelf.scan(services: [Services.deviceInfo])
+                                            weakSelf.scan(services: [Services.deviceInfo], serialNumber: weakSelf.targetSerialNumber!)
                                         })
                                     }
                                 case .cancelled:
                                     debugPrint("Read serial number cancelled.")
+                                    
+                                    weakSelf.statusLabel.text = "Read Cancelled"
                                 case .failure(let error):
                                     debugPrint("Read serial number failed with error: \(error.localizedDescription).")
+                                    
+                                    weakSelf.statusLabel.text = "Read Error: \(error.localizedDescription)"
                                 }
                             })
                         case .cancelled:
                             debugPrint("Connection to \(discovery.peripheral.identifier) cancelled.")
+                            
+                            weakSelf.statusLabel.text = "Connection Cancelled"
                         case .failure(let error):
                             debugPrint("Connection to \(discovery.peripheral.identifier) failed with error: \(error.localizedDescription)")
+                            
+                            weakSelf.statusLabel.text = "Connection Error: \(error.localizedDescription)"
                         }
                     })
                 }
             },
             expired: { [weak self] (lostDiscovery, discoveries) -> ScanAction in
-                guard let weakSelf = self else {
+                if self == nil {
                     return .stop
                 }
                 
                 debugPrint("Lost discovery: \(lostDiscovery)")
                 
                 return .continue
-        }) { (discoveries, error) in
+        }) { [weak self] (discoveries, error) in
+            guard let weakSelf = self else {
+                return
+            }
+            
             if let error = error {
                 debugPrint("Scan stopped with error: \(error.localizedDescription)")
+                
+                weakSelf.statusLabel.text = "Scan Error: \(error.localizedDescription)"
             }
             else {
                 debugPrint("Scan stopped without error.")

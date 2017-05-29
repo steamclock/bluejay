@@ -514,9 +514,16 @@ extension Bluejay: CBCentralManagerDelegate {
         let backgroundTask =  UIApplication.shared.beginBackgroundTask(expirationHandler: nil)
         
         let peripheralString = peripheral.name ?? peripheral.identifier.uuidString
-        let errorString = error?.localizedDescription ?? ""
+        let errorString = error?.localizedDescription
         
-        log("Did disconnect from: \(peripheralString) with error: \(errorString)")
+        if let errorMessage = errorString {
+            log("Did disconnect from \(peripheralString) with error: \(errorMessage)")
+        }
+        else {
+            log("Did disconnect from \(peripheralString) without errors.")
+        }
+        
+        log("Should auto-reconnect: \(shouldAutoReconnect)")
         
         if !queue.isEmpty() {
             queue.process(event: .didDisconnectPeripheral(peripheral), error: nil)
@@ -528,8 +535,6 @@ extension Bluejay: CBCentralManagerDelegate {
         }
         
         cancelAllConnections()
-        
-        log("Should auto-reconnect: \(self.shouldAutoReconnect)")
         
         if shouldAutoReconnect {
             log("Issuing reconnect to: \(peripheral.name ?? peripheral.identifier.uuidString)")
