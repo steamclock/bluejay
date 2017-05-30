@@ -165,10 +165,14 @@ class Scan: Queueable {
     func fail(_ error : NSError) {
         state = .failed(error)
 
-        clearTimers()        
-        manager.stopScan()
+        clearTimers()
         
-        log("Failed scanning with error: \(error.localizedDescription).")
+        // There is no point trying to stop the scan if the error is due to the manager being powered off, as trying to do so has no effect and will also cause CoreBluetooth to log an "API MISUSE" warning.
+        if manager.state == .poweredOn {
+            manager.stopScan()
+        }
+        
+        log("Failed scanning with error: \(error.localizedDescription)")
         
         stopped(discoveries, error)
         

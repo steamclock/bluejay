@@ -50,9 +50,9 @@ class SelectDemoViewController: UITableViewController {
         case 0:
             performSegue(withIdentifier: "showScanEverything", sender: self)
         case 1:
-            performSegue(withIdentifier: "showHeartSensor", sender: self)
+            performSegue(withIdentifier: "showScanHeartSensors", sender: self)
         case 2:
-            performSegue(withIdentifier: "showConnect", sender: self)
+            performSegue(withIdentifier: "showConnectUsingSerial", sender: self)
         default:
             break
         }

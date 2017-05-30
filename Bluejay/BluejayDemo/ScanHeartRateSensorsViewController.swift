@@ -11,7 +11,7 @@ import Bluejay
 
 class ScanHeartRateSensorsViewController: UITableViewController {
     
-    private let bluejay = Bluejay()
+    fileprivate let bluejay = Bluejay()
     
     private var peripherals = [ScanDiscovery]() {
         didSet {
@@ -24,8 +24,14 @@ class ScanHeartRateSensorsViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        bluejay.start()
+        clearsSelectionOnViewWillAppear = true
         
+        bluejay.start(connectionObserver: self, listenRestorer: nil, enableBackgroundMode: false)
+        
+        scanHeartSensors()
+    }
+    
+    fileprivate func scanHeartSensors() {
         let heartRateService = ServiceIdentifier(uuid: "180D")
         let heartRateMeasurement = CharacteristicIdentifier(uuid: "2A37", service: heartRateService)
         
@@ -36,7 +42,7 @@ class ScanHeartRateSensorsViewController: UITableViewController {
                 guard let weakSelf = self else {
                     return .stop
                 }
-                                
+                
                 weakSelf.peripherals = discoveries
                 weakSelf.tableView.reloadData()
                 
@@ -63,6 +69,20 @@ class ScanHeartRateSensorsViewController: UITableViewController {
         }
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        if bluejay.isConnecting || bluejay.isConnected {
+            bluejay.disconnect(completion: { [weak self] (isSuccess) in
+                guard let weakSelf = self else {
+                    return
+                }
+                
+                weakSelf.scanHeartSensors()
+            })
+        }
+    }
+    
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
@@ -83,10 +103,16 @@ class ScanHeartRateSensorsViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let peripheral = peripherals[indexPath.row].peripheral
         
-        bluejay.connect(PeripheralIdentifier(uuid: peripheral.identifier)) { (result) in
+        bluejay.connect(PeripheralIdentifier(uuid: peripheral.identifier)) { [weak self] (result) in
             switch result {
             case .success(let peripheral):
                 debugPrint("Connection to \(peripheral.identifier) successful.")
+                
+                guard let weakSelf = self else {
+                    return
+                }
+                
+                weakSelf.performSegue(withIdentifier: "showHeartSensor", sender: self)
             case .cancelled:
                 debugPrint("Connection to \(peripheral.identifier) cancelled.")
             case .failure(let error):
@@ -96,3 +122,24 @@ class ScanHeartRateSensorsViewController: UITableViewController {
     }
     
 }
+
+extension ScanHeartRateSensorsViewController: ConnectionObserver {
+    
+    func bluetoothAvailable(_ available: Bool) {
+        debugPrint("Bluetooth available: \(available)")
+        
+        if available && !bluejay.isScanning {
+            scanHeartSensors()
+        }
+    }
+    
+    func connected(_ peripheral: Peripheral) {
+        debugPrint("Connected to \(peripheral)")
+    }
+    
+    func disconnected() {
+        debugPrint("Disconnected")
+    }
+    
+}
+

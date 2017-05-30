@@ -11,7 +11,7 @@ import Bluejay
 
 class ScanEverythingViewController: UITableViewController {
     
-    private let bluejay = Bluejay()
+    fileprivate let bluejay = Bluejay()
     
     private var peripherals = [ScanDiscovery]() {
         didSet {
@@ -24,8 +24,12 @@ class ScanEverythingViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
                 
-        bluejay.start()
+        bluejay.start(connectionObserver: self, listenRestorer: nil, enableBackgroundMode: false)
         
+        startScanning()
+    }
+    
+    fileprivate func startScanning() {
         bluejay.scan(
             allowDuplicates: true,
             serviceIdentifiers: nil,
@@ -75,6 +79,16 @@ class ScanEverythingViewController: UITableViewController {
         cell.detailTextLabel?.text = "RSSI: \(peripherals[indexPath.row].rssi)"
         
         return cell
+    }
+    
+}
+
+extension ScanEverythingViewController: ConnectionObserver {
+    
+    func bluetoothAvailable(_ available: Bool) {
+        if available && !bluejay.isScanning {
+            startScanning()
+        }
     }
     
 }

@@ -119,13 +119,8 @@ public class Peripheral: NSObject {
             preconditionFailure("Cannot handle event: Bluejay is nil.")
         }
         
-        if error == nil {
-            bluejay.queue.process(event: event, error: error)
-            updateOperations()
-        }
-        else {
-            cancelAllOperations(error ?? Error.unknownError())
-        }
+        bluejay.queue.process(event: event, error: error)
+        updateOperations()
     }
     
     // MARK: - RSSI Event

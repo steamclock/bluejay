@@ -26,14 +26,14 @@ public protocol ConnectionObserver: class {
         Called whenever Bluetooth availability changes, as well as when an object first subscribes to observing Bluetooth events.
     */
     func bluetoothAvailable(_ available: Bool)
-    func connected(_ peripheral: Peripheral)
+    func connected(to peripheral: Peripheral)
     func disconnected()
 }
 
 /// Slightly less gross way to make the BluejayEventsObservable protocol's functions optional.
 extension ConnectionObserver {
     public func bluetoothAvailable(_ available: Bool) {}
-    public func connected(_ peripheral: Peripheral) {}
+    public func connected(to peripheral: Peripheral) {}
     public func disconnected() {}
 }
 

@@ -118,6 +118,11 @@ class Connection: Queueable {
     func fail(_ error: NSError) {
         cancelTimer()
         
+        // There is no point trying to cancel the connection if the error is due to the manager being powered off, as trying to do so has no effect and will also cause CoreBluetooth to log an "API MISUSE" warning.
+        if manager.state == .poweredOn {
+            manager.cancelPeripheralConnection(peripheral)
+        }
+        
         state = .failed(error)
         
         log("Failed connecting to: \(peripheral.name ?? peripheral.identifier.uuidString) with error: \(error.localizedDescription)")

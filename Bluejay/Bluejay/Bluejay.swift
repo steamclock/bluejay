@@ -88,12 +88,19 @@ public class Bluejay: NSObject {
         queue = Queue(bluejay: self)
     }
     
-    deinit {
-        queue.cancelAll()
+    fileprivate func cancelEverything(_ error: NSError? = nil) {        
+        queue.cancelAll(error)
         
-        if let connectedPeripheral = connectedPeripheral {
-            cbCentralManager.cancelPeripheralConnection(connectedPeripheral.cbPeripheral)
+        if isConnected && cbCentralManager.state == .poweredOn {
+            cbCentralManager.cancelPeripheralConnection(connectedPeripheral!.cbPeripheral)
         }
+                
+        connectingPeripheral = nil
+        connectedPeripheral = nil
+    }
+    
+    deinit {
+        cancelEverything()
         
         log("Deinit Bluejay with UUID: \(uuid.uuidString).")
     }
@@ -133,15 +140,12 @@ public class Bluejay: NSObject {
         observers = observers.filter { $0.weakReference != nil && $0.weakReference !== observer }
         observers.append(WeakConnectionObserver(weakReference: observer))
         
-        if cbCentralManager == nil {
-            observer.bluetoothAvailable(false)
-        }
-        else {
+        if cbCentralManager != nil {
             observer.bluetoothAvailable(cbCentralManager.state == .poweredOn)
         }
         
         if let connectedPeripheral = connectedPeripheral {
-            observer.connected(connectedPeripheral)
+            observer.connected(to: connectedPeripheral)
         }
     }
     
@@ -174,30 +178,10 @@ public class Bluejay: NSObject {
     }
     
     public func stopScanning() {
-        cbCentralManager.stopScan()
         queue.stopScanning()
     }
     
     // MARK: - Connection
-    
-    public func cancelAllConnections() {
-        let connected = connectedPeripheral
-        let connecting = connectedPeripheral
-        
-        self.connectingPeripheral = nil
-        self.connectedPeripheral = nil
-        
-        if !cbCentralManager.isScanning {
-            connected?.cancelAllOperations(Error.unexpectedDisconnectError())
-            connecting?.cancelAllOperations(Error.unexpectedDisconnectError())
-            
-            queue.cancelAll(Error.unexpectedDisconnectError())
-        }
-        
-        for observer in observers {
-            observer.weakReference?.disconnected()
-        }
-    }
     
     /// Attempt to connect directly to a known peripheral.
     public func connect(_ peripheralIdentifier: PeripheralIdentifier, completion: @escaping (ConnectionResult) -> Void) {
@@ -226,20 +210,23 @@ public class Bluejay: NSObject {
             isDisconnecting = true
             shouldAutoReconnect = false
             
-            peripheralToDisconnect.cancelAllOperations()
+            queue.cancelAll()
             
-            queue.add(Disconnection(peripheral: peripheralToDisconnect.cbPeripheral, manager: cbCentralManager, callback: { (result) in
-                switch result {
-                case .success:
-                    self.isDisconnecting = false
-                    completion?(true)
-                case .cancelled:
-                    self.isDisconnecting = false
-                    completion?(false)
-                case .failure:
-                    self.isDisconnecting = false
-                    completion?(false)
-                }
+            queue.add(Disconnection(
+                peripheral: peripheralToDisconnect.cbPeripheral,
+                manager: cbCentralManager,
+                callback: { (result) in
+                    switch result {
+                    case .success:
+                        self.isDisconnecting = false
+                        completion?(true)
+                    case .cancelled:
+                        self.isDisconnecting = false
+                        completion?(false)
+                    case .failure:
+                        self.isDisconnecting = false
+                        completion?(false)
+                    }
             }))
         }
         else {
@@ -375,28 +362,11 @@ extension Bluejay: CBCentralManagerDelegate {
         let backgroundTask = UIApplication.shared.beginBackgroundTask(expirationHandler: nil)
         
         if central.state == .poweredOff {
-            if let connectingPeripheral = connectingPeripheral {
-                cbCentralManager.cancelPeripheralConnection(connectingPeripheral.cbPeripheral)
-            }
-            
-            if let connectedPeripheral = connectedPeripheral {
-                cbCentralManager.cancelPeripheralConnection(connectedPeripheral.cbPeripheral)
-            }
-            
-            cbCentralManager.stopScan()
-            
-            cancelAllConnections()
+            cancelEverything(Error.bluetoothUnavailable())
         }
         
         for observer in observers {
             observer.weakReference?.bluetoothAvailable(central.state == .poweredOn)
-            
-            if connectedPeripheral != nil {
-                observer.weakReference?.connected(connectedPeripheral!)
-            }
-            else {
-                observer.weakReference?.disconnected()
-            }
         }
         
         UIApplication.shared.endBackgroundTask(backgroundTask)
@@ -496,14 +466,11 @@ extension Bluejay: CBCentralManagerDelegate {
         connectedPeripheral = connectingPeripheral
         connectingPeripheral = nil
         
-        // Do not notify observers if this connection is part of a scan operation, as the connection to the peripheral is only for inspection purposes.
-        if !queue.isScanning() {
-            for observer in observers {
-                observer.weakReference?.connected(connectedPeripheral!)
-            }
-            
-            shouldAutoReconnect = true
+        for observer in observers {
+            observer.weakReference?.connected(to: connectedPeripheral!)
         }
+        
+        shouldAutoReconnect = true
         
         queue.process(event: .didConnectPeripheral(peripheral), error: nil)
         
@@ -523,18 +490,23 @@ extension Bluejay: CBCentralManagerDelegate {
             log("Did disconnect from \(peripheralString) without errors.")
         }
         
-        log("Should auto-reconnect: \(shouldAutoReconnect)")
+        for observer in observers {
+            observer.weakReference?.disconnected()
+        }
         
         if !queue.isEmpty() {
-            queue.process(event: .didDisconnectPeripheral(peripheral), error: nil)
+            if isDisconnecting {
+                queue.process(event: .didDisconnectPeripheral(peripheral), error: error as NSError?)
+            }
+            else {
+                queue.cancelAll(Error.notConnected())
+            }
         }
         
-        if connectingPeripheral == nil && connectedPeripheral == nil {
-            log("Disconnection is either bogus or already handled, Bluejay has no connected peripheral.")
-            return
-        }
+        connectingPeripheral = nil
+        connectedPeripheral = nil
         
-        cancelAllConnections()
+        log("Should auto-reconnect: \(shouldAutoReconnect)")
         
         if shouldAutoReconnect {
             log("Issuing reconnect to: \(peripheral.name ?? peripheral.identifier.uuidString)")

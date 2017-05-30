@@ -17,6 +17,7 @@
 		B842AAF81E4CF74300BB32EE /* String+Transferable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B842AAF71E4CF74300BB32EE /* String+Transferable.swift */; };
 		B850D0011E4A5015005F31C5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B850D0001E4A5015005F31C5 /* Main.storyboard */; };
 		B869A2971E721D50003C1278 /* Data+Sendable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B869A2961E721D50003C1278 /* Data+Sendable.swift */; };
+		B881CB471EDCC4FE00624109 /* HeartSensorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B881CB461EDCC4FE00624109 /* HeartSensorViewController.swift */; };
 		B88A0D9C1E1DAA1600A00FF8 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88A0D9B1E1DAA1600A00FF8 /* Event.swift */; };
 		B88A0D9F1E1DCFBF00A00FF8 /* DiscoverService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88A0D9E1E1DCFBF00A00FF8 /* DiscoverService.swift */; };
 		B88A0DA11E1DD15600A00FF8 /* DiscoverCharacteristic.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88A0DA01E1DD15600A00FF8 /* DiscoverCharacteristic.swift */; };
@@ -115,6 +116,7 @@
 		B842AAF71E4CF74300BB32EE /* String+Transferable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Transferable.swift"; sourceTree = "<group>"; };
 		B850D0001E4A5015005F31C5 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		B869A2961E721D50003C1278 /* Data+Sendable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Data+Sendable.swift"; sourceTree = "<group>"; };
+		B881CB461EDCC4FE00624109 /* HeartSensorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeartSensorViewController.swift; sourceTree = "<group>"; };
 		B88A0D9B1E1DAA1600A00FF8 /* Event.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
 		B88A0D9E1E1DCFBF00A00FF8 /* DiscoverService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoverService.swift; sourceTree = "<group>"; };
 		B88A0DA01E1DD15600A00FF8 /* DiscoverCharacteristic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoverCharacteristic.swift; sourceTree = "<group>"; };
@@ -390,6 +392,7 @@
 				B88F50F11EB3FA4100D11CD8 /* SelectDemoViewController.swift */,
 				B8C5E7181E64E1D50094A708 /* ScanEverythingViewController.swift */,
 				B80535731ECA239D002E5493 /* ScanHeartRateSensorsViewController.swift */,
+				B881CB461EDCC4FE00624109 /* HeartSensorViewController.swift */,
 				B8BA76F41ECF70BE002DDDB0 /* ConnectUsingSerialNumberViewController.swift */,
 				B850D0001E4A5015005F31C5 /* Main.storyboard */,
 				B8DEDE6A1E4A4B5800B2244D /* Assets.xcassets */,
@@ -751,6 +754,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B80535741ECA239D002E5493 /* ScanHeartRateSensorsViewController.swift in Sources */,
+				B881CB471EDCC4FE00624109 /* HeartSensorViewController.swift in Sources */,
 				B88F50F21EB3FA4100D11CD8 /* SelectDemoViewController.swift in Sources */,
 				B8BA76F51ECF70BE002DDDB0 /* ConnectUsingSerialNumberViewController.swift in Sources */,
 				B8C5E7191E64E1D50094A708 /* ScanEverythingViewController.swift in Sources */,

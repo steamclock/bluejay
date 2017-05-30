@@ -8,7 +8,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Bluejay Demo-->
+        <!--Demos-->
         <scene sceneID="3of-bV-Eov">
             <objects>
                 <tableViewController id="83P-vm-BUM" customClass="SelectDemoViewController" customModule="BluejayDemo" customModuleProvider="target" sceneMemberID="viewController">
@@ -40,28 +40,28 @@
                             <outlet property="delegate" destination="83P-vm-BUM" id="RVF-kv-leS"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Bluejay Demo" id="lhg-gq-dYw"/>
+                    <navigationItem key="navigationItem" title="Demos" id="lhg-gq-dYw"/>
                     <connections>
                         <segue destination="Qrb-hZ-61r" kind="show" identifier="showScanEverything" id="HhF-DM-cIT"/>
-                        <segue destination="rAc-RZ-gIN" kind="show" identifier="showHeartSensor" id="6Sf-kF-nfS"/>
-                        <segue destination="V17-8q-4OO" kind="show" identifier="showConnect" id="orx-b1-YWR"/>
+                        <segue destination="rAc-RZ-gIN" kind="show" identifier="showScanHeartSensors" id="6Sf-kF-nfS"/>
+                        <segue destination="V17-8q-4OO" kind="show" identifier="showConnectUsingSerial" id="orx-b1-YWR"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="y0q-JK-aTz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-26" y="77"/>
         </scene>
-        <!--Scan Heart Rate Sensors View Controller-->
+        <!--Heart Sensors-->
         <scene sceneID="8A8-Bw-YF9">
             <objects>
                 <tableViewController id="rAc-RZ-gIN" customClass="ScanHeartRateSensorsViewController" customModule="BluejayDemo" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="EhY-4p-KcS">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="EhY-4p-KcS">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="heartCell" textLabel="e80-FY-6CY" detailTextLabel="IHI-Sg-YIr" style="IBUITableViewCellStyleSubtitle" id="nyh-Q7-Se2">
-                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                <rect key="frame" x="0.0" y="55.5" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="nyh-Q7-Se2" id="SEM-1G-cvm">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
@@ -90,12 +90,34 @@
                             <outlet property="delegate" destination="rAc-RZ-gIN" id="GDN-vh-BrY"/>
                         </connections>
                     </tableView>
+                    <navigationItem key="navigationItem" title="Heart Sensors" id="4CR-xt-4QK"/>
+                    <connections>
+                        <segue destination="ZM8-u3-qcX" kind="show" identifier="showHeartSensor" id="gPh-EY-0rW"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="EVc-Dr-2lH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="814" y="77"/>
         </scene>
-        <!--Connect Using Serial Number View Controller-->
+        <!--View Controller-->
+        <scene sceneID="0QB-yj-67u">
+            <objects>
+                <viewController id="ZM8-u3-qcX" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="XWf-bh-sNp"/>
+                        <viewControllerLayoutGuide type="bottom" id="XjS-dJ-WLi"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="zJf-rc-4UJ">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="NTR-DZ-yFO" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1662" y="77"/>
+        </scene>
+        <!--Status-->
         <scene sceneID="7Fb-ou-Sww">
             <objects>
                 <viewController id="V17-8q-4OO" customClass="ConnectUsingSerialNumberViewController" customModule="BluejayDemo" customModuleProvider="target" sceneMemberID="viewController">
@@ -125,6 +147,7 @@
                             <constraint firstItem="quf-rP-vua" firstAttribute="centerY" secondItem="6Ix-uS-GZA" secondAttribute="centerY" id="a3j-4d-Zdm"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" title="Status" id="kZU-RD-GdO"/>
                     <connections>
                         <outlet property="statusLabel" destination="quf-rP-vua" id="wiY-m5-9cD"/>
                     </connections>
