@@ -43,7 +43,9 @@ class Queue {
     }
     
     func add(_ queueable: Queueable) {
-        precondition(bluejay != nil, "Cannot enqueue: Bluejay instance is nil.")
+        guard let bluejay = bluejay else {
+            preconditionFailure("Cannot enqueue: Bluejay instance is nil.")
+        }
         
         queueable.queue = self
         queue.append(queueable)
@@ -71,6 +73,12 @@ class Queue {
             scan = queueable as? Scan
         }
         else if queueable is Connection {
+            // Fail the connection request immediately if Bluejay is still connecting or connected.
+            if bluejay.isConnecting || bluejay.isConnected {
+                queueable.fail(Error.multipleConnect())
+                return
+            }
+            
             // Stop scanning when a connection is enqueued while a scan is still active.
             if isScanning() {
                 stopScanning()
@@ -148,10 +156,6 @@ class Queue {
                 else if case .running = queueable.state {
                     // Do nothing if the current queueable is still running.
                     return
-                }
-                else if bluejay.isConnected && queueable is Connection {
-                    // Fail the connection queuable if a peripheral is still connected.
-                    queueable.fail(Error.multipleConnect())
                 }
                 else if case .notStarted = queueable.state {
                     if let connection = queueable as? Connection {

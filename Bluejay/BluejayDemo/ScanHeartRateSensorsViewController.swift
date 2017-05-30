@@ -21,6 +21,8 @@ class ScanHeartRateSensorsViewController: UITableViewController {
         }
     }
     
+    private var selectedPeripheralIdentifier: PeripheralIdentifier?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -103,7 +105,9 @@ class ScanHeartRateSensorsViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let peripheral = peripherals[indexPath.row].peripheral
         
-        bluejay.connect(PeripheralIdentifier(uuid: peripheral.identifier)) { [weak self] (result) in
+        let peripheralIdentifier = PeripheralIdentifier(uuid: peripheral.identifier)
+        
+        bluejay.connect(peripheralIdentifier) { [weak self] (result) in
             switch result {
             case .success(let peripheral):
                 debugPrint("Connection to \(peripheral.identifier) successful.")
@@ -111,6 +115,8 @@ class ScanHeartRateSensorsViewController: UITableViewController {
                 guard let weakSelf = self else {
                     return
                 }
+                
+                weakSelf.selectedPeripheralIdentifier = peripheralIdentifier
                 
                 weakSelf.performSegue(withIdentifier: "showHeartSensor", sender: self)
             case .cancelled:
@@ -121,6 +127,13 @@ class ScanHeartRateSensorsViewController: UITableViewController {
         }
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "showHeartSensor" {
+            let destination = segue.destination as! HeartSensorViewController
+            destination.bluejay = bluejay
+            destination.peripheralIdentifier = selectedPeripheralIdentifier
+        }
+    }
 }
 
 extension ScanHeartRateSensorsViewController: ConnectionObserver {
