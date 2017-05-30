@@ -37,10 +37,18 @@ struct Error {
         )
     }
     
-    static func connectionTimedOut() -> NSError {
+    static func multipleDisconnect() -> NSError {
         return NSError(
             domain: "Bluejay",
             code: 3,
+            userInfo: [NSLocalizedDescriptionKey: "Multiple disconnect is not allowed."]
+        )
+    }
+    
+    static func connectionTimedOut() -> NSError {
+        return NSError(
+            domain: "Bluejay",
+            code: 4,
             userInfo: [NSLocalizedDescriptionKey: "Connection timed out."]
         )
     }
@@ -48,7 +56,7 @@ struct Error {
     static func notConnected() -> NSError {
         return NSError(
             domain: "Bluejay",
-            code: 4,
+            code: 5,
             userInfo: [NSLocalizedDescriptionKey: "Not connected to a peripheral."]
         )
     }
@@ -56,7 +64,7 @@ struct Error {
     static func missingService(_ service: ServiceIdentifier) -> NSError {
         return NSError(
             domain: "Bluejay",
-            code: 5,
+            code: 6,
             userInfo: [NSLocalizedDescriptionKey: "Service not found: \(service.uuid)."]
         )
     }
@@ -64,7 +72,7 @@ struct Error {
     static func missingCharacteristic(_ char: CharacteristicIdentifier) -> NSError {
         return NSError(
             domain: "Bluejay",
-            code: 6,
+            code: 7,
             userInfo: [NSLocalizedDescriptionKey: "Characteristic not found: \(char.uuid)."]
         )
     }
@@ -72,7 +80,7 @@ struct Error {
     static func cancelled() -> NSError {
         return NSError(
             domain: "Bluejay",
-            code: 7,
+            code: 8,
             userInfo: [NSLocalizedDescriptionKey: "Cancelled."]
         )
     }
@@ -80,7 +88,7 @@ struct Error {
     static func listenTimedOut() -> NSError {
         return NSError(
             domain: "Bluejay",
-            code: 8,
+            code: 9,
             userInfo: [NSLocalizedDescriptionKey: "Listen timed out."]
         )
     }

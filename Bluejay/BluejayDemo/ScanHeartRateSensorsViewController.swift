@@ -75,13 +75,23 @@ class ScanHeartRateSensorsViewController: UITableViewController {
         super.viewWillAppear(animated)
         
         if bluejay.isConnecting || bluejay.isConnected {
-            bluejay.disconnect(completion: { [weak self] (isSuccess) in
+            bluejay.disconnect(completion: { [weak self] (result) in
                 guard let weakSelf = self else {
                     return
                 }
                 
-                weakSelf.scanHeartSensors()
+                switch result {
+                case .success:
+                    weakSelf.scanHeartSensors()
+                case .cancelled:
+                    preconditionFailure("Disconnection cancelled unexpectedly.")
+                case .failure(let error):
+                    preconditionFailure("Disconnection failed with error: \(error.localizedDescription)")
+                }
             })
+        }
+        else if !bluejay.isScanning {
+            scanHeartSensors()
         }
     }
     

@@ -17,9 +17,9 @@ class Disconnection: Queueable {
     let peripheral: CBPeripheral
     let manager: CBCentralManager
     
-    var callback: ((ConnectionResult) -> Void)?
+    var callback: ((DisconnectionResult) -> Void)?
     
-    init(peripheral: CBPeripheral, manager: CBCentralManager, callback: @escaping (ConnectionResult) -> Void) {
+    init(peripheral: CBPeripheral, manager: CBCentralManager, callback: @escaping (DisconnectionResult) -> Void) {
         self.state = .notStarted
         
         self.peripheral = peripheral

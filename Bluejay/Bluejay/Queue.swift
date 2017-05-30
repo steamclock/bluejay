@@ -24,7 +24,7 @@ class Queue {
     private var uuid = UUID()
     
     private var isCBCentralManagerReady = false
-    
+        
     init(bluejay: Bluejay) {
         self.bluejay = bluejay
         log("Queue initialized with UUID: \(uuid.uuidString).")
@@ -70,7 +70,12 @@ class Queue {
         }
         
         if queueable is Scan {
-            scan = queueable as? Scan
+            if scan == nil {
+                scan = queueable as? Scan
+            }
+            else {
+                queueable.fail(Error.multipleScan())
+            }
         }
         else if queueable is Connection {
             // Fail the connection request immediately if Bluejay is still connecting or connected.

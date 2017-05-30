@@ -207,6 +207,7 @@
                     <navigationItem key="navigationItem" title="Heart Sensor" id="wGi-uL-yJU"/>
                     <connections>
                         <outlet property="connectCell" destination="R2E-AD-cT8" id="LOc-cD-Oxu"/>
+                        <outlet property="disconnectCell" destination="1op-Zm-lCj" id="a2I-J5-pAH"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5Kr-RK-uTo" userLabel="First Responder" sceneMemberID="firstResponder"/>

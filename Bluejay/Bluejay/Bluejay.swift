@@ -68,7 +68,7 @@ public class Bluejay: NSObject {
     
     /// Allows checking whether Bluejay is currently scanning.
     public var isScanning: Bool {
-        return cbCentralManager.isScanning
+        return cbCentralManager.isScanning || queue.isScanning()
     }
     
     // MARK: - Initialization
@@ -201,8 +201,9 @@ public class Bluejay: NSObject {
     }
     
     /// Disconnect the currently connected peripheral.
-    public func disconnect(completion: ((Bool)->Void)? = nil) {
+    public func disconnect(completion: ((DisconnectionResult) -> Void)? = nil) {
         if isDisconnecting {
+            completion?(.failure(Error.multipleDisconnect()))
             return
         }
         
@@ -217,22 +218,22 @@ public class Bluejay: NSObject {
                 manager: cbCentralManager,
                 callback: { (result) in
                     switch result {
-                    case .success:
+                    case .success(let peripheral):
                         self.isDisconnecting = false
-                        completion?(true)
+                        completion?(.success(peripheral))
                     case .cancelled:
                         self.isDisconnecting = false
-                        completion?(false)
-                    case .failure:
+                        completion?(.cancelled)
+                    case .failure(let error):
                         self.isDisconnecting = false
-                        completion?(false)
+                        completion?(.failure(error))
                     }
             }))
         }
         else {
             log("Cannot disconnect: there is no connected peripheral.")
             isDisconnecting = false
-            completion?(false)
+            completion?(.failure(Error.notConnected()))
         }
     }
     

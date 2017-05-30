@@ -114,10 +114,15 @@ class ConnectUsingSerialNumberViewController: UIViewController {
                                         
                                         weakSelf.blacklistedDiscoveries.append(discovery)
                                         
-                                        weakSelf.bluejay.disconnect(completion: { (isSuccessful) in
-                                            precondition(isSuccessful, "Disconnection from \(discovery.peripheral.identifier) failed.")
-                                            
-                                            weakSelf.scan(services: [Services.deviceInfo], serialNumber: weakSelf.targetSerialNumber!)
+                                        weakSelf.bluejay.disconnect(completion: { (result) in
+                                            switch result {
+                                            case .success:
+                                                weakSelf.scan(services: [Services.deviceInfo], serialNumber: weakSelf.targetSerialNumber!)
+                                            case .cancelled:
+                                                preconditionFailure("Disconnection cancelled unexpectedly.")
+                                            case .failure(let error):
+                                                preconditionFailure("Disconnection failed with error: \(error.localizedDescription)")
+                                            }
                                         })
                                     }
                                 case .cancelled:
