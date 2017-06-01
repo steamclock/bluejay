@@ -120,6 +120,11 @@ public class Bluejay: NSObject {
         backgroundRestore restoreMode: BackgroundRestoreMode = .disable
         )
     {
+        if cbCentralManager != nil {
+            log("Error: The Bluejay instance with UUID: \(uuid.uuidString) has already started.")
+            return
+        }
+        
         register(observer: queue)
         
         if let observer = observer {
