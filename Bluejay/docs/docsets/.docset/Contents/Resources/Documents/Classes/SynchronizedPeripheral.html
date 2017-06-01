@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>SynchronizedPeripheral Class Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset='utf-8'>
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+  </head>
+  <body>
+    <a name="//apple_ref/swift/Class/SynchronizedPeripheral" class="dashAnchor"></a>
+    <a title="SynchronizedPeripheral Class Reference"></a>
+    <header>
+      <div class="content-wrapper">
+        <p><a href="../index.html"> Docs</a> (42% documented)</p>
+      </div>
+    </header>
+    <div class="content-wrapper">
+      <p id="breadcrumbs">
+        <a href="../index.html"> Reference</a>
+        <img id="carat" src="../img/carat.png" />
+        SynchronizedPeripheral Class Reference
+      </p>
+    </div>
+    <div class="content-wrapper">
+      <nav class="sidebar">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a href="../Classes.html">Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/Bluejay.html">Bluejay</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Peripheral.html">Peripheral</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/SynchronizedPeripheral.html">SynchronizedPeripheral</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Enums.html">Enums</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Enums/ConnectionResult.html">ConnectionResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/DisconnectionResult.html">DisconnectionResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/DiscoveryResult.html">DiscoveryResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/ListenAction.html">ListenAction</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/ReadResult.html">ReadResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/RunResult.html">RunResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/ScanAction.html">ScanAction</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/WriteResult.html">WriteResult</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Extensions.html">Extensions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Extensions/CBManagerState.html">CBManagerState</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/CBPeripheral.html">CBPeripheral</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/CBPeripheralState.html">CBPeripheralState</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/CBService.html">CBService</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/Data.html">Data</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/Integer.html">Integer</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/Notification.html">Notification</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/String.html">String</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Protocols.html">Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Protocols/ConnectionObserver.html">ConnectionObserver</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/ListenRestorer.html">ListenRestorer</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/RSSIObserver.html">RSSIObserver</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/Receivable.html">Receivable</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/Sendable.html">Sendable</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Structs.html">Structs</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Structs/CharacteristicIdentifier.html">CharacteristicIdentifier</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/DataPadding.html">DataPadding</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/PeripheralIdentifier.html">PeripheralIdentifier</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/ScanDiscovery.html">ScanDiscovery</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/ServiceIdentifier.html">ServiceIdentifier</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+        <section>
+          <section class="section">
+            <h1>SynchronizedPeripheral</h1>
+              <div class="declaration">
+                <div class="language">
+                  <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">SynchronizedPeripheral</span></code></pre>
+
+                </div>
+              </div>
+            <p>A synchronous interface to the Bluetooth peripheral, intended to be used from a background thread to perform multi-part operations without the need for a complicated callback or promise setup.</p>
+
+          </section>
+          <section class="section task-group-section">
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Actions"></a>
+                <a name="//apple_ref/swift/Section/Actions" class="dashAnchor"></a>
+                <a href="#/Actions">
+                  <h3 class="section-name">Actions</h3>
+                </a>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC7Bluejay22SynchronizedPeripheral4readuRxS_10ReceivablerFzT4fromVS_24CharacteristicIdentifier_x"></a>
+                    <a name="//apple_ref/swift/Method/read(from:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC7Bluejay22SynchronizedPeripheral4readuRxS_10ReceivablerFzT4fromVS_24CharacteristicIdentifier_x">read(from:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Read a value from the specified characteristic synchronously.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">read</span><span class="o">&lt;</span><span class="kt">R</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Receivable.html">Receivable</a></span><span class="o">&gt;</span><span class="p">(</span><span class="n">from</span> <span class="nv">characteristicIdentifier</span><span class="p">:</span> <span class="kt"><a href="../Structs/CharacteristicIdentifier.html">CharacteristicIdentifier</a></span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">R</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC7Bluejay22SynchronizedPeripheral5writeuRxS_8SendablerFzT2toVS_24CharacteristicIdentifier5valuex_T_"></a>
+                    <a name="//apple_ref/swift/Method/write(to:value:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC7Bluejay22SynchronizedPeripheral5writeuRxS_8SendablerFzT2toVS_24CharacteristicIdentifier5valuex_T_">write(to:value:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Write a value from the specified characteristic synchronously.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">write</span><span class="o">&lt;</span><span class="kt">S</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Sendable.html">Sendable</a></span><span class="o">&gt;</span><span class="p">(</span><span class="n">to</span> <span class="nv">characteristicIdentifier</span><span class="p">:</span> <span class="kt"><a href="../Structs/CharacteristicIdentifier.html">CharacteristicIdentifier</a></span><span class="p">,</span> <span class="nv">value</span><span class="p">:</span> <span class="kt">S</span><span class="p">)</span> <span class="k">throws</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC7Bluejay22SynchronizedPeripheral6listenuRxS_10ReceivablerFzT2toVS_24CharacteristicIdentifier10completionFxOS_12ListenAction_T_"></a>
+                    <a name="//apple_ref/swift/Method/listen(to:completion:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC7Bluejay22SynchronizedPeripheral6listenuRxS_10ReceivablerFzT2toVS_24CharacteristicIdentifier10completionFxOS_12ListenAction_T_">listen(to:completion:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Listen for changes on a specified characterstic synchronously.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">listen</span><span class="o">&lt;</span><span class="kt">R</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Receivable.html">Receivable</a></span><span class="o">&gt;</span><span class="p">(</span><span class="n">to</span> <span class="nv">characteristicIdentifier</span><span class="p">:</span> <span class="kt"><a href="../Structs/CharacteristicIdentifier.html">CharacteristicIdentifier</a></span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">R</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Enums/ListenAction.html">ListenAction</a></span><span class="p">)</span> <span class="k">throws</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC7Bluejay22SynchronizedPeripheral14writeAndListenu0_RxS_8Sendable_S_10ReceivablerFzT7writeToVS_24CharacteristicIdentifier5valuex8listenToS3_16timeoutInSecondsSi10completionFq_OS_12ListenAction_T_"></a>
+                    <a name="//apple_ref/swift/Method/writeAndListen(writeTo:value:listenTo:timeoutInSeconds:completion:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC7Bluejay22SynchronizedPeripheral14writeAndListenu0_RxS_8Sendable_S_10ReceivablerFzT7writeToVS_24CharacteristicIdentifier5valuex8listenToS3_16timeoutInSecondsSi10completionFq_OS_12ListenAction_T_">writeAndListen(writeTo:value:listenTo:timeoutInSeconds:completion:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Handle a compound operation consisting of writing on one characterstic followed by listening on another for some streamed data.</p>
+
+<p>Conceptually very similar to just calling write, then listen, except that the listen is set up before the write is issued, so that there should be no risks of data loss due to missed notifications, which there would be with calling them seperatly.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">writeAndListen</span><span class="o">&lt;</span><span class="kt">S</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Sendable.html">Sendable</a></span><span class="p">,</span> <span class="kt">R</span><span class="p">:</span><span class="kt"><a href="../Protocols/Receivable.html">Receivable</a></span><span class="o">&gt;</span><span class="p">(</span>
+        <span class="n">writeTo</span> <span class="nv">charToWriteTo</span><span class="p">:</span> <span class="kt"><a href="../Structs/CharacteristicIdentifier.html">CharacteristicIdentifier</a></span><span class="p">,</span>
+        <span class="nv">value</span><span class="p">:</span> <span class="kt">S</span><span class="p">,</span>
+        <span class="n">listenTo</span> <span class="nv">charToListenTo</span><span class="p">:</span> <span class="kt"><a href="../Structs/CharacteristicIdentifier.html">CharacteristicIdentifier</a></span><span class="p">,</span>
+        <span class="nv">timeoutInSeconds</span><span class="p">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">R</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Enums/ListenAction.html">ListenAction</a></span><span class="p">)</span> <span class="k">throws</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </section>
+        </section>
+        <section id="footer">
+          <p>&copy; 2017 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2017-06-01)</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.8.2</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+        </section>
+      </article>
+    </div>
+  </body>
+</div>
+</html>

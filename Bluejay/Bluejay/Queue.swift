@@ -84,7 +84,7 @@ class Queue {
                 return
             }
             
-            // Stop scanning when a connection is enqueued while a scan is still active.
+            // Stop scanning when a connection is enqueued while a scan is still active, so that the queue can pop the scan task and proceed to the connection task without requiring the caller to explicitly stop the scan before making the connection request.
             if isScanning() {
                 stopScanning()
                 return

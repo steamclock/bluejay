@@ -1,5 +1,5 @@
 //
-//  SyncPeripheral.swift
+//  SynchronizedPeripheral.swift
 //  Bluejay
 //
 //  Created by Jeremy Chiang on 2017-01-05.
@@ -12,7 +12,7 @@ import CoreBluetooth
 /**
     A synchronous interface to the Bluetooth peripheral, intended to be used from a background thread to perform multi-part operations without the need for a complicated callback or promise setup.
 */
-public class SyncPeripheral {
+public class SynchronizedPeripheral {
     
     // MARK: - Properties
     

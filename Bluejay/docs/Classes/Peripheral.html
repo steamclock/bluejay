@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Peripheral Class Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset='utf-8'>
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+  </head>
+  <body>
+    <a name="//apple_ref/swift/Class/Peripheral" class="dashAnchor"></a>
+    <a title="Peripheral Class Reference"></a>
+    <header>
+      <div class="content-wrapper">
+        <p><a href="../index.html"> Docs</a> (42% documented)</p>
+      </div>
+    </header>
+    <div class="content-wrapper">
+      <p id="breadcrumbs">
+        <a href="../index.html"> Reference</a>
+        <img id="carat" src="../img/carat.png" />
+        Peripheral Class Reference
+      </p>
+    </div>
+    <div class="content-wrapper">
+      <nav class="sidebar">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a href="../Classes.html">Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/Bluejay.html">Bluejay</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Peripheral.html">Peripheral</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/SynchronizedPeripheral.html">SynchronizedPeripheral</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Enums.html">Enums</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Enums/ConnectionResult.html">ConnectionResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/DisconnectionResult.html">DisconnectionResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/DiscoveryResult.html">DiscoveryResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/ListenAction.html">ListenAction</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/ReadResult.html">ReadResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/RunResult.html">RunResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/ScanAction.html">ScanAction</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/WriteResult.html">WriteResult</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Extensions.html">Extensions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Extensions/CBManagerState.html">CBManagerState</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/CBPeripheral.html">CBPeripheral</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/CBPeripheralState.html">CBPeripheralState</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/CBService.html">CBService</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/Data.html">Data</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/Integer.html">Integer</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/Notification.html">Notification</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/String.html">String</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Protocols.html">Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Protocols/ConnectionObserver.html">ConnectionObserver</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/ListenRestorer.html">ListenRestorer</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/RSSIObserver.html">RSSIObserver</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/Receivable.html">Receivable</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/Sendable.html">Sendable</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Structs.html">Structs</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Structs/CharacteristicIdentifier.html">CharacteristicIdentifier</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/DataPadding.html">DataPadding</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/PeripheralIdentifier.html">PeripheralIdentifier</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/ScanDiscovery.html">ScanDiscovery</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/ServiceIdentifier.html">ServiceIdentifier</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+        <section>
+          <section class="section">
+            <h1>Peripheral</h1>
+            <p>Undocumented</p>
+
+          </section>
+          <section class="section task-group-section">
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Attributes"></a>
+                <a name="//apple_ref/swift/Section/Attributes" class="dashAnchor"></a>
+                <a href="#/Attributes">
+                  <h3 class="section-name">Attributes</h3>
+                </a>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:vC7Bluejay10Peripheral4uuidVS_20PeripheralIdentifier"></a>
+                    <a name="//apple_ref/swift/Property/uuid" class="dashAnchor"></a>
+                    <a class="token" href="#/s:vC7Bluejay10Peripheral4uuidVS_20PeripheralIdentifier">uuid</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:vC7Bluejay10Peripheral4nameGSqSS_"></a>
+                    <a name="//apple_ref/swift/Property/name" class="dashAnchor"></a>
+                    <a class="token" href="#/s:vC7Bluejay10Peripheral4nameGSqSS_">name</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/RSSI%20Event"></a>
+                <a name="//apple_ref/swift/Section/RSSI Event" class="dashAnchor"></a>
+                <a href="#/RSSI%20Event">
+                  <h3 class="section-name">RSSI Event</h3>
+                </a>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC7Bluejay10Peripheral8readRSSIFT_T_"></a>
+                    <a name="//apple_ref/swift/Method/readRSSI()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC7Bluejay10Peripheral8readRSSIFT_T_">readRSSI()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC7Bluejay10Peripheral8registerFT8observerPS_12RSSIObserver__T_"></a>
+                    <a name="//apple_ref/swift/Method/register(observer:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC7Bluejay10Peripheral8registerFT8observerPS_12RSSIObserver__T_">register(observer:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC7Bluejay10Peripheral10unregisterFT8observerPS_12RSSIObserver__T_"></a>
+                    <a name="//apple_ref/swift/Method/unregister(observer:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC7Bluejay10Peripheral10unregisterFT8observerPS_12RSSIObserver__T_">unregister(observer:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Actions"></a>
+                <a name="//apple_ref/swift/Section/Actions" class="dashAnchor"></a>
+                <a href="#/Actions">
+                  <h3 class="section-name">Actions</h3>
+                </a>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC7Bluejay10Peripheral4readuRxS_10ReceivablerFT4fromVS_24CharacteristicIdentifier10completionFGOS_10ReadResultx_T__T_"></a>
+                    <a name="//apple_ref/swift/Method/read(from:completion:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC7Bluejay10Peripheral4readuRxS_10ReceivablerFT4fromVS_24CharacteristicIdentifier10completionFGOS_10ReadResultx_T__T_">read(from:completion:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Read from a specified characteristic.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">read</span><span class="o">&lt;</span><span class="kt">R</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Receivable.html">Receivable</a></span><span class="o">&gt;</span><span class="p">(</span><span class="n">from</span> <span class="nv">characteristicIdentifier</span><span class="p">:</span> <span class="kt"><a href="../Structs/CharacteristicIdentifier.html">CharacteristicIdentifier</a></span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt"><a href="../Enums/ReadResult.html">ReadResult</a></span><span class="o">&lt;</span><span class="kt">R</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC7Bluejay10Peripheral5writeuRxS_8SendablerFT2toVS_24CharacteristicIdentifier5valuex10completionFOS_11WriteResultT__T_"></a>
+                    <a name="//apple_ref/swift/Method/write(to:value:completion:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC7Bluejay10Peripheral5writeuRxS_8SendablerFT2toVS_24CharacteristicIdentifier5valuex10completionFOS_11WriteResultT__T_">write(to:value:completion:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Write to a specified characteristic.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">write</span><span class="o">&lt;</span><span class="kt">S</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Sendable.html">Sendable</a></span><span class="o">&gt;</span><span class="p">(</span><span class="n">to</span> <span class="nv">characteristicIdentifier</span><span class="p">:</span> <span class="kt"><a href="../Structs/CharacteristicIdentifier.html">CharacteristicIdentifier</a></span><span class="p">,</span> <span class="nv">value</span><span class="p">:</span> <span class="kt">S</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt"><a href="../Enums/WriteResult.html">WriteResult</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC7Bluejay10Peripheral11isListeningFT2toVS_24CharacteristicIdentifier_Sb"></a>
+                    <a name="//apple_ref/swift/Method/isListening(to:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC7Bluejay10Peripheral11isListeningFT2toVS_24CharacteristicIdentifier_Sb">isListening(to:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC7Bluejay10Peripheral6listenuRxS_10ReceivablerFT2toVS_24CharacteristicIdentifier10completionFGOS_10ReadResultx_T__T_"></a>
+                    <a name="//apple_ref/swift/Method/listen(to:completion:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC7Bluejay10Peripheral6listenuRxS_10ReceivablerFT2toVS_24CharacteristicIdentifier10completionFGOS_10ReadResultx_T__T_">listen(to:completion:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Listen for notifications on a specified characterstic.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">listen</span><span class="o">&lt;</span><span class="kt">R</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Receivable.html">Receivable</a></span><span class="o">&gt;</span><span class="p">(</span><span class="n">to</span> <span class="nv">characteristicIdentifier</span><span class="p">:</span> <span class="kt"><a href="../Structs/CharacteristicIdentifier.html">CharacteristicIdentifier</a></span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt"><a href="../Enums/ReadResult.html">ReadResult</a></span><span class="o">&lt;</span><span class="kt">R</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC7Bluejay10Peripheral9endListenFT2toVS_24CharacteristicIdentifier5errorGSqPs5Error__10completionGSqFOS_11WriteResultT___T_"></a>
+                    <a name="//apple_ref/swift/Method/endListen(to:error:completion:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC7Bluejay10Peripheral9endListenFT2toVS_24CharacteristicIdentifier5errorGSqPs5Error__10completionGSqFOS_11WriteResultT___T_">endListen(to:error:completion:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>End listening on a specified characteristic.</p>
+
+<p>Provides the ability to suppress the failure message to the listen callback. This is useful in the internal implimentation of some of the listening logic, since we want to be able to share the clear logic on a .done exit, but don&rsquo;t need to send a failure in that case.</p>
+<div class="aside aside-note">
+    <p class="aside-title">Note</p>
+    Note
+Currently this can also cancel a regular in-progress read as well, but that behaviour may change down the road.
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">endListen</span><span class="p">(</span><span class="n">to</span> <span class="nv">characteristicIdentifier</span><span class="p">:</span> <span class="kt"><a href="../Structs/CharacteristicIdentifier.html">CharacteristicIdentifier</a></span><span class="p">,</span> <span class="nv">error</span><span class="p">:</span> <span class="kt">Swift</span><span class="o">.</span><span class="kt">Error</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="p">((</span><span class="kt"><a href="../Enums/WriteResult.html">WriteResult</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC7Bluejay10Peripheral13restoreListenuRxS_10ReceivablerFT2toVS_24CharacteristicIdentifier10completionFGOS_10ReadResultx_T__T_"></a>
+                    <a name="//apple_ref/swift/Method/restoreListen(to:completion:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC7Bluejay10Peripheral13restoreListenuRxS_10ReceivablerFT2toVS_24CharacteristicIdentifier10completionFGOS_10ReadResultx_T__T_">restoreListen(to:completion:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Restore a (believed to be) active listening session, so if we start up in response to a notification, we can receive it.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">restoreListen</span><span class="o">&lt;</span><span class="kt">R</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Receivable.html">Receivable</a></span><span class="o">&gt;</span><span class="p">(</span><span class="n">to</span> <span class="nv">characteristicIdentifier</span><span class="p">:</span> <span class="kt"><a href="../Structs/CharacteristicIdentifier.html">CharacteristicIdentifier</a></span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt"><a href="../Enums/ReadResult.html">ReadResult</a></span><span class="o">&lt;</span><span class="kt">R</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC7Bluejay10Peripheral10peripheralFTCSo12CBPeripheral19didDiscoverServicesGSqPs5Error___T_"></a>
+                    <a name="//apple_ref/swift/Method/peripheral(_:didDiscoverServices:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC7Bluejay10Peripheral10peripheralFTCSo12CBPeripheral19didDiscoverServicesGSqPs5Error___T_">peripheral(_:didDiscoverServices:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC7Bluejay10Peripheral10peripheralFTCSo12CBPeripheral29didDiscoverCharacteristicsForCSo9CBService5errorGSqPs5Error___T_"></a>
+                    <a name="//apple_ref/swift/Method/peripheral(_:didDiscoverCharacteristicsFor:error:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC7Bluejay10Peripheral10peripheralFTCSo12CBPeripheral29didDiscoverCharacteristicsForCSo9CBService5errorGSqPs5Error___T_">peripheral(_:didDiscoverCharacteristicsFor:error:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC7Bluejay10Peripheral10peripheralFTCSo12CBPeripheral16didWriteValueForCSo16CBCharacteristic5errorGSqPs5Error___T_"></a>
+                    <a name="//apple_ref/swift/Method/peripheral(_:didWriteValueFor:error:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC7Bluejay10Peripheral10peripheralFTCSo12CBPeripheral16didWriteValueForCSo16CBCharacteristic5errorGSqPs5Error___T_">peripheral(_:didWriteValueFor:error:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC7Bluejay10Peripheral10peripheralFTCSo12CBPeripheral17didUpdateValueForCSo16CBCharacteristic5errorGSqPs5Error___T_"></a>
+                    <a name="//apple_ref/swift/Method/peripheral(_:didUpdateValueFor:error:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC7Bluejay10Peripheral10peripheralFTCSo12CBPeripheral17didUpdateValueForCSo16CBCharacteristic5errorGSqPs5Error___T_">peripheral(_:didUpdateValueFor:error:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC7Bluejay10Peripheral10peripheralFTCSo12CBPeripheral29didUpdateNotificationStateForCSo16CBCharacteristic5errorGSqPs5Error___T_"></a>
+                    <a name="//apple_ref/swift/Method/peripheral(_:didUpdateNotificationStateFor:error:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC7Bluejay10Peripheral10peripheralFTCSo12CBPeripheral29didUpdateNotificationStateForCSo16CBCharacteristic5errorGSqPs5Error___T_">peripheral(_:didUpdateNotificationStateFor:error:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC7Bluejay10Peripheral10peripheralFTCSo12CBPeripheral11didReadRSSICSo8NSNumber5errorGSqPs5Error___T_"></a>
+                    <a name="//apple_ref/swift/Method/peripheral(_:didReadRSSI:error:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC7Bluejay10Peripheral10peripheralFTCSo12CBPeripheral11didReadRSSICSo8NSNumber5errorGSqPs5Error___T_">peripheral(_:didReadRSSI:error:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </section>
+        </section>
+        <section id="footer">
+          <p>&copy; 2017 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2017-06-01)</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.8.2</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+        </section>
+      </article>
+    </div>
+  </body>
+</div>
+</html>
