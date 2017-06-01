@@ -28,7 +28,7 @@ class ScanHeartRateSensorsViewController: UITableViewController {
         
         clearsSelectionOnViewWillAppear = true
         
-        bluejay.start(connectionObserver: self, listenRestorer: nil, enableBackgroundMode: false)
+        bluejay.start(connectionObserver: self)
         
         scanHeartSensors()
     }

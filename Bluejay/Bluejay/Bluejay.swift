@@ -21,6 +21,9 @@ public class Bluejay: NSObject {
     /// Internal reference to CoreBluetooth's CBCentralManager.
     fileprivate var cbCentralManager: CBCentralManager!
     
+    /// The value for CBCentralManagerOptionRestoreIdentifierKey.
+    fileprivate var restoreIdentifier: String?
+    
     /// List of weak references to objects interested in receiving notifications on Bluetooth connection events and state changes.
     fileprivate var observers = [WeakConnectionObserver]()
     
@@ -110,13 +113,11 @@ public class Bluejay: NSObject {
      
      - Parameters:
         - observer: An object interested in observing Bluetooth connection events and state changes. You can register more observers using the `register` function.
-        - restorer: An object responsible for re-installing callbacks to characteristics that are still being listened on during state restoration.
-        - backgroundMode: Determines whether the current Bluejay instance will support state preservation and restoration.
+        - restoreMode: Determines whether Bluejay will opt-in to state restoration, and if so, can optionally provide a listen restorer as well for restoring listens.
     */
     public func start(
         connectionObserver observer: ConnectionObserver? = nil,
-        listenRestorer restorer: ListenRestorer? = nil,
-        enableBackgroundMode backgroundMode: Bool = false
+        backgroundRestore restoreMode: BackgroundRestoreMode = .disable
         )
     {
         register(observer: queue)
@@ -125,14 +126,16 @@ public class Bluejay: NSObject {
             register(observer: observer)
         }
         
-        if let restorer = restorer {
-            listenRestorer = WeakListenRestorer(weakReference: restorer)
-        }
-        
         var options: [String : Any] = [CBCentralManagerOptionShowPowerAlertKey : false]
-        
-        if backgroundMode {
-            options[CBCentralManagerOptionRestoreIdentifierKey] = "Bluejay"
+
+        switch restoreMode {
+        case .disable:
+            break
+        case .enable(let restoreIdentifier):
+            options[CBCentralManagerOptionRestoreIdentifierKey] = restoreIdentifier
+        case .enableWithListenRestorer(let restoreIdentifier, let restorer):
+            options[CBCentralManagerOptionRestoreIdentifierKey] = restoreIdentifier
+            listenRestorer = WeakListenRestorer(weakReference: restorer)
         }
         
         cbCentralManager = CBCentralManager(

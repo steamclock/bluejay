@@ -24,7 +24,7 @@ class ScanEverythingViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
                 
-        bluejay.start(connectionObserver: self, listenRestorer: nil, enableBackgroundMode: false)
+        bluejay.start(connectionObserver: self)
         
         startScanning()
     }
