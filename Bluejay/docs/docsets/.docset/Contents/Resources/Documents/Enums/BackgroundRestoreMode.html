@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Data Extension Reference</title>
+    <title>BackgroundRestoreMode Enum Reference</title>
     <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
     <meta charset='utf-8'>
@@ -10,8 +10,8 @@
     
   </head>
   <body>
-    <a name="//apple_ref/swift/Extension/Data" class="dashAnchor"></a>
-    <a title="Data Extension Reference"></a>
+    <a name="//apple_ref/swift/Enum/BackgroundRestoreMode" class="dashAnchor"></a>
+    <a title="BackgroundRestoreMode Enum Reference"></a>
     <header>
       <div class="content-wrapper">
         <p><a href="../index.html"> Docs</a> (44% documented)</p>
@@ -21,7 +21,7 @@
       <p id="breadcrumbs">
         <a href="../index.html"> Reference</a>
         <img id="carat" src="../img/carat.png" />
-        Data Extension Reference
+        BackgroundRestoreMode Enum Reference
       </p>
     </div>
     <div class="content-wrapper">
@@ -147,8 +147,14 @@
       <article class="main-content">
         <section>
           <section class="section">
-            <h1>Data</h1>
-            <p>Undocumented</p>
+            <h1>BackgroundRestoreMode</h1>
+              <div class="declaration">
+                <div class="language">
+                  <pre class="highlight"><code><span class="kd">public</span> <span class="kd">enum</span> <span class="kt">BackgroundRestoreMode</span></code></pre>
+
+                </div>
+              </div>
+            <p>Determines how Bluejay should opt-in to CoreBluetooth state restoration.</p>
 
           </section>
           <section class="section task-group-section">
@@ -157,9 +163,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FE7BluejayV10Foundation4Data7extracturFT5startSi6lengthSi_x"></a>
-                    <a name="//apple_ref/swift/Method/extract(start:length:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FE7BluejayV10Foundation4Data7extracturFT5startSi6lengthSi_x">extract(start:length:)</a>
+                    <a name="/s:FO7Bluejay21BackgroundRestoreMode7disableFMS0_S0_"></a>
+                    <a name="//apple_ref/swift/Element/disable" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FO7Bluejay21BackgroundRestoreMode7disableFMS0_S0_">disable</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -167,8 +173,16 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Bluejay will not receieve state restoration callbacks from CoreBluetooth.</p>
 
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="k">case</span> <span class="n">disable</span></code></pre>
+
+                        </div>
                       </div>
                     </section>
                   </div>
@@ -180,9 +194,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FE7BluejayV10Foundation4Data15toBluetoothDataFT_S1_"></a>
-                    <a name="//apple_ref/swift/Method/toBluetoothData()" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FE7BluejayV10Foundation4Data15toBluetoothDataFT_S1_">toBluetoothData()</a>
+                    <a name="/s:FO7Bluejay21BackgroundRestoreMode6enableFMS0_FSSS0_"></a>
+                    <a name="//apple_ref/swift/Element/enable" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FO7Bluejay21BackgroundRestoreMode6enableFMS0_FSSS0_">enable</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -190,8 +204,21 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Bluejay will receive state restoration callbacks from CoreBluetooth.</p>
+<div class="aside aside-note">
+    <p class="aside-title">Note</p>
+    Please provide a unique restore identifier for CoreBluetooth. See <a href="https://developer.apple.com/reference/corebluetooth/cbcentralmanageroptionrestoreidentifierkey">Apple documentation</a> for more details.
 
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="k">case</span> <span class="nf">enable</span><span class="p">(</span><span class="kt">RestoreIdentifier</span><span class="p">)</span></code></pre>
+
+                        </div>
                       </div>
                     </section>
                   </div>
@@ -203,9 +230,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FE7BluejayV10Foundation4DatacFT13bluetoothDataS1__S1_"></a>
-                    <a name="//apple_ref/swift/Method/init(bluetoothData:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FE7BluejayV10Foundation4DatacFT13bluetoothDataS1__S1_">init(bluetoothData:)</a>
+                    <a name="/s:FO7Bluejay21BackgroundRestoreMode24enableWithListenRestorerFMS0_FTSSPS_14ListenRestorer__S0_"></a>
+                    <a name="//apple_ref/swift/Element/enableWithListenRestorer" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FO7Bluejay21BackgroundRestoreMode24enableWithListenRestorerFMS0_FTSSPS_14ListenRestorer__S0_">enableWithListenRestorer</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -213,8 +240,21 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Bluejay will receive state restoration callbacks from CoreBluetooth <strong>and</strong> attempt to restore listens when necessary using the provided listen restorer.</p>
+<div class="aside aside-note">
+    <p class="aside-title">Note</p>
+    Please provide a unique restore identifier for CoreBluetooth. See <a href="https://developer.apple.com/reference/corebluetooth/cbcentralmanageroptionrestoreidentifierkey">Apple documentation</a> for more details.
 
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="k">case</span> <span class="nf">enableWithListenRestorer</span><span class="p">(</span><span class="kt">RestoreIdentifier</span><span class="p">,</span> <span class="kt"><a href="../Protocols/ListenRestorer.html">ListenRestorer</a></span><span class="p">)</span></code></pre>
+
+                        </div>
                       </div>
                     </section>
                   </div>

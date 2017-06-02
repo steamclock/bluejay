@@ -2,42 +2,42 @@
   "warnings": [
     {
       "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/Bluejay.swift",
-      "line": 509,
+      "line": 531,
       "symbol": "Bluejay.centralManagerDidUpdateState(_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/Bluejay.swift",
-      "line": 571,
+      "line": 593,
       "symbol": "Bluejay.centralManager(_:willRestoreState:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/Bluejay.swift",
-      "line": 623,
+      "line": 645,
       "symbol": "Bluejay.centralManager(_:didConnect:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/Bluejay.swift",
-      "line": 642,
+      "line": 664,
       "symbol": "Bluejay.centralManager(_:didDisconnectPeripheral:error:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/Bluejay.swift",
-      "line": 682,
+      "line": 704,
       "symbol": "Bluejay.centralManager(_:didFailToConnect:error:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/Bluejay.swift",
-      "line": 687,
+      "line": 709,
       "symbol": "Bluejay.centralManager(_:didDiscover:advertisementData:rssi:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"

@@ -2,56 +2,42 @@
   "warnings": [
     {
       "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/Bluejay.swift",
-      "line": 84,
-      "symbol": "Bluejay.init()",
-      "symbol_kind": "source.lang.swift.decl.function.method.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/Bluejay.swift",
-      "line": 222,
-      "symbol": "Bluejay.stopScanning()",
-      "symbol_kind": "source.lang.swift.decl.function.method.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/Bluejay.swift",
-      "line": 465,
+      "line": 509,
       "symbol": "Bluejay.centralManagerDidUpdateState(_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/Bluejay.swift",
-      "line": 527,
+      "line": 571,
       "symbol": "Bluejay.centralManager(_:willRestoreState:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/Bluejay.swift",
-      "line": 579,
+      "line": 623,
       "symbol": "Bluejay.centralManager(_:didConnect:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/Bluejay.swift",
-      "line": 598,
+      "line": 642,
       "symbol": "Bluejay.centralManager(_:didDisconnectPeripheral:error:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/Bluejay.swift",
-      "line": 638,
+      "line": 682,
       "symbol": "Bluejay.centralManager(_:didFailToConnect:error:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/Bluejay.swift",
-      "line": 643,
+      "line": 687,
       "symbol": "Bluejay.centralManager(_:didDiscover:advertisementData:rssi:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
