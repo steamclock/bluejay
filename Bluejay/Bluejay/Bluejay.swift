@@ -132,13 +132,15 @@ public class Bluejay: NSObject {
         }
         
         var options: [String : Any] = [CBCentralManagerOptionShowPowerAlertKey : false]
-
+        
         switch restoreMode {
         case .disable:
             break
         case .enable(let restoreIdentifier):
+            checkBackgroundSupportForBluetooth()
             options[CBCentralManagerOptionRestoreIdentifierKey] = restoreIdentifier
         case .enableWithListenRestorer(let restoreIdentifier, let restorer):
+            checkBackgroundSupportForBluetooth()
             options[CBCentralManagerOptionRestoreIdentifierKey] = restoreIdentifier
             listenRestorer = WeakListenRestorer(weakReference: restorer)
         }
@@ -148,6 +150,18 @@ public class Bluejay: NSObject {
             queue: DispatchQueue.main,
             options: options
         )
+    }
+    
+    private func checkBackgroundSupportForBluetooth() {
+        var isSupported = false
+        
+        if let backgroundModes = Bundle.main.object(forInfoDictionaryKey: "UIBackgroundModes") as? [String] {
+            isSupported = backgroundModes.contains("bluetooth-central")
+        }
+
+        if !isSupported {
+            log("Warning: It appears your app has not enabled background support for Bluetooth properly. Please make sure the capability, Background Modes, is turned on, and the setting, Uses Bluetooth LE accessories, is checked in your Xcode project.")
+        }
     }
     
     /**
