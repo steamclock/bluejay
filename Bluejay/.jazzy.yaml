@@ -1,0 +1,9 @@
+output: ../docs
+author: Steamclock Software
+author_url: http://steamclock.com
+module: Bluejay
+module_version: 0.1
+sdk: iphone
+copyright: Copyright © 2017 Steamclock Software. All rights reserved.
+github_url: https://github.com/steamclock/bluejay
+documentation: Overview.md
