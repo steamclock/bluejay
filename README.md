@@ -248,4 +248,4 @@ extension ViewController: ListenRestorer {
 
 ## Documentaion
 
-- Link out or straight-up include the API docs
+https://steamclock.github.io/bluejay/overview.html
