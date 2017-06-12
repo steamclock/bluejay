@@ -92,41 +92,37 @@ struct Error {
             userInfo: [NSLocalizedDescriptionKey: "Listen timed out."]
         )
     }
-        
-    /// An unknown error should almost never happen, and if it does occur, it usually means there's something seriously wrong in either the internal implementation or the external usage of Bluejay.
-    static func unknownError() -> NSError {
+    
+    static func readFailed() -> NSError {
         return NSError(
             domain: "Bluejay",
-            code: 0,
-            userInfo: [NSLocalizedDescriptionKey: "Unknown error."]
+            code: 10,
+            userInfo: [NSLocalizedDescriptionKey: "Read failed."]
         )
     }
     
-    /// A missing data error usually indicates that an attempt to read some data off of a peripheral has yielded no data at all.
-    static func missingDataError() -> NSError {
+    static func writeFailed() -> NSError {
         return NSError(
             domain: "Bluejay",
-            code: 1,
+            code: 11,
+            userInfo: [NSLocalizedDescriptionKey: "Write failed."]
+        )
+    }
+    
+    static func missingData() -> NSError {
+        return NSError(
+            domain: "Bluejay",
+            code: 12,
             userInfo: [NSLocalizedDescriptionKey: "No data from peripheral."]
         )
     }
         
-    /// An unknown peripheral error usually indicates that the peripheral about to be worked with is not the expected peripheral.
-    static func unknownPeripheralError(_ peripheral: PeripheralIdentifier) -> NSError {
+    static func unexpectedPeripheral(_ peripheral: PeripheralIdentifier) -> NSError {
         return NSError(
             domain: "Bluejay",
-            code: 3,
-            userInfo: [NSLocalizedDescriptionKey: "Unknown peripheral: \(peripheral.uuid)"]
+            code: 13,
+            userInfo: [NSLocalizedDescriptionKey: "Unexpected peripheral: \(peripheral.uuid)."]
         )
     }
         
-    /// An unexpected disconnection error usually indicates that a connection to a peripheral has been forcefully disconnected either purposely or unpurposely.
-    static func unexpectedDisconnectError() -> NSError {
-        return NSError(
-            domain: "Bluejay",
-            code: 5,
-            userInfo: [NSLocalizedDescriptionKey: "Unexpected peripheral disconnection."]
-        )
-    }
-    
 }

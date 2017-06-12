@@ -270,7 +270,7 @@ public class Bluejay: NSObject {
             queue.add(Connection(peripheral: cbPeripheral, manager: cbCentralManager, callback: completion))
         }
         else {
-            completion(.failure(Error.unknownPeripheralError(peripheralIdentifier)))
+            completion(.failure(Error.unexpectedPeripheral(peripheralIdentifier)))
         }
     }
     

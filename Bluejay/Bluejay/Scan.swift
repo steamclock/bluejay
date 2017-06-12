@@ -132,7 +132,7 @@ class Scan: Queueable {
                         queue.add(Connection(peripheral: cbPeripheral, manager: manager, callback: completion))
                     }
                     else {
-                        completion(.failure(Error.unknownPeripheralError(PeripheralIdentifier(uuid: discovery.peripheral.identifier))))
+                        completion(.failure(Error.unexpectedPeripheral(PeripheralIdentifier(uuid: discovery.peripheral.identifier))))
                     }
                 }
                 else {

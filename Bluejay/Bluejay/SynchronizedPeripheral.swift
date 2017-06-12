@@ -28,7 +28,7 @@ public class SynchronizedPeripheral {
     
     /// Read a value from the specified characteristic synchronously.
     public func read<R: Receivable>(from characteristicIdentifier: CharacteristicIdentifier) throws -> R {
-        var finalResult: ReadResult<R> = .failure(Error.unknownError())
+        var finalResult: ReadResult<R> = .failure(Error.readFailed())
         
         let sem = DispatchSemaphore(value: 0)
         
@@ -54,7 +54,7 @@ public class SynchronizedPeripheral {
     
     /// Write a value from the specified characteristic synchronously.
     public func write<S: Sendable>(to characteristicIdentifier: CharacteristicIdentifier, value: S) throws {
-        var finalResult: WriteResult = .failure(Error.unknownError())
+        var finalResult: WriteResult = .failure(Error.writeFailed())
         
         let sem = DispatchSemaphore(value: 0)
         

@@ -25,7 +25,7 @@ extension ReadResult where R: Receivable {
                 self = .success(R(bluetoothData: data))
             }
             else {
-                self = .failure(Error.missingDataError())
+                self = .failure(Error.missingData())
             }
         case .cancelled:
             self = .cancelled
