@@ -58,6 +58,24 @@ class Scan: Queueable {
         
         manager.scanForPeripherals(withServices: services, options: [CBCentralManagerScanOptionAllowDuplicatesKey : allowDuplicates])
         
+        if allowDuplicates {
+            NotificationCenter.default.addObserver(
+                self,
+                selector: #selector(didEnterBackgroundWithAllowDuplicates),
+                name: NSNotification.Name.UIApplicationDidEnterBackground,
+                object: nil
+            )
+        }
+        
+        if serviceIdentifiers == nil {
+            NotificationCenter.default.addObserver(
+                self,
+                selector: #selector(didEnterBackgroundWithoutServiceIdentifiers),
+                name: NSNotification.Name.UIApplicationDidEnterBackground,
+                object: nil
+            )
+        }
+        
         log("Started scanning.")
     }
     
@@ -104,28 +122,18 @@ class Scan: Queueable {
             }
             
             if case .stop = discovery(newDiscovery, discoveries) {
-                clearTimers()
-                
-                manager.stopScan()
                 state = .completed
-                
+
                 log("Finished scanning.")
-                
-                stopped(discoveries, nil)
-                
-                updateQueue()
+
+                stopScan(with: discoveries, error: nil)
             }
             else if case .connect(let discovery, let completion) = discovery(newDiscovery, discoveries) {
-                clearTimers()
-                
-                manager.stopScan()
                 state = .completed
                 
                 log("Finished scanning.")
-                
-                stopped(discoveries, nil)
-                
-                updateQueue()
+
+                stopScan(with: discoveries, error: nil)
                 
                 if let queue = queue {
                     if let cbPeripheral = manager.retrievePeripherals(withIdentifiers: [discovery.peripheral.identifier]).first {
@@ -152,19 +160,28 @@ class Scan: Queueable {
     func cancelled() {
         state = .cancelled
         
-        clearTimers()
-        manager.stopScan()
-        
         log("Cancelled scanning.")
-        
-        stopped(discoveries, nil)
-        
-        updateQueue()
+
+        stopScan(with: discoveries, error: nil)
     }
     
     func fail(_ error : NSError) {
         state = .failed(error)
-
+        
+        log("Failed scanning with error: \(error.localizedDescription)")
+        
+        stopScan(with: discoveries, error: error)
+    }
+    
+    @objc func didEnterBackgroundWithAllowDuplicates() {
+        fail(Error.allowDuplicatesInBackground())
+    }
+    
+    @objc func didEnterBackgroundWithoutServiceIdentifiers() {
+        fail(Error.missingServiceIdentifiersInBackground())
+    }
+    
+    private func stopScan(with discoveries: [ScanDiscovery], error: Swift.Error?) {
         clearTimers()
         
         // There is no point trying to stop the scan if the error is due to the manager being powered off, as trying to do so has no effect and will also cause CoreBluetooth to log an "API MISUSE" warning.
@@ -172,9 +189,9 @@ class Scan: Queueable {
             manager.stopScan()
         }
         
-        log("Failed scanning with error: \(error.localizedDescription)")
-        
         stopped(discoveries, error)
+        
+        NotificationCenter.default.removeObserver(self)
         
         updateQueue()
     }

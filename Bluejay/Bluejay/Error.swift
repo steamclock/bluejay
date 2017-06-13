@@ -25,7 +25,7 @@ struct Error {
         return NSError(
             domain: "Bluejay",
             code: 1,
-            userInfo: [NSLocalizedDescriptionKey: "Multiple scan is not allowed."]
+            userInfo: [NSLocalizedDescriptionKey: "Multiple scan is not supported."]
         )
     }
     
@@ -33,7 +33,7 @@ struct Error {
         return NSError(
             domain: "Bluejay",
             code: 2,
-            userInfo: [NSLocalizedDescriptionKey: "Multiple connect is not allowed."]
+            userInfo: [NSLocalizedDescriptionKey: "Multiple connect is not supported."]
         )
     }
     
@@ -41,7 +41,7 @@ struct Error {
         return NSError(
             domain: "Bluejay",
             code: 3,
-            userInfo: [NSLocalizedDescriptionKey: "Multiple disconnect is not allowed."]
+            userInfo: [NSLocalizedDescriptionKey: "Multiple disconnect is not supported."]
         )
     }
     
@@ -124,5 +124,21 @@ struct Error {
             userInfo: [NSLocalizedDescriptionKey: "Unexpected peripheral: \(peripheral.uuid)."]
         )
     }
-        
+    
+    static func allowDuplicatesInBackground() -> NSError {
+        return NSError(
+            domain: "Bluejay",
+            code: 14,
+            userInfo: [NSLocalizedDescriptionKey: "Scanning with allow duplicates while in the background is not supported."]
+        )
+    }
+    
+    static func missingServiceIdentifiersInBackground() -> NSError {
+        return NSError(
+            domain: "Bluejay",
+            code: 15,
+            userInfo: [NSLocalizedDescriptionKey: "Scanning without specifying any service identifiers while in the background is not supported."]
+        )
+    }
+    
 }
