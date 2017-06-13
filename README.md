@@ -1,18 +1,28 @@
 # Bluejay
 
-Bluejay is a simple Swift framework for building reliable Bluetooth apps.
+Bluejay is a simple Swift framework for building reliable Bluetooth LE apps.
 
 Bluejay's primary goals are:
-- Simplify talking to a Bluetooth device
+- Simplify talking to a single Bluetooth LE peripheral
+- Make it easier to handle Bluetooth LE operations reliably
 - Make good use of Swift features and conventions
-- Make it easier to build Bluetooth apps that are actually reliable
+
+## Features
+
+- A callback-based API that can be cleaner to work with than delegation
+- Can perform batch operations in the background and avoid callback pyramids of death
+- Makes the asynchronous Core Bluetooth API behave more synchronously
+- Observable Bluetooth and connection states
+- Listen restoration
+- Extended error handling
 
 ## Requirements
 
 - iOS 10 or above
 - Xcode 8.2.1 or above
+- Swift 3.2 or above
 
-## Getting started
+## Installation
 
 Install using CocoaPods:
 
@@ -24,31 +34,23 @@ Import using:
 import Bluejay
 ```
 
-## Demo App
+## Demo
 
-The Simulator does not simulate Bluetooth, so it is easiest to demo Bluetooth with a virtual BLE peripheral. To set this up:
+The Simulator does not simulate Bluetooth, and you may also not have access to a configurable Bluetooth LE peripheral right away, so we recommend trying Bluejay using a virtual BLE peripheral. To set this up:
 
-1. Prepare two iOS devices, one will act as a virtual BLE peripheral, and the other will run the demo app using the Bluejay API.
-2. On the iOS device serving as a virtual BLE peripheral, go to the App Store and download the free [LightBlue Explorer](https://itunes.apple.com/ca/app/lightblue-explorer-bluetooth/id557428110?mt=8) app.
-3. Open the LightBlue Explorer app, and tap on the "Create Virtual Peripheral" button located at the bottom of the peripheral list.
-4. For simplicity, choose "Heart Rate" from the base profile list, and finish by tapping the "Save" button located at the top right of the screen.
-5. Finally, build and run the BluejayDemo app on the other iOS device, and you will be able to interact with the virtual heart rate peripheral using Bluejay.
+1. Prepare two iOS devices – one will act as a virtual BLE peripheral, and the other will run the BluejayDemo app which demonstrates how Bluejay can be used.
+2. On the iOS device serving as the virtual BLE peripheral, go to the App Store and download the free [LightBlue Explorer](https://itunes.apple.com/ca/app/lightblue-explorer-bluetooth/id557428110?mt=8) app.
+3. Open the "LightBlue Explorer" app, and tap on the "Create Virtual Peripheral" button located at the bottom of the peripheral list.
+4. For simplicity, choose "Heart Rate" from the base profile list, and finish by tapping the "Save" button.
+5. Finally, build and run the BluejayDemo app on the other iOS device, choose "Heart Rate Sensor" in the menu, and you will be able to start interacting with the virtual heart rate peripheral.
 
 Notes:
 
-- You can turn the virtual peripheral on or off in LightBlue Explorer by tapping and toggling the blue checkmark to the left of the virtual peripheral's name in the peripheral list.
+- You can turn the virtual peripheral on or off in LightBlue Explorer by tapping the blue checkmark to the left of the peripheral's name.
 	- If the virtual peripheral is not working as expected, you can try to reset it this way.
-- By default, the demo app will read and write to the "Body Sensor Location" characteristic, and listen to the "Heart Rate Measurement" characteristic.
-	- The heart rate measurement returns only zeroes by default, because it is a virtual peripheral without an actual heart rate detector.
-- You can use LightBlue Explorer to update various characteristics in the virtual peripheral.
+- The virtual peripheral will use your iPhone or iPad name, because the virtual peripheral is an extension of the host device.
 
 ## Usage
-
-The Bluejay interface can be accessed through using the `Bluejay` singleton:
-
-```swift
-fileprivate let bluejay = Bluejay.shared
-```
 
 ### Initialization
 
