@@ -176,4 +176,82 @@ public class SynchronizedPeripheral {
             throw Error.listenTimedOut()
         }
     }
+    
+    public func writeAndAssemble<S: Sendable, R: Receivable>(
+        writeTo charToWriteTo: CharacteristicIdentifier,
+        value: S,
+        listenTo charToListenTo: CharacteristicIdentifier,
+        expectedLength: Int,
+        timeoutInSeconds: Int = 0,
+        completion: @escaping (R) -> ListenAction) throws
+    {
+        let sem = DispatchSemaphore(value: 0)
+        
+        var listenResult: ReadResult<Data>?
+        var error: Swift.Error?
+        
+        var assembledData = Data()
+        
+        DispatchQueue.main.sync {
+            self.parent.listen(to: charToListenTo, completion: { (result : ReadResult<Data>) in
+                listenResult = result
+                
+                var action = ListenAction.keepListening
+                
+                switch result {
+                case .success(let data):
+                    if assembledData.count < expectedLength {
+                        assembledData.append(data)
+                    }
+                    
+                    if assembledData.count == expectedLength {
+                        action = completion(R(bluetoothData: assembledData))
+                    }
+                    else {
+                        log("Need to continue to assemble data.")
+                    }
+                case .cancelled:
+                    action = .done
+                    sem.signal()
+                case .failure(let e):
+                    action = .done
+                    error = e
+                }
+                
+                if error != nil || action == .done {
+                    if self.parent.isListening(to: charToListenTo) {
+                        // TODO: Handle end listen failures.
+                        self.parent.endListen(to: charToListenTo)
+                    }
+                }
+            })
+            
+            self.parent.write(to: charToWriteTo, value: value, completion: { result in
+                if case .failure(let e) = result {
+                    error = e
+                    
+                    if self.parent.isListening(to: charToListenTo) {
+                        // TODO: Handle end listen failures.
+                        self.parent.endListen(to: charToListenTo)
+                    }
+                }
+            })
+            
+        }
+        
+        _ = sem.wait(timeout: timeoutInSeconds == 0 ? DispatchTime.distantFuture : DispatchTime.now() + .seconds(timeoutInSeconds));
+        
+        if let error = error {
+            throw error
+        }
+        else if listenResult == nil {
+            if self.parent.isListening(to: charToListenTo) {
+                // TODO: Handle end listen failures.
+                self.parent.endListen(to: charToListenTo)
+            }
+            
+            throw Error.listenTimedOut()
+        }
+    }
+    
 }
