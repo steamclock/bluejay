@@ -9,10 +9,11 @@ Bluejay's primary goals are:
 
 ## Features
 
-- A callback-based API that can be cleaner to work with than delegation
-- Can perform batch operations in the background and avoid callback pyramids of death
-- Makes the asynchronous Core Bluetooth API behave more synchronously
-- Observable Bluetooth and connection states
+- A callback-based API that can be more pleasant to work with than delegation in most cases
+- A FIFO operation queue that allows more synchronous and predictable behaviours
+- A background task mode to perform batch operations and avoid callback pyramids of death
+- Simple protocols for data serialization and deserialization
+- Easy and safe observation of Bluetooth and connection states
 - Listen restoration
 - Extended error handling
 
