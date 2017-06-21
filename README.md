@@ -192,6 +192,8 @@ let bodySensorLocation = CharacteristicIdentifier(uuid: "2A38", service: heartRa
 let heartRate = CharacteristicIdentifier(uuid: "2A37", service: heartRateService)
 ```
 
+Bluejay requires using the `ServiceIdentifier` and `CharacteristicIdentifier` structs because this can help make it clear in your code whether you are working with a Service or a Characteristic, and prevents problems like mistakingly using or specifying a Service when a Characteristic is expected.
+
 ### Scanning & Connecting
 
 ```swift
