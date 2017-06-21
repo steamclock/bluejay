@@ -1,4 +1,4 @@
-# Bluejay
+![Bluejay](bluejay-wordmark.png)
 
 Bluejay is a simple Swift framework for building reliable Bluetooth LE apps.
 
