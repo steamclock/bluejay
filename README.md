@@ -150,7 +150,7 @@ extension ViewController: ListenRestorer {
 
 ### Bluetooth Events
 
-The `observer` conforms to the `ConnectionObserver` protocol, and allows the delegate to react to major connection-related events:
+The `ConnectionObserver` protocol allows your class to monitor and respond to major Bluetooth and connection-related events:
 
 ```swift
 public protocol ConnectionObserver: class {
@@ -160,16 +160,22 @@ public protocol ConnectionObserver: class {
 }
 ```
 
-You can add additional observers using:
+You can register an observer when starting Bluejay:
+
+```swift
+bluejay.start(connectionObserver: self)
+```
+
+Or you can add additional observers later using:
 
 ```swift
 bluejay.register(observer: batteryLabel)
 ```
 
-Unregistering an observer is not typically necessary, because Bluejay only holds weak references to registered observers. But if you require unregistering an observer explicitly, use:
+Unregistering an observer is not necessary, because Bluejay only holds weak references to registered observers. But if you require unregistering an observer explicitly, you can:
 
 ```swift
-bluejay.unregister(observer: batteryLabel)
+bluejay.unregister(observer: rssiLabel)
 ```
 
 ### Services & Characteristics
