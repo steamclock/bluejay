@@ -194,31 +194,104 @@ let heartRate = CharacteristicIdentifier(uuid: "2A37", service: heartRateService
 
 Bluejay requires using the `ServiceIdentifier` and `CharacteristicIdentifier` structs because this can help make it clear in your code whether you are working with a Service or a Characteristic, and prevents problems like mistakingly using or specifying a Service when a Characteristic is expected.
 
-### Scanning & Connecting
+### Scanning
+
+Bluejay has a powerful scanning API that can be either simple or customizable to satisfy many use cases.
+
+#### Basic Scanning
+
+This simple call will just notify you when there is a new discovery, and when the scan has finished:
 
 ```swift
-bluejay.scan(service: heartRateService) { (result) in
-    switch result {
-    case .success(let peripheral):
-        log.debug("Scan succeeded with peripheral: \(peripheral.name)")
+bluejay.scan(
+    serviceIdentifiers: [heartRateService],
+    discovery: { [weak self] (discovery, discoveries) -> ScanAction in
+	guard let weakSelf = self else {
+	    return .stop
+	}
 
-        self.bluejay.connect(PeripheralIdentifier(uuid: peripheral.identifier), completion: { (result) in
-            switch result {
-            case .success(let peripheral):
-                log.debug("Connect succeeded with peripheral: \(peripheral.name)")
-            case .failure(let error):
-                log.debug("Connect failed with error: \(error.localizedDescription)")
-            }
-        })
-    case .failure(let error):
-        log.debug("Scan failed with error: \(error.localizedDescription)")
+	weakSelf.peripherals = discoveries
+	weakSelf.tableView.reloadData()
+
+	return .continue
+    },
+    stopped: { (discoveries, error) in
+	if let error = error {
+	    debugPrint("Scan stopped with error: \(error.localizedDescription)")
+	}
+	else {
+	    debugPrint("Scan stopped without error.")
+	}
+})
+```
+
+A scan result `(ScanDiscovery, [ScanDiscovery])` is represented by the current discovery followed by an array of all the discoveries made so far.
+
+The stopped result contains all the discoveries made, and an error if there is one.
+
+#### Scan Action
+
+Note how a `ScanAction` is returned at the end of a discovery callback to tell Bluejay whether to keep scanning or to stop.
+
+```swift
+public enum ScanAction {
+    case `continue`
+    case blacklist
+    case stop
+    case connect(ScanDiscovery, (ConnectionResult) -> Void)
+}
+```
+
+Returning `blacklist` will ignore any future discovery of the same peripheral within the current scan session, and is only useful when `allowDuplicates` is set to true, as that is the only way to rediscover the same peripheral.
+
+Returning `connect` will first stop the current scan, then Bluejay will make your connection request. This is useful if you want to connect right away when you've found the peripheral you're looking for. You can setup the `ConnectionResult` block outside the scan call to minimize nested callbacks.
+
+#### Monitoring
+
+Another useful way to use the scan API, for example, is to monitor the RSSI changes of nearby peripherals to predict their proximity:
+
+```swift
+bluejay.scan(
+    allowDuplicates: true,
+    serviceIdentifiers: nil,
+    discovery: { [weak self] (discovery, discoveries) -> ScanAction in
+	guard let weakSelf = self else {
+	    return .stop
+	}
+
+	weakSelf.peripherals = discoveries
+	weakSelf.tableView.reloadData()
+
+	return .continue
+    },
+    expired: { [weak self] (lostDiscovery, discoveries) -> ScanAction in
+	guard let weakSelf = self else {
+	    return .stop
+	}
+
+	debugPrint("Lost discovery: \(lostDiscovery)")
+
+	weakSelf.peripherals = discoveries
+	weakSelf.tableView.reloadData()
+
+	return .continue
+}) { (discoveries, error) in
+    if let error = error {
+	debugPrint("Scan stopped with error: \(error.localizedDescription)")
+    }
+    else {
+	debugPrint("Scan stopped without error.")
     }
 }
 ```
 
-```swift
-bluejay.disconnect()
-```
+The two key new parameters specified here are: `allowDuplicates` and `expired`.
+
+Setting `allowDuplicates` to true will stop coalescing multiple discoveries of the same peripheral into one single discovery callback, instead, you'll get a discovery every time a peripheral's advertising packet is picked up. This will consume more battery, and does not work in the background.
+
+The `expired` callback is only invoked when `allowDuplicates` is true, and is still optional even with `allowDuplicates` enabled. This is Bluejay's best guess at when a previously discovered peripheral might be out of range, or no longer broadcasting. Essentially, when `allowDuplicates` is set to true, every time a peripheral is discovered a long timer associated with that peripheral starts counting down. If that peripheral is within range, and even if it has the slowest broadcasting interval, it is likely that peripheral will be picked up by Core Bluetooth again and causes the timer to refresh. If not, it's somewhat safe to assume it is gone. Use this with caution.
+
+Finally, setting the service identifiers to nil will result in picking up all available Bluetooth peripherals in the vicinity. This also consumes more battery, and again, does not work in the background.
 
 ### Reading and Writing
 
