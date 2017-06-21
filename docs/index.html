@@ -13,7 +13,7 @@
     <a title="Bluejay  Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="index.html">Bluejay Docs</a> (44% documented)</p>
+        <p><a href="index.html">Bluejay Docs</a> (43% documented)</p>
         <p class="header-right"><a href="https://github.com/steamclock/bluejay"><img src="img/gh.png"/>View on GitHub</a></p>
       </div>
     </header>
@@ -150,22 +150,34 @@
             
             <h1 id='bluejay' class='heading'>Bluejay</h1>
 
-<p>Bluejay is a simple Swift framework for building reliable Bluetooth apps.</p>
+<p>Bluejay is a simple Swift framework for building reliable Bluetooth LE apps.</p>
 
 <p>Bluejay&rsquo;s primary goals are:</p>
 
 <ul>
-<li>Simplify talking to a Bluetooth device</li>
+<li>Simplify talking to a single Bluetooth LE peripheral</li>
+<li>Make it easier to handle Bluetooth LE operations reliably</li>
 <li>Make good use of Swift features and conventions</li>
-<li>Make it easier to build Bluetooth apps that are actually reliable</li>
+</ul>
+<h2 id='features' class='heading'>Features</h2>
+
+<ul>
+<li>A callback-based API that can be more pleasant to work with than delegation in most cases</li>
+<li>A FIFO operation queue that allows more synchronous and predictable behaviours</li>
+<li>A background task mode to perform batch operations and avoid callback pyramids of death</li>
+<li>Simple protocols for data serialization and deserialization</li>
+<li>Easy and safe observation of Bluetooth and connection states</li>
+<li>Listen restoration</li>
+<li>Extended error handling</li>
 </ul>
 <h2 id='requirements' class='heading'>Requirements</h2>
 
 <ul>
 <li>iOS 10 or above</li>
 <li>Xcode 8.2.1 or above</li>
+<li>Swift 3.2 or above</li>
 </ul>
-<h2 id='getting-started' class='heading'>Getting started</h2>
+<h2 id='installation' class='heading'>Installation</h2>
 
 <p>Install using CocoaPods:</p>
 
@@ -174,49 +186,79 @@
 <p>Import using:</p>
 <pre class="highlight swift"><code><span class="kd">import</span> <span class="kt">Bluejay</span>
 </code></pre>
-<h2 id='demo-app' class='heading'>Demo App</h2>
+<h2 id='demo' class='heading'>Demo</h2>
 
-<p>The Simulator does not simulate Bluetooth, so it is easiest to demo Bluetooth with a virtual BLE peripheral. To set this up:</p>
+<p>The Simulator does not simulate Bluetooth, and you may also not have access to a configurable Bluetooth LE peripheral right away, so we recommend trying Bluejay using a virtual BLE peripheral that can be set up using the <a href="https://itunes.apple.com/ca/app/lightblue-explorer-bluetooth/id557428110?mt=8">LightBlue Explorer</a> app you can download for free from the App Store.</p>
+
+<p>Bluejay has a demo app called <strong>BluejayDemo</strong> that works with LightBlue Explorer, and to see it in action:</p>
 
 <ol>
-<li>Prepare two iOS devices, one will act as a virtual BLE peripheral, and the other will run the demo app using the Bluejay API.</li>
-<li>On the iOS device serving as a virtual BLE peripheral, go to the App Store and download the free <a href="https://itunes.apple.com/ca/app/lightblue-explorer-bluetooth/id557428110?mt=8">LightBlue Explorer</a> app.</li>
-<li>Open the LightBlue Explorer app, and tap on the <q>Create Virtual Peripheral</q> button located at the bottom of the peripheral list.</li>
-<li>For simplicity, choose <q>Heart Rate</q> from the base profile list, and finish by tapping the <q>Save</q> button located at the top right of the screen.</li>
-<li>Finally, build and run the BluejayDemo app on the other iOS device, and you will be able to interact with the virtual heart rate peripheral using Bluejay.</li>
+<li>Prepare two iOS devices – one will act as a virtual BLE peripheral, and the other will run the demo app which demonstrates how Bluejay can be used.</li>
+<li>On the iOS device serving as the virtual BLE peripheral, go to the App Store and download LightBlue Explorer.</li>
+<li>Launch LightBlue Explorer, and tap on the <strong>Create Virtual Peripheral</strong> button located at the bottom of the peripheral list.</li>
+<li>For simplicity, choose <strong>Heart Rate</strong> from the base profile list, and finish by tapping the <strong>Save</strong> button.</li>
+<li>Finally, build and run the <strong>BluejayDemo</strong> on the other iOS device, choose <strong>Heart Rate Sensor</strong> in the menu, and you will be able to start interacting with the virtual heart rate peripheral.</li>
 </ol>
 
-<p>Notes:</p>
+<p><strong>Notes:</strong></p>
 
 <ul>
-<li>You can turn the virtual peripheral on or off in LightBlue Explorer by tapping and toggling the blue checkmark to the left of the virtual peripheral&rsquo;s name in the peripheral list.
+<li>You can turn the virtual peripheral on or off in LightBlue Explorer by tapping the blue circle to the left of the peripheral&rsquo;s name.
 
 <ul>
 <li>If the virtual peripheral is not working as expected, you can try to reset it this way.</li>
 </ul></li>
-<li>By default, the demo app will read and write to the <q>Body Sensor Location</q> characteristic, and listen to the <q>Heart Rate Measurement</q> characteristic.
-
-<ul>
-<li>The heart rate measurement returns only zeroes by default, because it is a virtual peripheral without an actual heart rate detector.</li>
-</ul></li>
-<li>You can use LightBlue Explorer to update various characteristics in the virtual peripheral.</li>
+<li>The virtual peripheral may use your iPhone or iPad name, because the virtual peripheral is an extension of the host device.</li>
 </ul>
 <h2 id='usage' class='heading'>Usage</h2>
-
-<p>The Bluejay interface can be accessed through using the <code>Bluejay</code> singleton:</p>
-<pre class="highlight swift"><code><span class="n">fileprivate</span> <span class="k">let</span> <span class="nv">bluejay</span> <span class="o">=</span> <span class="kt">Bluejay</span><span class="o">.</span><span class="n">shared</span>
-</code></pre>
 <h3 id='initialization' class='heading'>Initialization</h3>
 
-<p>Start Bluejay during initialization of your app or view controller, as appropriate. For example, in the demo app Bluejay is started inside <code>viewDidLoad</code> of the root view controller.</p>
-<pre class="highlight swift"><code><span class="n">bluejay</span><span class="o">.</span><span class="nf">start</span><span class="p">(</span><span class="nv">connectionObserver</span><span class="p">:</span> <span class="k">self</span><span class="p">,</span> <span class="nv">listenRestorer</span><span class="p">:</span> <span class="k">self</span><span class="p">,</span> <span class="nv">enableBackgroundMode</span><span class="p">:</span> <span class="kc">true</span><span class="p">)</span>
+<p>Create an instance of Bluejay:</p>
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">bluejay</span> <span class="o">=</span> <span class="kt">Bluejay</span><span class="p">()</span>
 </code></pre>
 
-<p>Bluejay is started explicitly because this gives your app an opportunity to make sure the critical delegates are instantiated and available before the CoreBluetooth stack is initialized. This ensures that CoreBluetooth&rsquo;s startup and restoration events are handled.</p>
+<p>Depending on the nature of your app, you may want to create one single instance and use it throughout, or create one in a specific portion of your app and tear it down after use. Either way, the important thing to note here is that each instance of Bluejay has its own <a href="https://developer.apple.com/documentation/corebluetooth/cbcentralmanager">CBCentralManager</a>, and initializing Bluejay doesn&rsquo;t start the <a href="https://developer.apple.com/documentation/corebluetooth">Core Bluetooth</a> session just yet.</p>
 
-<p>Note:</p>
+<p>Start Bluejay during initialization of your app or view controller, as appropriate. For example, in the demo app Bluejay is started inside <code>viewDidLoad</code> of the root view controller.</p>
+<pre class="highlight swift"><code><span class="n">bluejay</span><span class="o">.</span><span class="nf">start</span><span class="p">()</span>
+</code></pre>
 
-<p>Background mode is disabled by default. In order to support background mode, you must set the parameter <code>enableBackgroundMode</code> to true when you call <code>start</code>, as well as turn on the <q>Background Modes</q> capability in your Xcode project with <q>Uses Bluetooth LE accessories</q> enabled.</p>
+<p>Bluejay needs to be started explicitly because in order to support listen restoration properly in a block-based API, we need to make sure the necessary objects are initialized and available before the Core Bluetooth stack is restored from the background.</p>
+
+<p>However, state restoration is disabled by default in Bluejay. <a href="https://developer.apple.com/library/content/documentation/NetworkingInternetWeb/Conceptual/CoreBluetooth_concepts/CoreBluetoothBackgroundProcessingForIOSApps/PerformingTasksWhileYourAppIsInTheBackground.html#//apple_ref/doc/uid/TP40013257-CH7-SW1">Background mode</a> and <a href="https://developer.apple.com/library/content/documentation/NetworkingInternetWeb/Conceptual/CoreBluetooth_concepts/CoreBluetoothBackgroundProcessingForIOSApps/PerformingTasksWhileYourAppIsInTheBackground.html#//apple_ref/doc/uid/TP40013257-CH7-SW10">state restoration</a> are slightly complicated features, but important for apps that need to work in the background.</p>
+<h3 id='background-mode' class='heading'>Background Mode</h3>
+
+<p>In order to support background mode, make sure to turn on the <strong>Background Modes</strong> capability in your Xcode project with <strong>Uses Bluetooth LE accessories</strong> enabled.</p>
+
+<p>Enabling background mode doesn&rsquo;t enable state restoration. State restoration is an additional behaviour on top of background mode that requires another step to setup.</p>
+<h3 id='state-restoration' class='heading'>State Restoration</h3>
+
+<p>Once your project has BLE accessories background mode supported, you can choose to opt-in to state restoration when you start your Bluejay session.</p>
+<pre class="highlight swift"><code><span class="n">bluejay</span><span class="o">.</span><span class="nf">start</span><span class="p">(</span><span class="nv">backgroundRestore</span><span class="p">:</span> <span class="o">.</span><span class="nf">enable</span><span class="p">(</span><span class="n">yourRestoreIdentifier</span><span class="p">))</span>
+</code></pre>
+
+<p>Additionally, Bluejay even allows you to restore listens on characteristics that were not ended when the app is backgrounded.</p>
+<pre class="highlight swift"><code><span class="n">bluejay</span><span class="o">.</span><span class="nf">start</span><span class="p">(</span><span class="nv">backgroundRestore</span><span class="p">:</span> <span class="o">.</span><span class="nf">enable</span><span class="p">(</span><span class="n">yourRestoreIdentifier</span><span class="p">,</span> <span class="n">yourListenRestorer</span><span class="p">))</span>
+</code></pre>
+
+<p>The listen restorer protocol:</p>
+<pre class="highlight swift"><code><span class="cm">/**
+    A class protocol allowing notification of a characteristic being listened on, and provides an opportunity to restore its listen callback during Bluetooth state restoration.
+
+    Bluetooth state restoration occurs when the background mode capability is turned on, and if the app is backgrounded or even terminated while a Bluetooth operation is still ongoing, iOS may keep the Bluetooth state alive, and attempt to restore it on resuming the app, so that the connection and operation between the app and the Bluetooth accessory is not interrupted and severed.
+*/</span>
+<span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">ListenRestorer</span><span class="p">:</span> <span class="kd">class</span> <span class="p">{</span>
+    <span class="cm">/**
+        Notify the conforming class that there is a characteristic being listened on, but it doesn't have any listen callbacks.
+
+        - Note: Use the function `restoreListen` in Bluejay to restore the desired callback for the given characteristic and return true. Return false to prevent restoration, as well as to cancel the listening on the given characteristic.
+
+        - Parameter on: the characterstic that is still being listened on when the CoreBluetooth stack is restored in the app.
+        - Return: true if the characteristic's listen callback will be restored, false if the characteristic's listen should be cancelled and not restored.
+    */</span>
+    <span class="kd">func</span> <span class="nf">willRestoreListen</span><span class="p">(</span><span class="n">on</span> <span class="nv">characteristic</span><span class="p">:</span> <span class="kt">CharacteristicIdentifier</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span>
+<span class="p">}</span>
+</code></pre>
 <h3 id='bluetooth-events' class='heading'>Bluetooth Events</h3>
 
 <p>The <code>observer</code> conforms to the <code>ConnectionObserver</code> protocol, and allows the delegate to react to major connection-related events:</p>

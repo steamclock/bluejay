@@ -575,6 +575,13 @@
       "warning": "undocumented"
     },
     {
+      "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/SynchronizedPeripheral.swift",
+      "line": 180,
+      "symbol": "SynchronizedPeripheral.writeAndAssemble(writeTo:value:listenTo:expectedLength:timeoutInSeconds:completion:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
       "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/WriteResult.swift",
       "line": 13,
       "symbol": "WriteResult.success",
