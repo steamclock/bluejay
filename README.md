@@ -37,19 +37,21 @@ import Bluejay
 
 ## Demo
 
-The Simulator does not simulate Bluetooth, and you may also not have access to a configurable Bluetooth LE peripheral right away, so we recommend trying Bluejay using a virtual BLE peripheral. To set this up:
+The Simulator does not simulate Bluetooth, and you may also not have access to a configurable Bluetooth LE peripheral right away, so we recommend trying Bluejay using a virtual BLE peripheral that can be set up using the [LightBlue Explorer](https://itunes.apple.com/ca/app/lightblue-explorer-bluetooth/id557428110?mt=8) app you can download for free from the App Store.
 
-1. Prepare two iOS devices – one will act as a virtual BLE peripheral, and the other will run the BluejayDemo app which demonstrates how Bluejay can be used.
-2. On the iOS device serving as the virtual BLE peripheral, go to the App Store and download the free [LightBlue Explorer](https://itunes.apple.com/ca/app/lightblue-explorer-bluetooth/id557428110?mt=8) app.
-3. Open the "LightBlue Explorer" app, and tap on the "Create Virtual Peripheral" button located at the bottom of the peripheral list.
-4. For simplicity, choose "Heart Rate" from the base profile list, and finish by tapping the "Save" button.
-5. Finally, build and run the BluejayDemo app on the other iOS device, choose "Heart Rate Sensor" in the menu, and you will be able to start interacting with the virtual heart rate peripheral.
+Bluejay has a demo app called **BluejayDemo** that works with [LightBlue Explorer](https://itunes.apple.com/ca/app/lightblue-explorer-bluetooth/id557428110?mt=8), and to see it in action:
 
-Notes:
+1. Prepare two iOS devices – one will act as a virtual BLE peripheral, and the other will run the demo app which demonstrates how Bluejay can be used.
+2. On the iOS device serving as the virtual BLE peripheral, go to the App Store and download [LightBlue Explorer](https://itunes.apple.com/ca/app/lightblue-explorer-bluetooth/id557428110?mt=8).
+3. Open the [LightBlue Explorer](https://itunes.apple.com/ca/app/lightblue-explorer-bluetooth/id557428110?mt=8) app, and tap on the **Create Virtual Peripheral** button located at the bottom of the peripheral list.
+4. For simplicity, choose **Heart Rate** from the base profile list, and finish by tapping the **Save** button.
+5. Finally, build and run the **BluejayDemo** on the other iOS device, choose **Heart Rate Sensor** in the menu, and you will be able to start interacting with the virtual heart rate peripheral.
 
-- You can turn the virtual peripheral on or off in LightBlue Explorer by tapping the blue checkmark to the left of the peripheral's name.
+**Notes:**
+
+- You can turn the virtual peripheral on or off in [LightBlue Explorer](https://itunes.apple.com/ca/app/lightblue-explorer-bluetooth/id557428110?mt=8) by tapping the blue circle to the left of the peripheral's name.
 	- If the virtual peripheral is not working as expected, you can try to reset it this way.
-- The virtual peripheral will use your iPhone or iPad name, because the virtual peripheral is an extension of the host device.
+- The virtual peripheral may use your iPhone or iPad name, because the virtual peripheral is an extension of the host device.
 
 ## Usage
 
