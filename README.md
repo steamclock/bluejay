@@ -293,6 +293,60 @@ The `expired` callback is only invoked when `allowDuplicates` is true, and is st
 
 Finally, setting the service identifiers to nil will result in picking up all available Bluetooth peripherals in the vicinity. This also consumes more battery, and again, does not work in the background.
 
+### Connecting
+
+It is important to keep in mind that Bluejay is designed to work with a single BLE peripheral, so multiple connection is not currently supported, and a connection request will fail if Bluejay is already connected or is still connecting. Although this can be a limitation, it is also a safeguard to ensure your app does not issue connection unnecessarily or erroneously.
+
+```swift
+bluejay.connect(peripheralIdentifier) { [weak self] (result) in
+    switch result {
+    case .success(let peripheral):
+	debugPrint("Connection to \(peripheral.identifier) successful.")
+
+	guard let weakSelf = self else {
+	    return
+	}
+	
+	weakSelf.performSegue(withIdentifier: "showHeartSensor", sender: self)
+    case .cancelled:
+	debugPrint("Connection to \(peripheral.identifier) cancelled.")
+    case .failure(let error):
+	debugPrint("Connection to \(peripheral.identifier) failed with error: \(error.localizedDescription)")
+    }
+}
+```
+
+To disconnect:
+
+```swift
+bluejay.disconnect()
+```
+
+Albeit rarely, a disconnect request can still fail or get cancelled, so it is generally a good idea to make use of the completion block to provide error handling.
+
+```swift
+bluejay.disconnect { (result) in
+    switch result {
+    case .success(let peripheral):
+	debugPrint("Disconnection from \(peripheral.identifier) successful.")
+    case .cancelled:
+	debugPrint("Disconnection from \(peripheralIdentifier.uuid.uuidString) cancelled.")
+    case .failure(let error):
+	debugPrint("Disconnection from \(peripheralIdentifier.uuid.uuidString) failed with error: \(error.localizedDescription)")
+    }
+}
+```
+
+#### Connection States
+
+Your Bluejay instance has these properties to help you make connection-related decisions:
+
+- `isBluetoothAvailable`
+- `isConnecting`
+- `isConnected`
+- `isDisconnecting`
+- `isScanning`
+
 ### Reading and Writing
 
 ```swift
