@@ -35,7 +35,6 @@ class ScanHeartRateSensorsViewController: UITableViewController {
     
     fileprivate func scanHeartSensors() {
         let heartRateService = ServiceIdentifier(uuid: "180D")
-        let heartRateMeasurement = CharacteristicIdentifier(uuid: "2A37", service: heartRateService)
         
         bluejay.scan(
             allowDuplicates: true,
