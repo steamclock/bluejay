@@ -347,6 +347,93 @@ Your Bluejay instance has these properties to help you make connection-related d
 - `isDisconnecting`
 - `isScanning`
 
+## Deserialization & Serialization
+
+Reading, writing, and listening to Characteristics are straight-forward in Bluejay. Instead, you will be spending most of your time building out the deserialization and serialization of data that will be used in the aforemetioned interactions. So let's have a quick look at how Bluejay helps make this process standardized in your app via the `Receivable` and `Sendable` protocols.
+
+#### Receivable
+
+The models that represent data you wish to read and receive from your peripheral should all conform to the `Receivable` protocol.
+
+Here is a partial example for the [Heart Rate Measurement Characteristic](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.heart_rate_measurement.xml):
+
+```swift
+struct HeartRateMeasurement: Receivable {
+    
+    private var flags: UInt8 = 0
+    private var measurement8bits: UInt8 = 0
+    private var measurement16bits: UInt16 = 0
+    private var energyExpended: UInt16 = 0
+    private var rrInterval: UInt16 = 0
+    
+    private var isMeasurementIn8bits = true
+    
+    var measurement: Int {
+        return isMeasurementIn8bits ? Int(measurement8bits) : Int(measurement16bits)
+    }
+    
+    init(bluetoothData: Data) {
+        flags = bluetoothData.extract(start: 0, length: 1)
+        
+        isMeasurementIn8bits = (flags & 0b00000001) == 0b00000000
+        
+        if isMeasurementIn8bits {
+            measurement8bits = bluetoothData.extract(start: 1, length: 1)
+        }
+        else {
+            measurement16bits = bluetoothData.extract(start: 1, length: 2)
+        }
+    }
+    
+}
+```
+
+Note how you can use the `extract` function extended upon `Data` that is built into Bluejay to easily parse the bytes you need. We have plans to build more protection and error handling for this in the near future.
+
+Finally, while it is not essential and it will also depend on the context as well, we recommend only exposing the needed and computed properties of your models.
+
+#### Sendable
+
+The models representing data you wish to send to your peripheral should all conform to the `Sendable` protocol.
+
+In a nut shell, help Bluejay figure out how to convert your models into `Data`:
+
+```swift
+struct WriteRequest: Sendable {
+    
+    var handle: UInt16
+    var data: Sendable
+    
+    init(handle: UInt16, data: Sendable) {
+        self.handle = handle
+        self.data = data
+    }
+    
+    func toBluetoothData() -> Data {
+        let startByte = UInt8(0x3A)
+        let payloadLength = UInt8(3 + (data.toBluetoothData().count))
+        let command = UInt8(0x02)
+        let handleInBigEndian = handle.bigEndian
+        
+        let crc = (Bluejay.combine(sendables: [command, handleInBigEndian, data]) as NSData).crc16CCITT
+        
+        let request = Bluejay.combine(sendables: [
+            startByte,
+            payloadLength,
+            command,
+            handleInBigEndian,
+            data,
+            crc.bigEndian
+            ])
+        
+        return request
+    }
+    
+}
+```
+
+Note how we have a nested `Sendable` in this slightly more complicated model, as well as making use of the `combine` helper function to group and to arrange the data bytes in a particular order.
+
 ## Documentaion
 
 https://steamclock.github.io/bluejay/index.html
