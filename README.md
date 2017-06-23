@@ -495,6 +495,41 @@ bluejay.listen(to: heartRateMeasurement) { [weak self] (result: ReadResult<Heart
 }
 ```
 
+### Batch Operations
+
+Often, your app needs to perform a series of reads, writes, and listens to complete a specific task, such as syncing, upgrading to a new firmware, or working with a notification-based Bluetooth module. In these cases, Bluejay provides an API for running all your operations on a background thread, and will call completion back on the main thread when either everything finishes without an error, or if one of the operations has failed.
+
+```swift
+bluejay.run(backgroundTask: { (peripheral) in
+        var responseCode: ResponseCode?
+        
+        try peripheral.writeAndListen(
+            writeTo: Characteristics.rigadoTX,
+            value: WriteRequest(handle: Registers.configuration.motionControlEnable, data: enabled ? UInt8(1) : UInt8(0)),
+            listenTo: Characteristics.rigadoRX,
+            completion: { (result: WriteResponse) -> ListenAction in
+                responseCode = ResponseCode(rawValue: result.responseCode)
+                return .done
+        })
+                                
+        if responseCode != .ok {
+            throw NSError(domain: "MyApp", code: 0, userInfo: [NSLocalizedDescriptionKey : "Failed writing to motion control enable."])
+        }
+    }, completionOnMainThread: { (result) in
+        switch result {
+        case .success:
+            debugPrint("Motion control enable changed to: \(enabled)")            
+        case .cancelled:
+            debugPrint("Change motion control enable cancelled.")
+        case .failure(let error):
+            debugPrint("Failed to change motion control enable with error: \(error.localizedDescription)")
+        }
+    })
+})
+```
+
+The key here is that when performing your Bluetooth operations in the background, you **must** use the `SynchronizedPeripheral` given to you by this API. **DO NOT** call any `bluejay`.`read/write/listen` functions inside the `backgroundTask` block.
+
 ## Documentaion
 
 https://steamclock.github.io/bluejay/index.html
