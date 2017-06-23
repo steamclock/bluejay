@@ -434,6 +434,67 @@ struct WriteRequest: Sendable {
 
 Note how we have a nested `Sendable` in this slightly more complicated model, as well as making use of the `combine` helper function to group and to arrange the data bytes in a particular order.
 
+## Interactions
+
+Once you have your data modelled using either the `Receivable` or `Sendable` protocol, the read, write, and listen API in Bluejay will handle the deserialization and serialization seamlessly for you. All you need to do is to specify the type for the generic result wrappers, `ReadResult<T>` or `WriteResult<T>`.
+
+### Reading
+
+```swift
+bluejay.read(from: firmwareVersion) { [weak self] (result: ReadResult<FirmwareVersion>) in
+    guard let weakSelf = self else {
+	return
+    }
+
+    switch result {
+    case .success(let firmwareVersion):
+	debugPrint(firmwareVersion.string)
+    case .cancelled:
+	debugPrint("Read to firmware version cancelled.")
+    case .failure(let error):
+	debugPrint("Failed to read firmware version with error: \(error.localizedDescription)")
+    }
+}
+```
+
+### Writing
+
+```swift
+bluejay.write(to: nickname, value: newNickname) { [weak self] (result: WriteResult<Nickname>) in
+    guard let weakSelf = self else {
+	return
+    }
+
+    switch result {
+    case .success:
+	debugPrint("Write to nickanme successful.")
+    case .cancelled:
+	debugPrint("Write to nickname cancelled.")
+    case .failure(let error):
+	debugPrint("Failed to write to nickname with error: \(error.localizedDescription)")
+    }
+}
+```
+
+### Listening
+
+```swift
+bluejay.listen(to: heartRateMeasurement) { [weak self] (result: ReadResult<HeartRateMeasurement>) in
+    guard let weakSelf = self else {
+	return
+    }
+
+    switch result {
+    case .success(let heartRateMeasurement):
+	debugPrint(heartRateMeasurement.measurement)
+    case .cancelled:
+	debugPrint("Listen to heart rate measurement cancelled.")
+    case .failure(let error):
+	debugPrint("Failed to listen to heart rate measurement with error: \(error.localizedDescription)")
+    }
+}
+```
+
 ## Documentaion
 
 https://steamclock.github.io/bluejay/index.html
