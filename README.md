@@ -7,6 +7,30 @@ Bluejay's primary goals are:
 - Make it easier to handle Bluetooth LE operations reliably
 - Make good use of Swift features and conventions
 
+## Index
+
+- [Features](#features)
+- [Requirements](#requirements)
+- [Installation](#installation)
+- [Demo](#demo)
+- [Usage](#usage)
+  - [Initialization](#initialization)
+  - [Background Mode](#background-mode)
+  - [State Restoration](#state-restoration)
+  - [Listen Restoration](#listen-restoration)
+  - [Bluetooth Events](#bluetooth-events)
+  - [Services and Characteristics](#services-and-characteristics)
+  - [Scanning](#scanning)
+  - [Connecting](#connecting)
+- [Deserialization and Serialization](#deserialization-and-serialization)
+  - [Receivable](#receivable)
+  - [Sendable](#sendable)
+- [Interactions](#interactions)
+  - [Reading](#reading)
+  - [Writing](#writing)
+  - [Listening](#listening)
+  - [Batch Operations](#batch-operations)
+
 ## Features
 
 - A callback-based API that can be more pleasant to work with than delegation in most cases
@@ -178,7 +202,7 @@ Unregistering an observer is not necessary, because Bluejay only holds weak refe
 bluejay.unregister(observer: rssiLabel)
 ```
 
-### Services & Characteristics
+### Services and Characteristics
 
 In Bluetooth parlance, a Service is a group of attributes, and a Characteristic is an attribute belonging to a category. For example, BLE peripherals that can detect heart rates usually have a Service named "Heart Rate" with a UUID of "180D". Inside that Service are Characteristics such as "Body Sensor Location" with a UUID of "2A38", as well as "Heart Rate Measurement" with a UUID of "2A37".
 
@@ -347,7 +371,7 @@ Your Bluejay instance has these properties to help you make connection-related d
 - `isDisconnecting`
 - `isScanning`
 
-## Deserialization & Serialization
+## Deserialization and Serialization
 
 Reading, writing, and listening to Characteristics are straight-forward in Bluejay. Instead, you will be spending most of your time building out the deserialization and serialization of data that will be used in the aforemetioned interactions. So let's have a quick look at how Bluejay helps make this process standardized in your app via the `Receivable` and `Sendable` protocols.
 
