@@ -100,13 +100,13 @@ public class Peripheral: NSObject {
                             callback(true)
                         case .cancelled:
                             callback(false)
-                        case .failure(let error):
+                        case .failure(_):
                             callback(false)
                         }
                 }))
             case .cancelled:
                 callback(false)
-            case .failure(let error):
+            case .failure(_):
                 callback(false)
             }
         }))
