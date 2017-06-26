@@ -241,15 +241,15 @@ public class SynchronizedPeripheral {
         
         _ = sem.wait(timeout: timeoutInSeconds == 0 ? DispatchTime.distantFuture : DispatchTime.now() + .seconds(timeoutInSeconds));
         
+        if self.parent.isListening(to: charToListenTo) {
+            // TODO: Handle end listen failures.
+            self.parent.endListen(to: charToListenTo)
+        }
+        
         if let error = error {
             throw error
         }
         else if listenResult == nil {
-            if self.parent.isListening(to: charToListenTo) {
-                // TODO: Handle end listen failures.
-                self.parent.endListen(to: charToListenTo)
-            }
-            
             throw Error.listenTimedOut()
         }
     }
