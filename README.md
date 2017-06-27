@@ -87,17 +87,17 @@ Create an instance of Bluejay:
 let bluejay = Bluejay()
 ```
 
-Depending on the nature of your app, you may want to create one single instance and use it throughout, or create one in a specific portion of your app and tear it down after use. Either way, the important thing to note here is that each instance of Bluejay has its own [CBCentralManager](https://developer.apple.com/documentation/corebluetooth/cbcentralmanager), and initializing Bluejay doesn't start the [Core Bluetooth](https://developer.apple.com/documentation/corebluetooth) session just yet.
+While you may want to create one Bluejay instance and use it everywhere, you can also create instances in specific portions of your app and tear them down after use. It's worth noting however that each instance of Bluejay has its own [CBCentralManager](https://developer.apple.com/documentation/corebluetooth/cbcentralmanager), which makes the multi-instance approach somewhat more complex.
 
-Start Bluejay during initialization of your app or view controller, as appropriate. For example, in the demo app Bluejay is started inside `viewDidLoad` of the root view controller.
+Once you've created in instance, you can start the [Core Bluetooth](https://developer.apple.com/documentation/corebluetooth) session. You can do this during initialization of your app or view controller, as appropriate. For example, in the demo app Bluejay is started inside `viewDidLoad` of the root view controller.
 
 ```swift
 bluejay.start()
 ```
 
-Bluejay needs to be started explicitly because in order to support listen restoration properly in a block-based API, we need to make sure the necessary objects are initialized and available before the Core Bluetooth stack is restored from the background.
+Bluejay needs to be started explicitly in order to support Core Bluetooth's Listen Restoration. Listen Restoration restores the Bluetooth stack and state when your app is restored from the background.
 
-However, state restoration is disabled by default in Bluejay. [Background mode](https://developer.apple.com/library/content/documentation/NetworkingInternetWeb/Conceptual/CoreBluetooth_concepts/CoreBluetoothBackgroundProcessingForIOSApps/PerformingTasksWhileYourAppIsInTheBackground.html#//apple_ref/doc/uid/TP40013257-CH7-SW1) and [state restoration](https://developer.apple.com/library/content/documentation/NetworkingInternetWeb/Conceptual/CoreBluetooth_concepts/CoreBluetoothBackgroundProcessingForIOSApps/PerformingTasksWhileYourAppIsInTheBackground.html#//apple_ref/doc/uid/TP40013257-CH7-SW10) are slightly complicated features, but important for apps that need to work in the background.
+If you want to support [Background mode](https://developer.apple.com/library/content/documentation/NetworkingInternetWeb/Conceptual/CoreBluetooth_concepts/CoreBluetoothBackgroundProcessingForIOSApps/PerformingTasksWhileYourAppIsInTheBackground.html#//apple_ref/doc/uid/TP40013257-CH7-SW1) and [state restoration](https://developer.apple.com/library/content/documentation/NetworkingInternetWeb/Conceptual/CoreBluetooth_concepts/CoreBluetoothBackgroundProcessingForIOSApps/PerformingTasksWhileYourAppIsInTheBackground.html#//apple_ref/doc/uid/TP40013257-CH7-SW10) in your app, it will take some extra work but is critical for Bluetooth apps that do work in the background.
 
 ### Background Mode
 
@@ -107,13 +107,13 @@ Enabling background mode doesn't enable state restoration. State restoration is 
 
 ### State Restoration
 
-Once your project has BLE accessories background mode enabled, you can choose to opt-in to state restoration when you start your Bluejay session.
+Once your project has BLE accessories background mode enabled, you can choose to opt in to state restoration when you start your Bluejay session.
 
 ```swift
 bluejay.start(backgroundRestore: .enable(yourRestoreIdentifier))
 ```
 
-Additionally, Bluejay even allows you to restore listen callbacks on subscribed characteristics that did not end when the app has stopped running.
+Additionally, Bluejay allows you to restore listen callbacks on subscribed characteristics that did not end when the app has stopped running.
 
 ```swift
 bluejay.start(backgroundRestore: .enable(yourRestoreIdentifier, yourListenRestorer))
@@ -121,9 +121,9 @@ bluejay.start(backgroundRestore: .enable(yourRestoreIdentifier, yourListenRestor
 
 ### Listen Restoration
 
-If state restoration is enabled and your app has stopped running either due to memory pressure or by staying in the background past the allowed duration (3 minutes since iOS 7), then the next time your app is launched in the background or foreground, Bluejay will call the `willRestoreListen` function on your `ListenRestorer` during state restoration if there are any active listens preserved.
+If state restoration is enabled and your app has stopped running either due to memory pressure or by staying in the background past the allowed duration (this has been 3 minutes since iOS 7), then the next time your app is launched in the background or foreground, Bluejay will call the `willRestoreListen` function on your `ListenRestorer` during state restoration if there are any active listens preserved.
 
-The listen restorer protocol:
+The listen restorer protocol looks like this:
 
 ```swift
 /**
@@ -174,7 +174,7 @@ extension ViewController: ListenRestorer {
 
 ### Bluetooth Events
 
-The `ConnectionObserver` protocol allows your class to monitor and respond to major Bluetooth and connection-related events:
+The `ConnectionObserver` protocol allows a class to monitor and respond to major Bluetooth and connection-related events:
 
 ```swift
 public protocol ConnectionObserver: class {
@@ -184,7 +184,7 @@ public protocol ConnectionObserver: class {
 }
 ```
 
-You can register an observer when starting Bluejay:
+You can register a `ConnectionObserver` when starting Bluejay:
 
 ```swift
 bluejay.start(connectionObserver: self)
@@ -196,7 +196,7 @@ Or you can add additional observers later using:
 bluejay.register(observer: batteryLabel)
 ```
 
-Unregistering an observer is not necessary, because Bluejay only holds weak references to registered observers. But if you require unregistering an observer explicitly, you can:
+Unregistering an observer is not necessary, because Bluejay only holds weak references to registered observers. But if you need to do so, you can:
 
 ```swift
 bluejay.unregister(observer: rssiLabel)
@@ -204,9 +204,9 @@ bluejay.unregister(observer: rssiLabel)
 
 ### Services and Characteristics
 
-In Bluetooth parlance, a Service is a group of attributes, and a Characteristic is an attribute belonging to a category. For example, BLE peripherals that can detect heart rates usually have a Service named "Heart Rate" with a UUID of "180D". Inside that Service are Characteristics such as "Body Sensor Location" with a UUID of "2A38", as well as "Heart Rate Measurement" with a UUID of "2A37".
+In Bluetooth parlance, a Service is a group of attributes, and a Characteristic is an attribute belonging to a group. For example, BLE peripherals that can detect heart rates typically have a Service named "Heart Rate" with a UUID of "180D". Inside that Service are Characteristics such as "Body Sensor Location" with a UUID of "2A38", as well as "Heart Rate Measurement" with a UUID of "2A37".
 
-Many of these Services and Characteristics are standards specified by the Bluetooth SIG organization, and most hardware adopt their specifications. For example, most BLE peripherals have the Service "Device Information" with a UUID of "180A", where Characteristics such as firmware version, serial number, and other hardware details can be read and written. Of course, there are many BLE uses not covered by the Bluetooth Core Spec, and custom hardware often have their own unique Services and Characteristics.
+Many of these Services and Characteristics are standards specified by the Bluetooth SIG organization, and most hardware adopt their specifications. For example, most BLE peripherals implement the Service "Device Information" which has a UUID of "180A", which is how Characteristics such as firmware version, serial number, and other hardware details can be read. Of course, there are many BLE uses not covered by the Bluetooth Core Spec, and custom hardware often have their own unique Services and Characteristics.
 
 Here is how you can specify Services and Characteristics for use in Bluejay:
 
@@ -216,11 +216,11 @@ let bodySensorLocation = CharacteristicIdentifier(uuid: "2A38", service: heartRa
 let heartRate = CharacteristicIdentifier(uuid: "2A37", service: heartRateService)
 ```
 
-Bluejay requires using the `ServiceIdentifier` and `CharacteristicIdentifier` structs because this can help make it clear in your code whether you are working with a Service or a Characteristic, and prevents problems like mistakingly using or specifying a Service when a Characteristic is expected.
+Bluejay uses the `ServiceIdentifier` and `CharacteristicIdentifier` structs to avoid problems like accidentally specifying a Service when a Characteristic is expected.
 
 ### Scanning
 
-Bluejay has a powerful scanning API that can be either simple or customizable to satisfy many use cases.
+Bluejay has a powerful device scanning API that can be be used simply or customized to satisfy many use cases.
 
 #### Basic Scanning
 
@@ -249,13 +249,13 @@ bluejay.scan(
 })
 ```
 
-A scan result `(ScanDiscovery, [ScanDiscovery])` is represented by the current discovery followed by an array of all the discoveries made so far.
+A scan result `(ScanDiscovery, [ScanDiscovery])` contains the current discovery followed by an array of all the discoveries made so far.
 
 The stopped result contains all the discoveries made, and an error if there is one.
 
 #### Scan Action
 
-Note how a `ScanAction` is returned at the end of a discovery callback to tell Bluejay whether to keep scanning or to stop.
+A `ScanAction` is returned at the end of a discovery callback to tell Bluejay whether to keep scanning or to stop.
 
 ```swift
 public enum ScanAction {
@@ -266,13 +266,13 @@ public enum ScanAction {
 }
 ```
 
-Returning `blacklist` will ignore any future discovery of the same peripheral within the current scan session, and is only useful when `allowDuplicates` is set to true, as that is the only way to rediscover the same peripheral.
+Returning `blacklist` will ignore any future discovery of the same peripheral within the current scan session. This is only useful when `allowDuplicates` is set to true.
 
-Returning `connect` will first stop the current scan, then Bluejay will make your connection request. This is useful if you want to connect right away when you've found the peripheral you're looking for. You can setup the `ConnectionResult` block outside the scan call to minimize nested callbacks.
+Returning `connect` will first stop the current scan, and have Bluejay make your connection request. This is useful if you want to connect right away when you've found the peripheral you're looking for. You can set up the `ConnectionResult` block outside the scan call to reduce callback nesting.
 
 #### Monitoring
 
-Another useful way to use the scan API, for example, is to monitor the RSSI changes of nearby peripherals to predict their proximity:
+Another useful way to use the scanning API is to monitor the RSSI changes of nearby peripherals to predict their proximity:
 
 ```swift
 bluejay.scan(
@@ -309,17 +309,17 @@ bluejay.scan(
 }
 ```
 
-The two key new parameters specified here are: `allowDuplicates` and `expired`.
+Key parameters here are `allowDuplicates` and `expired`.
 
-Setting `allowDuplicates` to true will stop coalescing multiple discoveries of the same peripheral into one single discovery callback, instead, you'll get a discovery every time a peripheral's advertising packet is picked up. This will consume more battery, and does not work in the background.
+Setting `allowDuplicates` to true will stop coalescing multiple discoveries of the same peripheral into one single discovery callback. Instead, you'll get a discovery call every time a peripheral's advertising packet is picked up. This will consume more battery, and does not work in the background.
 
-The `expired` callback is only invoked when `allowDuplicates` is true, and is still optional even with `allowDuplicates` enabled. This is Bluejay's best guess at when a previously discovered peripheral might be out of range, or no longer broadcasting. Essentially, when `allowDuplicates` is set to true, every time a peripheral is discovered a long timer associated with that peripheral starts counting down. If that peripheral is within range, and even if it has the slowest broadcasting interval, it is likely that peripheral will be picked up by Core Bluetooth again and causes the timer to refresh. If not, it's somewhat safe to assume it is gone. Use this with caution.
+The `expired` callback is only invoked when `allowDuplicates` is true. This is called when Bluejay estimates that a previously discovered peripheral is likely out of range or no longer broadcasting. Essentially, when `allowDuplicates` is set to true, every time a peripheral is discovered a long timer associated with that peripheral starts counting down. If that peripheral is within range, and even if it a slow broadcasting interval, it is likely that peripheral will be picked up by Core Bluetooth again and cause the timer to refresh. If not, it may be gone. Be aware that this is an estimation.
 
-Finally, setting the service identifiers to nil will result in picking up all available Bluetooth peripherals in the vicinity. This also consumes more battery, and again, does not work in the background.
+Finally, passing `nil` for the service identifiers will result in picking up all available Bluetooth peripherals in the vicinity. This consumes substantially more battery, and again, does not work in the background.
 
 ### Connecting
 
-It is important to keep in mind that Bluejay is designed to work with a single BLE peripheral, so multiple connection is not currently supported, and a connection request will fail if Bluejay is already connected or is still connecting. Although this can be a limitation, it is also a safeguard to ensure your app does not issue connection unnecessarily or erroneously.
+It is important to keep in mind that Bluejay is designed to work with a single BLE peripheral. Multiple connections at once is not currently supported, and a connection request will fail if Bluejay is already connected or is still connecting. Although this can be a limitation for some sophisticated apps, it is more commonly a safeguard to ensure your app does not issue connections unnecessarily or erroneously.
 
 ```swift
 bluejay.connect(peripheralIdentifier) { [weak self] (result) in
@@ -346,7 +346,7 @@ To disconnect:
 bluejay.disconnect()
 ```
 
-Albeit rarely, a disconnect request can still fail or get cancelled, so it is generally a good idea to make use of the completion block to provide error handling.
+Rarely, a disconnect request can fail or get cancelled, so it is generally a good idea to make use of the completion block to provide error handling.
 
 ```swift
 bluejay.disconnect { (result) in
@@ -373,7 +373,7 @@ Your Bluejay instance has these properties to help you make connection-related d
 
 ## Deserialization and Serialization
 
-Reading, writing, and listening to Characteristics are straight-forward in Bluejay. Instead, you will be spending most of your time building out the deserialization and serialization of data that will be used in the aforemetioned interactions. So let's have a quick look at how Bluejay helps make this process standardized in your app via the `Receivable` and `Sendable` protocols.
+Reading, writing, and listening to Characteristics is straightforward in Bluejay. Most of the work involved is building out the deserialization and serialization of data. Let's have a quick look at how Bluejay helps standardize this process in your app via the `Receivable` and `Sendable` protocols.
 
 #### Receivable
 
@@ -412,15 +412,15 @@ struct HeartRateMeasurement: Receivable {
 }
 ```
 
-Note how you can use the `extract` function extended upon `Data` that is built into Bluejay to easily parse the bytes you need. We have plans to build more protection and error handling for this in the near future.
+Note how you can use the `extract` function that Bluejay adds to `Data` to easily parse the bytes you need. We have plans to build more protection and error handling for this in the future.
 
-Finally, while it is not essential and it will also depend on the context as well, we recommend only exposing the needed and computed properties of your models.
+Finally, while it is not essential and it will depend on the context, we suggest only exposing the needed and computed properties of your models.
 
 #### Sendable
 
 The models representing data you wish to send to your peripheral should all conform to the `Sendable` protocol.
 
-In a nut shell, help Bluejay figure out how to convert your models into `Data`:
+In a nutshell, this is how you help Bluejay determine how to convert your models into `Data`:
 
 ```swift
 struct WriteRequest: Sendable {
@@ -460,7 +460,7 @@ Note how we have a nested `Sendable` in this slightly more complicated model, as
 
 ## Interactions
 
-Once you have your data modelled using either the `Receivable` or `Sendable` protocol, the read, write, and listen API in Bluejay will handle the deserialization and serialization seamlessly for you. All you need to do is to specify the type for the generic result wrappers, `ReadResult<T>` or `WriteResult<T>`.
+Once you have your data modelled using either the `Receivable` or `Sendable` protocol, the read, write, and listen APIs in Bluejay should handle the deserialization and serialization seamlessly for you. All you need to do is to specify the type for the generic result wrappers: `ReadResult<T>` or `WriteResult<T>`.
 
 ### Reading
 
@@ -521,7 +521,7 @@ bluejay.listen(to: heartRateMeasurement) { [weak self] (result: ReadResult<Heart
 
 ### Batch Operations
 
-Often, your app needs to perform a series of reads, writes, and listens to complete a specific task, such as syncing, upgrading to a new firmware, or working with a notification-based Bluetooth module. In these cases, Bluejay provides an API for running all your operations on a background thread, and will call completion back on the main thread when either everything finishes without an error, or if one of the operations has failed.
+Often, your app needs to perform a longer series of reads, writes, and listens to complete a specific task, such as syncing, upgrading to a new firmware, or working with a notification-based Bluetooth module. In these cases, Bluejay provides an API for running all your operations on a background thread, and will call your completion on the main thread when everything finishes without an error, or if one of the operations has failed.
 
 ```swift
 bluejay.run(backgroundTask: { (peripheral) in
@@ -552,7 +552,7 @@ bluejay.run(backgroundTask: { (peripheral) in
 })
 ```
 
-The key here is that when performing your Bluetooth operations in the background, you **must** use the `SynchronizedPeripheral` given to you by this API. **DO NOT** call any `bluejay`.`read/write/listen` functions inside the `backgroundTask` block.
+It is critical though that when performing your Bluetooth operations in the background with `backgroundTask`, you **must** use the `SynchronizedPeripheral` given to you by this API. **DO NOT** call any `bluejay`.`read/write/listen` functions inside the `backgroundTask` block.
 
 ## Documentaion
 
