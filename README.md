@@ -56,6 +56,10 @@ Bluejay's primary goals are:
 
 Install using CocoaPods:
 
+`pod 'Bluejay', '~> 0.1'`
+
+Or to try the latest master:
+
 `pod 'Bluejay', :git => 'https://github.com/steamclock/bluejay.git', :branch => 'master'`
 
 Import using:
