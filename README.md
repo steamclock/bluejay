@@ -4,8 +4,8 @@ Bluejay is a simple Swift framework for building reliable Bluetooth LE apps.
 
 Bluejay's primary goals are:
 - Simplify talking to a single Bluetooth LE peripheral
-- Make it easier to handle Bluetooth LE operations reliably
-- Make good use of Swift features and conventions
+- Make it easier to handle Bluetooth operations reliably
+- Take advantage of Swift features and conventions
 
 ## Index
 
@@ -33,11 +33,11 @@ Bluejay's primary goals are:
 
 ## Features
 
-- A callback-based API that can be more pleasant to work with than delegation in most cases
-- A FIFO operation queue that allows more synchronous and predictable behaviours
-- A background task mode to perform batch operations and avoid callback pyramids of death
+- A callback-based API
+- A FIFO operation queue for more synchronous and predictable behaviour
+- A background task mode for batch operations that avoids the "callback pyramid of death"
 - Simple protocols for data serialization and deserialization
-- Easy and safe observation of Bluetooth and connection states
+- An easy and safe way to observe connection states
 - Listen restoration
 - Extended error handling
 
@@ -61,15 +61,15 @@ import Bluejay
 
 ## Demo
 
-The Simulator does not simulate Bluetooth, and you may also not have access to a configurable Bluetooth LE peripheral right away, so we recommend trying Bluejay using a virtual BLE peripheral that can be set up using the [LightBlue Explorer](https://itunes.apple.com/ca/app/lightblue-explorer-bluetooth/id557428110?mt=8) app you can download for free from the App Store.
+The iOS Simulator does not simulate Bluetooth. You may not have a Bluetooth LE peripheral handy, so we recommend trying Bluejay using a BLE peripheral simulator such as the [LightBlue Explorer App](https://itunes.apple.com/ca/app/lightblue-explorer-bluetooth/id557428110?mt=8).
 
-Bluejay has a demo app called **BluejayDemo** that works with LightBlue Explorer, and to see it in action:
+Bluejay has a demo app called **BluejayDemo** that works with LightBlue Explorer. To see it in action:
 
-1. Prepare two iOS devices – one will act as a virtual BLE peripheral, and the other will run the demo app which demonstrates how Bluejay can be used.
-2. On the iOS device serving as the virtual BLE peripheral, go to the App Store and download LightBlue Explorer.
+1. Get two iOS devices – one to run a BLE peripheral simulator, and the other to run the Bluejay demo app.
+2. On one iOS device, go to the App Store and download LightBlue Explorer.
 3. Launch LightBlue Explorer, and tap on the **Create Virtual Peripheral** button located at the bottom of the peripheral list.
-4. For simplicity, choose **Heart Rate** from the base profile list, and finish by tapping the **Save** button.
-5. Finally, build and run the **BluejayDemo** on the other iOS device, choose **Heart Rate Sensor** in the menu, and you will be able to start interacting with the virtual heart rate peripheral.
+4. To start, choose **Heart Rate** from the base profile list, and finish by tapping the **Save** button.
+5. Finally, build and run **BluejayDemo** on the other iOS device. Once it launches, choose **Heart Rate Sensor** in the menu, and you will be able to start interacting with the virtual heart rate peripheral.
 
 **Notes:**
 
@@ -128,15 +128,15 @@ The listen restorer protocol:
 ```swift
 /**
     A class protocol allowing notification of a characteristic being listened on, and provides an opportunity to restore its listen callback during Bluetooth state restoration.
- 
+
     Bluetooth state restoration occurs when the background mode capability is turned on, and if the app is backgrounded or even terminated while a Bluetooth operation is still ongoing, iOS may keep the Bluetooth state alive, and attempt to restore it on resuming the app, so that the connection and operation between the app and the Bluetooth accessory is not interrupted and severed.
 */
 public protocol ListenRestorer: class {
     /**
         Notify the conforming class that there is a characteristic being listened on, but it doesn't have any listen callbacks.
-     
+
         - Note: Use the function `restoreListen` in Bluejay to restore the desired callback for the given characteristic and return true. Return false to prevent restoration, as well as to cancel the listening on the given characteristic.
-     
+
         - Parameter on: the characterstic that is still being listened on when the CoreBluetooth stack is restored in the app.
         - Return: true if the characteristic's listen callback will be restored, false if the characteristic's listen should be cancelled and not restored.
     */
@@ -330,7 +330,7 @@ bluejay.connect(peripheralIdentifier) { [weak self] (result) in
 	guard let weakSelf = self else {
 	    return
 	}
-	
+
 	weakSelf.performSegue(withIdentifier: "showHeartSensor", sender: self)
     case .cancelled:
 	debugPrint("Connection to \(peripheral.identifier) cancelled.")
@@ -383,24 +383,24 @@ Here is a partial example for the [Heart Rate Measurement Characteristic](https:
 
 ```swift
 struct HeartRateMeasurement: Receivable {
-    
+
     private var flags: UInt8 = 0
     private var measurement8bits: UInt8 = 0
     private var measurement16bits: UInt16 = 0
     private var energyExpended: UInt16 = 0
     private var rrInterval: UInt16 = 0
-    
+
     private var isMeasurementIn8bits = true
-    
+
     var measurement: Int {
         return isMeasurementIn8bits ? Int(measurement8bits) : Int(measurement16bits)
     }
-    
+
     init(bluetoothData: Data) {
         flags = bluetoothData.extract(start: 0, length: 1)
-        
+
         isMeasurementIn8bits = (flags & 0b00000001) == 0b00000000
-        
+
         if isMeasurementIn8bits {
             measurement8bits = bluetoothData.extract(start: 1, length: 1)
         }
@@ -408,7 +408,7 @@ struct HeartRateMeasurement: Receivable {
             measurement16bits = bluetoothData.extract(start: 1, length: 2)
         }
     }
-    
+
 }
 ```
 
@@ -424,23 +424,23 @@ In a nut shell, help Bluejay figure out how to convert your models into `Data`:
 
 ```swift
 struct WriteRequest: Sendable {
-    
+
     var handle: UInt16
     var data: Sendable
-    
+
     init(handle: UInt16, data: Sendable) {
         self.handle = handle
         self.data = data
     }
-    
+
     func toBluetoothData() -> Data {
         let startByte = UInt8(0x3A)
         let payloadLength = UInt8(3 + (data.toBluetoothData().count))
         let command = UInt8(0x02)
         let handleInBigEndian = handle.bigEndian
-        
+
         let crc = (Bluejay.combine(sendables: [command, handleInBigEndian, data]) as NSData).crc16CCITT
-        
+
         let request = Bluejay.combine(sendables: [
             startByte,
             payloadLength,
@@ -449,10 +449,10 @@ struct WriteRequest: Sendable {
             data,
             crc.bigEndian
             ])
-        
+
         return request
     }
-    
+
 }
 ```
 
@@ -526,7 +526,7 @@ Often, your app needs to perform a series of reads, writes, and listens to compl
 ```swift
 bluejay.run(backgroundTask: { (peripheral) in
         var responseCode: ResponseCode?
-        
+
         try peripheral.writeAndListen(
             writeTo: Characteristics.rigadoTX,
             value: WriteRequest(handle: Registers.configuration.motionControlEnable, data: enabled ? UInt8(1) : UInt8(0)),
@@ -535,7 +535,7 @@ bluejay.run(backgroundTask: { (peripheral) in
                 responseCode = ResponseCode(rawValue: result.responseCode)
                 return .done
         })
-                                
+
         if responseCode != .ok {
             throw NSError(domain: "MyApp", code: 0, userInfo: [NSLocalizedDescriptionKey : "Failed writing to motion control enable."])
         }
