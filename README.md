@@ -106,7 +106,7 @@ bluejay.start()
 
 Bluejay needs to be started explicitly in order to support Core Bluetooth's State Restoration. State Restoration restores the Bluetooth stack and state when your app is restored from the background.
 
-If you want to support [Background Mode](https://developer.apple.com/library/content/documentation/NetworkingInternetWeb/Conceptual/CoreBluetooth_concepts/CoreBluetoothBackgroundProcessingForIOSApps/PerformingTasksWhileYourAppIsInTheBackground.html#//apple_ref/doc/uid/TP40013257-CH7-SW1) and [State Restoration](https://developer.apple.com/library/content/documentation/NetworkingInternetWeb/Conceptual/CoreBluetooth_concepts/CoreBluetoothBackgroundProcessingForIOSApps/PerformingTasksWhileYourAppIsInTheBackground.html#//apple_ref/doc/uid/TP40013257-CH7-SW10) in your app, [it will take some extra work](#background-mode), which is necessary for Bluetooth apps that do work in the background.
+If you want to support [Background Mode](https://developer.apple.com/library/content/documentation/NetworkingInternetWeb/Conceptual/CoreBluetooth_concepts/CoreBluetoothBackgroundProcessingForIOSApps/PerformingTasksWhileYourAppIsInTheBackground.html#//apple_ref/doc/uid/TP40013257-CH7-SW1) and [State Restoration](https://developer.apple.com/library/content/documentation/NetworkingInternetWeb/Conceptual/CoreBluetooth_concepts/CoreBluetoothBackgroundProcessingForIOSApps/PerformingTasksWhileYourAppIsInTheBackground.html#//apple_ref/doc/uid/TP40013257-CH7-SW10) in your app, [it will take some extra work](#background-operation), which is necessary for Bluetooth apps that do work in the background.
 
 ### Bluetooth Events
 
@@ -565,4 +565,4 @@ extension ViewController: ListenRestorer {
 
 ## API Documentation
 
-We have more [in-depth API documentation for Bluejay](https://steamclock.github.io/bluejay/index.html) using inline documentation and Jazzy. 
+We have more [in-depth API documentation for Bluejay](https://steamclock.github.io/bluejay/index.html) using inline documentation and Jazzy.
