@@ -4,8 +4,8 @@ Bluejay is a simple Swift framework for building reliable Bluetooth LE apps.
 
 Bluejay's primary goals are:
 - Simplify talking to a single Bluetooth LE peripheral
-- Make it easier to handle Bluetooth LE operations reliably
-- Make good use of Swift features and conventions
+- Make it easier to handle Bluetooth operations reliably
+- Take advantage of Swift features and conventions
 
 ## Index
 
@@ -33,11 +33,11 @@ Bluejay's primary goals are:
 
 ## Features
 
-- A callback-based API that can be more pleasant to work with than delegation in most cases
-- A FIFO operation queue that allows more synchronous and predictable behaviours
-- A background task mode to perform batch operations and avoid callback pyramids of death
+- A callback-based API
+- A FIFO operation queue for more synchronous and predictable behaviour
+- A background task mode for batch operations that avoids the "callback pyramid of death"
 - Simple protocols for data serialization and deserialization
-- Easy and safe observation of Bluetooth and connection states
+- A easy and safe way to observe connection states
 - Listen restoration
 - Extended error handling
 
@@ -61,15 +61,15 @@ import Bluejay
 
 ## Demo
 
-The Simulator does not simulate Bluetooth, and you may also not have access to a configurable Bluetooth LE peripheral right away, so we recommend trying Bluejay using a virtual BLE peripheral that can be set up using the [LightBlue Explorer](https://itunes.apple.com/ca/app/lightblue-explorer-bluetooth/id557428110?mt=8) app you can download for free from the App Store.
+The iOS Simulator does not simulate Bluetooth. You may not have a Bluetooth LE peripheral handy, so we recommend trying Bluejay using a BLE peripheral simulator such as the [LightBlue Explorer App](https://itunes.apple.com/ca/app/lightblue-explorer-bluetooth/id557428110?mt=8).
 
-Bluejay has a demo app called **BluejayDemo** that works with LightBlue Explorer, and to see it in action:
+Bluejay has a demo app called **BluejayDemo** that works with LightBlue Explorer. To see it in action:
 
-1. Prepare two iOS devices – one will act as a virtual BLE peripheral, and the other will run the demo app which demonstrates how Bluejay can be used.
-2. On the iOS device serving as the virtual BLE peripheral, go to the App Store and download LightBlue Explorer.
+1. Get two iOS devices – one to run a BLE peripheral simulator, and the other to run the Bluejay demo app.
+2. On one iOS device, go to the App Store and download LightBlue Explorer.
 3. Launch LightBlue Explorer, and tap on the **Create Virtual Peripheral** button located at the bottom of the peripheral list.
-4. For simplicity, choose **Heart Rate** from the base profile list, and finish by tapping the **Save** button.
-5. Finally, build and run the **BluejayDemo** on the other iOS device, choose **Heart Rate Sensor** in the menu, and you will be able to start interacting with the virtual heart rate peripheral.
+4. To start, choose **Heart Rate** from the base profile list, and finish by tapping the **Save** button.
+5. Finally, build and run **BluejayDemo** on the other iOS device. Once it launches, choose **Heart Rate Sensor** in the menu, and you will be able to start interacting with the virtual heart rate peripheral.
 
 **Notes:**
 
