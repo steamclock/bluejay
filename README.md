@@ -87,17 +87,17 @@ Create an instance of Bluejay:
 let bluejay = Bluejay()
 ```
 
-While you may want to create one Bluejay instance and use it everywhere, you can also create instances in specific portions of your app and tear them down after use. It's worth noting however that each instance of Bluejay has its own [CBCentralManager](https://developer.apple.com/documentation/corebluetooth/cbcentralmanager), which makes the multi-instance approach somewhat more complex.
+While you may want to create one Bluejay instance and use it everywhere, you can also create instances in specific portions of your app and tear them down after use. It's worth noting, however, that each instance of Bluejay has its own [CBCentralManager](https://developer.apple.com/documentation/corebluetooth/cbcentralmanager), which makes the multi-instance approach somewhat more complex.
 
-Once you've created in instance, you can start the [Core Bluetooth](https://developer.apple.com/documentation/corebluetooth) session. You can do this during initialization of your app or view controller, as appropriate. For example, in the demo app Bluejay is started inside `viewDidLoad` of the root view controller.
+Once you've created an instance, you can start the [Core Bluetooth](https://developer.apple.com/documentation/corebluetooth) session. You can do this during initialization of your app or view controller, as appropriate. For example, in the demo app Bluejay is started inside `viewDidLoad` of the root view controller.
 
 ```swift
 bluejay.start()
 ```
 
-Bluejay needs to be started explicitly in order to support Core Bluetooth's Listen Restoration. Listen Restoration restores the Bluetooth stack and state when your app is restored from the background.
+Bluejay needs to be started explicitly in order to support Core Bluetooth's State Restoration. State Restoration restores the Bluetooth stack and state when your app is restored from the background.
 
-If you want to support [Background mode](https://developer.apple.com/library/content/documentation/NetworkingInternetWeb/Conceptual/CoreBluetooth_concepts/CoreBluetoothBackgroundProcessingForIOSApps/PerformingTasksWhileYourAppIsInTheBackground.html#//apple_ref/doc/uid/TP40013257-CH7-SW1) and [state restoration](https://developer.apple.com/library/content/documentation/NetworkingInternetWeb/Conceptual/CoreBluetooth_concepts/CoreBluetoothBackgroundProcessingForIOSApps/PerformingTasksWhileYourAppIsInTheBackground.html#//apple_ref/doc/uid/TP40013257-CH7-SW10) in your app, it will take some extra work but is critical for Bluetooth apps that do work in the background.
+If you want to support [Background Mode](https://developer.apple.com/library/content/documentation/NetworkingInternetWeb/Conceptual/CoreBluetooth_concepts/CoreBluetoothBackgroundProcessingForIOSApps/PerformingTasksWhileYourAppIsInTheBackground.html#//apple_ref/doc/uid/TP40013257-CH7-SW1) and [State Restoration](https://developer.apple.com/library/content/documentation/NetworkingInternetWeb/Conceptual/CoreBluetooth_concepts/CoreBluetoothBackgroundProcessingForIOSApps/PerformingTasksWhileYourAppIsInTheBackground.html#//apple_ref/doc/uid/TP40013257-CH7-SW10) in your app, it will take some extra work, but is critical for Bluetooth apps that do work in the background.
 
 ### Background Mode
 
@@ -107,7 +107,7 @@ Enabling background mode doesn't enable state restoration. State restoration is 
 
 ### State Restoration
 
-Once your project has BLE accessories background mode enabled, you can choose to opt in to state restoration when you start your Bluejay session.
+Once your project has BLE accessories background mode enabled, you can choose to opt in to State Restoration when you start your Bluejay session.
 
 ```swift
 bluejay.start(backgroundRestore: .enable(yourRestoreIdentifier))
@@ -121,22 +121,22 @@ bluejay.start(backgroundRestore: .enable(yourRestoreIdentifier, yourListenRestor
 
 ### Listen Restoration
 
-If state restoration is enabled and your app has stopped running either due to memory pressure or by staying in the background past the allowed duration (this has been 3 minutes since iOS 7), then the next time your app is launched in the background or foreground, Bluejay will call the `willRestoreListen` function on your `ListenRestorer` during state restoration if there are any active listens preserved.
+If State Restoration is enabled and your app has stopped running either due to memory pressure or by staying in the background past the allowed duration (this has been 3 minutes since iOS 7), then the next time your app is launched in the background or foreground, Bluejay will call the `willRestoreListen` function on your `ListenRestorer` during state restoration if there are any active listens preserved.
 
 The listen restorer protocol looks like this:
 
 ```swift
 /**
     A class protocol allowing notification of a characteristic being listened on, and provides an opportunity to restore its listen callback during Bluetooth state restoration.
- 
+
     Bluetooth state restoration occurs when the background mode capability is turned on, and if the app is backgrounded or even terminated while a Bluetooth operation is still ongoing, iOS may keep the Bluetooth state alive, and attempt to restore it on resuming the app, so that the connection and operation between the app and the Bluetooth accessory is not interrupted and severed.
 */
 public protocol ListenRestorer: class {
     /**
         Notify the conforming class that there is a characteristic being listened on, but it doesn't have any listen callbacks.
-     
+
         - Note: Use the function `restoreListen` in Bluejay to restore the desired callback for the given characteristic and return true. Return false to prevent restoration, as well as to cancel the listening on the given characteristic.
-     
+
         - Parameter on: the characterstic that is still being listened on when the CoreBluetooth stack is restored in the app.
         - Return: true if the characteristic's listen callback will be restored, false if the characteristic's listen should be cancelled and not restored.
     */
@@ -206,7 +206,7 @@ bluejay.unregister(observer: rssiLabel)
 
 In Bluetooth parlance, a Service is a group of attributes, and a Characteristic is an attribute belonging to a group. For example, BLE peripherals that can detect heart rates typically have a Service named "Heart Rate" with a UUID of "180D". Inside that Service are Characteristics such as "Body Sensor Location" with a UUID of "2A38", as well as "Heart Rate Measurement" with a UUID of "2A37".
 
-Many of these Services and Characteristics are standards specified by the Bluetooth SIG organization, and most hardware adopt their specifications. For example, most BLE peripherals implement the Service "Device Information" which has a UUID of "180A", which is how Characteristics such as firmware version, serial number, and other hardware details can be read. Of course, there are many BLE uses not covered by the Bluetooth Core Spec, and custom hardware often have their own unique Services and Characteristics.
+Many of these Services and Characteristics are standards specified by the Bluetooth SIG organization, and most hardware adopt their specifications. For example, most BLE peripherals implement the Service "Device Information" which has a UUID of "180A", which is where Characteristics such as firmware version, serial number, and other hardware details can be found. Of course, there are many BLE uses not covered by the Bluetooth Core Spec, and custom hardware often have their own unique Services and Characteristics.
 
 Here is how you can specify Services and Characteristics for use in Bluejay:
 
@@ -272,7 +272,7 @@ Returning `connect` will first stop the current scan, and have Bluejay make your
 
 #### Monitoring
 
-Another useful way to use the scanning API is to monitor the RSSI changes of nearby peripherals to predict their proximity:
+Another useful way to use the scanning API is to monitor the RSSI changes of nearby peripherals to estimate their proximity:
 
 ```swift
 bluejay.scan(
@@ -313,7 +313,7 @@ Key parameters here are `allowDuplicates` and `expired`.
 
 Setting `allowDuplicates` to true will stop coalescing multiple discoveries of the same peripheral into one single discovery callback. Instead, you'll get a discovery call every time a peripheral's advertising packet is picked up. This will consume more battery, and does not work in the background.
 
-The `expired` callback is only invoked when `allowDuplicates` is true. This is called when Bluejay estimates that a previously discovered peripheral is likely out of range or no longer broadcasting. Essentially, when `allowDuplicates` is set to true, every time a peripheral is discovered a long timer associated with that peripheral starts counting down. If that peripheral is within range, and even if it a slow broadcasting interval, it is likely that peripheral will be picked up by Core Bluetooth again and cause the timer to refresh. If not, it may be gone. Be aware that this is an estimation.
+The `expired` callback is only invoked when `allowDuplicates` is true. This is called when Bluejay estimates that a previously discovered peripheral is likely out of range or no longer broadcasting. Essentially, when `allowDuplicates` is set to true, every time a peripheral is discovered a long timer associated with that peripheral starts counting down. If that peripheral is within range, and even if it has a slow broadcasting interval, it is likely that peripheral will be picked up by Core Bluetooth again and cause the timer to refresh. If not, it may be gone. Be aware that this is an estimation.
 
 Finally, passing `nil` for the service identifiers will result in picking up all available Bluetooth peripherals in the vicinity. This consumes substantially more battery, and again, does not work in the background.
 
@@ -330,7 +330,7 @@ bluejay.connect(peripheralIdentifier) { [weak self] (result) in
 	guard let weakSelf = self else {
 	    return
 	}
-	
+
 	weakSelf.performSegue(withIdentifier: "showHeartSensor", sender: self)
     case .cancelled:
 	debugPrint("Connection to \(peripheral.identifier) cancelled.")
@@ -383,24 +383,24 @@ Here is a partial example for the [Heart Rate Measurement Characteristic](https:
 
 ```swift
 struct HeartRateMeasurement: Receivable {
-    
+
     private var flags: UInt8 = 0
     private var measurement8bits: UInt8 = 0
     private var measurement16bits: UInt16 = 0
     private var energyExpended: UInt16 = 0
     private var rrInterval: UInt16 = 0
-    
+
     private var isMeasurementIn8bits = true
-    
+
     var measurement: Int {
         return isMeasurementIn8bits ? Int(measurement8bits) : Int(measurement16bits)
     }
-    
+
     init(bluetoothData: Data) {
         flags = bluetoothData.extract(start: 0, length: 1)
-        
+
         isMeasurementIn8bits = (flags & 0b00000001) == 0b00000000
-        
+
         if isMeasurementIn8bits {
             measurement8bits = bluetoothData.extract(start: 1, length: 1)
         }
@@ -408,7 +408,7 @@ struct HeartRateMeasurement: Receivable {
             measurement16bits = bluetoothData.extract(start: 1, length: 2)
         }
     }
-    
+
 }
 ```
 
@@ -424,23 +424,23 @@ In a nutshell, this is how you help Bluejay determine how to convert your models
 
 ```swift
 struct WriteRequest: Sendable {
-    
+
     var handle: UInt16
     var data: Sendable
-    
+
     init(handle: UInt16, data: Sendable) {
         self.handle = handle
         self.data = data
     }
-    
+
     func toBluetoothData() -> Data {
         let startByte = UInt8(0x3A)
         let payloadLength = UInt8(3 + (data.toBluetoothData().count))
         let command = UInt8(0x02)
         let handleInBigEndian = handle.bigEndian
-        
+
         let crc = (Bluejay.combine(sendables: [command, handleInBigEndian, data]) as NSData).crc16CCITT
-        
+
         let request = Bluejay.combine(sendables: [
             startByte,
             payloadLength,
@@ -449,10 +449,10 @@ struct WriteRequest: Sendable {
             data,
             crc.bigEndian
             ])
-        
+
         return request
     }
-    
+
 }
 ```
 
@@ -526,7 +526,7 @@ Often, your app needs to perform a longer series of reads, writes, and listens t
 ```swift
 bluejay.run(backgroundTask: { (peripheral) in
         var responseCode: ResponseCode?
-        
+
         try peripheral.writeAndListen(
             writeTo: Characteristics.rigadoTX,
             value: WriteRequest(handle: Registers.configuration.motionControlEnable, data: enabled ? UInt8(1) : UInt8(0)),
@@ -535,7 +535,7 @@ bluejay.run(backgroundTask: { (peripheral) in
                 responseCode = ResponseCode(rawValue: result.responseCode)
                 return .done
         })
-                                
+
         if responseCode != .ok {
             throw NSError(domain: "MyApp", code: 0, userInfo: [NSLocalizedDescriptionKey : "Failed writing to motion control enable."])
         }
