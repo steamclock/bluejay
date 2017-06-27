@@ -110,7 +110,7 @@ public class SynchronizedPeripheral {
         }
     }
     
-    public func flushListen(to characteristicIdentifier: CharacteristicIdentifier, completion: @escaping () -> Void) throws {
+    public func flushListen(to characteristicIdentifier: CharacteristicIdentifier, idleWindow: Int = 3, completion: @escaping () -> Void) throws {
         let flushSem = DispatchSemaphore(value: 0)
         let cleanUpSem = DispatchSemaphore(value: 0)
         let sem = DispatchSemaphore(value: 0)
@@ -143,7 +143,7 @@ public class SynchronizedPeripheral {
                 })
             }
             
-            _ = flushSem.wait(timeout: DispatchTime.now() + .seconds(3))
+            _ = flushSem.wait(timeout: DispatchTime.now() + .seconds(idleWindow))
             
             DispatchQueue.main.async {
                 if self.parent.isListening(to: characteristicIdentifier) {
