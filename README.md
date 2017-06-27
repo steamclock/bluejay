@@ -37,7 +37,7 @@ Bluejay's primary goals are:
 - A FIFO operation queue for more synchronous and predictable behaviour
 - A background task mode for batch operations that avoids the "callback pyramid of death"
 - Simple protocols for data serialization and deserialization
-- A easy and safe way to observe connection states
+- An easy and safe way to observe connection states
 - Listen restoration
 - Extended error handling
 
@@ -128,15 +128,15 @@ The listen restorer protocol:
 ```swift
 /**
     A class protocol allowing notification of a characteristic being listened on, and provides an opportunity to restore its listen callback during Bluetooth state restoration.
- 
+
     Bluetooth state restoration occurs when the background mode capability is turned on, and if the app is backgrounded or even terminated while a Bluetooth operation is still ongoing, iOS may keep the Bluetooth state alive, and attempt to restore it on resuming the app, so that the connection and operation between the app and the Bluetooth accessory is not interrupted and severed.
 */
 public protocol ListenRestorer: class {
     /**
         Notify the conforming class that there is a characteristic being listened on, but it doesn't have any listen callbacks.
-     
+
         - Note: Use the function `restoreListen` in Bluejay to restore the desired callback for the given characteristic and return true. Return false to prevent restoration, as well as to cancel the listening on the given characteristic.
-     
+
         - Parameter on: the characterstic that is still being listened on when the CoreBluetooth stack is restored in the app.
         - Return: true if the characteristic's listen callback will be restored, false if the characteristic's listen should be cancelled and not restored.
     */
@@ -330,7 +330,7 @@ bluejay.connect(peripheralIdentifier) { [weak self] (result) in
 	guard let weakSelf = self else {
 	    return
 	}
-	
+
 	weakSelf.performSegue(withIdentifier: "showHeartSensor", sender: self)
     case .cancelled:
 	debugPrint("Connection to \(peripheral.identifier) cancelled.")
@@ -383,24 +383,24 @@ Here is a partial example for the [Heart Rate Measurement Characteristic](https:
 
 ```swift
 struct HeartRateMeasurement: Receivable {
-    
+
     private var flags: UInt8 = 0
     private var measurement8bits: UInt8 = 0
     private var measurement16bits: UInt16 = 0
     private var energyExpended: UInt16 = 0
     private var rrInterval: UInt16 = 0
-    
+
     private var isMeasurementIn8bits = true
-    
+
     var measurement: Int {
         return isMeasurementIn8bits ? Int(measurement8bits) : Int(measurement16bits)
     }
-    
+
     init(bluetoothData: Data) {
         flags = bluetoothData.extract(start: 0, length: 1)
-        
+
         isMeasurementIn8bits = (flags & 0b00000001) == 0b00000000
-        
+
         if isMeasurementIn8bits {
             measurement8bits = bluetoothData.extract(start: 1, length: 1)
         }
@@ -408,7 +408,7 @@ struct HeartRateMeasurement: Receivable {
             measurement16bits = bluetoothData.extract(start: 1, length: 2)
         }
     }
-    
+
 }
 ```
 
@@ -424,23 +424,23 @@ In a nut shell, help Bluejay figure out how to convert your models into `Data`:
 
 ```swift
 struct WriteRequest: Sendable {
-    
+
     var handle: UInt16
     var data: Sendable
-    
+
     init(handle: UInt16, data: Sendable) {
         self.handle = handle
         self.data = data
     }
-    
+
     func toBluetoothData() -> Data {
         let startByte = UInt8(0x3A)
         let payloadLength = UInt8(3 + (data.toBluetoothData().count))
         let command = UInt8(0x02)
         let handleInBigEndian = handle.bigEndian
-        
+
         let crc = (Bluejay.combine(sendables: [command, handleInBigEndian, data]) as NSData).crc16CCITT
-        
+
         let request = Bluejay.combine(sendables: [
             startByte,
             payloadLength,
@@ -449,10 +449,10 @@ struct WriteRequest: Sendable {
             data,
             crc.bigEndian
             ])
-        
+
         return request
     }
-    
+
 }
 ```
 
@@ -526,7 +526,7 @@ Often, your app needs to perform a series of reads, writes, and listens to compl
 ```swift
 bluejay.run(backgroundTask: { (peripheral) in
         var responseCode: ResponseCode?
-        
+
         try peripheral.writeAndListen(
             writeTo: Characteristics.rigadoTX,
             value: WriteRequest(handle: Registers.configuration.motionControlEnable, data: enabled ? UInt8(1) : UInt8(0)),
@@ -535,7 +535,7 @@ bluejay.run(backgroundTask: { (peripheral) in
                 responseCode = ResponseCode(rawValue: result.responseCode)
                 return .done
         })
-                                
+
         if responseCode != .ok {
             throw NSError(domain: "MyApp", code: 0, userInfo: [NSLocalizedDescriptionKey : "Failed writing to motion control enable."])
         }
