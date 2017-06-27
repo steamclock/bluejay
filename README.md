@@ -1,5 +1,10 @@
 ![Bluejay](bluejay-wordmark.png)
 
+![CocoaPods Compatible](https://img.shields.io/cocoapods/v/Bluejay.svg)
+[![Platform](https://img.shields.io/cocoapods/p/Bluejay.svg?style=flat)](http://cocoadocs.org/docsets/Bluejay)
+[![license](https://img.shields.io/github/license/mashape/apistatus.svg)]()
+
+
 Bluejay is a simple Swift framework for building reliable Bluetooth LE apps.
 
 Bluejay's primary goals are:
