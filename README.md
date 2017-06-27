@@ -20,9 +20,6 @@ Bluejay's primary goals are:
 - [Demo](#demo)
 - [Usage](#usage)
   - [Initialization](#initialization)
-  - [Background Mode](#background-mode)
-  - [State Restoration](#state-restoration)
-  - [Listen Restoration](#listen-restoration)
   - [Bluetooth Events](#bluetooth-events)
   - [Services and Characteristics](#services-and-characteristics)
   - [Scanning](#scanning)
@@ -35,6 +32,9 @@ Bluejay's primary goals are:
   - [Writing](#writing)
   - [Listening](#listening)
   - [Batch Operations](#batch-operations)
+- [Background Operation](#background-operation)
+  - [State Restoration](#state-restoration)
+  - [Listen Restoration](#listen-restoration)
 
 ## Features
 
@@ -102,80 +102,7 @@ bluejay.start()
 
 Bluejay needs to be started explicitly in order to support Core Bluetooth's State Restoration. State Restoration restores the Bluetooth stack and state when your app is restored from the background.
 
-If you want to support [Background Mode](https://developer.apple.com/library/content/documentation/NetworkingInternetWeb/Conceptual/CoreBluetooth_concepts/CoreBluetoothBackgroundProcessingForIOSApps/PerformingTasksWhileYourAppIsInTheBackground.html#//apple_ref/doc/uid/TP40013257-CH7-SW1) and [State Restoration](https://developer.apple.com/library/content/documentation/NetworkingInternetWeb/Conceptual/CoreBluetooth_concepts/CoreBluetoothBackgroundProcessingForIOSApps/PerformingTasksWhileYourAppIsInTheBackground.html#//apple_ref/doc/uid/TP40013257-CH7-SW10) in your app, it will take some extra work, but is critical for Bluetooth apps that do work in the background.
-
-### Background Mode
-
-In order to support background mode, make sure to turn on the **Background Modes** capability in your Xcode project with **Uses Bluetooth LE accessories** enabled.
-
-Enabling background mode doesn't enable state restoration. State restoration is an additional behaviour on top of background mode that requires another step to setup.
-
-### State Restoration
-
-Once your project has BLE accessories background mode enabled, you can choose to opt in to State Restoration when you start your Bluejay session.
-
-```swift
-bluejay.start(backgroundRestore: .enable(yourRestoreIdentifier))
-```
-
-Additionally, Bluejay allows you to restore listen callbacks on subscribed characteristics that did not end when the app has stopped running.
-
-```swift
-bluejay.start(backgroundRestore: .enable(yourRestoreIdentifier, yourListenRestorer))
-```
-
-### Listen Restoration
-
-If State Restoration is enabled and your app has stopped running either due to memory pressure or by staying in the background past the allowed duration (this has been 3 minutes since iOS 7), then the next time your app is launched in the background or foreground, Bluejay will call the `willRestoreListen` function on your `ListenRestorer` during state restoration if there are any active listens preserved.
-
-The listen restorer protocol looks like this:
-
-```swift
-/**
-    A class protocol allowing notification of a characteristic being listened on, and provides an opportunity to restore its listen callback during Bluetooth state restoration.
-
-    Bluetooth state restoration occurs when the background mode capability is turned on, and if the app is backgrounded or even terminated while a Bluetooth operation is still ongoing, iOS may keep the Bluetooth state alive, and attempt to restore it on resuming the app, so that the connection and operation between the app and the Bluetooth accessory is not interrupted and severed.
-*/
-public protocol ListenRestorer: class {
-    /**
-        Notify the conforming class that there is a characteristic being listened on, but it doesn't have any listen callbacks.
-
-        - Note: Use the function `restoreListen` in Bluejay to restore the desired callback for the given characteristic and return true. Return false to prevent restoration, as well as to cancel the listening on the given characteristic.
-
-        - Parameter on: the characterstic that is still being listened on when the CoreBluetooth stack is restored in the app.
-        - Return: true if the characteristic's listen callback will be restored, false if the characteristic's listen should be cancelled and not restored.
-    */
-    func willRestoreListen(on characteristic: CharacteristicIdentifier) -> Bool
-}
-```
-
-
-By default, if there is no `ListenRestorer` delegate provided in the `start` function, then Bluejay will cancel **all** active listens during state restoration.
-
-Example:
-
-```swift
-extension ViewController: ListenRestorer {
-
-    func willRestoreListen(on characteristic: CharacteristicIdentifier) -> Bool {
-        if characteristic == heartRate {
-            bluejay.restoreListen(to: heartRate, completion: { (result: ReadResult<UInt8>) in
-                switch result {
-                case .success(let value):
-                    log.debug("Listen succeeded with value: \(value)")
-                case .failure(let error):
-                    log.debug("Listen failed with error: \(error.localizedDescription)")
-                }
-            })
-
-            return true
-        }
-
-        return false
-    }
-
-}
-```
+If you want to support [Background Mode](https://developer.apple.com/library/content/documentation/NetworkingInternetWeb/Conceptual/CoreBluetooth_concepts/CoreBluetoothBackgroundProcessingForIOSApps/PerformingTasksWhileYourAppIsInTheBackground.html#//apple_ref/doc/uid/TP40013257-CH7-SW1) and [State Restoration](https://developer.apple.com/library/content/documentation/NetworkingInternetWeb/Conceptual/CoreBluetooth_concepts/CoreBluetoothBackgroundProcessingForIOSApps/PerformingTasksWhileYourAppIsInTheBackground.html#//apple_ref/doc/uid/TP40013257-CH7-SW10) in your app, [it will take some extra work](#background-mode), which is necessary for Bluetooth apps that do work in the background.
 
 ### Bluetooth Events
 
@@ -559,6 +486,79 @@ bluejay.run(backgroundTask: { (peripheral) in
 
 It is critical though that when performing your Bluetooth operations in the background with `backgroundTask`, you **must** use the `SynchronizedPeripheral` given to you by this API. **DO NOT** call any `bluejay`.`read/write/listen` functions inside the `backgroundTask` block.
 
-## Documentaion
+## Background Operation
 
-https://steamclock.github.io/bluejay/index.html
+In order to support background mode, make sure to turn on the **Background Modes** capability in your Xcode project with **Uses Bluetooth LE accessories** enabled.
+
+Enabling background mode doesn't enable state restoration. State restoration is an additional behaviour on top of background mode that requires another step to setup.
+
+### State Restoration
+
+Once your project has BLE accessories background mode enabled, you can choose to opt in to State Restoration when you start your Bluejay session.
+
+```swift
+bluejay.start(backgroundRestore: .enable(yourRestoreIdentifier))
+```
+
+Additionally, Bluejay allows you to restore listen callbacks on subscribed characteristics that did not end when the app has stopped running.
+
+```swift
+bluejay.start(backgroundRestore: .enable(yourRestoreIdentifier, yourListenRestorer))
+```
+
+### Listen Restoration
+
+If State Restoration is enabled and your app has stopped running either due to memory pressure or by staying in the background past the allowed duration (this has been 3 minutes since iOS 7), then the next time your app is launched in the background or foreground, Bluejay will call the `willRestoreListen` function on your `ListenRestorer` during state restoration if there are any active listens preserved.
+
+The listen restorer protocol looks like this:
+
+```swift
+/**
+    A class protocol allowing notification of a characteristic being listened on, and provides an opportunity to restore its listen callback during Bluetooth state restoration.
+
+    Bluetooth state restoration occurs when the background mode capability is turned on, and if the app is backgrounded or even terminated while a Bluetooth operation is still ongoing, iOS may keep the Bluetooth state alive, and attempt to restore it on resuming the app, so that the connection and operation between the app and the Bluetooth accessory is not interrupted and severed.
+*/
+public protocol ListenRestorer: class {
+    /**
+        Notify the conforming class that there is a characteristic being listened on, but it doesn't have any listen callbacks.
+
+        - Note: Use the function `restoreListen` in Bluejay to restore the desired callback for the given characteristic and return true. Return false to prevent restoration, as well as to cancel the listening on the given characteristic.
+
+        - Parameter on: the characterstic that is still being listened on when the CoreBluetooth stack is restored in the app.
+        - Return: true if the characteristic's listen callback will be restored, false if the characteristic's listen should be cancelled and not restored.
+    */
+    func willRestoreListen(on characteristic: CharacteristicIdentifier) -> Bool
+}
+```
+
+
+By default, if there is no `ListenRestorer` delegate provided in the `start` function, then Bluejay will cancel **all** active listens during state restoration.
+
+Example:
+
+```swift
+extension ViewController: ListenRestorer {
+
+    func willRestoreListen(on characteristic: CharacteristicIdentifier) -> Bool {
+        if characteristic == heartRate {
+            bluejay.restoreListen(to: heartRate, completion: { (result: ReadResult<UInt8>) in
+                switch result {
+                case .success(let value):
+                    log.debug("Listen succeeded with value: \(value)")
+                case .failure(let error):
+                    log.debug("Listen failed with error: \(error.localizedDescription)")
+                }
+            })
+
+            return true
+        }
+
+        return false
+    }
+
+}
+```
+
+## API Documentation
+
+We have more [in-depth API documentation for Bluejay](https://steamclock.github.io/bluejay/index.html) using inline documentation and Jazzy. 
