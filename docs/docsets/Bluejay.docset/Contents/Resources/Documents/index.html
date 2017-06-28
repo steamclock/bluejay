@@ -150,23 +150,64 @@
             
             <p><img src="bluejay-wordmark.png" alt="Bluejay"></p>
 
+<p><img src="https://img.shields.io/cocoapods/v/Bluejay.svg" alt="CocoaPods Compatible">
+<a href="http://cocoadocs.org/docsets/Bluejay"><img src="https://img.shields.io/cocoapods/p/Bluejay.svg?style=flat" alt="Platform"></a>
+<a href=""><img src="https://img.shields.io/github/license/mashape/apistatus.svg" alt="license"></a></p>
+
 <p>Bluejay is a simple Swift framework for building reliable Bluetooth LE apps.</p>
 
 <p>Bluejay&rsquo;s primary goals are:</p>
 
 <ul>
 <li>Simplify talking to a single Bluetooth LE peripheral</li>
-<li>Make it easier to handle Bluetooth LE operations reliably</li>
-<li>Make good use of Swift features and conventions</li>
+<li>Make it easier to handle Bluetooth operations reliably</li>
+<li>Take advantage of Swift features and conventions</li>
+</ul>
+<h2 id='index' class='heading'>Index</h2>
+
+<ul>
+<li><a href="#features">Features</a></li>
+<li><a href="#requirements">Requirements</a></li>
+<li><a href="#installation">Installation</a></li>
+<li><a href="#demo">Demo</a></li>
+<li><a href="#usage">Usage</a>
+
+<ul>
+<li><a href="#initialization">Initialization</a></li>
+<li><a href="#bluetooth-events">Bluetooth Events</a></li>
+<li><a href="#services-and-characteristics">Services and Characteristics</a></li>
+<li><a href="#scanning">Scanning</a></li>
+<li><a href="#connecting">Connecting</a></li>
+</ul></li>
+<li><a href="#deserialization-and-serialization">Deserialization and Serialization</a>
+
+<ul>
+<li><a href="#receivable">Receivable</a></li>
+<li><a href="#sendable">Sendable</a></li>
+</ul></li>
+<li><a href="#interactions">Interactions</a>
+
+<ul>
+<li><a href="#reading">Reading</a></li>
+<li><a href="#writing">Writing</a></li>
+<li><a href="#listening">Listening</a></li>
+<li><a href="#batch-operations">Batch Operations</a></li>
+</ul></li>
+<li><a href="#background-operation">Background Operation</a>
+
+<ul>
+<li><a href="#state-restoration">State Restoration</a></li>
+<li><a href="#listen-restoration">Listen Restoration</a></li>
+</ul></li>
 </ul>
 <h2 id='features' class='heading'>Features</h2>
 
 <ul>
-<li>A callback-based API that can be more pleasant to work with than delegation in most cases</li>
-<li>A FIFO operation queue that allows more synchronous and predictable behaviours</li>
-<li>A background task mode to perform batch operations and avoid callback pyramids of death</li>
+<li>A callback-based API</li>
+<li>A FIFO operation queue for more synchronous and predictable behaviour</li>
+<li>A background task mode for batch operations that avoids the <q>callback pyramid of death</q></li>
 <li>Simple protocols for data serialization and deserialization</li>
-<li>Easy and safe observation of Bluetooth and connection states</li>
+<li>An easy and safe way to observe connection states</li>
 <li>Listen restoration</li>
 <li>Extended error handling</li>
 </ul>
@@ -181,6 +222,10 @@
 
 <p>Install using CocoaPods:</p>
 
+<p><code>pod &#39;Bluejay&#39;, &#39;~&gt; 0.1&#39;</code></p>
+
+<p>Or to try the latest master:</p>
+
 <p><code>pod &#39;Bluejay&#39;, :git =&gt; &#39;https://github.com/steamclock/bluejay.git&#39;, :branch =&gt; &#39;master&#39;</code></p>
 
 <p>Import using:</p>
@@ -188,16 +233,16 @@
 </code></pre>
 <h2 id='demo' class='heading'>Demo</h2>
 
-<p>The Simulator does not simulate Bluetooth, and you may also not have access to a configurable Bluetooth LE peripheral right away, so we recommend trying Bluejay using a virtual BLE peripheral that can be set up using the <a href="https://itunes.apple.com/ca/app/lightblue-explorer-bluetooth/id557428110?mt=8">LightBlue Explorer</a> app you can download for free from the App Store.</p>
+<p>The iOS Simulator does not simulate Bluetooth. You may not have a Bluetooth LE peripheral handy, so we recommend trying Bluejay using a BLE peripheral simulator such as the <a href="https://itunes.apple.com/ca/app/lightblue-explorer-bluetooth/id557428110?mt=8">LightBlue Explorer App</a>.</p>
 
-<p>Bluejay has a demo app called <strong>BluejayDemo</strong> that works with LightBlue Explorer, and to see it in action:</p>
+<p>Bluejay has a demo app called <strong>BluejayDemo</strong> that works with LightBlue Explorer. To see it in action:</p>
 
 <ol>
-<li>Prepare two iOS devices – one will act as a virtual BLE peripheral, and the other will run the demo app which demonstrates how Bluejay can be used.</li>
-<li>On the iOS device serving as the virtual BLE peripheral, go to the App Store and download LightBlue Explorer.</li>
+<li>Get two iOS devices – one to run a BLE peripheral simulator, and the other to run the Bluejay demo app.</li>
+<li>On one iOS device, go to the App Store and download LightBlue Explorer.</li>
 <li>Launch LightBlue Explorer, and tap on the <strong>Create Virtual Peripheral</strong> button located at the bottom of the peripheral list.</li>
-<li>For simplicity, choose <strong>Heart Rate</strong> from the base profile list, and finish by tapping the <strong>Save</strong> button.</li>
-<li>Finally, build and run the <strong>BluejayDemo</strong> on the other iOS device, choose <strong>Heart Rate Sensor</strong> in the menu, and you will be able to start interacting with the virtual heart rate peripheral.</li>
+<li>To start, choose <strong>Heart Rate</strong> from the base profile list, and finish by tapping the <strong>Save</strong> button.</li>
+<li>Finally, build and run <strong>BluejayDemo</strong> on the other iOS device. Once it launches, choose <strong>Heart Rate Sensor</strong> in the menu, and you will be able to start interacting with the virtual heart rate peripheral.</li>
 </ol>
 
 <p><strong>Notes:</strong></p>
@@ -217,79 +262,18 @@
 <pre class="highlight swift"><code><span class="k">let</span> <span class="nv">bluejay</span> <span class="o">=</span> <span class="kt">Bluejay</span><span class="p">()</span>
 </code></pre>
 
-<p>Depending on the nature of your app, you may want to create one single instance and use it throughout, or create one in a specific portion of your app and tear it down after use. Either way, the important thing to note here is that each instance of Bluejay has its own <a href="https://developer.apple.com/documentation/corebluetooth/cbcentralmanager">CBCentralManager</a>, and initializing Bluejay doesn&rsquo;t start the <a href="https://developer.apple.com/documentation/corebluetooth">Core Bluetooth</a> session just yet.</p>
+<p>While you may want to create one Bluejay instance and use it everywhere, you can also create instances in specific portions of your app and tear them down after use. It&rsquo;s worth noting, however, that each instance of Bluejay has its own <a href="https://developer.apple.com/documentation/corebluetooth/cbcentralmanager">CBCentralManager</a>, which makes the multi-instance approach somewhat more complex.</p>
 
-<p>Start Bluejay during initialization of your app or view controller, as appropriate. For example, in the demo app Bluejay is started inside <code>viewDidLoad</code> of the root view controller.</p>
+<p>Once you&rsquo;ve created an instance, you can start the <a href="https://developer.apple.com/documentation/corebluetooth">Core Bluetooth</a> session. You can do this during initialization of your app or view controller, as appropriate. For example, in the demo app Bluejay is started inside <code>viewDidLoad</code> of the root view controller.</p>
 <pre class="highlight swift"><code><span class="n">bluejay</span><span class="o">.</span><span class="nf">start</span><span class="p">()</span>
 </code></pre>
 
-<p>Bluejay needs to be started explicitly because in order to support listen restoration properly in a block-based API, we need to make sure the necessary objects are initialized and available before the Core Bluetooth stack is restored from the background.</p>
+<p>Bluejay needs to be started explicitly in order to support Core Bluetooth&rsquo;s State Restoration. State Restoration restores the Bluetooth stack and state when your app is restored from the background.</p>
 
-<p>However, state restoration is disabled by default in Bluejay. <a href="https://developer.apple.com/library/content/documentation/NetworkingInternetWeb/Conceptual/CoreBluetooth_concepts/CoreBluetoothBackgroundProcessingForIOSApps/PerformingTasksWhileYourAppIsInTheBackground.html#//apple_ref/doc/uid/TP40013257-CH7-SW1">Background mode</a> and <a href="https://developer.apple.com/library/content/documentation/NetworkingInternetWeb/Conceptual/CoreBluetooth_concepts/CoreBluetoothBackgroundProcessingForIOSApps/PerformingTasksWhileYourAppIsInTheBackground.html#//apple_ref/doc/uid/TP40013257-CH7-SW10">state restoration</a> are slightly complicated features, but important for apps that need to work in the background.</p>
-<h3 id='background-mode' class='heading'>Background Mode</h3>
-
-<p>In order to support background mode, make sure to turn on the <strong>Background Modes</strong> capability in your Xcode project with <strong>Uses Bluetooth LE accessories</strong> enabled.</p>
-
-<p>Enabling background mode doesn&rsquo;t enable state restoration. State restoration is an additional behaviour on top of background mode that requires another step to setup.</p>
-<h3 id='state-restoration' class='heading'>State Restoration</h3>
-
-<p>Once your project has BLE accessories background mode enabled, you can choose to opt-in to state restoration when you start your Bluejay session.</p>
-<pre class="highlight swift"><code><span class="n">bluejay</span><span class="o">.</span><span class="nf">start</span><span class="p">(</span><span class="nv">backgroundRestore</span><span class="p">:</span> <span class="o">.</span><span class="nf">enable</span><span class="p">(</span><span class="n">yourRestoreIdentifier</span><span class="p">))</span>
-</code></pre>
-
-<p>Additionally, Bluejay even allows you to restore listen callbacks on subscribed characteristics that did not end when the app has stopped running.</p>
-<pre class="highlight swift"><code><span class="n">bluejay</span><span class="o">.</span><span class="nf">start</span><span class="p">(</span><span class="nv">backgroundRestore</span><span class="p">:</span> <span class="o">.</span><span class="nf">enable</span><span class="p">(</span><span class="n">yourRestoreIdentifier</span><span class="p">,</span> <span class="n">yourListenRestorer</span><span class="p">))</span>
-</code></pre>
-<h3 id='listen-restoration' class='heading'>Listen Restoration</h3>
-
-<p>If state restoration is enabled and your app has stopped running either due to memory pressure or by staying in the background past the allowed duration (3 minutes since iOS 7), then the next time your app is launched in the background or foreground, Bluejay will call the <code>willRestoreListen</code> function on your <code>ListenRestorer</code> during state restoration if there are any active listens preserved.</p>
-
-<p>The listen restorer protocol:</p>
-<pre class="highlight swift"><code><span class="cm">/**
-    A class protocol allowing notification of a characteristic being listened on, and provides an opportunity to restore its listen callback during Bluetooth state restoration.
-
-    Bluetooth state restoration occurs when the background mode capability is turned on, and if the app is backgrounded or even terminated while a Bluetooth operation is still ongoing, iOS may keep the Bluetooth state alive, and attempt to restore it on resuming the app, so that the connection and operation between the app and the Bluetooth accessory is not interrupted and severed.
-*/</span>
-<span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">ListenRestorer</span><span class="p">:</span> <span class="kd">class</span> <span class="p">{</span>
-    <span class="cm">/**
-        Notify the conforming class that there is a characteristic being listened on, but it doesn't have any listen callbacks.
-
-        - Note: Use the function `restoreListen` in Bluejay to restore the desired callback for the given characteristic and return true. Return false to prevent restoration, as well as to cancel the listening on the given characteristic.
-
-        - Parameter on: the characterstic that is still being listened on when the CoreBluetooth stack is restored in the app.
-        - Return: true if the characteristic's listen callback will be restored, false if the characteristic's listen should be cancelled and not restored.
-    */</span>
-    <span class="kd">func</span> <span class="nf">willRestoreListen</span><span class="p">(</span><span class="n">on</span> <span class="nv">characteristic</span><span class="p">:</span> <span class="kt">CharacteristicIdentifier</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span>
-<span class="p">}</span>
-</code></pre>
-
-<p>By default, if there is no <code>ListenRestorer</code> delegate provided in the <code>start</code> function, then Bluejay will cancel <strong>all</strong> active listens during state restoration.</p>
-
-<p>Example:</p>
-<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">ViewController</span><span class="p">:</span> <span class="kt">ListenRestorer</span> <span class="p">{</span>
-
-    <span class="kd">func</span> <span class="nf">willRestoreListen</span><span class="p">(</span><span class="n">on</span> <span class="nv">characteristic</span><span class="p">:</span> <span class="kt">CharacteristicIdentifier</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span> <span class="p">{</span>
-        <span class="k">if</span> <span class="n">characteristic</span> <span class="o">==</span> <span class="n">heartRate</span> <span class="p">{</span>
-            <span class="n">bluejay</span><span class="o">.</span><span class="nf">restoreListen</span><span class="p">(</span><span class="nv">to</span><span class="p">:</span> <span class="n">heartRate</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="p">{</span> <span class="p">(</span><span class="nv">result</span><span class="p">:</span> <span class="kt">ReadResult</span><span class="o">&lt;</span><span class="kt">UInt8</span><span class="o">&gt;</span><span class="p">)</span> <span class="k">in</span>
-                <span class="k">switch</span> <span class="n">result</span> <span class="p">{</span>
-                <span class="k">case</span> <span class="o">.</span><span class="nf">success</span><span class="p">(</span><span class="k">let</span> <span class="nv">value</span><span class="p">):</span>
-                    <span class="n">log</span><span class="o">.</span><span class="nf">debug</span><span class="p">(</span><span class="s">"Listen succeeded with value: </span><span class="se">\(</span><span class="n">value</span><span class="se">)</span><span class="s">"</span><span class="p">)</span>
-                <span class="k">case</span> <span class="o">.</span><span class="nf">failure</span><span class="p">(</span><span class="k">let</span> <span class="nv">error</span><span class="p">):</span>
-                    <span class="n">log</span><span class="o">.</span><span class="nf">debug</span><span class="p">(</span><span class="s">"Listen failed with error: </span><span class="se">\(</span><span class="n">error</span><span class="o">.</span><span class="n">localizedDescription</span><span class="se">)</span><span class="s">"</span><span class="p">)</span>
-                <span class="p">}</span>
-            <span class="p">})</span>
-
-            <span class="k">return</span> <span class="kc">true</span>
-        <span class="p">}</span>
-
-        <span class="k">return</span> <span class="kc">false</span>
-    <span class="p">}</span>
-
-<span class="p">}</span>
-</code></pre>
+<p>If you want to support <a href="https://developer.apple.com/library/content/documentation/NetworkingInternetWeb/Conceptual/CoreBluetooth_concepts/CoreBluetoothBackgroundProcessingForIOSApps/PerformingTasksWhileYourAppIsInTheBackground.html#//apple_ref/doc/uid/TP40013257-CH7-SW1">Background Mode</a> and <a href="https://developer.apple.com/library/content/documentation/NetworkingInternetWeb/Conceptual/CoreBluetooth_concepts/CoreBluetoothBackgroundProcessingForIOSApps/PerformingTasksWhileYourAppIsInTheBackground.html#//apple_ref/doc/uid/TP40013257-CH7-SW10">State Restoration</a> in your app, <a href="#background-operation">it will take some extra work</a>, which is necessary for Bluetooth apps that do work in the background.</p>
 <h3 id='bluetooth-events' class='heading'>Bluetooth Events</h3>
 
-<p>The <code>ConnectionObserver</code> protocol allows your class to monitor and respond to major Bluetooth and connection-related events:</p>
+<p>The <code>ConnectionObserver</code> protocol allows a class to monitor and respond to major Bluetooth and connection-related events:</p>
 <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">ConnectionObserver</span><span class="p">:</span> <span class="kd">class</span> <span class="p">{</span>
     <span class="kd">func</span> <span class="nf">bluetoothAvailable</span><span class="p">(</span><span class="n">_</span> <span class="nv">available</span><span class="p">:</span> <span class="kt">Bool</span><span class="p">)</span>
     <span class="kd">func</span> <span class="nf">connected</span><span class="p">(</span><span class="n">_</span> <span class="nv">peripheral</span><span class="p">:</span> <span class="kt">Peripheral</span><span class="p">)</span>
@@ -297,7 +281,7 @@
 <span class="p">}</span>
 </code></pre>
 
-<p>You can register an observer when starting Bluejay:</p>
+<p>You can register a <code>ConnectionObserver</code> when starting Bluejay:</p>
 <pre class="highlight swift"><code><span class="n">bluejay</span><span class="o">.</span><span class="nf">start</span><span class="p">(</span><span class="nv">connectionObserver</span><span class="p">:</span> <span class="k">self</span><span class="p">)</span>
 </code></pre>
 
@@ -305,14 +289,14 @@
 <pre class="highlight swift"><code><span class="n">bluejay</span><span class="o">.</span><span class="nf">register</span><span class="p">(</span><span class="nv">observer</span><span class="p">:</span> <span class="n">batteryLabel</span><span class="p">)</span>
 </code></pre>
 
-<p>Unregistering an observer is not necessary, because Bluejay only holds weak references to registered observers. But if you require unregistering an observer explicitly, you can:</p>
+<p>Unregistering an observer is not necessary, because Bluejay only holds weak references to registered observers. But if you need to do so, you can:</p>
 <pre class="highlight swift"><code><span class="n">bluejay</span><span class="o">.</span><span class="nf">unregister</span><span class="p">(</span><span class="nv">observer</span><span class="p">:</span> <span class="n">rssiLabel</span><span class="p">)</span>
 </code></pre>
-<h3 id='services-amp-characteristics' class='heading'>Services &amp; Characteristics</h3>
+<h3 id='services-and-characteristics' class='heading'>Services and Characteristics</h3>
 
-<p>In Bluetooth parlance, a Service is a group of attributes, and a Characteristic is an attribute belonging to a category. For example, BLE peripherals that can detect heart rates usually have a Service named <q>Heart Rate</q> with a UUID of <q>180D</q>. Inside that Service are Characteristics such as <q>Body Sensor Location</q> with a UUID of <q>2A38</q>, as well as <q>Heart Rate Measurement</q> with a UUID of <q>2A37</q>.</p>
+<p>In Bluetooth parlance, a Service is a group of attributes, and a Characteristic is an attribute belonging to a group. For example, BLE peripherals that can detect heart rates typically have a Service named <q>Heart Rate</q> with a UUID of <q>180D</q>. Inside that Service are Characteristics such as <q>Body Sensor Location</q> with a UUID of <q>2A38</q>, as well as <q>Heart Rate Measurement</q> with a UUID of <q>2A37</q>.</p>
 
-<p>Many of these Services and Characteristics are standards specified by the Bluetooth SIG organization, and most hardware adopt their specifications. For example, most BLE peripherals have the Service <q>Device Information</q> with a UUID of <q>180A</q>, where Characteristics such as firmware version, serial number, and other hardware details can be read and written. Of course, there are many BLE uses not covered by the Bluetooth Core Spec, and custom hardware often have their own unique Services and Characteristics.</p>
+<p>Many of these Services and Characteristics are standards specified by the Bluetooth SIG organization, and most hardware adopt their specifications. For example, most BLE peripherals implement the Service <q>Device Information</q> which has a UUID of <q>180A</q>, which is where Characteristics such as firmware version, serial number, and other hardware details can be found. Of course, there are many BLE uses not covered by the Bluetooth Core Spec, and custom hardware often have their own unique Services and Characteristics.</p>
 
 <p>Here is how you can specify Services and Characteristics for use in Bluejay:</p>
 <pre class="highlight swift"><code><span class="k">let</span> <span class="nv">heartRateService</span> <span class="o">=</span> <span class="kt">ServiceIdentifier</span><span class="p">(</span><span class="nv">uuid</span><span class="p">:</span> <span class="s">"180D"</span><span class="p">)</span>
@@ -320,10 +304,10 @@
 <span class="k">let</span> <span class="nv">heartRate</span> <span class="o">=</span> <span class="kt">CharacteristicIdentifier</span><span class="p">(</span><span class="nv">uuid</span><span class="p">:</span> <span class="s">"2A37"</span><span class="p">,</span> <span class="nv">service</span><span class="p">:</span> <span class="n">heartRateService</span><span class="p">)</span>
 </code></pre>
 
-<p>Bluejay requires using the <code>ServiceIdentifier</code> and <code>CharacteristicIdentifier</code> structs because this can help make it clear in your code whether you are working with a Service or a Characteristic, and prevents problems like mistakingly using or specifying a Service when a Characteristic is expected.</p>
+<p>Bluejay uses the <code>ServiceIdentifier</code> and <code>CharacteristicIdentifier</code> structs to avoid problems like accidentally specifying a Service when a Characteristic is expected.</p>
 <h3 id='scanning' class='heading'>Scanning</h3>
 
-<p>Bluejay has a powerful scanning API that can be either simple or customizable to satisfy many use cases.</p>
+<p>Bluejay has a powerful device scanning API that can be be used simply or customized to satisfy many use cases.</p>
 <h4 id='basic-scanning' class='heading'>Basic Scanning</h4>
 
 <p>This simple call will just notify you when there is a new discovery, and when the scan has finished:</p>
@@ -349,12 +333,12 @@
 <span class="p">})</span>
 </code></pre>
 
-<p>A scan result <code>(ScanDiscovery, [ScanDiscovery])</code> is represented by the current discovery followed by an array of all the discoveries made so far.</p>
+<p>A scan result <code>(ScanDiscovery, [ScanDiscovery])</code> contains the current discovery followed by an array of all the discoveries made so far.</p>
 
 <p>The stopped result contains all the discoveries made, and an error if there is one.</p>
 <h4 id='scan-action' class='heading'>Scan Action</h4>
 
-<p>Note how a <code>ScanAction</code> is returned at the end of a discovery callback to tell Bluejay whether to keep scanning or to stop.</p>
+<p>A <code>ScanAction</code> is returned at the end of a discovery callback to tell Bluejay whether to keep scanning or to stop.</p>
 <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">enum</span> <span class="kt">ScanAction</span> <span class="p">{</span>
     <span class="k">case</span> <span class="err">`</span><span class="k">continue</span><span class="err">`</span>
     <span class="k">case</span> <span class="n">blacklist</span>
@@ -363,12 +347,12 @@
 <span class="p">}</span>
 </code></pre>
 
-<p>Returning <code>blacklist</code> will ignore any future discovery of the same peripheral within the current scan session, and is only useful when <code>allowDuplicates</code> is set to true, as that is the only way to rediscover the same peripheral.</p>
+<p>Returning <code>blacklist</code> will ignore any future discovery of the same peripheral within the current scan session. This is only useful when <code>allowDuplicates</code> is set to true.</p>
 
-<p>Returning <code>connect</code> will first stop the current scan, then Bluejay will make your connection request. This is useful if you want to connect right away when you&rsquo;ve found the peripheral you&rsquo;re looking for. You can setup the <code>ConnectionResult</code> block outside the scan call to minimize nested callbacks.</p>
+<p>Returning <code>connect</code> will first stop the current scan, and have Bluejay make your connection request. This is useful if you want to connect right away when you&rsquo;ve found the peripheral you&rsquo;re looking for. You can set up the <code>ConnectionResult</code> block outside the scan call to reduce callback nesting.</p>
 <h4 id='monitoring' class='heading'>Monitoring</h4>
 
-<p>Another useful way to use the scan API, for example, is to monitor the RSSI changes of nearby peripherals to predict their proximity:</p>
+<p>Another useful way to use the scanning API is to monitor the RSSI changes of nearby peripherals to estimate their proximity:</p>
 <pre class="highlight swift"><code><span class="n">bluejay</span><span class="o">.</span><span class="nf">scan</span><span class="p">(</span>
     <span class="nv">allowDuplicates</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
     <span class="nv">serviceIdentifiers</span><span class="p">:</span> <span class="kc">nil</span><span class="p">,</span>
@@ -403,16 +387,16 @@
 <span class="p">}</span>
 </code></pre>
 
-<p>The two key new parameters specified here are: <code>allowDuplicates</code> and <code>expired</code>.</p>
+<p>Key parameters here are <code>allowDuplicates</code> and <code>expired</code>.</p>
 
-<p>Setting <code>allowDuplicates</code> to true will stop coalescing multiple discoveries of the same peripheral into one single discovery callback, instead, you&rsquo;ll get a discovery every time a peripheral&rsquo;s advertising packet is picked up. This will consume more battery, and does not work in the background.</p>
+<p>Setting <code>allowDuplicates</code> to true will stop coalescing multiple discoveries of the same peripheral into one single discovery callback. Instead, you&rsquo;ll get a discovery call every time a peripheral&rsquo;s advertising packet is picked up. This will consume more battery, and does not work in the background.</p>
 
-<p>The <code>expired</code> callback is only invoked when <code>allowDuplicates</code> is true, and is still optional even with <code>allowDuplicates</code> enabled. This is Bluejay&rsquo;s best guess at when a previously discovered peripheral might be out of range, or no longer broadcasting. Essentially, when <code>allowDuplicates</code> is set to true, every time a peripheral is discovered a long timer associated with that peripheral starts counting down. If that peripheral is within range, and even if it has the slowest broadcasting interval, it is likely that peripheral will be picked up by Core Bluetooth again and causes the timer to refresh. If not, it&rsquo;s somewhat safe to assume it is gone. Use this with caution.</p>
+<p>The <code>expired</code> callback is only invoked when <code>allowDuplicates</code> is true. This is called when Bluejay estimates that a previously discovered peripheral is likely out of range or no longer broadcasting. Essentially, when <code>allowDuplicates</code> is set to true, every time a peripheral is discovered a long timer associated with that peripheral starts counting down. If that peripheral is within range, and even if it has a slow broadcasting interval, it is likely that peripheral will be picked up by Core Bluetooth again and cause the timer to refresh. If not, it may be gone. Be aware that this is an estimation.</p>
 
-<p>Finally, setting the service identifiers to nil will result in picking up all available Bluetooth peripherals in the vicinity. This also consumes more battery, and again, does not work in the background.</p>
+<p>Finally, passing <code>nil</code> for the service identifiers will result in picking up all available Bluetooth peripherals in the vicinity. This consumes substantially more battery, and again, does not work in the background.</p>
 <h3 id='connecting' class='heading'>Connecting</h3>
 
-<p>It is important to keep in mind that Bluejay is designed to work with a single BLE peripheral, so multiple connection is not currently supported, and a connection request will fail if Bluejay is already connected or is still connecting. Although this can be a limitation, it is also a safeguard to ensure your app does not issue connection unnecessarily or erroneously.</p>
+<p>It is important to keep in mind that Bluejay is designed to work with a single BLE peripheral. Multiple connections at once is not currently supported, and a connection request will fail if Bluejay is already connected or is still connecting. Although this can be a limitation for some sophisticated apps, it is more commonly a safeguard to ensure your app does not issue connections unnecessarily or erroneously.</p>
 <pre class="highlight swift"><code><span class="n">bluejay</span><span class="o">.</span><span class="nf">connect</span><span class="p">(</span><span class="n">peripheralIdentifier</span><span class="p">)</span> <span class="p">{</span> <span class="p">[</span><span class="k">weak</span> <span class="k">self</span><span class="p">]</span> <span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="k">in</span>
     <span class="k">switch</span> <span class="n">result</span> <span class="p">{</span>
     <span class="k">case</span> <span class="o">.</span><span class="nf">success</span><span class="p">(</span><span class="k">let</span> <span class="nv">peripheral</span><span class="p">):</span>
@@ -435,7 +419,7 @@
 <pre class="highlight swift"><code><span class="n">bluejay</span><span class="o">.</span><span class="nf">disconnect</span><span class="p">()</span>
 </code></pre>
 
-<p>Albeit rarely, a disconnect request can still fail or get cancelled, so it is generally a good idea to make use of the completion block to provide error handling.</p>
+<p>Rarely, a disconnect request can fail or get cancelled, so it is generally a good idea to make use of the completion block to provide error handling.</p>
 <pre class="highlight swift"><code><span class="n">bluejay</span><span class="o">.</span><span class="n">disconnect</span> <span class="p">{</span> <span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="k">in</span>
     <span class="k">switch</span> <span class="n">result</span> <span class="p">{</span>
     <span class="k">case</span> <span class="o">.</span><span class="nf">success</span><span class="p">(</span><span class="k">let</span> <span class="nv">peripheral</span><span class="p">):</span>
@@ -458,9 +442,9 @@
 <li><code>isDisconnecting</code></li>
 <li><code>isScanning</code></li>
 </ul>
-<h2 id='deserialization-amp-serialization' class='heading'>Deserialization &amp; Serialization</h2>
+<h2 id='deserialization-and-serialization' class='heading'>Deserialization and Serialization</h2>
 
-<p>Reading, writing, and listening to Characteristics are straight-forward in Bluejay. Instead, you will be spending most of your time building out the deserialization and serialization of data that will be used in the aforemetioned interactions. So let&rsquo;s have a quick look at how Bluejay helps make this process standardized in your app via the <code>Receivable</code> and <code>Sendable</code> protocols.</p>
+<p>Reading, writing, and listening to Characteristics is straightforward in Bluejay. Most of the work involved is building out the deserialization and serialization of data. Let&rsquo;s have a quick look at how Bluejay helps standardize this process in your app via the <code>Receivable</code> and <code>Sendable</code> protocols.</p>
 <h4 id='receivable' class='heading'>Receivable</h4>
 
 <p>The models that represent data you wish to read and receive from your peripheral should all conform to the <code>Receivable</code> protocol.</p>
@@ -496,14 +480,14 @@
 <span class="p">}</span>
 </code></pre>
 
-<p>Note how you can use the <code>extract</code> function extended upon <code>Data</code> that is built into Bluejay to easily parse the bytes you need. We have plans to build more protection and error handling for this in the near future.</p>
+<p>Note how you can use the <code>extract</code> function that Bluejay adds to <code>Data</code> to easily parse the bytes you need. We have plans to build more protection and error handling for this in the future.</p>
 
-<p>Finally, while it is not essential and it will also depend on the context as well, we recommend only exposing the needed and computed properties of your models.</p>
+<p>Finally, while it is not essential and it will depend on the context, we suggest only exposing the needed and computed properties of your models.</p>
 <h4 id='sendable' class='heading'>Sendable</h4>
 
 <p>The models representing data you wish to send to your peripheral should all conform to the <code>Sendable</code> protocol.</p>
 
-<p>In a nut shell, help Bluejay figure out how to convert your models into <code>Data</code>:</p>
+<p>In a nutshell, this is how you help Bluejay determine how to convert your models into <code>Data</code>:</p>
 <pre class="highlight swift"><code><span class="kd">struct</span> <span class="kt">WriteRequest</span><span class="p">:</span> <span class="kt">Sendable</span> <span class="p">{</span>
 
     <span class="k">var</span> <span class="nv">handle</span><span class="p">:</span> <span class="kt">UInt16</span>
@@ -540,7 +524,7 @@
 <p>Note how we have a nested <code>Sendable</code> in this slightly more complicated model, as well as making use of the <code>combine</code> helper function to group and to arrange the data bytes in a particular order.</p>
 <h2 id='interactions' class='heading'>Interactions</h2>
 
-<p>Once you have your data modelled using either the <code>Receivable</code> or <code>Sendable</code> protocol, the read, write, and listen API in Bluejay will handle the deserialization and serialization seamlessly for you. All you need to do is to specify the type for the generic result wrappers, <code>ReadResult&lt;T&gt;</code> or <code>WriteResult&lt;T&gt;</code>.</p>
+<p>Once you have your data modelled using either the <code>Receivable</code> or <code>Sendable</code> protocol, the read, write, and listen APIs in Bluejay should handle the deserialization and serialization seamlessly for you. All you need to do is to specify the type for the generic result wrappers: <code>ReadResult&lt;T&gt;</code> or <code>WriteResult&lt;T&gt;</code>.</p>
 <h3 id='reading' class='heading'>Reading</h3>
 <pre class="highlight swift"><code><span class="n">bluejay</span><span class="o">.</span><span class="nf">read</span><span class="p">(</span><span class="nv">from</span><span class="p">:</span> <span class="n">firmwareVersion</span><span class="p">)</span> <span class="p">{</span> <span class="p">[</span><span class="k">weak</span> <span class="k">self</span><span class="p">]</span> <span class="p">(</span><span class="nv">result</span><span class="p">:</span> <span class="kt">ReadResult</span><span class="o">&lt;</span><span class="kt">FirmwareVersion</span><span class="o">&gt;</span><span class="p">)</span> <span class="k">in</span>
     <span class="k">guard</span> <span class="k">let</span> <span class="nv">weakSelf</span> <span class="o">=</span> <span class="k">self</span> <span class="k">else</span> <span class="p">{</span>
@@ -591,7 +575,7 @@
 </code></pre>
 <h3 id='batch-operations' class='heading'>Batch Operations</h3>
 
-<p>Often, your app needs to perform a series of reads, writes, and listens to complete a specific task, such as syncing, upgrading to a new firmware, or working with a notification-based Bluetooth module. In these cases, Bluejay provides an API for running all your operations on a background thread, and will call completion back on the main thread when either everything finishes without an error, or if one of the operations has failed.</p>
+<p>Often, your app needs to perform a longer series of reads, writes, and listens to complete a specific task, such as syncing, upgrading to a new firmware, or working with a notification-based Bluetooth module. In these cases, Bluejay provides an API for running all your operations on a background thread, and will call your completion on the main thread when everything finishes without an error, or if one of the operations has failed.</p>
 <pre class="highlight swift"><code><span class="n">bluejay</span><span class="o">.</span><span class="nf">run</span><span class="p">(</span><span class="nv">backgroundTask</span><span class="p">:</span> <span class="p">{</span> <span class="p">(</span><span class="n">peripheral</span><span class="p">)</span> <span class="k">in</span>
         <span class="k">var</span> <span class="nv">responseCode</span><span class="p">:</span> <span class="kt">ResponseCode</span><span class="p">?</span>
 
@@ -620,10 +604,71 @@
 <span class="p">})</span>
 </code></pre>
 
-<p>The key here is that when performing your Bluetooth operations in the background, you <strong>must</strong> use the <code>SynchronizedPeripheral</code> given to you by this API. <strong>DO NOT</strong> call any <code>bluejay</code>.<code>read/write/listen</code> functions inside the <code>backgroundTask</code> block.</p>
-<h2 id='documentaion' class='heading'>Documentaion</h2>
+<p>It is critical though that when performing your Bluetooth operations in the background with <code>backgroundTask</code>, you <strong>must</strong> use the <code>SynchronizedPeripheral</code> given to you by this API. <strong>DO NOT</strong> call any <code>bluejay</code>.<code>read/write/listen</code> functions inside the <code>backgroundTask</code> block.</p>
+<h2 id='background-operation' class='heading'>Background Operation</h2>
 
-<p><a href="https://steamclock.github.io/bluejay/index.html">https://steamclock.github.io/bluejay/index.html</a></p>
+<p>In order to support background mode, make sure to turn on the <strong>Background Modes</strong> capability in your Xcode project with <strong>Uses Bluetooth LE accessories</strong> enabled.</p>
+
+<p>Enabling background mode doesn&rsquo;t enable state restoration. State restoration is an additional behaviour on top of background mode that requires another step to setup.</p>
+<h3 id='state-restoration' class='heading'>State Restoration</h3>
+
+<p>Once your project has BLE accessories background mode enabled, you can choose to opt in to State Restoration when you start your Bluejay session.</p>
+<pre class="highlight swift"><code><span class="n">bluejay</span><span class="o">.</span><span class="nf">start</span><span class="p">(</span><span class="nv">backgroundRestore</span><span class="p">:</span> <span class="o">.</span><span class="nf">enable</span><span class="p">(</span><span class="n">yourRestoreIdentifier</span><span class="p">))</span>
+</code></pre>
+
+<p>Additionally, Bluejay allows you to restore listen callbacks on subscribed characteristics that did not end when the app has stopped running.</p>
+<pre class="highlight swift"><code><span class="n">bluejay</span><span class="o">.</span><span class="nf">start</span><span class="p">(</span><span class="nv">backgroundRestore</span><span class="p">:</span> <span class="o">.</span><span class="nf">enable</span><span class="p">(</span><span class="n">yourRestoreIdentifier</span><span class="p">,</span> <span class="n">yourListenRestorer</span><span class="p">))</span>
+</code></pre>
+<h3 id='listen-restoration' class='heading'>Listen Restoration</h3>
+
+<p>If State Restoration is enabled and your app has stopped running either due to memory pressure or by staying in the background past the allowed duration (this has been 3 minutes since iOS 7), then the next time your app is launched in the background or foreground, Bluejay will call the <code>willRestoreListen</code> function on your <code>ListenRestorer</code> during state restoration if there are any active listens preserved.</p>
+
+<p>The listen restorer protocol looks like this:</p>
+<pre class="highlight swift"><code><span class="cm">/**
+    A class protocol allowing notification of a characteristic being listened on, and provides an opportunity to restore its listen callback during Bluetooth state restoration.
+
+    Bluetooth state restoration occurs when the background mode capability is turned on, and if the app is backgrounded or even terminated while a Bluetooth operation is still ongoing, iOS may keep the Bluetooth state alive, and attempt to restore it on resuming the app, so that the connection and operation between the app and the Bluetooth accessory is not interrupted and severed.
+*/</span>
+<span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">ListenRestorer</span><span class="p">:</span> <span class="kd">class</span> <span class="p">{</span>
+    <span class="cm">/**
+        Notify the conforming class that there is a characteristic being listened on, but it doesn't have any listen callbacks.
+
+        - Note: Use the function `restoreListen` in Bluejay to restore the desired callback for the given characteristic and return true. Return false to prevent restoration, as well as to cancel the listening on the given characteristic.
+
+        - Parameter on: the characterstic that is still being listened on when the CoreBluetooth stack is restored in the app.
+        - Return: true if the characteristic's listen callback will be restored, false if the characteristic's listen should be cancelled and not restored.
+    */</span>
+    <span class="kd">func</span> <span class="nf">willRestoreListen</span><span class="p">(</span><span class="n">on</span> <span class="nv">characteristic</span><span class="p">:</span> <span class="kt">CharacteristicIdentifier</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span>
+<span class="p">}</span>
+</code></pre>
+
+<p>By default, if there is no <code>ListenRestorer</code> delegate provided in the <code>start</code> function, then Bluejay will cancel <strong>all</strong> active listens during state restoration.</p>
+
+<p>Example:</p>
+<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">ViewController</span><span class="p">:</span> <span class="kt">ListenRestorer</span> <span class="p">{</span>
+
+    <span class="kd">func</span> <span class="nf">willRestoreListen</span><span class="p">(</span><span class="n">on</span> <span class="nv">characteristic</span><span class="p">:</span> <span class="kt">CharacteristicIdentifier</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="n">characteristic</span> <span class="o">==</span> <span class="n">heartRate</span> <span class="p">{</span>
+            <span class="n">bluejay</span><span class="o">.</span><span class="nf">restoreListen</span><span class="p">(</span><span class="nv">to</span><span class="p">:</span> <span class="n">heartRate</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="p">{</span> <span class="p">(</span><span class="nv">result</span><span class="p">:</span> <span class="kt">ReadResult</span><span class="o">&lt;</span><span class="kt">UInt8</span><span class="o">&gt;</span><span class="p">)</span> <span class="k">in</span>
+                <span class="k">switch</span> <span class="n">result</span> <span class="p">{</span>
+                <span class="k">case</span> <span class="o">.</span><span class="nf">success</span><span class="p">(</span><span class="k">let</span> <span class="nv">value</span><span class="p">):</span>
+                    <span class="n">log</span><span class="o">.</span><span class="nf">debug</span><span class="p">(</span><span class="s">"Listen succeeded with value: </span><span class="se">\(</span><span class="n">value</span><span class="se">)</span><span class="s">"</span><span class="p">)</span>
+                <span class="k">case</span> <span class="o">.</span><span class="nf">failure</span><span class="p">(</span><span class="k">let</span> <span class="nv">error</span><span class="p">):</span>
+                    <span class="n">log</span><span class="o">.</span><span class="nf">debug</span><span class="p">(</span><span class="s">"Listen failed with error: </span><span class="se">\(</span><span class="n">error</span><span class="o">.</span><span class="n">localizedDescription</span><span class="se">)</span><span class="s">"</span><span class="p">)</span>
+                <span class="p">}</span>
+            <span class="p">})</span>
+
+            <span class="k">return</span> <span class="kc">true</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="kc">false</span>
+    <span class="p">}</span>
+
+<span class="p">}</span>
+</code></pre>
+<h2 id='api-documentation' class='heading'>API Documentation</h2>
+
+<p>We have more <a href="https://steamclock.github.io/bluejay/index.html">in-depth API documentation for Bluejay</a> using inline documentation and Jazzy.</p>
 
           </section>
         </section>

@@ -1,607 +1,614 @@
 {
   "warnings": [
     {
-      "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/Bluejay.swift",
+      "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/Bluejay.swift",
       "line": 531,
       "symbol": "Bluejay.centralManagerDidUpdateState(_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/Bluejay.swift",
+      "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/Bluejay.swift",
       "line": 593,
       "symbol": "Bluejay.centralManager(_:willRestoreState:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/Bluejay.swift",
+      "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/Bluejay.swift",
       "line": 645,
       "symbol": "Bluejay.centralManager(_:didConnect:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/Bluejay.swift",
+      "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/Bluejay.swift",
       "line": 664,
       "symbol": "Bluejay.centralManager(_:didDisconnectPeripheral:error:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/Bluejay.swift",
+      "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/Bluejay.swift",
       "line": 704,
       "symbol": "Bluejay.centralManager(_:didFailToConnect:error:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/Bluejay.swift",
+      "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/Bluejay.swift",
       "line": 709,
       "symbol": "Bluejay.centralManager(_:didDiscover:advertisementData:rssi:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/CBManagerState+ReturnString.swift",
+      "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/CBManagerState+ReturnString.swift",
       "line": 15,
       "symbol": "CBManagerState.string()",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/CBPeripheralState+ReturnString.swift",
+      "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/CBPeripheralState+ReturnString.swift",
       "line": 14,
       "symbol": "CBPeripheralState.string()",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/CharacteristicIdentifier.swift",
+      "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/CharacteristicIdentifier.swift",
       "line": 15,
       "symbol": "CharacteristicIdentifier.service",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/CharacteristicIdentifier.swift",
+      "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/CharacteristicIdentifier.swift",
       "line": 16,
       "symbol": "CharacteristicIdentifier.uuid",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/CharacteristicIdentifier.swift",
+      "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/CharacteristicIdentifier.swift",
       "line": 18,
       "symbol": "CharacteristicIdentifier.init(_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/CharacteristicIdentifier.swift",
+      "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/CharacteristicIdentifier.swift",
       "line": 23,
       "symbol": "CharacteristicIdentifier.init(uuid:service:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/ConnectionObserver.swift",
+      "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/ConnectionObserver.swift",
       "line": 29,
       "symbol": "ConnectionObserver.connected(to:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/ConnectionObserver.swift",
+      "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/ConnectionObserver.swift",
       "line": 30,
       "symbol": "ConnectionObserver.disconnected()",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/ConnectionObserver.swift",
+      "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/ConnectionObserver.swift",
       "line": 36,
       "symbol": "ConnectionObserver.connected(to:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/ConnectionObserver.swift",
+      "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/ConnectionObserver.swift",
       "line": 37,
       "symbol": "ConnectionObserver.disconnected()",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/ConnectionResult.swift",
+      "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/ConnectionResult.swift",
       "line": 12,
       "symbol": "ConnectionResult",
       "symbol_kind": "source.lang.swift.decl.enum",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/ConnectionResult.swift",
+      "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/ConnectionResult.swift",
       "line": 13,
       "symbol": "ConnectionResult.success",
       "symbol_kind": "source.lang.swift.decl.enumelement",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/ConnectionResult.swift",
+      "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/ConnectionResult.swift",
       "line": 14,
       "symbol": "ConnectionResult.cancelled",
       "symbol_kind": "source.lang.swift.decl.enumelement",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/ConnectionResult.swift",
+      "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/ConnectionResult.swift",
       "line": 15,
       "symbol": "ConnectionResult.failure",
       "symbol_kind": "source.lang.swift.decl.enumelement",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/Data+Extractable.swift",
+      "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/Data+Extractable.swift",
       "line": 13,
       "symbol": "Data.extract(start:length:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/Data+Sendable.swift",
+      "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/Data+Sendable.swift",
       "line": 13,
       "symbol": "Data.toBluetoothData()",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/Data+Sendable.swift",
+      "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/Data+Sendable.swift",
       "line": 21,
       "symbol": "Data.init(bluetoothData:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/DataPadding.swift",
+      "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/DataPadding.swift",
       "line": 16,
       "symbol": "DataPadding.init(_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/DataPadding.swift",
+      "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/DataPadding.swift",
       "line": 20,
       "symbol": "DataPadding.toBluetoothData()",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/DisconnectionResult.swift",
+      "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/DisconnectionResult.swift",
       "line": 12,
       "symbol": "DisconnectionResult",
       "symbol_kind": "source.lang.swift.decl.enum",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/DisconnectionResult.swift",
+      "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/DisconnectionResult.swift",
       "line": 13,
       "symbol": "DisconnectionResult.success",
       "symbol_kind": "source.lang.swift.decl.enumelement",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/DisconnectionResult.swift",
+      "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/DisconnectionResult.swift",
       "line": 14,
       "symbol": "DisconnectionResult.cancelled",
       "symbol_kind": "source.lang.swift.decl.enumelement",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/DisconnectionResult.swift",
+      "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/DisconnectionResult.swift",
       "line": 15,
       "symbol": "DisconnectionResult.failure",
       "symbol_kind": "source.lang.swift.decl.enumelement",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/DiscoveryResult.swift",
+      "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/DiscoveryResult.swift",
       "line": 11,
       "symbol": "DiscoveryResult",
       "symbol_kind": "source.lang.swift.decl.enum",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/DiscoveryResult.swift",
+      "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/DiscoveryResult.swift",
       "line": 12,
       "symbol": "DiscoveryResult.success",
       "symbol_kind": "source.lang.swift.decl.enumelement",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/DiscoveryResult.swift",
+      "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/DiscoveryResult.swift",
       "line": 13,
       "symbol": "DiscoveryResult.cancelled",
       "symbol_kind": "source.lang.swift.decl.enumelement",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/DiscoveryResult.swift",
+      "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/DiscoveryResult.swift",
       "line": 14,
       "symbol": "DiscoveryResult.failure",
       "symbol_kind": "source.lang.swift.decl.enumelement",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/Integer+Transferable.swift",
+      "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/Integer+Transferable.swift",
       "line": 14,
       "symbol": "Integer.init(bluetoothData:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/Integer+Transferable.swift",
+      "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/Integer+Transferable.swift",
       "line": 20,
       "symbol": "Integer.toBluetoothData()",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/ListenAction.swift",
+      "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/ListenAction.swift",
       "line": 13,
       "symbol": "ListenAction.keepListening",
       "symbol_kind": "source.lang.swift.decl.enumelement",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/ListenAction.swift",
+      "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/ListenAction.swift",
       "line": 14,
       "symbol": "ListenAction.done",
       "symbol_kind": "source.lang.swift.decl.enumelement",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/Notifications.swift",
+      "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/Notifications.swift",
       "line": 13,
       "symbol": "Notification.logDidUpdate",
       "symbol_kind": "source.lang.swift.decl.var.static",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/Peripheral.swift",
+      "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/Peripheral.swift",
       "line": null,
       "symbol": "Peripheral",
       "symbol_kind": "source.lang.swift.decl.extension",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/Peripheral.swift",
+      "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/Peripheral.swift",
       "line": 12,
       "symbol": "Peripheral",
       "symbol_kind": "source.lang.swift.decl.class",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/Peripheral.swift",
+      "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/Peripheral.swift",
       "line": 37,
       "symbol": "Peripheral.uuid",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/Peripheral.swift",
+      "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/Peripheral.swift",
       "line": 41,
       "symbol": "Peripheral.name",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/Peripheral.swift",
+      "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/Peripheral.swift",
       "line": 128,
       "symbol": "Peripheral.readRSSI()",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/Peripheral.swift",
+      "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/Peripheral.swift",
       "line": 132,
       "symbol": "Peripheral.register(observer:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/Peripheral.swift",
+      "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/Peripheral.swift",
       "line": 137,
       "symbol": "Peripheral.unregister(observer:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/Peripheral.swift",
+      "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/Peripheral.swift",
       "line": 183,
       "symbol": "Peripheral.isListening(to:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/Peripheral.swift",
+      "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/Peripheral.swift",
       "line": 361,
       "symbol": "Peripheral.peripheral(_:didDiscoverServices:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/Peripheral.swift",
+      "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/Peripheral.swift",
       "line": 365,
       "symbol": "Peripheral.peripheral(_:didDiscoverCharacteristicsFor:error:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/Peripheral.swift",
+      "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/Peripheral.swift",
       "line": 369,
       "symbol": "Peripheral.peripheral(_:didWriteValueFor:error:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/Peripheral.swift",
+      "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/Peripheral.swift",
       "line": 373,
       "symbol": "Peripheral.peripheral(_:didUpdateValueFor:error:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/Peripheral.swift",
+      "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/Peripheral.swift",
       "line": 403,
       "symbol": "Peripheral.peripheral(_:didUpdateNotificationStateFor:error:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/Peripheral.swift",
+      "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/Peripheral.swift",
       "line": 407,
       "symbol": "Peripheral.peripheral(_:didReadRSSI:error:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/PeripheralIdentifier.swift",
+      "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/PeripheralIdentifier.swift",
       "line": 14,
       "symbol": "PeripheralIdentifier.uuid",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/PeripheralIdentifier.swift",
+      "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/PeripheralIdentifier.swift",
       "line": 16,
       "symbol": "PeripheralIdentifier.init(uuid:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/PeripheralIdentifier.swift",
+      "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/PeripheralIdentifier.swift",
       "line": 25,
       "symbol": "PeripheralIdentifier.init(uuid:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/RSSIObserver.swift",
+      "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/RSSIObserver.swift",
       "line": null,
       "symbol": "RSSIObserver",
       "symbol_kind": "source.lang.swift.decl.extension",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/RSSIObserver.swift",
+      "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/RSSIObserver.swift",
       "line": 12,
       "symbol": "RSSIObserver",
       "symbol_kind": "source.lang.swift.decl.protocol",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/RSSIObserver.swift",
+      "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/RSSIObserver.swift",
       "line": 13,
       "symbol": "RSSIObserver.peripheral(_:didReadRSSI:error:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/RSSIObserver.swift",
+      "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/RSSIObserver.swift",
       "line": 17,
       "symbol": "RSSIObserver.peripheral(_:didReadRSSI:error:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/ReadResult.swift",
+      "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/ReadResult.swift",
       "line": 13,
       "symbol": "ReadResult.success",
       "symbol_kind": "source.lang.swift.decl.enumelement",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/ReadResult.swift",
+      "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/ReadResult.swift",
       "line": 14,
       "symbol": "ReadResult.cancelled",
       "symbol_kind": "source.lang.swift.decl.enumelement",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/ReadResult.swift",
+      "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/ReadResult.swift",
       "line": 15,
       "symbol": "ReadResult.failure",
       "symbol_kind": "source.lang.swift.decl.enumelement",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/Receivable.swift",
+      "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/Receivable.swift",
       "line": 13,
       "symbol": "Receivable.init(bluetoothData:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/RunResult.swift",
+      "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/RunResult.swift",
       "line": 11,
       "symbol": "RunResult",
       "symbol_kind": "source.lang.swift.decl.enum",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/RunResult.swift",
+      "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/RunResult.swift",
       "line": 12,
       "symbol": "RunResult.success",
       "symbol_kind": "source.lang.swift.decl.enumelement",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/RunResult.swift",
+      "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/RunResult.swift",
       "line": 13,
       "symbol": "RunResult.cancelled",
       "symbol_kind": "source.lang.swift.decl.enumelement",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/RunResult.swift",
+      "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/RunResult.swift",
       "line": 14,
       "symbol": "RunResult.failure",
       "symbol_kind": "source.lang.swift.decl.enumelement",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/ScanAction.swift",
+      "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/ScanAction.swift",
       "line": 11,
       "symbol": "ScanAction",
       "symbol_kind": "source.lang.swift.decl.enum",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/ScanAction.swift",
+      "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/ScanAction.swift",
       "line": 12,
       "symbol": "ScanAction.continue",
       "symbol_kind": "source.lang.swift.decl.enumelement",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/ScanAction.swift",
+      "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/ScanAction.swift",
       "line": 13,
       "symbol": "ScanAction.blacklist",
       "symbol_kind": "source.lang.swift.decl.enumelement",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/ScanAction.swift",
+      "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/ScanAction.swift",
       "line": 14,
       "symbol": "ScanAction.stop",
       "symbol_kind": "source.lang.swift.decl.enumelement",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/ScanAction.swift",
+      "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/ScanAction.swift",
       "line": 15,
       "symbol": "ScanAction.connect",
       "symbol_kind": "source.lang.swift.decl.enumelement",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/ScanDiscovery.swift",
+      "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/ScanDiscovery.swift",
       "line": 12,
       "symbol": "ScanDiscovery",
       "symbol_kind": "source.lang.swift.decl.struct",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/ScanDiscovery.swift",
+      "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/ScanDiscovery.swift",
       "line": 13,
       "symbol": "ScanDiscovery.peripheral",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/ScanDiscovery.swift",
+      "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/ScanDiscovery.swift",
       "line": 14,
       "symbol": "ScanDiscovery.advertisementPacket",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/ScanDiscovery.swift",
+      "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/ScanDiscovery.swift",
       "line": 15,
       "symbol": "ScanDiscovery.rssi",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/Sendable.swift",
+      "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/Sendable.swift",
       "line": 13,
       "symbol": "Sendable.toBluetoothData()",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/ServiceIdentifier.swift",
+      "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/ServiceIdentifier.swift",
       "line": 15,
       "symbol": "ServiceIdentifier.uuid",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/ServiceIdentifier.swift",
+      "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/ServiceIdentifier.swift",
       "line": 17,
       "symbol": "ServiceIdentifier.init(uuid:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/ServiceIdentifier.swift",
+      "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/ServiceIdentifier.swift",
       "line": 21,
       "symbol": "ServiceIdentifier.init(_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/String+Transferable.swift",
+      "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/String+Transferable.swift",
       "line": 14,
       "symbol": "String.init(bluetoothData:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/String+Transferable.swift",
+      "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/String+Transferable.swift",
       "line": 18,
       "symbol": "String.toBluetoothData()",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/SynchronizedPeripheral.swift",
-      "line": 180,
+      "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/SynchronizedPeripheral.swift",
+      "line": 113,
+      "symbol": "SynchronizedPeripheral.flushListen(to:idleWindow:completion:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/SynchronizedPeripheral.swift",
+      "line": 252,
       "symbol": "SynchronizedPeripheral.writeAndAssemble(writeTo:value:listenTo:expectedLength:timeoutInSeconds:completion:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/WriteResult.swift",
+      "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/WriteResult.swift",
       "line": 13,
       "symbol": "WriteResult.success",
       "symbol_kind": "source.lang.swift.decl.enumelement",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/WriteResult.swift",
+      "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/WriteResult.swift",
       "line": 14,
       "symbol": "WriteResult.cancelled",
       "symbol_kind": "source.lang.swift.decl.enumelement",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay/Bluejay/WriteResult.swift",
+      "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/WriteResult.swift",
       "line": 15,
       "symbol": "WriteResult.failure",
       "symbol_kind": "source.lang.swift.decl.enumelement",
       "warning": "undocumented"
     }
   ],
-  "source_directory": "/Users/jeremychiang/Dropbox/Steamclock/First Light/iOS/firstlight/bluejay/Bluejay"
+  "source_directory": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay"
 }
