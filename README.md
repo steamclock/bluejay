@@ -396,11 +396,11 @@ Note how we have a nested `Sendable` in this slightly more complicated model, as
 
 #### Sending and Receiving Primitives
 
-In some cases, you may want to send or receive data that is simple enough that creating a custom struct that implements Receivable or Sendable to hold it is unnecessarily complicated. For those case, Bluejay also retroactively conforms several built-in Swift types to Sendable and Receivable. `Int8`, `Int16`, `Int32`, `Int64`, `UInt8`, `UInt16`, `UInt32`, `UInt64`, `Data` and `String`are all conformed to both protocols and so can be sent or received directly. 
+In some cases, you may want to send or receive data that is simple enough that creating a custom struct that implements `Sendable` or `Receivable` to hold it is unnecessarily complicated. For those cases, Bluejay also retroactively conforms several built-in Swift types to `Sendable` and `Receivable`. `Int8`, `Int16`, `Int32`, `Int64`, `UInt8`, `UInt16`, `UInt32`, `UInt64`, `Data` and `String`are all conformed to both protocols and so can be sent or received directly. 
 
-`Int` and `UInt` are intentionally not conformed. Values are sent / received at a specific bit width. The intended bit width for an `Int` is ambiguous, and trying to use one often indicates a programmer error, in the form of not considering the bit width the Bluetooth device is expecting on a characteristic.
+`Int` and `UInt` are intentionally not conformed. Values are sent and/or received at a specific bit width. The intended bit width for an `Int` is ambiguous, and trying to use one often indicates a programmer error, in the form of not considering the bit width the Bluetooth device is expecting on a characteristic.
 
-`String` is sent/received utf8 encoded.
+`String` is sent and/or received UTF8 encoded.
 
 ## Interactions
 
@@ -450,7 +450,7 @@ Listening involves waiting for the Bluetooth device to write to a specific chara
 
 Unlike read and write, where completion blocks are called very soon (generally at most a few seconds) after the original call and are called only once, listens are persistent. It could be minutes (or never) before the receive block is called, and the block can be called multiple times.
 
-When you don't want to listen anymore, you must explicitly remove it with the `endListen` method.  You can only have one active listen on a given characteristic at a time.
+When you don't want to listen anymore, you **must** explicitly remove it with the `endListen` method.  You can only have one active listen on a given characteristic at a time.
 
 Not all characteristics support listening, it is a feature that must be enabled for a characteristic on the Bluetooth device itself.
 
@@ -510,7 +510,7 @@ Note that because the `backgroundTask` block is running on a background thread, 
 
 ## Background Operation
 
-[Background Execution](https://developer.apple.com/library/content/documentation/NetworkingInternetWeb/Conceptual/CoreBluetooth_concepts/CoreBluetoothBackgroundProcessingForIOSApps/) is a mode supported by CoreBluetooth to allow apps that use bluetooth to be backgrounded and possibly even evicted from memory with active bluetooth operations (pending connect requests, listening for notifications on a particular characteristic), the app will then be woken / restarted in the background by the system when those Bluetooth events happen. This can, for example, allow syncing data from a device without needing to manually launch the app.
+[Background Execution](https://developer.apple.com/library/content/documentation/NetworkingInternetWeb/Conceptual/CoreBluetooth_concepts/CoreBluetoothBackgroundProcessingForIOSApps/) is a mode supported by Core Bluetooth to allow apps to continue processing active Bluetooth operations when it is backgrounded or even when it is evicted from memory. For examples, a pending connect request that finishes, or a subscribed characteristic that fires a notification, can cause the system to wake or restart the app in the background. This can, for example, allow syncing data from a device without needing to manually launch the app.
 
 In order to support background mode, make sure to turn on the **Background Modes** capability in your Xcode project with **Uses Bluetooth LE accessories** enabled.
 
