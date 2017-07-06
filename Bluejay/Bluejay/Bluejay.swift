@@ -170,18 +170,13 @@ public class Bluejay: NSObject {
      - Parameter error: If nil, all tasks in the queue will be cancelled without any errors. If an error is provided, all tasks in the queue will be failed with the supplied error.
      */
     public func cancelEverything(_ error: NSError? = nil) {
+        shouldAutoReconnect = false
+
         queue.cancelAll(error)
         
-        if cbCentralManager.state == .poweredOn {
-            if isConnecting {
-                cbCentralManager.cancelPeripheralConnection(connectingPeripheral!.cbPeripheral)
-            }
-            else if isConnected {
-                cbCentralManager.cancelPeripheralConnection(connectedPeripheral!.cbPeripheral)
-            }
+        if isConnected {
+            cbCentralManager.cancelPeripheralConnection(connectedPeripheral!.cbPeripheral)
         }
-        
-        shouldAutoReconnect = false
         
         connectingPeripheral = nil
         connectedPeripheral = nil
