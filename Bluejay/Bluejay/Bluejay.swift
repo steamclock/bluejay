@@ -181,6 +181,8 @@ public class Bluejay: NSObject {
             }
         }
         
+        shouldAutoReconnect = false
+        
         connectingPeripheral = nil
         connectedPeripheral = nil
     }
