@@ -172,8 +172,13 @@ public class Bluejay: NSObject {
     public func cancelEverything(_ error: NSError? = nil) {
         queue.cancelAll(error)
         
-        if isConnected && cbCentralManager.state == .poweredOn {
-            cbCentralManager.cancelPeripheralConnection(connectedPeripheral!.cbPeripheral)
+        if cbCentralManager.state == .poweredOn {
+            if isConnecting {
+                cbCentralManager.cancelPeripheralConnection(connectingPeripheral!.cbPeripheral)
+            }
+            else if isConnected {
+                cbCentralManager.cancelPeripheralConnection(connectedPeripheral!.cbPeripheral)
+            }
         }
         
         connectingPeripheral = nil
