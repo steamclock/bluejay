@@ -677,7 +677,7 @@ extension Bluejay: CBCentralManagerDelegate {
         }
         
         for observer in observers {
-            observer.weakReference?.disconnected()
+            observer.weakReference?.disconnected(from: Peripheral(bluejay: self, cbPeripheral: peripheral))
         }
         
         if !queue.isEmpty() {

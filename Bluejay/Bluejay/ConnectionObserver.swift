@@ -27,14 +27,14 @@ public protocol ConnectionObserver: class {
     */
     func bluetoothAvailable(_ available: Bool)
     func connected(to peripheral: Peripheral)
-    func disconnected()
+    func disconnected(from peripheral: Peripheral)
 }
 
 /// Slightly less gross way to make the BluejayEventsObservable protocol's functions optional.
 extension ConnectionObserver {
     public func bluetoothAvailable(_ available: Bool) {}
     public func connected(to peripheral: Peripheral) {}
-    public func disconnected() {}
+    public func disconnected(from peripheral: Peripheral) {}
 }
 
 /// Allows creating weak references to BluejayEventsObservable objects, so that the Bluejay singleton does not prevent the deallocation of those objects.
