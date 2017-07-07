@@ -666,6 +666,13 @@ extension Bluejay: CBCentralManagerDelegate {
     public func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Swift.Error?) {
         let backgroundTask =  UIApplication.shared.beginBackgroundTask(expirationHandler: nil)
         
+        /*
+         If Bluejay is not even connected when didDisconnectPeripheral is called (can happen when a pending connection is cancelled), Bluejay should not try to auto reconnect. Also, do not override if shouldAutoReconnect is already explicitly set to false from cancelEverything or from a manual disconnect.
+         */
+        if shouldAutoReconnect {
+            shouldAutoReconnect = connectedPeripheral != nil
+        }
+        
         let peripheralString = peripheral.name ?? peripheral.identifier.uuidString
         let errorString = error?.localizedDescription
         
