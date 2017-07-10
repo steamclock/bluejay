@@ -68,6 +68,18 @@ class HeartSensorViewController: UITableViewController {
                 debugPrint(heartRateMeasurement.measurement)
                 weakSelf.isMonitoringHeartRate = true
                 weakSelf.bpmCell.detailTextLabel?.text = "\(heartRateMeasurement.measurement)"
+                
+                DispatchQueue.main.async {
+                    UIView.animate(withDuration: 0.25, animations: {
+                        weakSelf.bpmCell.detailTextLabel?.transform = weakSelf.bpmCell.detailTextLabel!.transform.scaledBy(x: 1.5, y: 1.5)
+                    }, completion: { (completed) in
+                        if completed {
+                            UIView.animate(withDuration: 0.25, animations: {
+                                weakSelf.bpmCell.detailTextLabel?.transform = CGAffineTransform.identity
+                            })
+                        }
+                    })
+                }
             case .cancelled:
                 debugPrint("Cancelled")
                 weakSelf.isMonitoringHeartRate = false
