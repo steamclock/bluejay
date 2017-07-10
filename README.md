@@ -1,6 +1,7 @@
 ![Bluejay](https://raw.githubusercontent.com/steamclock/bluejay/master/bluejay-wordmark.png)
 
 ![CocoaPods Compatible](https://img.shields.io/cocoapods/v/Bluejay.svg)
+![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)
 [![Platform](https://img.shields.io/cocoapods/p/Bluejay.svg?style=flat)](http://cocoadocs.org/docsets/Bluejay)
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg)]()
 
@@ -61,6 +62,10 @@ Install using CocoaPods:
 Or to try the latest master:
 
 `pod 'Bluejay', :git => 'https://github.com/steamclock/bluejay.git', :branch => 'master'`
+
+Cartfile:
+
+`github "steamclock/bluejay" ~> 0.1`
 
 Import using:
 
