@@ -90,6 +90,9 @@ Bluejay has a demo app called **BluejayDemo** that works with LightBlue Explorer
 - You can turn the virtual peripheral on or off in LightBlue Explorer by tapping the blue circle to the left of the peripheral's name.
 	- If the virtual peripheral is not working as expected, you can try to reset it this way.
 - The virtual peripheral may use your iPhone or iPad name, because the virtual peripheral is an extension of the host device.
+- Some characteristics in the various virtual peripherals available in LightBlue Explorer might not have read of write permissions enabled by default, but you can change most of those settings.
+	- After selecting your virtual peripheral, tap on the characteristic you wish to modify, then tap on either the "Read" or "Write" property to customize their permissions.
+	- Characteristics belonging to the Device Information service, for example, are read only.
 
 ## Usage
 
@@ -413,7 +416,12 @@ Once you have your data modelled using either the `Receivable` or `Sendable` pro
 
 ### Reading
 
+Here is an example showing how to read the [sensor body location characteristic](https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.body_sensor_location.xml), and converting its value to its corresponding label.
+
 ```swift
+let heartRateService = ServiceIdentifier(uuid: "180D")
+let sensorLocation = CharacteristicIdentifier(uuid: "2A38", service: heartRateService)
+
 bluejay.read(from: sensorLocation) { [weak self] (result: ReadResult<UInt8>) in
     guard let weakSelf = self else {
 	return
@@ -455,6 +463,8 @@ bluejay.read(from: sensorLocation) { [weak self] (result: ReadResult<UInt8>) in
 ```
 
 ### Writing
+
+Note that LightBlue Explorer's virtual heart sensor does not have write enabled for its sensor body location characteristic. See [Demo](#demo) to find out how to enable it. However, if write is not allowed, the error object in the failure block will inform you.
 
 ```swift
 bluejay.write(to: sensorLocation, value: UInt8(indexPath.row), completion: { [weak self] (result) in
