@@ -414,18 +414,42 @@ Once you have your data modelled using either the `Receivable` or `Sendable` pro
 ### Reading
 
 ```swift
-bluejay.read(from: firmwareVersion) { [weak self] (result: ReadResult<FirmwareVersion>) in
+bluejay.read(from: sensorLocation) { [weak self] (result: ReadResult<UInt8>) in
     guard let weakSelf = self else {
 	return
     }
 
     switch result {
-    case .success(let firmwareVersion):
-	debugPrint(firmwareVersion.string)
+    case .success(let location):
+	debugPrint("Read from sensor location is successful: \(location)")
+	
+	var locationString = "Unknown"
+
+	switch location {
+	case 0:
+	    locationString = "Other"
+	case 1:
+	    locationString = "Chest"
+	case 2:
+	    locationString = "Wrist"
+	case 3:
+	    locationString = "Finger"
+	case 4:
+	    locationString = "Hand"
+	case 5:
+	    locationString = "Ear Lobe"
+	case 6:
+	    locationString = "Foot"
+	default:
+	    locationString = "Unknown"
+	}
+
+	weakSelf.sensorLocationCell.detailTextLabel?.text = locationString
+	weakSelf.sensorLocation = location
     case .cancelled:
-	debugPrint("Read to firmware version cancelled.")
+	debugPrint("Cancelled read from sensor location.")
     case .failure(let error):
-	debugPrint("Failed to read firmware version with error: \(error.localizedDescription)")
+	debugPrint("Failed to read from sensor location with error: \(error.localizedDescription)")
     }
 }
 ```
@@ -433,20 +457,27 @@ bluejay.read(from: firmwareVersion) { [weak self] (result: ReadResult<FirmwareVe
 ### Writing
 
 ```swift
-bluejay.write(to: nickname, value: newNickname) { [weak self] (result: WriteResult<Nickname>) in
+bluejay.write(to: sensorLocation, value: UInt8(indexPath.row), completion: { [weak self] (result) in
     guard let weakSelf = self else {
 	return
     }
 
     switch result {
     case .success:
-	debugPrint("Write to nickanme successful.")
+	debugPrint("Write to sensor location is successful.")
+
+	if let selectedCell = weakSelf.selectedCell {
+	    selectedCell.accessoryType = .none
+	}
+	cell.accessoryType = .checkmark
+
+	weakSelf.navigationController?.popViewController(animated: true)
     case .cancelled:
-	debugPrint("Write to nickname cancelled.")
+	debugPrint("Cancelled write to sensor location.")
     case .failure(let error):
-	debugPrint("Failed to write to nickname with error: \(error.localizedDescription)")
+	debugPrint("Failed to write to sensor location with error: \(error.localizedDescription)")
     }
-}
+})
 ```
 
 ### Listening
