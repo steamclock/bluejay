@@ -17,16 +17,20 @@ class HeartSensorViewController: UITableViewController {
     
     @IBOutlet var statusCell: UITableViewCell!
     @IBOutlet var bpmCell: UITableViewCell!
+    @IBOutlet var sensorLocationCell: UITableViewCell!
     @IBOutlet var connectCell: UITableViewCell!
     @IBOutlet var disconnectCell: UITableViewCell!
     
     fileprivate var isMonitoringHeartRate = false
     
+    private var shouldRefreshSensorLocation = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        statusCell.detailTextLabel?.text = ""
+        statusCell.detailTextLabel?.text = "Disconnected"
         bpmCell.detailTextLabel?.text = "0"
+        sensorLocationCell.detailTextLabel?.text = "Unknown"
         
         guard let bluejay = bluejay else {
             showBluejayMissingAlert()
@@ -36,6 +40,14 @@ class HeartSensorViewController: UITableViewController {
         bluejay.register(observer: self)
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        if shouldRefreshSensorLocation {
+            readSensorLocation()
+        }
+    }
+    
     fileprivate func showBluejayMissingAlert() {
         let alert = UIAlertController(title: "Bluejay Error", message: "Bluejay is missing.", preferredStyle: .alert)
         let dismiss = UIAlertAction(title: "Dismiss", style: .default, handler: nil)
@@ -43,6 +55,53 @@ class HeartSensorViewController: UITableViewController {
         alert.addAction(dismiss)
         
         navigationController?.present(alert, animated: true, completion: nil)
+    }
+    
+    fileprivate func readSensorLocation() {
+        guard let bluejay = bluejay else {
+            showBluejayMissingAlert()
+            return
+        }
+        
+        let heartRateService = ServiceIdentifier(uuid: "180D")
+        let sensorLocation = CharacteristicIdentifier(uuid: "2A38", service: heartRateService)
+        
+        bluejay.read(from: sensorLocation) { [weak self] (result: ReadResult<UInt8>) in
+            guard let weakSelf = self else {
+                return
+            }
+            
+            switch result {
+            case .success(let location):
+                debugPrint("Sensor location read: \(location)")
+                var locationString = "Unknown"
+                
+                switch location {
+                case 0:
+                    locationString = "Other"
+                case 1:
+                    locationString = "Chest"
+                case 2:
+                    locationString = "Wrist"
+                case 3:
+                    locationString = "Finger"
+                case 4:
+                    locationString = "Hand"
+                case 5:
+                    locationString = "Ear Lobe"
+                case 6:
+                    locationString = "Foot"
+                default:
+                    locationString = "Unknown"
+                }
+                
+                weakSelf.sensorLocationCell.detailTextLabel?.text = locationString
+            case .cancelled:
+                debugPrint("Cancelled read sensor location.")
+            case .failure(let error):
+                debugPrint("Failed to read sensor location with error: \(error.localizedDescription)")
+            }
+        }
     }
     
     fileprivate func startMonitoringHeartRate() {
@@ -157,6 +216,7 @@ extension HeartSensorViewController: ConnectionObserver {
         statusCell.detailTextLabel?.text = "Connected"
         
         startMonitoringHeartRate()
+        readSensorLocation()
     }
     
     func disconnected() {
@@ -164,6 +224,7 @@ extension HeartSensorViewController: ConnectionObserver {
 
         statusCell.detailTextLabel?.text = "Disconnected"
         bpmCell.detailTextLabel?.text = "0"
+        sensorLocationCell.detailTextLabel?.text = ""
         
         guard let bluejay = bluejay else {
             showBluejayMissingAlert()
