@@ -2,42 +2,42 @@
   "warnings": [
     {
       "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/Bluejay.swift",
-      "line": 531,
+      "line": 533,
       "symbol": "Bluejay.centralManagerDidUpdateState(_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/Bluejay.swift",
-      "line": 593,
+      "line": 595,
       "symbol": "Bluejay.centralManager(_:willRestoreState:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/Bluejay.swift",
-      "line": 645,
+      "line": 647,
       "symbol": "Bluejay.centralManager(_:didConnect:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/Bluejay.swift",
-      "line": 664,
+      "line": 666,
       "symbol": "Bluejay.centralManager(_:didDisconnectPeripheral:error:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/Bluejay.swift",
-      "line": 704,
+      "line": 706,
       "symbol": "Bluejay.centralManager(_:didFailToConnect:error:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/Bluejay.swift",
-      "line": 709,
+      "line": 711,
       "symbol": "Bluejay.centralManager(_:didDiscover:advertisementData:rssi:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
@@ -262,7 +262,7 @@
     {
       "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/Notifications.swift",
       "line": 13,
-      "symbol": "Notification.logDidUpdate",
+      "symbol": "Notification.Name.logDidUpdate",
       "symbol_kind": "source.lang.swift.decl.var.static",
       "warning": "undocumented"
     },

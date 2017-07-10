@@ -1,4 +1,4 @@
-![Bluejay](bluejay-wordmark.png)
+![Bluejay](https://raw.githubusercontent.com/steamclock/bluejay/master/bluejay-wordmark.png)
 
 ![CocoaPods Compatible](https://img.shields.io/cocoapods/v/Bluejay.svg)
 [![Platform](https://img.shields.io/cocoapods/p/Bluejay.svg?style=flat)](http://cocoadocs.org/docsets/Bluejay)
@@ -396,7 +396,7 @@ Note how we have a nested `Sendable` in this slightly more complicated model, as
 
 #### Sending and Receiving Primitives
 
-In some cases, you may want to send or receive data that is simple enough that creating a custom struct that implements `Sendable` or `Receivable` to hold it is unnecessarily complicated. For those cases, Bluejay also retroactively conforms several built-in Swift types to `Sendable` and `Receivable`. `Int8`, `Int16`, `Int32`, `Int64`, `UInt8`, `UInt16`, `UInt32`, `UInt64`, `Data` and `String`are all conformed to both protocols and so can be sent or received directly. 
+In some cases, you may want to send or receive data that is simple enough that creating a custom struct that implements `Sendable` or `Receivable` to hold it is unnecessarily complicated. For those cases, Bluejay also retroactively conforms several built-in Swift types to `Sendable` and `Receivable`. `Int8`, `Int16`, `Int32`, `Int64`, `UInt8`, `UInt16`, `UInt32`, `UInt64`, `Data` and `String`are all conformed to both protocols and so can be sent or received directly.
 
 `Int` and `UInt` are intentionally not conformed. Values are sent and/or received at a specific bit width. The intended bit width for an `Int` is ambiguous, and trying to use one often indicates a programmer error, in the form of not considering the bit width the Bluetooth device is expecting on a characteristic.
 
@@ -446,7 +446,7 @@ bluejay.write(to: nickname, value: newNickname) { [weak self] (result: WriteResu
 
 ### Listening
 
-Listening involves waiting for the Bluetooth device to write to a specific characteristic. When that happens the app will be notified that the write has taken place and the completion block will be called with the value read from the characteristic. 
+Listening involves waiting for the Bluetooth device to write to a specific characteristic. When that happens the app will be notified that the write has taken place and the completion block will be called with the value read from the characteristic.
 
 Unlike read and write, where completion blocks are called very soon (generally at most a few seconds) after the original call and are called only once, listens are persistent. It could be minutes (or never) before the receive block is called, and the block can be called multiple times.
 

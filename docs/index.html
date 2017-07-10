@@ -98,6 +98,9 @@
                 <a href="Extensions/Notification.html">Notification</a>
               </li>
               <li class="nav-group-task">
+                <a href="Extensions/Notification/Name.html">– Name</a>
+              </li>
+              <li class="nav-group-task">
                 <a href="Extensions/String.html">String</a>
               </li>
             </ul>
@@ -148,7 +151,7 @@
         <section>
           <section class="section">
             
-            <p><img src="bluejay-wordmark.png" alt="Bluejay"></p>
+            <p><img src="https://raw.githubusercontent.com/steamclock/bluejay/master/bluejay-wordmark.png" alt="Bluejay"></p>
 
 <p><img src="https://img.shields.io/cocoapods/v/Bluejay.svg" alt="CocoaPods Compatible">
 <a href="http://cocoadocs.org/docsets/Bluejay"><img src="https://img.shields.io/cocoapods/p/Bluejay.svg?style=flat" alt="Platform"></a>
@@ -522,6 +525,13 @@
 </code></pre>
 
 <p>Note how we have a nested <code>Sendable</code> in this slightly more complicated model, as well as making use of the <code>combine</code> helper function to group and to arrange the data bytes in a particular order.</p>
+<h4 id='sending-and-receiving-primitives' class='heading'>Sending and Receiving Primitives</h4>
+
+<p>In some cases, you may want to send or receive data that is simple enough that creating a custom struct that implements <code>Sendable</code> or <code>Receivable</code> to hold it is unnecessarily complicated. For those cases, Bluejay also retroactively conforms several built-in Swift types to <code>Sendable</code> and <code>Receivable</code>. <code>Int8</code>, <code>Int16</code>, <code>Int32</code>, <code>Int64</code>, <code>UInt8</code>, <code>UInt16</code>, <code>UInt32</code>, <code>UInt64</code>, <code>Data</code> and <code>String</code>are all conformed to both protocols and so can be sent or received directly.</p>
+
+<p><code>Int</code> and <code>UInt</code> are intentionally not conformed. Values are sent and/or received at a specific bit width. The intended bit width for an <code>Int</code> is ambiguous, and trying to use one often indicates a programmer error, in the form of not considering the bit width the Bluetooth device is expecting on a characteristic.</p>
+
+<p><code>String</code> is sent and/or received UTF8 encoded.</p>
 <h2 id='interactions' class='heading'>Interactions</h2>
 
 <p>Once you have your data modelled using either the <code>Receivable</code> or <code>Sendable</code> protocol, the read, write, and listen APIs in Bluejay should handle the deserialization and serialization seamlessly for you. All you need to do is to specify the type for the generic result wrappers: <code>ReadResult&lt;T&gt;</code> or <code>WriteResult&lt;T&gt;</code>.</p>
@@ -558,6 +568,14 @@
 <span class="p">}</span>
 </code></pre>
 <h3 id='listening' class='heading'>Listening</h3>
+
+<p>Listening involves waiting for the Bluetooth device to write to a specific characteristic. When that happens the app will be notified that the write has taken place and the completion block will be called with the value read from the characteristic.</p>
+
+<p>Unlike read and write, where completion blocks are called very soon (generally at most a few seconds) after the original call and are called only once, listens are persistent. It could be minutes (or never) before the receive block is called, and the block can be called multiple times.</p>
+
+<p>When you don&rsquo;t want to listen anymore, you <strong>must</strong> explicitly remove it with the <code>endListen</code> method.  You can only have one active listen on a given characteristic at a time.</p>
+
+<p>Not all characteristics support listening, it is a feature that must be enabled for a characteristic on the Bluetooth device itself.</p>
 <pre class="highlight swift"><code><span class="n">bluejay</span><span class="o">.</span><span class="nf">listen</span><span class="p">(</span><span class="nv">to</span><span class="p">:</span> <span class="n">heartRateMeasurement</span><span class="p">)</span> <span class="p">{</span> <span class="p">[</span><span class="k">weak</span> <span class="k">self</span><span class="p">]</span> <span class="p">(</span><span class="nv">result</span><span class="p">:</span> <span class="kt">ReadResult</span><span class="o">&lt;</span><span class="kt">HeartRateMeasurement</span><span class="o">&gt;</span><span class="p">)</span> <span class="k">in</span>
     <span class="k">guard</span> <span class="k">let</span> <span class="nv">weakSelf</span> <span class="o">=</span> <span class="k">self</span> <span class="k">else</span> <span class="p">{</span>
     <span class="k">return</span>
@@ -605,7 +623,11 @@
 </code></pre>
 
 <p>It is critical though that when performing your Bluetooth operations in the background with <code>backgroundTask</code>, you <strong>must</strong> use the <code>SynchronizedPeripheral</code> given to you by this API. <strong>DO NOT</strong> call any <code>bluejay</code>.<code>read/write/listen</code> functions inside the <code>backgroundTask</code> block.</p>
+
+<p>Note that because the <code>backgroundTask</code> block is running on a background thread, you need to be careful about accessing any global or captured data inside that block for thread safety reasons, like you would with any GCD or OperationQueue task. To help with this, Bluejay provides some other forms of <code>run(backgroundTask:completionOnMainThread:)</code> that allow you to pass user data into the background block and/or return a value from the background block that will be available in the success case of the result in the main thread block.</p>
 <h2 id='background-operation' class='heading'>Background Operation</h2>
+
+<p><a href="https://developer.apple.com/library/content/documentation/NetworkingInternetWeb/Conceptual/CoreBluetooth_concepts/CoreBluetoothBackgroundProcessingForIOSApps/">Background Execution</a> is a mode supported by Core Bluetooth to allow apps to continue processing active Bluetooth operations when it is backgrounded or even when it is evicted from memory. For examples, a pending connect request that finishes, or a subscribed characteristic that fires a notification, can cause the system to wake or restart the app in the background. This can, for example, allow syncing data from a device without needing to manually launch the app.</p>
 
 <p>In order to support background mode, make sure to turn on the <strong>Background Modes</strong> capability in your Xcode project with <strong>Uses Bluetooth LE accessories</strong> enabled.</p>
 
@@ -674,7 +696,7 @@
         </section>
         <section id="footer">
           <p>Copyright © 2017 Steamclock Software. All rights reserved.</p>
-          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.8.2</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.8.3</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>
     </div>
