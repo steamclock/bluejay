@@ -24,6 +24,7 @@ class HeartSensorViewController: UITableViewController {
     fileprivate var isMonitoringHeartRate = false
     
     private var shouldRefreshSensorLocation = false
+    fileprivate var sensorLocation: UInt8?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,6 +45,7 @@ class HeartSensorViewController: UITableViewController {
         super.viewDidAppear(animated)
         
         if shouldRefreshSensorLocation {
+            startMonitoringHeartRate()
             readSensorLocation()
         }
     }
@@ -96,12 +98,15 @@ class HeartSensorViewController: UITableViewController {
                 }
                 
                 weakSelf.sensorLocationCell.detailTextLabel?.text = locationString
+                weakSelf.sensorLocation = location
             case .cancelled:
                 debugPrint("Cancelled read sensor location.")
             case .failure(let error):
                 debugPrint("Failed to read sensor location with error: \(error.localizedDescription)")
             }
         }
+        
+        shouldRefreshSensorLocation = false
     }
     
     fileprivate func startMonitoringHeartRate() {
@@ -147,6 +152,18 @@ class HeartSensorViewController: UITableViewController {
                 weakSelf.isMonitoringHeartRate = false
             }
         }
+    }
+    
+    fileprivate func stopMonitoringHeartRate() {
+        guard let bluejay = bluejay else {
+            showBluejayMissingAlert()
+            return
+        }
+        
+        let heartRateService = ServiceIdentifier(uuid: "180D")
+        let heartRateMeasurement = CharacteristicIdentifier(uuid: "2A37", service: heartRateService)
+        
+        bluejay.endListen(to: heartRateMeasurement)
     }
         
     private func connect() {
@@ -199,11 +216,25 @@ class HeartSensorViewController: UITableViewController {
         tableView.deselectRow(at: indexPath, animated: true)
         
         if let selectedCell = tableView.cellForRow(at: indexPath) {
-            if selectedCell == connectCell {
+            if selectedCell == sensorLocationCell {
+                stopMonitoringHeartRate()
+                shouldRefreshSensorLocation = true
+                performSegue(withIdentifier: "showSensorLocation", sender: self)
+            }
+            else if selectedCell == connectCell {
                 connect()
             }
             else if selectedCell == disconnectCell {
                 disconnect()
+            }
+        }
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "showSensorLocation" {
+            if let sensorLocationViewController = segue.destination as? SensorLocationViewController {
+                sensorLocationViewController.bluejay = bluejay
+                sensorLocationViewController.sensorLocation = sensorLocation
             }
         }
     }
@@ -224,17 +255,9 @@ extension HeartSensorViewController: ConnectionObserver {
 
         statusCell.detailTextLabel?.text = "Disconnected"
         bpmCell.detailTextLabel?.text = "0"
-        sensorLocationCell.detailTextLabel?.text = ""
+        sensorLocationCell.detailTextLabel?.text = "Unknown"
         
-        guard let bluejay = bluejay else {
-            showBluejayMissingAlert()
-            return
-        }
-        
-        let heartRateService = ServiceIdentifier(uuid: "180D")
-        let heartRateMeasurement = CharacteristicIdentifier(uuid: "2A37", service: heartRateService)
-        
-        bluejay.endListen(to: heartRateMeasurement)
+        stopMonitoringHeartRate()
     }
     
 }
