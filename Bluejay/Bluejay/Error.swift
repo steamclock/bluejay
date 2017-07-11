@@ -141,4 +141,20 @@ struct Error {
         )
     }
     
+    static func backgroundTaskRunning() -> NSError {
+        return NSError(
+            domain: "Bluejay",
+            code: 16,
+            userInfo: [NSLocalizedDescriptionKey: "Regular Bluetooth operation is not available when a background task is running. For reading, writing, and listening, please use only the API found in the Synchronized Peripheral provided to you when working inside a background task block."]
+        )
+    }
+    
+    static func multipleBackgroundTask() -> NSError {
+        return NSError(
+            domain: "Bluejay",
+            code: 17,
+            userInfo: [NSLocalizedDescriptionKey: "Multiple background task is not supported."]
+        )
+    }
+    
 }
