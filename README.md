@@ -430,7 +430,7 @@ bluejay.read(from: sensorLocation) { [weak self] (result: ReadResult<UInt8>) in
     switch result {
     case .success(let location):
 	debugPrint("Read from sensor location is successful: \(location)")
-	
+
 	var locationString = "Unknown"
 
 	switch location {
@@ -522,32 +522,48 @@ bluejay.listen(to: heartRateMeasurement) { [weak self] (result: ReadResult<Heart
 Often, your app needs to perform a longer series of reads, writes, and listens to complete a specific task, such as syncing, upgrading to a new firmware, or working with a notification-based Bluetooth module. In these cases, Bluejay provides an API for running all your operations on a background thread, and will call your completion on the main thread when everything finishes without an error, or if one of the operations has failed.
 
 ```swift
-bluejay.run(backgroundTask: { (peripheral) in
-        var responseCode: ResponseCode?
+let heartRateService = ServiceIdentifier(uuid: "180D")
+let heartRateMeasurement = CharacteristicIdentifier(uuid: "2A37", service: heartRateService)
+let sensorLocation = CharacteristicIdentifier(uuid: "2A38", service: heartRateService)
 
-        try peripheral.writeAndListen(
-            writeTo: Characteristics.rigadoTX,
-            value: WriteRequest(handle: Registers.configuration.motionControlEnable, data: enabled ? UInt8(1) : UInt8(0)),
-            listenTo: Characteristics.rigadoRX,
-            completion: { (result: WriteResponse) -> ListenAction in
-                responseCode = ResponseCode(rawValue: result.responseCode)
-                return .done
-        })
+bluejay.run(backgroundTask: { (peripheral) -> UInt8 in
+    // 1. Stop monitoring.
+    debugPrint("Reset step 1: stop monitoring.")
+    try peripheral.endListen(to: heartRateMeasurement)
 
-        if responseCode != .ok {
-            throw NSError(domain: "MyApp", code: 0, userInfo: [NSLocalizedDescriptionKey : "Failed writing to motion control enable."])
-        }
-    }, completionOnMainThread: { (result) in
-        switch result {
-        case .success:
-            debugPrint("Motion control enable changed to: \(enabled)")            
-        case .cancelled:
-            debugPrint("Change motion control enable cancelled.")
-        case .failure(let error):
-            debugPrint("Failed to change motion control enable with error: \(error.localizedDescription)")
-        }
-    })
-})
+    // 2. Set sensor location to 0.
+    debugPrint("Reset step 2: set sensor location to 0.")
+    try peripheral.write(to: sensorLocation, value: UInt8(0))
+
+    // 3. Read sensor location.
+    debugPrint("Reset step 3: read sensor location.")
+    let sensorLocation = try peripheral.read(from: sensorLocation) as UInt8
+
+    /*
+     Don't use the listen from the synchronized peripheral here to start monitoring the heart rate again, as it will actually block until it is turned off. The synchronous listen is for when you want to listen to and process some expected incoming values before moving on to the next steps in your background task. It is different from the regular asynchronous listen that is more commonly used for continuous monitoring.
+     */
+
+    // 4. Return the data interested and process it in the completion block on the main thread.
+    debugPrint("Reset step 4: return sensor location.")
+    return sensorLocation
+}) { [weak self] (result: RunResult<UInt8>) in
+    guard let weakSelf = self else {
+        return
+    }
+
+    switch result {
+    case .success(let sensorLocation):
+        // Update the sensor location label on the main thread.
+        weakSelf.updateSensorLocationLabel(value: sensorLocation)
+
+        // Resume monitoring. Now we can use the non-blocking listen from Bluejay, not from the SynchronizedPeripheral.
+        weakSelf.startMonitoringHeartRate()
+    case .cancelled:
+        debugPrint("Cancelled reset background task.")
+    case .failure(let error):
+        debugPrint("Failed to complete reset background task with error: \(error.localizedDescription)")
+    }
+}
 ```
 
 It is critical though that when performing your Bluetooth operations in the background with `backgroundTask`, you **must** use the `SynchronizedPeripheral` given to you by this API. **DO NOT** call any `bluejay`.`read/write/listen` functions inside the `backgroundTask` block.

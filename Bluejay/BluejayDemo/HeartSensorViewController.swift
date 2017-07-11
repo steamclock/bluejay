@@ -20,6 +20,7 @@ class HeartSensorViewController: UITableViewController {
     @IBOutlet var sensorLocationCell: UITableViewCell!
     @IBOutlet var connectCell: UITableViewCell!
     @IBOutlet var disconnectCell: UITableViewCell!
+    @IBOutlet var resetCell: UITableViewCell!
     
     fileprivate var isMonitoringHeartRate = false
     
@@ -76,29 +77,7 @@ class HeartSensorViewController: UITableViewController {
             switch result {
             case .success(let location):
                 debugPrint("Sensor location read: \(location)")
-                var locationString = "Unknown"
-                
-                switch location {
-                case 0:
-                    locationString = "Other"
-                case 1:
-                    locationString = "Chest"
-                case 2:
-                    locationString = "Wrist"
-                case 3:
-                    locationString = "Finger"
-                case 4:
-                    locationString = "Hand"
-                case 5:
-                    locationString = "Ear Lobe"
-                case 6:
-                    locationString = "Foot"
-                default:
-                    locationString = "Unknown"
-                }
-                
-                weakSelf.sensorLocationCell.detailTextLabel?.text = locationString
-                weakSelf.sensorLocation = location
+                weakSelf.updateSensorLocationLabel(value: location)
             case .cancelled:
                 debugPrint("Cancelled read sensor location.")
             case .failure(let error):
@@ -107,6 +86,32 @@ class HeartSensorViewController: UITableViewController {
         }
         
         shouldRefreshSensorLocation = false
+    }
+    
+    private func updateSensorLocationLabel(value: UInt8) {
+        var locationString = "Unknown"
+
+        switch value {
+        case 0:
+            locationString = "Other"
+        case 1:
+            locationString = "Chest"
+        case 2:
+            locationString = "Wrist"
+        case 3:
+            locationString = "Finger"
+        case 4:
+            locationString = "Hand"
+        case 5:
+            locationString = "Ear Lobe"
+        case 6:
+            locationString = "Foot"
+        default:
+            locationString = "Unknown"
+        }
+        
+        sensorLocationCell.detailTextLabel?.text = locationString
+        sensorLocation = value
     }
     
     fileprivate func startMonitoringHeartRate() {
@@ -145,7 +150,7 @@ class HeartSensorViewController: UITableViewController {
                     })
                 }
             case .cancelled:
-                debugPrint("Cancelled")
+                debugPrint("Cancelled listen to heart rate measurement.")
                 weakSelf.isMonitoringHeartRate = false
             case .failure(let error):
                 debugPrint("Failed to listen to heart rate measurement with error: \(error.localizedDescription)")
@@ -168,7 +173,7 @@ class HeartSensorViewController: UITableViewController {
         
     private func connect() {
         guard let bluejay = bluejay else {
-            debugPrint("Cannot connect: bluejay is missing.")
+            showBluejayMissingAlert()
             return
         }
         
@@ -191,7 +196,7 @@ class HeartSensorViewController: UITableViewController {
     
     private func disconnect() {
         guard let bluejay = bluejay else {
-            debugPrint("Cannot connect: bluejay is missing.")
+            showBluejayMissingAlert()
             return
         }
         
@@ -212,6 +217,56 @@ class HeartSensorViewController: UITableViewController {
         }
     }
     
+    private func reset() {
+        guard let bluejay = bluejay else {
+            showBluejayMissingAlert()
+            return
+        }
+        
+        let heartRateService = ServiceIdentifier(uuid: "180D")
+        let heartRateMeasurement = CharacteristicIdentifier(uuid: "2A37", service: heartRateService)
+        let sensorLocation = CharacteristicIdentifier(uuid: "2A38", service: heartRateService)
+        
+        bluejay.run(backgroundTask: { (peripheral) -> UInt8 in
+            // 1. Stop monitoring.
+            debugPrint("Reset step 1: stop monitoring.")
+            try peripheral.endListen(to: heartRateMeasurement)
+            
+            // 2. Set sensor location to 0.
+            debugPrint("Reset step 2: set sensor location to 0.")
+            try peripheral.write(to: sensorLocation, value: UInt8(0))
+            
+            // 3. Read sensor location.
+            debugPrint("Reset step 3: read sensor location.")
+            let sensorLocation = try peripheral.read(from: sensorLocation) as UInt8
+            
+            /*
+             Don't use the listen from the synchronized peripheral here to start monitoring the heart rate again, as it will actually block until it is turned off. The synchronous listen is for when you want to listen to and process some expected incoming values before moving on to the next steps in your background task. It is different from the regular asynchronous listen that is more commonly used for continuous monitoring.
+             */
+            
+            // 4. Return the data interested and process it in the completion block on the main thread.
+            debugPrint("Reset step 4: return sensor location.")
+            return sensorLocation
+        }) { [weak self] (result: RunResult<UInt8>) in
+            guard let weakSelf = self else {
+                return
+            }
+            
+            switch result {
+            case .success(let sensorLocation):
+                // Update the sensor location label on the main thread.
+                weakSelf.updateSensorLocationLabel(value: sensorLocation)
+                
+                // Resume monitoring. Now we can use the non-blocking listen from Bluejay, not from the SynchronizedPeripheral.
+                weakSelf.startMonitoringHeartRate()
+            case .cancelled:
+                debugPrint("Cancelled reset background task.")
+            case .failure(let error):
+                debugPrint("Failed to complete reset background task with error: \(error.localizedDescription)")
+            }
+        }
+    }
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
@@ -226,6 +281,9 @@ class HeartSensorViewController: UITableViewController {
             }
             else if selectedCell == disconnectCell {
                 disconnect()
+            }
+            else if selectedCell == resetCell {
+                reset()
             }
         }
     }

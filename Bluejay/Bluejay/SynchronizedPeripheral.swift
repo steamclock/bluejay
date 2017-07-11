@@ -110,6 +110,37 @@ public class SynchronizedPeripheral {
         }
     }
     
+    public func endListen(to characteristicIdentifier: CharacteristicIdentifier, error: Swift.Error? = nil, completion: ((WriteResult) -> Void)? = nil) throws {
+        let sem = DispatchSemaphore(value: 0)
+        var errorToThrow: Swift.Error?
+        
+        DispatchQueue.main.async {
+            if self.parent.isListening(to: characteristicIdentifier) {
+                self.parent.endListen(to: characteristicIdentifier, error: error, completion: { (result) in
+                    switch result {
+                    case .success:
+                        sem.signal()
+                    case .cancelled:
+                        errorToThrow = Error.cancelled()
+                        sem.signal()
+                    case .failure(let endListenError):
+                        errorToThrow = endListenError
+                        sem.signal()
+                    }
+                })
+            }
+            else {
+                sem.signal()
+            }
+        }
+        
+        _ = sem.wait(timeout: DispatchTime.distantFuture)
+
+        if let errorToThrow = errorToThrow {
+            throw errorToThrow
+        }
+    }
+    
     public func flushListen(to characteristicIdentifier: CharacteristicIdentifier, idleWindow: Int = 3, completion: @escaping () -> Void) throws {
         let flushSem = DispatchSemaphore(value: 0)
         let cleanUpSem = DispatchSemaphore(value: 0)
