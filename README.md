@@ -115,8 +115,8 @@ The `ConnectionObserver` protocol allows a class to monitor and respond to major
 ```swift
 public protocol ConnectionObserver: class {
     func bluetoothAvailable(_ available: Bool)
-    func connected(_ peripheral: Peripheral)
-    func disconected()
+    func connected(to peripheral: Peripheral)
+    func disconnected(from peripheral: Peripheral)
 }
 ```
 

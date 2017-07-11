@@ -12,7 +12,7 @@ import Foundation
     A protocol allowing conforming objects registered to Bluejay to optionally respond to Bluetooth connection events.
  
     - Attention
-    On initial subscription to Bluetooth events, `bluetoothAvailable(_ available: Bool)` will always be called immediately with whatever the current state is, and `connected(_ peripheral: BluejayPeripheral)` will also be called immediately if a device is already connected.
+    On initial subscription to Bluetooth events, `bluetoothAvailable(_ available: Bool)` will always be called immediately with whatever the current state is, and `connected(to peripheral: Peripheral)` will also be called immediately if a device is already connected.
 
     - Note
     Available callbacks:
@@ -30,14 +30,14 @@ public protocol ConnectionObserver: class {
     func disconnected(from peripheral: Peripheral)
 }
 
-/// Slightly less gross way to make the BluejayEventsObservable protocol's functions optional.
+/// Slightly less gross way to make the ConnectionObserver protocol's functions optional.
 extension ConnectionObserver {
     public func bluetoothAvailable(_ available: Bool) {}
     public func connected(to peripheral: Peripheral) {}
     public func disconnected(from peripheral: Peripheral) {}
 }
 
-/// Allows creating weak references to BluejayEventsObservable objects, so that the Bluejay singleton does not prevent the deallocation of those objects.
+/// Allows creating weak references to ConnectionObserver objects, so that the Bluejay singleton does not prevent the deallocation of those objects.
 struct WeakConnectionObserver {
     weak var weakReference: ConnectionObserver?
 }
