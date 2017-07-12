@@ -237,6 +237,8 @@ public class Bluejay: NSObject {
         )
     {
         if isRunningBackgroundTask {
+            // Terminate the app if this is called from the same thread as the running background task.
+            Dispatch.dispatchPrecondition(condition: .notOnQueue(DispatchQueue.global()))
             log("Warning: You cannot start a scan while a background task is still running.")
             return
         }
@@ -257,6 +259,8 @@ public class Bluejay: NSObject {
     /// Stops an ongoing scan if there is one, otherwise it does nothing.
     public func stopScanning() {
         if isRunningBackgroundTask {
+            // Terminate the app if this is called from the same thread as the running background task.
+            Dispatch.dispatchPrecondition(condition: .notOnQueue(DispatchQueue.global()))
             log("Warning: You cannot stop a scan while a background task is still running.")
             return
         }
@@ -275,6 +279,8 @@ public class Bluejay: NSObject {
     */
     public func connect(_ peripheralIdentifier: PeripheralIdentifier, completion: @escaping (ConnectionResult) -> Void) {
         if isRunningBackgroundTask {
+            // Terminate the app if this is called from the same thread as the running background task.
+            Dispatch.dispatchPrecondition(condition: .notOnQueue(DispatchQueue.global()))
             completion(.failure(Error.backgroundTaskRunning()))
             return
         }
@@ -301,6 +307,8 @@ public class Bluejay: NSObject {
     */
     public func disconnect(completion: ((DisconnectionResult) -> Void)? = nil) {
         if isRunningBackgroundTask {
+            // Terminate the app if this is called from the same thread as the running background task.
+            Dispatch.dispatchPrecondition(condition: .notOnQueue(DispatchQueue.global()))
             log("Warning: You've tried to disconnect while a background task is still running. The disconnect call will either do nothing, or fail if a completion block is provided.")
             completion?(.failure(Error.backgroundTaskRunning()))
             return
@@ -352,6 +360,8 @@ public class Bluejay: NSObject {
     */
     public func read<R: Receivable>(from characteristicIdentifier: CharacteristicIdentifier, completion: @escaping (ReadResult<R>) -> Void) {
         if isRunningBackgroundTask {
+            // Terminate the app if this is called from the same thread as the running background task.
+            Dispatch.dispatchPrecondition(condition: .notOnQueue(DispatchQueue.global()))
             completion(.failure(Error.backgroundTaskRunning()))
             return
         }
@@ -373,6 +383,8 @@ public class Bluejay: NSObject {
     */
     public func write<S: Sendable>(to characteristicIdentifier: CharacteristicIdentifier, value: S, completion: @escaping (WriteResult) -> Void) {
         if isRunningBackgroundTask {
+            // Terminate the app if this is called from the same thread as the running background task.
+            Dispatch.dispatchPrecondition(condition: .notOnQueue(DispatchQueue.global()))
             completion(.failure(Error.backgroundTaskRunning()))
             return
         }
@@ -394,6 +406,8 @@ public class Bluejay: NSObject {
      */
     public func listen<R: Receivable>(to characteristicIdentifier: CharacteristicIdentifier, completion: @escaping (ReadResult<R>) -> Void) {
         if isRunningBackgroundTask {
+            // Terminate the app if this is called from the same thread as the running background task.
+            Dispatch.dispatchPrecondition(condition: .notOnQueue(DispatchQueue.global()))
             completion(.failure(Error.backgroundTaskRunning()))
             return
         }
@@ -415,6 +429,8 @@ public class Bluejay: NSObject {
     */
     public func endListen(to characteristicIdentifier: CharacteristicIdentifier, completion: ((WriteResult) -> Void)? = nil) {
         if isRunningBackgroundTask {
+            // Terminate the app if this is called from the same thread as the running background task.
+            Dispatch.dispatchPrecondition(condition: .notOnQueue(DispatchQueue.global()))
             log("Warning: You've tried to end a listen while a background task is still running. The endListen call will either do nothing, or fail if a completion block is provided.")
             completion?(.failure(Error.backgroundTaskRunning()))
             return
@@ -437,6 +453,8 @@ public class Bluejay: NSObject {
     */
     public func restoreListen<R: Receivable>(to characteristicIdentifier: CharacteristicIdentifier, completion: @escaping (ReadResult<R>) -> Void) {
         if isRunningBackgroundTask {
+            // Terminate the app if this is called from the same thread as the running background task.
+            Dispatch.dispatchPrecondition(condition: .notOnQueue(DispatchQueue.global()))
             completion(.failure(Error.backgroundTaskRunning()))
             return
         }
