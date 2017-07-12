@@ -104,7 +104,7 @@ class Queue {
                 queueable.fail(error)
             }
             else {
-                queueable.cancelled()
+                queueable.cancel()
             }            
         }
         
