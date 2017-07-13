@@ -44,7 +44,7 @@ public class Peripheral: NSObject {
     
     // MARK: - Operations
     
-    func cancelAllOperations(_ error: NSError? = nil) {
+    func cancelAllListens(_ error: NSError? = nil) {
         for callback in listeners.values {
             if let error = error {
                 callback(.failure(error))
@@ -55,12 +55,6 @@ public class Peripheral: NSObject {
         }
         
         listeners = [:]
-        
-        guard let bluejay = bluejay else {
-            preconditionFailure("Cannot cancel all operations: Bluejay is nil.")
-        }
-        
-        bluejay.queue.cancelAll(error)
     }
     
     private func updateOperations() {

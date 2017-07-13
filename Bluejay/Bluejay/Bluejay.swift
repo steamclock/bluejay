@@ -182,6 +182,17 @@ public class Bluejay: NSObject {
         connectedPeripheral = nil
     }
     
+    /**
+     This will stop the listening on all subscribed characteristics.
+     
+     - Parameter error: If nil, all listen callbacks will be cancelled without any errors. If an error is provided, all listen callbacks will be failed with the supplied error.
+     */
+    public func cancelAllListens(_ error: NSError? = nil) {
+        if let connectedPeripheral = connectedPeripheral {
+            connectedPeripheral.cancelAllListens(error)
+        }
+    }
+    
     // MARK: - Events Registration
     
     /**
