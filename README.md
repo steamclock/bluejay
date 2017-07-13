@@ -38,6 +38,7 @@ Bluejay's primary goals are:
   - [Listen Restoration](#listen-restoration)
 - [Advanced Usage](#advanced-usage)
   - [Connect by Serial Number](#connect-by-serial-number)
+  - [Write and Assemble](#write-and-assemble)
 
 ## Features
 
@@ -665,9 +666,9 @@ We are maintaining a local collection of "blacklisted" discoveries that persist 
 
 Since we are starting a new scan every time we find a device with an incorrect serial number, the brand new scan session can still pick up a device we've examined earlier. This is because the new scan session is unaware of devices previously blacklisted using the "blacklist" `ScanAction`. But, we can still find out whether a device is blacklisted using our **own** copy of the blacklist.
 
-Returning `.blacklist` is not only a ceremonial task to ignore the current discovery within this scan session and to continue scanning, doing so also adds some safety by preventing further discovery of the same device within the current scan session if `allowDuplicates` is set to true for some reasons. Interestingly, setting `allowDuplicates` to false has similar ignoring effect due to its coalescing behaviour, but we are doing this for an entirely different purpose – to save battery.
+Returning `.blacklist` is not just a ceremonial task to ignore the current discovery within this scan session and to continue scanning. Doing so also adds some safety by preventing further discovery of the same device within the current scan session if `allowDuplicates` is set to true for some reasons. Interestingly, setting `allowDuplicates` to false has similar ignoring effect due to its coalescing behaviour, but we are doing this for an entirely different purpose – to save battery.
 
-The keys to understanding this example is to keep in mind that there are **two** copies of blacklists at play here, and understanding why we need to stop and restart a new scan for every discovery that isn't what we're looking for. There is one blacklist we are **required** to maintain ourselves that persists over multiple scan sessions, because Bluejay's FIFO operation queue requires the scan to finish before it can run the connection task. Secondly, there's the blacklist that Bluejay maintains for a scan session, but it is cleared as soon as that scan is finished.
+The keys to understanding this example is to keep in mind that there are **two** copies of blacklists at play here, and to understand why we need to stop and restart a new scan for every discovery that isn't what we're looking for. First, there is one blacklist we are **required** to maintain ourselves that persists over multiple scan sessions, because Bluejay's FIFO operation queue requires the scan to finish before it can run the connection task. Secondly, there's the blacklist that Bluejay maintains for a scan session, but it is cleared as soon as that scan is finished.
 
 ```swift
 // Properties.
@@ -769,6 +770,28 @@ private func scan(services: [ServiceIdentifier], serialNumber: String) {
         }
     }
 }
+```
+
+### Write and Assemble
+
+One of the Bluetooth modules we've worked with doesn't always send back data in one packet, even if the data is smaller than its maximum allowed packet size. To handle these incoming data that can be broken up into any number of packets arbitrarily, we've introduced the `writeAndAssemble` API that is very similar to `writeAndListen` on the `SynchronizedPeripheral`. Therefore, at least for now, this is only supported in the context of `run(backgroundTask:completionOnMainThread:)`.
+
+When using `writeAndAssemble`, we still expect you to know the total size of the data you are receiving, but Bluejay will keep listening and receiving packets until the expected size is reached before trying to deserialize the data into the object you need.
+
+You can also specify a timeout in case something hangs or takes abnormally long.
+
+Here is an example writing a request for a value to a Bluetooth module, so that it can return the value we want via a notification on a characteristic. And of course, we're not sure and have no control over how many packets the module will send back.
+
+```swift
+try peripheral.writeAndAssemble(
+    writeTo: Characteristics.rigadoTX,
+    value: ReadRequest(handle: Registers.system.firmwareVersion),
+    listenTo: Characteristics.rigadoRX,
+    expectedLength: FirmwareVersion.length,
+    completion: { (firmwareVersion: FirmwareVersion) -> ListenAction in
+        settings.firmware = firmwareVersion.string
+        return .done
+})
 ```
 
 ## API Documentation
