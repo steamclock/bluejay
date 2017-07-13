@@ -39,6 +39,7 @@ Bluejay's primary goals are:
 - [Advanced Usage](#advanced-usage)
   - [Connect by Serial Number](#connect-by-serial-number)
   - [Write and Assemble](#write-and-assemble)
+  - [Flush Listen](#flush-listen)
 
 ## Features
 
@@ -793,6 +794,22 @@ try peripheral.writeAndAssemble(
         return .done
 })
 ```
+
+### Flush Listen
+
+Some Bluetooth modules will pause sending data when it loses connection to your app, and will resume sending the same set of data from where it left off when the connection is re-established. This isn't an issue most of the time. However, if the connection loss is due to a crash in your app, or something that causes your listen callback to be deallocated before the connection is re-established, then it is often very difficult to resume your app with the exact same content and context at the time of the connection loss.
+
+For example, you might have to re-authenticate the user when the app is re-opened. But if authentication requires listening to the same characteristic where the incomplete data set is still being sent, then you will be getting back unexpected values and most likely crash when trying to deserialize authentication related objects.
+
+To handle this, it is often a good idea to flush a notifiable characteristic before starting a critical first-time and/or setup related operation. This is also only available on the `SynchronizedPeripheral` in the context of `run(backgroundTask:completionOnMainThread:)` for now.
+
+```swift
+try peripheral.flushListen(to: Characteristics.rigadoRX, idleWindow: 1, completion: {
+    debugPrint("Flushed buffered data on RigadoRX.")
+})
+```
+
+The `idleWindow` is in seconds, and basically specifies the duration of the absence of incoming data needed to predict that the flush is most likely completed. Note that this is still an estimation. Depending on your Bluetooth hardware and usage environments and conditions, a longer window might be necessary.
 
 ## API Documentation
 
