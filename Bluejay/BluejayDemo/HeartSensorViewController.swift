@@ -308,14 +308,14 @@ extension HeartSensorViewController: ConnectionObserver {
         readSensorLocation()
     }
     
-    func disconnected() {
+    func disconnected(from peripheral: Peripheral) {
         isMonitoringHeartRate = false
-
+        
         statusCell.detailTextLabel?.text = "Disconnected"
         bpmCell.detailTextLabel?.text = "0"
         sensorLocationCell.detailTextLabel?.text = "Unknown"
         
         stopMonitoringHeartRate()
     }
-    
+        
 }
