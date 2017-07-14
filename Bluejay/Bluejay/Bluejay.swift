@@ -48,6 +48,9 @@ public class Bluejay: NSObject {
     /// Determines whether state restoration is allowed.
     fileprivate var shouldRestoreState = false
     
+    /// True when background task is running, and helps prevent calling regular read/write/listen.
+    private var isRunningBackgroundTask = false
+    
     // MARK: - Internal Properties
     
     /// Contains the operations to execute in FIFO order.
@@ -233,6 +236,13 @@ public class Bluejay: NSObject {
         stopped: @escaping ([ScanDiscovery], Swift.Error?) -> Void
         )
     {
+        if isRunningBackgroundTask {
+            // Terminate the app if this is called from the same thread as the running background task.
+            Dispatch.dispatchPrecondition(condition: .notOnQueue(DispatchQueue.global()))
+            log("Warning: You cannot start a scan while a background task is still running.")
+            return
+        }
+        
         let scanOperation = Scan(
             duration: duration,
             allowDuplicates: allowDuplicates,
@@ -248,6 +258,13 @@ public class Bluejay: NSObject {
     
     /// Stops an ongoing scan if there is one, otherwise it does nothing.
     public func stopScanning() {
+        if isRunningBackgroundTask {
+            // Terminate the app if this is called from the same thread as the running background task.
+            Dispatch.dispatchPrecondition(condition: .notOnQueue(DispatchQueue.global()))
+            log("Warning: You cannot stop a scan while a background task is still running.")
+            return
+        }
+        
         queue.stopScanning()
     }
     
@@ -261,6 +278,13 @@ public class Bluejay: NSObject {
         - completion: Called when the connection request has fully finished and indicates whether it was successful, cancelled, or failed.
     */
     public func connect(_ peripheralIdentifier: PeripheralIdentifier, completion: @escaping (ConnectionResult) -> Void) {
+        if isRunningBackgroundTask {
+            // Terminate the app if this is called from the same thread as the running background task.
+            Dispatch.dispatchPrecondition(condition: .notOnQueue(DispatchQueue.global()))
+            completion(.failure(Error.backgroundTaskRunning()))
+            return
+        }
+        
         // Block a connect request when restoring, restore should result in the peripheral being automatically connected.
         if (shouldRestoreState) {
             // Cache requested connect, in case restore messes up unexpectedly.
@@ -282,6 +306,14 @@ public class Bluejay: NSObject {
      - parameter completion: Called when the disconnection request has fully finished and indicates whether it was successful, cancelled, or failed.
     */
     public func disconnect(completion: ((DisconnectionResult) -> Void)? = nil) {
+        if isRunningBackgroundTask {
+            // Terminate the app if this is called from the same thread as the running background task.
+            Dispatch.dispatchPrecondition(condition: .notOnQueue(DispatchQueue.global()))
+            log("Warning: You've tried to disconnect while a background task is still running. The disconnect call will either do nothing, or fail if a completion block is provided.")
+            completion?(.failure(Error.backgroundTaskRunning()))
+            return
+        }
+        
         if isDisconnecting {
             completion?(.failure(Error.multipleDisconnect()))
             return
@@ -327,6 +359,13 @@ public class Bluejay: NSObject {
         - completion: Called with the result of the attempt to read from the specified characteristic.
     */
     public func read<R: Receivable>(from characteristicIdentifier: CharacteristicIdentifier, completion: @escaping (ReadResult<R>) -> Void) {
+        if isRunningBackgroundTask {
+            // Terminate the app if this is called from the same thread as the running background task.
+            Dispatch.dispatchPrecondition(condition: .notOnQueue(DispatchQueue.global()))
+            completion(.failure(Error.backgroundTaskRunning()))
+            return
+        }
+        
         if let peripheral = connectedPeripheral {
             peripheral.read(from: characteristicIdentifier, completion: completion)
         }
@@ -343,6 +382,13 @@ public class Bluejay: NSObject {
         - completion: Called with the result of the attempt to write to the specified characteristic.
     */
     public func write<S: Sendable>(to characteristicIdentifier: CharacteristicIdentifier, value: S, completion: @escaping (WriteResult) -> Void) {
+        if isRunningBackgroundTask {
+            // Terminate the app if this is called from the same thread as the running background task.
+            Dispatch.dispatchPrecondition(condition: .notOnQueue(DispatchQueue.global()))
+            completion(.failure(Error.backgroundTaskRunning()))
+            return
+        }
+        
         if let peripheral = connectedPeripheral {
             peripheral.write(to: characteristicIdentifier, value: value, completion: completion)
         }
@@ -359,6 +405,13 @@ public class Bluejay: NSObject {
         - completion: Called with the result of the attempt to listen for notifications on the specified characteristic.
      */
     public func listen<R: Receivable>(to characteristicIdentifier: CharacteristicIdentifier, completion: @escaping (ReadResult<R>) -> Void) {
+        if isRunningBackgroundTask {
+            // Terminate the app if this is called from the same thread as the running background task.
+            Dispatch.dispatchPrecondition(condition: .notOnQueue(DispatchQueue.global()))
+            completion(.failure(Error.backgroundTaskRunning()))
+            return
+        }
+        
         if let peripheral = connectedPeripheral {
             peripheral.listen(to: characteristicIdentifier, completion: completion)
         }
@@ -375,6 +428,14 @@ public class Bluejay: NSObject {
         - completion: Called with the result of the attempt to stop listening to the specified characteristic.
     */
     public func endListen(to characteristicIdentifier: CharacteristicIdentifier, completion: ((WriteResult) -> Void)? = nil) {
+        if isRunningBackgroundTask {
+            // Terminate the app if this is called from the same thread as the running background task.
+            Dispatch.dispatchPrecondition(condition: .notOnQueue(DispatchQueue.global()))
+            log("Warning: You've tried to end a listen while a background task is still running. The endListen call will either do nothing, or fail if a completion block is provided.")
+            completion?(.failure(Error.backgroundTaskRunning()))
+            return
+        }
+        
         if let peripheral = connectedPeripheral {
             peripheral.endListen(to: characteristicIdentifier, error: nil, completion: completion)
         }
@@ -391,6 +452,13 @@ public class Bluejay: NSObject {
         - completion: Called with the result of the attempt to restore the listen on the specified characteristic.
     */
     public func restoreListen<R: Receivable>(to characteristicIdentifier: CharacteristicIdentifier, completion: @escaping (ReadResult<R>) -> Void) {
+        if isRunningBackgroundTask {
+            // Terminate the app if this is called from the same thread as the running background task.
+            Dispatch.dispatchPrecondition(condition: .notOnQueue(DispatchQueue.global()))
+            completion(.failure(Error.backgroundTaskRunning()))
+            return
+        }
+        
         if let peripheral = connectedPeripheral {
             peripheral.restoreListen(to: characteristicIdentifier, completion: completion)
         }
@@ -414,23 +482,33 @@ public class Bluejay: NSObject {
         backgroundTask: @escaping (SynchronizedPeripheral) throws -> Void,
         completionOnMainThread: @escaping (RunResult<Void>) -> Void)
     {
+        if isRunningBackgroundTask {
+            completionOnMainThread(.failure(Error.multipleBackgroundTask()))
+            return
+        }
+        
+        isRunningBackgroundTask = true
+        
         if let peripheral = connectedPeripheral {
-            DispatchQueue.global().async {
+            DispatchQueue.global().async { [weak self] in
                 do {
                     try backgroundTask(SynchronizedPeripheral(parent: peripheral))
                     
                     DispatchQueue.main.async {
+                        self?.isRunningBackgroundTask = false
                         completionOnMainThread(.success())
                     }
                 }
                 catch let error as NSError {
                     DispatchQueue.main.async {
+                        self?.isRunningBackgroundTask = false
                         completionOnMainThread(.failure(error))
                     }
                 }
             }
         }
         else {
+            isRunningBackgroundTask = false
             completionOnMainThread(.failure(Error.notConnected()))
         }
     }
@@ -448,23 +526,33 @@ public class Bluejay: NSObject {
         backgroundTask: @escaping (SynchronizedPeripheral) throws -> Result,
         completionOnMainThread: @escaping (RunResult<Result>) -> Void)
     {
+        if isRunningBackgroundTask {
+            completionOnMainThread(.failure(Error.multipleBackgroundTask()))
+            return
+        }
+        
+        isRunningBackgroundTask = true
+        
         if let peripheral = connectedPeripheral {
-            DispatchQueue.global().async {
+            DispatchQueue.global().async { [weak self] in
                 do {
                     let result = try backgroundTask(SynchronizedPeripheral(parent: peripheral))
                     
                     DispatchQueue.main.async {
+                        self?.isRunningBackgroundTask = false
                         completionOnMainThread(.success(result))
                     }
                 }
                 catch let error as NSError {
                     DispatchQueue.main.async {
+                        self?.isRunningBackgroundTask = false
                         completionOnMainThread(.failure(error))
                     }
                 }
             }
         }
         else {
+            isRunningBackgroundTask = false
             completionOnMainThread(.failure(Error.notConnected()))
         }
     }
@@ -484,23 +572,33 @@ public class Bluejay: NSObject {
         backgroundTask: @escaping (SynchronizedPeripheral, UserData) throws -> Result,
         completionOnMainThread: @escaping (RunResult<Result>) -> Void)
     {
+        if isRunningBackgroundTask {
+            completionOnMainThread(.failure(Error.multipleBackgroundTask()))
+            return
+        }
+        
+        isRunningBackgroundTask = true
+        
         if let peripheral = connectedPeripheral {
-            DispatchQueue.global().async {
+            DispatchQueue.global().async { [weak self] in
                 do {
                     let result = try backgroundTask(SynchronizedPeripheral(parent: peripheral), userData)
                     
                     DispatchQueue.main.async {
+                        self?.isRunningBackgroundTask = false
                         completionOnMainThread(.success(result))
                     }
                 }
                 catch let error as NSError {
                     DispatchQueue.main.async {
+                        self?.isRunningBackgroundTask = false
                         completionOnMainThread(.failure(error))
                     }
                 }
             }
         }
         else {
+            isRunningBackgroundTask = false
             completionOnMainThread(.failure(Error.notConnected()))
         }
     }
