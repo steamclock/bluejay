@@ -81,7 +81,11 @@ class ScanHeartRateSensorsViewController: UITableViewController {
                 
                 switch result {
                 case .success:
-                    weakSelf.scanHeartSensors()
+                    if !weakSelf.bluejay.isScanning {
+                        DispatchQueue.main.async {
+                            weakSelf.scanHeartSensors()
+                        }
+                    }
                 case .cancelled:
                     preconditionFailure("Disconnection cancelled unexpectedly.")
                 case .failure(let error):
