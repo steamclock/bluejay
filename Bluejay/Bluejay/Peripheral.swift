@@ -32,6 +32,10 @@ public class Peripheral: NSObject {
         self.cbPeripheral.delegate = self
     }
     
+    deinit {
+        log("Deinit peripheral: \(String(describing: cbPeripheral.name ?? cbPeripheral.identifier.uuidString))")
+    }
+    
     // MARK: - Attributes
     
     public var uuid: PeripheralIdentifier {

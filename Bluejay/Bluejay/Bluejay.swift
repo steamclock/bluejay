@@ -695,7 +695,9 @@ extension Bluejay: CBCentralManagerDelegate {
         }
         
         for observer in observers {
-            observer.weakReference?.disconnected(from: Peripheral(bluejay: self, cbPeripheral: peripheral))
+            let disconnectedPeripheral = connectingPeripheral ?? connectedPeripheral
+            precondition(disconnectedPeripheral != nil, "Disconnected from an unexpected peripheral.")
+            observer.weakReference?.disconnected(from: disconnectedPeripheral!)
         }
         
         if !queue.isEmpty() {
