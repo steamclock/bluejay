@@ -221,8 +221,42 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="qBH-HD-97n" style="IBUITableViewCellStyleDefault" id="XiN-De-pYv">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="2dt-sw-8OL" style="IBUITableViewCellStyleDefault" id="Avl-Xh-Q46">
                                         <rect key="frame" x="0.0" y="331.5" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Avl-Xh-Q46" id="pHR-37-0ul">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Cancel All Listens" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="2dt-sw-8OL">
+                                                    <rect key="frame" x="15" y="0.0" width="345" height="43.5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="7Fv-tE-bSY" style="IBUITableViewCellStyleDefault" id="Lo1-ee-VZX">
+                                        <rect key="frame" x="0.0" y="375.5" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Lo1-ee-VZX" id="sLg-0u-US4">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Start Monitoring" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="7Fv-tE-bSY">
+                                                    <rect key="frame" x="15" y="0.0" width="345" height="43.5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="qBH-HD-97n" style="IBUITableViewCellStyleDefault" id="XiN-De-pYv">
+                                        <rect key="frame" x="0.0" y="419.5" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="XiN-De-pYv" id="pqL-6l-Cbg">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
@@ -249,10 +283,12 @@
                     <navigationItem key="navigationItem" title="Heart Sensor" id="wGi-uL-yJU"/>
                     <connections>
                         <outlet property="bpmCell" destination="Db0-xu-drE" id="mIb-t9-nzJ"/>
+                        <outlet property="cancelAllListensCell" destination="Avl-Xh-Q46" id="2j4-RF-ufI"/>
                         <outlet property="connectCell" destination="R2E-AD-cT8" id="LOc-cD-Oxu"/>
                         <outlet property="disconnectCell" destination="1op-Zm-lCj" id="a2I-J5-pAH"/>
                         <outlet property="resetCell" destination="XiN-De-pYv" id="VG8-cG-l4w"/>
                         <outlet property="sensorLocationCell" destination="SmU-Xg-frL" id="pSB-wT-aXf"/>
+                        <outlet property="startMonitoringCell" destination="Lo1-ee-VZX" id="Bvg-v2-3L8"/>
                         <outlet property="statusCell" destination="rxx-gz-fW1" id="Jny-7J-xNh"/>
                         <segue destination="bKX-W4-lcD" kind="show" identifier="showSensorLocation" id="Dfy-0Y-IqM"/>
                     </connections>

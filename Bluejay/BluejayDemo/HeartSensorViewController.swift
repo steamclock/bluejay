@@ -20,6 +20,8 @@ class HeartSensorViewController: UITableViewController {
     @IBOutlet var sensorLocationCell: UITableViewCell!
     @IBOutlet var connectCell: UITableViewCell!
     @IBOutlet var disconnectCell: UITableViewCell!
+    @IBOutlet var cancelAllListensCell: UITableViewCell!
+    @IBOutlet var startMonitoringCell: UITableViewCell!
     @IBOutlet var resetCell: UITableViewCell!
     
     fileprivate var isMonitoringHeartRate = false
@@ -217,6 +219,15 @@ class HeartSensorViewController: UITableViewController {
         }
     }
     
+    private func cancelAllListens() {
+        guard let bluejay = bluejay else {
+            showBluejayMissingAlert()
+            return
+        }
+        
+        bluejay.cancelAllListens()
+    }
+    
     private func reset() {
         guard let bluejay = bluejay else {
             showBluejayMissingAlert()
@@ -281,6 +292,12 @@ class HeartSensorViewController: UITableViewController {
             }
             else if selectedCell == disconnectCell {
                 disconnect()
+            }
+            else if selectedCell == cancelAllListensCell {
+                cancelAllListens()
+            }
+            else if selectedCell == startMonitoringCell {
+                startMonitoringHeartRate()
             }
             else if selectedCell == resetCell {
                 reset()
