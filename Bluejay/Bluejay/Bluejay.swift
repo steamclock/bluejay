@@ -21,9 +21,6 @@ public class Bluejay: NSObject {
     /// Internal reference to CoreBluetooth's CBCentralManager.
     fileprivate var cbCentralManager: CBCentralManager!
     
-    /// The value for CBCentralManagerOptionRestoreIdentifierKey.
-    fileprivate var restoreIdentifier: String?
-    
     /// List of weak references to objects interested in receiving notifications on Bluetooth connection events and state changes.
     fileprivate var observers = [WeakConnectionObserver]()
     
@@ -42,9 +39,6 @@ public class Bluejay: NSObject {
     /// Reference to the peripheral identifier used for supporting state restoration.
     fileprivate var peripheralIdentifierToRestore: PeripheralIdentifier?
     
-    /// Reference to the object capable of restoring listens during state restoration.
-    fileprivate var listenRestorer: WeakListenRestorer?
-    
     /// Determines whether state restoration is allowed.
     fileprivate var shouldRestoreState = false
     
@@ -52,6 +46,12 @@ public class Bluejay: NSObject {
     
     /// Contains the operations to execute in FIFO order.
     var queue: Queue!
+    
+    /// The value for CBCentralManagerOptionRestoreIdentifierKey.
+    var restoreIdentifier: RestoreIdentifier?
+    
+    /// Reference to the object capable of restoring listens during state restoration.
+    var listenRestorer: WeakListenRestorer?
     
     // MARK: - Public Properties
     
@@ -136,13 +136,15 @@ public class Bluejay: NSObject {
         switch restoreMode {
         case .disable:
             break
-        case .enable(let restoreIdentifier):
+        case .enable(let restoreID):
             checkBackgroundSupportForBluetooth()
+            restoreIdentifier = restoreID
             options[CBCentralManagerOptionRestoreIdentifierKey] = restoreIdentifier
-        case .enableWithListenRestorer(let restoreIdentifier, let restorer):
+        case .enableWithListenRestorer(let restoreID, let restorer):
             checkBackgroundSupportForBluetooth()
-            options[CBCentralManagerOptionRestoreIdentifierKey] = restoreIdentifier
+            restoreIdentifier = restoreID
             listenRestorer = WeakListenRestorer(weakReference: restorer)
+            options[CBCentralManagerOptionRestoreIdentifierKey] = restoreIdentifier
         }
         
         cbCentralManager = CBCentralManager(

@@ -28,7 +28,7 @@ class ScanHeartRateSensorsViewController: UITableViewController {
         
         clearsSelectionOnViewWillAppear = true
         
-        bluejay.start(connectionObserver: self)
+        bluejay.start(connectionObserver: self, backgroundRestore: .enableWithListenRestorer("com.steamclock.bluejay", self))
         
         scanHeartSensors()
     }
@@ -165,6 +165,14 @@ extension ScanHeartRateSensorsViewController: ConnectionObserver {
     
     func disconnected() {
         debugPrint("Disconnected")
+    }
+    
+}
+
+extension ScanHeartRateSensorsViewController: ListenRestorer {
+    
+    func willRestoreListen(on characteristic: CharacteristicIdentifier) -> Bool {
+        return false
     }
     
 }
