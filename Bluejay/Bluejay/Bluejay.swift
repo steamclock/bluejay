@@ -179,9 +179,6 @@ public class Bluejay: NSObject {
         if isConnected {
             cbCentralManager.cancelPeripheralConnection(connectedPeripheral!.cbPeripheral)
         }
-        
-        connectingPeripheral = nil
-        connectedPeripheral = nil
     }
     
     /**

@@ -23,6 +23,7 @@ class HeartSensorViewController: UITableViewController {
     @IBOutlet var cancelAllListensCell: UITableViewCell!
     @IBOutlet var startMonitoringCell: UITableViewCell!
     @IBOutlet var resetCell: UITableViewCell!
+    @IBOutlet var cancelEverythingCell: UITableViewCell!
     
     fileprivate var isMonitoringHeartRate = false
     
@@ -278,6 +279,15 @@ class HeartSensorViewController: UITableViewController {
         }
     }
     
+    private func cancelEverything() {
+        guard let bluejay = bluejay else {
+            showBluejayMissingAlert()
+            return
+        }
+     
+        bluejay.cancelEverything()
+    }
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
@@ -301,6 +311,9 @@ class HeartSensorViewController: UITableViewController {
             }
             else if selectedCell == resetCell {
                 reset()
+            }
+            else if selectedCell == cancelEverythingCell {
+                cancelEverything()
             }
         }
     }
