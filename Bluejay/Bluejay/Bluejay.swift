@@ -176,6 +176,7 @@ public class Bluejay: NSObject {
     public func cancelEverything(_ error: NSError? = nil) {
         shouldAutoReconnect = false
 
+        cancelAllListens(error)
         queue.cancelAll(error)
         
         if isConnected {
