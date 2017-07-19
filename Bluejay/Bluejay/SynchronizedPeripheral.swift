@@ -10,7 +10,7 @@ import Foundation
 import CoreBluetooth
 
 /**
-    A synchronous interface to the Bluetooth peripheral, intended to be used from a background thread to perform multi-part operations without the need for a complicated callback or promise setup.
+    A synchronous interface to the Bluetooth peripheral, intended to be used inside the backgroundTask block of `run(backgroundTask:completionOnMainThread:)` to perform multi-part operations without the need for a complicated callback or promise setup.
 */
 public class SynchronizedPeripheral {
     
@@ -110,6 +110,7 @@ public class SynchronizedPeripheral {
         }
     }
     
+    /// Stop listening to a characteristic synchronously.
     public func endListen(to characteristicIdentifier: CharacteristicIdentifier, error: Swift.Error? = nil, completion: ((WriteResult) -> Void)? = nil) throws {
         let sem = DispatchSemaphore(value: 0)
         var errorToThrow: Swift.Error?
@@ -141,6 +142,14 @@ public class SynchronizedPeripheral {
         }
     }
     
+    /**
+     Flush a listen to a characteristic by receiving and discarding values for the specified duration.
+     
+     - Parameters:
+        - characteristicIdentifier: The characteristic to flush.
+        - idleWindow: How long to flush for in seconds.
+        - completion: Block to call when the flush is complete.
+    */
     public func flushListen(to characteristicIdentifier: CharacteristicIdentifier, idleWindow: Int = 3, completion: @escaping () -> Void) throws {
         let flushSem = DispatchSemaphore(value: 0)
         let cleanUpSem = DispatchSemaphore(value: 0)
@@ -214,10 +223,10 @@ public class SynchronizedPeripheral {
     }
     
     /**
-        Handle a compound operation consisting of writing on one characterstic followed by listening on another for some streamed data.
+     Handle a compound operation consisting of writing on one characterstic followed by listening on another for some streamed data.
      
-        Conceptually very similar to just calling write, then listen, except that the listen is set up before the write is issued, so that there should be no risks of data loss due to missed notifications, which there would be with calling them seperatly.
-    */
+     Conceptually very similar to just calling write, then listen, except that the listen is set up before the write is issued, so that there should be no risks of data loss due to missed notifications, which there would be with calling them seperatly.
+     */
     public func writeAndListen<S: Sendable, R:Receivable>(
         writeTo charToWriteTo: CharacteristicIdentifier,
         value: S,
@@ -280,6 +289,9 @@ public class SynchronizedPeripheral {
         }
     }
     
+    /**
+     Similar to `writeAndListen`, but use this if you don't know or don't have control over how many packets will be sent to you. You still need to know the total size of the data you're receiving.
+     */
     public func writeAndAssemble<S: Sendable, R: Receivable>(
         writeTo charToWriteTo: CharacteristicIdentifier,
         value: S,
