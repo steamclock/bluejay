@@ -166,6 +166,8 @@ public class Bluejay: NSObject {
         }
     }
     
+    // MARK: - Cancellation
+    
     /**
      This will cancel the current and all pending operations in the Bluejay queue, as well as stop any ongoing scan, and disconnect any connected peripheral.
      
@@ -182,7 +184,9 @@ public class Bluejay: NSObject {
     }
     
     /**
-     This will stop the listening on all subscribed characteristics.
+     This will cancel the listening on all subscribed characteristics.
+     
+     - Important: This does not remove any cached listens for state restoration. Use `clearListeCaches` to explicitly remove all cached listens for state restoration, or use `endListen` to stop a specific listen in addition to removing it from the cache for state restoration.
      
      - Parameter error: If nil, all listen callbacks will be cancelled without any errors. If an error is provided, all listen callbacks will be failed with the supplied error.
      */
@@ -190,6 +194,27 @@ public class Bluejay: NSObject {
         if let connectedPeripheral = connectedPeripheral {
             connectedPeripheral.cancelAllListens(error)
         }
+    }
+    
+    /**
+     This will remove any cached listens associated with the receiving Bluejay's restore identifier. Call this if you want to stop Bluejay from attempting to restore any listens when state restoration occurs.
+     
+     - Note: For handling a single specific characteristic, use `endListen`. If that succeeds, it will not only stop the listening on that characteristic, it will also remove that listen from the cache for state restoration if listen restoration is enabled, and if that listen was indeed cached for restoration.
+     */
+    public func clearListenCaches() {
+        guard
+            let restoreIdentifier = restoreIdentifier,
+            let listenCaches = UserDefaults.standard.dictionary(forKey: Constant.listenCaches)
+        else {
+            log("Unable to clear listen caches: nothing to clear.")
+            return
+        }
+        
+        var newListenCaches = listenCaches
+        newListenCaches.removeValue(forKey: restoreIdentifier)
+        
+        UserDefaults.standard.set(newListenCaches, forKey: Constant.listenCaches)
+        UserDefaults.standard.synchronize()
     }
     
     // MARK: - Events Registration
