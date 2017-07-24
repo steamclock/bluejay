@@ -13,7 +13,7 @@
     <a title="Protocols  Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="index.html">Bluejay Docs</a> (43% documented)</p>
+        <p><a href="index.html">Bluejay Docs</a> (90% documented)</p>
         <p class="header-right"><a href="https://github.com/steamclock/bluejay"><img src="img/gh.png"/>View on GitHub</a></p>
       </div>
     </header>
@@ -54,9 +54,6 @@
                 <a href="Enums/DisconnectionResult.html">DisconnectionResult</a>
               </li>
               <li class="nav-group-task">
-                <a href="Enums/DiscoveryResult.html">DiscoveryResult</a>
-              </li>
-              <li class="nav-group-task">
                 <a href="Enums/ListenAction.html">ListenAction</a>
               </li>
               <li class="nav-group-task">
@@ -93,12 +90,6 @@
               </li>
               <li class="nav-group-task">
                 <a href="Extensions/Integer.html">Integer</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="Extensions/Notification.html">Notification</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="Extensions/Notification/Name.html">– Name</a>
               </li>
               <li class="nav-group-task">
                 <a href="Extensions/String.html">String</a>
@@ -204,9 +195,17 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>A protocol allowing conforming objects to monitor the RSSI changes of a connected peripheral.</p>
 
                         <a href="Protocols/RSSIObserver.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">RSSIObserver</span><span class="p">:</span> <span class="kd">class</span></code></pre>
+
+                        </div>
                       </div>
                     </section>
                   </div>
@@ -228,7 +227,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Protocol to indicate that a type can be received from the bluetooth connection.</p>
+                        <p>Protocol to indicate that a type can be received from the Bluetooth connection.</p>
 
                         <a href="Protocols/Receivable.html" class="slightly-smaller">See more</a>
                       </div>
@@ -260,7 +259,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Protocol to indicate that a type can be sent via the bluetooth connection.</p>
+                        <p>Protocol to indicate that a type can be sent via the Bluetooth connection.</p>
 
                         <a href="Protocols/Sendable.html" class="slightly-smaller">See more</a>
                       </div>
@@ -296,7 +295,7 @@
 <div class="aside aside-attention">
     <p class="aside-title">Attention</p>
     <p>Attention
-On initial subscription to Bluetooth events, <code>bluetoothAvailable(_ available: Bool)</code> will always be called immediately with whatever the current state is, and <code>connected(_ peripheral: BluejayPeripheral)</code> will also be called immediately if a device is already connected.</p>
+On initial subscription to Bluetooth events, <code>bluetoothAvailable(_ available: Bool)</code> will always be called immediately with whatever the current state is, and <code>connected(to peripheral: Peripheral)</code> will also be called immediately if a device is already connected.</p>
 
 </div>
 <div class="aside aside-note">
@@ -306,8 +305,8 @@ Available callbacks:</p>
 
 </div>
 <li><p><code>func bluetoothAvailable(_ available: Bool)</code></p></li>
-<li><p><code>func connected(_ peripheral: BluejayPeripheral)</code></p></li>
-<li><p><code>func disconnected()</code></p></li>
+<li><p><code>func connected(to peripheral: Peripheral)</code></p></li>
+<li><p><code>func disconnected(from peripheral: Peripheral)</code></p></li>
 
                         <a href="Protocols/ConnectionObserver.html" class="slightly-smaller">See more</a>
                       </div>

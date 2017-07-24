@@ -10,7 +10,10 @@ import Foundation
 
 /// Indicates a successful, cancelled, or failed write attempt.
 public enum WriteResult {
+    /// The write is successful.
     case success
+    /// The write is cancelled for a reason.
     case cancelled
+    /// The write has failed unexpectedly with an error.
     case failure(Swift.Error)
 }

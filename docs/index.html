@@ -13,7 +13,7 @@
     <a title="Bluejay  Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="index.html">Bluejay Docs</a> (43% documented)</p>
+        <p><a href="index.html">Bluejay Docs</a> (90% documented)</p>
         <p class="header-right"><a href="https://github.com/steamclock/bluejay"><img src="img/gh.png"/>View on GitHub</a></p>
       </div>
     </header>
@@ -54,9 +54,6 @@
                 <a href="Enums/DisconnectionResult.html">DisconnectionResult</a>
               </li>
               <li class="nav-group-task">
-                <a href="Enums/DiscoveryResult.html">DiscoveryResult</a>
-              </li>
-              <li class="nav-group-task">
                 <a href="Enums/ListenAction.html">ListenAction</a>
               </li>
               <li class="nav-group-task">
@@ -93,12 +90,6 @@
               </li>
               <li class="nav-group-task">
                 <a href="Extensions/Integer.html">Integer</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="Extensions/Notification.html">Notification</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="Extensions/Notification/Name.html">– Name</a>
               </li>
               <li class="nav-group-task">
                 <a href="Extensions/String.html">String</a>
@@ -154,6 +145,7 @@
             <p><img src="https://raw.githubusercontent.com/steamclock/bluejay/master/bluejay-wordmark.png" alt="Bluejay"></p>
 
 <p><img src="https://img.shields.io/cocoapods/v/Bluejay.svg" alt="CocoaPods Compatible">
+<img src="https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat" alt="Carthage compatible">
 <a href="http://cocoadocs.org/docsets/Bluejay"><img src="https://img.shields.io/cocoapods/p/Bluejay.svg?style=flat" alt="Platform"></a>
 <a href=""><img src="https://img.shields.io/github/license/mashape/apistatus.svg" alt="license"></a></p>
 
@@ -202,6 +194,13 @@
 <li><a href="#state-restoration">State Restoration</a></li>
 <li><a href="#listen-restoration">Listen Restoration</a></li>
 </ul></li>
+<li><a href="#advanced-usage">Advanced Usage</a>
+
+<ul>
+<li><a href="#connect-by-serial-number">Connect by Serial Number</a></li>
+<li><a href="#write-and-assemble">Write and Assemble</a></li>
+<li><a href="#flush-listen">Flush Listen</a></li>
+</ul></li>
 </ul>
 <h2 id='features' class='heading'>Features</h2>
 
@@ -231,6 +230,10 @@
 
 <p><code>pod &#39;Bluejay&#39;, :git =&gt; &#39;https://github.com/steamclock/bluejay.git&#39;, :branch =&gt; &#39;master&#39;</code></p>
 
+<p>Cartfile:</p>
+
+<p><code>github &quot;steamclock/bluejay&quot; ~&gt; 0.1</code></p>
+
 <p>Import using:</p>
 <pre class="highlight swift"><code><span class="kd">import</span> <span class="kt">Bluejay</span>
 </code></pre>
@@ -257,6 +260,12 @@
 <li>If the virtual peripheral is not working as expected, you can try to reset it this way.</li>
 </ul></li>
 <li>The virtual peripheral may use your iPhone or iPad name, because the virtual peripheral is an extension of the host device.</li>
+<li>Some characteristics in the various virtual peripherals available in LightBlue Explorer might not have read of write permissions enabled by default, but you can change most of those settings.
+
+<ul>
+<li>After selecting your virtual peripheral, tap on the characteristic you wish to modify, then tap on either the <q>Read</q> or <q>Write</q> property to customize their permissions.</li>
+<li>Characteristics belonging to the Device Information service, for example, are read only.</li>
+</ul></li>
 </ul>
 <h2 id='usage' class='heading'>Usage</h2>
 <h3 id='initialization' class='heading'>Initialization</h3>
@@ -279,8 +288,8 @@
 <p>The <code>ConnectionObserver</code> protocol allows a class to monitor and respond to major Bluetooth and connection-related events:</p>
 <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">ConnectionObserver</span><span class="p">:</span> <span class="kd">class</span> <span class="p">{</span>
     <span class="kd">func</span> <span class="nf">bluetoothAvailable</span><span class="p">(</span><span class="n">_</span> <span class="nv">available</span><span class="p">:</span> <span class="kt">Bool</span><span class="p">)</span>
-    <span class="kd">func</span> <span class="nf">connected</span><span class="p">(</span><span class="n">_</span> <span class="nv">peripheral</span><span class="p">:</span> <span class="kt">Peripheral</span><span class="p">)</span>
-    <span class="kd">func</span> <span class="nf">disconected</span><span class="p">()</span>
+    <span class="kd">func</span> <span class="nf">connected</span><span class="p">(</span><span class="n">to</span> <span class="nv">peripheral</span><span class="p">:</span> <span class="kt">Peripheral</span><span class="p">)</span>
+    <span class="kd">func</span> <span class="nf">disconnected</span><span class="p">(</span><span class="n">from</span> <span class="nv">peripheral</span><span class="p">:</span> <span class="kt">Peripheral</span><span class="p">)</span>
 <span class="p">}</span>
 </code></pre>
 
@@ -536,36 +545,74 @@
 
 <p>Once you have your data modelled using either the <code>Receivable</code> or <code>Sendable</code> protocol, the read, write, and listen APIs in Bluejay should handle the deserialization and serialization seamlessly for you. All you need to do is to specify the type for the generic result wrappers: <code>ReadResult&lt;T&gt;</code> or <code>WriteResult&lt;T&gt;</code>.</p>
 <h3 id='reading' class='heading'>Reading</h3>
-<pre class="highlight swift"><code><span class="n">bluejay</span><span class="o">.</span><span class="nf">read</span><span class="p">(</span><span class="nv">from</span><span class="p">:</span> <span class="n">firmwareVersion</span><span class="p">)</span> <span class="p">{</span> <span class="p">[</span><span class="k">weak</span> <span class="k">self</span><span class="p">]</span> <span class="p">(</span><span class="nv">result</span><span class="p">:</span> <span class="kt">ReadResult</span><span class="o">&lt;</span><span class="kt">FirmwareVersion</span><span class="o">&gt;</span><span class="p">)</span> <span class="k">in</span>
+
+<p>Here is an example showing how to read the <a href="https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.body_sensor_location.xml">sensor body location characteristic</a>, and converting its value to its corresponding label.</p>
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">heartRateService</span> <span class="o">=</span> <span class="kt">ServiceIdentifier</span><span class="p">(</span><span class="nv">uuid</span><span class="p">:</span> <span class="s">"180D"</span><span class="p">)</span>
+<span class="k">let</span> <span class="nv">sensorLocation</span> <span class="o">=</span> <span class="kt">CharacteristicIdentifier</span><span class="p">(</span><span class="nv">uuid</span><span class="p">:</span> <span class="s">"2A38"</span><span class="p">,</span> <span class="nv">service</span><span class="p">:</span> <span class="n">heartRateService</span><span class="p">)</span>
+
+<span class="n">bluejay</span><span class="o">.</span><span class="nf">read</span><span class="p">(</span><span class="nv">from</span><span class="p">:</span> <span class="n">sensorLocation</span><span class="p">)</span> <span class="p">{</span> <span class="p">[</span><span class="k">weak</span> <span class="k">self</span><span class="p">]</span> <span class="p">(</span><span class="nv">result</span><span class="p">:</span> <span class="kt">ReadResult</span><span class="o">&lt;</span><span class="kt">UInt8</span><span class="o">&gt;</span><span class="p">)</span> <span class="k">in</span>
     <span class="k">guard</span> <span class="k">let</span> <span class="nv">weakSelf</span> <span class="o">=</span> <span class="k">self</span> <span class="k">else</span> <span class="p">{</span>
     <span class="k">return</span>
     <span class="p">}</span>
 
     <span class="k">switch</span> <span class="n">result</span> <span class="p">{</span>
-    <span class="k">case</span> <span class="o">.</span><span class="nf">success</span><span class="p">(</span><span class="k">let</span> <span class="nv">firmwareVersion</span><span class="p">):</span>
-    <span class="nf">debugPrint</span><span class="p">(</span><span class="n">firmwareVersion</span><span class="o">.</span><span class="n">string</span><span class="p">)</span>
+    <span class="k">case</span> <span class="o">.</span><span class="nf">success</span><span class="p">(</span><span class="k">let</span> <span class="nv">location</span><span class="p">):</span>
+    <span class="nf">debugPrint</span><span class="p">(</span><span class="s">"Read from sensor location is successful: </span><span class="se">\(</span><span class="n">location</span><span class="se">)</span><span class="s">"</span><span class="p">)</span>
+
+    <span class="k">var</span> <span class="nv">locationString</span> <span class="o">=</span> <span class="s">"Unknown"</span>
+
+    <span class="k">switch</span> <span class="n">location</span> <span class="p">{</span>
+    <span class="k">case</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">locationString</span> <span class="o">=</span> <span class="s">"Other"</span>
+    <span class="k">case</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">locationString</span> <span class="o">=</span> <span class="s">"Chest"</span>
+    <span class="k">case</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">locationString</span> <span class="o">=</span> <span class="s">"Wrist"</span>
+    <span class="k">case</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="n">locationString</span> <span class="o">=</span> <span class="s">"Finger"</span>
+    <span class="k">case</span> <span class="mi">4</span><span class="p">:</span>
+        <span class="n">locationString</span> <span class="o">=</span> <span class="s">"Hand"</span>
+    <span class="k">case</span> <span class="mi">5</span><span class="p">:</span>
+        <span class="n">locationString</span> <span class="o">=</span> <span class="s">"Ear Lobe"</span>
+    <span class="k">case</span> <span class="mi">6</span><span class="p">:</span>
+        <span class="n">locationString</span> <span class="o">=</span> <span class="s">"Foot"</span>
+    <span class="k">default</span><span class="p">:</span>
+        <span class="n">locationString</span> <span class="o">=</span> <span class="s">"Unknown"</span>
+    <span class="p">}</span>
+
+    <span class="n">weakSelf</span><span class="o">.</span><span class="n">sensorLocationCell</span><span class="o">.</span><span class="n">detailTextLabel</span><span class="p">?</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">locationString</span>
+    <span class="n">weakSelf</span><span class="o">.</span><span class="n">sensorLocation</span> <span class="o">=</span> <span class="n">location</span>
     <span class="k">case</span> <span class="o">.</span><span class="nv">cancelled</span><span class="p">:</span>
-    <span class="nf">debugPrint</span><span class="p">(</span><span class="s">"Read to firmware version cancelled."</span><span class="p">)</span>
+    <span class="nf">debugPrint</span><span class="p">(</span><span class="s">"Cancelled read from sensor location."</span><span class="p">)</span>
     <span class="k">case</span> <span class="o">.</span><span class="nf">failure</span><span class="p">(</span><span class="k">let</span> <span class="nv">error</span><span class="p">):</span>
-    <span class="nf">debugPrint</span><span class="p">(</span><span class="s">"Failed to read firmware version with error: </span><span class="se">\(</span><span class="n">error</span><span class="o">.</span><span class="n">localizedDescription</span><span class="se">)</span><span class="s">"</span><span class="p">)</span>
+    <span class="nf">debugPrint</span><span class="p">(</span><span class="s">"Failed to read from sensor location with error: </span><span class="se">\(</span><span class="n">error</span><span class="o">.</span><span class="n">localizedDescription</span><span class="se">)</span><span class="s">"</span><span class="p">)</span>
     <span class="p">}</span>
 <span class="p">}</span>
 </code></pre>
 <h3 id='writing' class='heading'>Writing</h3>
-<pre class="highlight swift"><code><span class="n">bluejay</span><span class="o">.</span><span class="nf">write</span><span class="p">(</span><span class="nv">to</span><span class="p">:</span> <span class="n">nickname</span><span class="p">,</span> <span class="nv">value</span><span class="p">:</span> <span class="n">newNickname</span><span class="p">)</span> <span class="p">{</span> <span class="p">[</span><span class="k">weak</span> <span class="k">self</span><span class="p">]</span> <span class="p">(</span><span class="nv">result</span><span class="p">:</span> <span class="kt">WriteResult</span><span class="o">&lt;</span><span class="kt">Nickname</span><span class="o">&gt;</span><span class="p">)</span> <span class="k">in</span>
+
+<p>Note that LightBlue Explorer&rsquo;s virtual heart sensor does not have write enabled for its sensor body location characteristic. See <a href="#demo">Demo</a> to find out how to enable it. However, if write is not allowed, the error object in the failure block will inform you.</p>
+<pre class="highlight swift"><code><span class="n">bluejay</span><span class="o">.</span><span class="nf">write</span><span class="p">(</span><span class="nv">to</span><span class="p">:</span> <span class="n">sensorLocation</span><span class="p">,</span> <span class="nv">value</span><span class="p">:</span> <span class="kt">UInt8</span><span class="p">(</span><span class="n">indexPath</span><span class="o">.</span><span class="n">row</span><span class="p">),</span> <span class="nv">completion</span><span class="p">:</span> <span class="p">{</span> <span class="p">[</span><span class="k">weak</span> <span class="k">self</span><span class="p">]</span> <span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="k">in</span>
     <span class="k">guard</span> <span class="k">let</span> <span class="nv">weakSelf</span> <span class="o">=</span> <span class="k">self</span> <span class="k">else</span> <span class="p">{</span>
     <span class="k">return</span>
     <span class="p">}</span>
 
     <span class="k">switch</span> <span class="n">result</span> <span class="p">{</span>
     <span class="k">case</span> <span class="o">.</span><span class="nv">success</span><span class="p">:</span>
-    <span class="nf">debugPrint</span><span class="p">(</span><span class="s">"Write to nickanme successful."</span><span class="p">)</span>
-    <span class="k">case</span> <span class="o">.</span><span class="nv">cancelled</span><span class="p">:</span>
-    <span class="nf">debugPrint</span><span class="p">(</span><span class="s">"Write to nickname cancelled."</span><span class="p">)</span>
-    <span class="k">case</span> <span class="o">.</span><span class="nf">failure</span><span class="p">(</span><span class="k">let</span> <span class="nv">error</span><span class="p">):</span>
-    <span class="nf">debugPrint</span><span class="p">(</span><span class="s">"Failed to write to nickname with error: </span><span class="se">\(</span><span class="n">error</span><span class="o">.</span><span class="n">localizedDescription</span><span class="se">)</span><span class="s">"</span><span class="p">)</span>
+    <span class="nf">debugPrint</span><span class="p">(</span><span class="s">"Write to sensor location is successful."</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="k">let</span> <span class="nv">selectedCell</span> <span class="o">=</span> <span class="n">weakSelf</span><span class="o">.</span><span class="n">selectedCell</span> <span class="p">{</span>
+        <span class="n">selectedCell</span><span class="o">.</span><span class="n">accessoryType</span> <span class="o">=</span> <span class="o">.</span><span class="k">none</span>
     <span class="p">}</span>
-<span class="p">}</span>
+    <span class="n">cell</span><span class="o">.</span><span class="n">accessoryType</span> <span class="o">=</span> <span class="o">.</span><span class="n">checkmark</span>
+
+    <span class="n">weakSelf</span><span class="o">.</span><span class="n">navigationController</span><span class="p">?</span><span class="o">.</span><span class="nf">popViewController</span><span class="p">(</span><span class="nv">animated</span><span class="p">:</span> <span class="kc">true</span><span class="p">)</span>
+    <span class="k">case</span> <span class="o">.</span><span class="nv">cancelled</span><span class="p">:</span>
+    <span class="nf">debugPrint</span><span class="p">(</span><span class="s">"Cancelled write to sensor location."</span><span class="p">)</span>
+    <span class="k">case</span> <span class="o">.</span><span class="nf">failure</span><span class="p">(</span><span class="k">let</span> <span class="nv">error</span><span class="p">):</span>
+    <span class="nf">debugPrint</span><span class="p">(</span><span class="s">"Failed to write to sensor location with error: </span><span class="se">\(</span><span class="n">error</span><span class="o">.</span><span class="n">localizedDescription</span><span class="se">)</span><span class="s">"</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">})</span>
 </code></pre>
 <h3 id='listening' class='heading'>Listening</h3>
 
@@ -594,32 +641,48 @@
 <h3 id='batch-operations' class='heading'>Batch Operations</h3>
 
 <p>Often, your app needs to perform a longer series of reads, writes, and listens to complete a specific task, such as syncing, upgrading to a new firmware, or working with a notification-based Bluetooth module. In these cases, Bluejay provides an API for running all your operations on a background thread, and will call your completion on the main thread when everything finishes without an error, or if one of the operations has failed.</p>
-<pre class="highlight swift"><code><span class="n">bluejay</span><span class="o">.</span><span class="nf">run</span><span class="p">(</span><span class="nv">backgroundTask</span><span class="p">:</span> <span class="p">{</span> <span class="p">(</span><span class="n">peripheral</span><span class="p">)</span> <span class="k">in</span>
-        <span class="k">var</span> <span class="nv">responseCode</span><span class="p">:</span> <span class="kt">ResponseCode</span><span class="p">?</span>
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">heartRateService</span> <span class="o">=</span> <span class="kt">ServiceIdentifier</span><span class="p">(</span><span class="nv">uuid</span><span class="p">:</span> <span class="s">"180D"</span><span class="p">)</span>
+<span class="k">let</span> <span class="nv">heartRateMeasurement</span> <span class="o">=</span> <span class="kt">CharacteristicIdentifier</span><span class="p">(</span><span class="nv">uuid</span><span class="p">:</span> <span class="s">"2A37"</span><span class="p">,</span> <span class="nv">service</span><span class="p">:</span> <span class="n">heartRateService</span><span class="p">)</span>
+<span class="k">let</span> <span class="nv">sensorLocation</span> <span class="o">=</span> <span class="kt">CharacteristicIdentifier</span><span class="p">(</span><span class="nv">uuid</span><span class="p">:</span> <span class="s">"2A38"</span><span class="p">,</span> <span class="nv">service</span><span class="p">:</span> <span class="n">heartRateService</span><span class="p">)</span>
 
-        <span class="k">try</span> <span class="n">peripheral</span><span class="o">.</span><span class="nf">writeAndListen</span><span class="p">(</span>
-            <span class="nv">writeTo</span><span class="p">:</span> <span class="kt">Characteristics</span><span class="o">.</span><span class="n">rigadoTX</span><span class="p">,</span>
-            <span class="nv">value</span><span class="p">:</span> <span class="kt">WriteRequest</span><span class="p">(</span><span class="nv">handle</span><span class="p">:</span> <span class="kt">Registers</span><span class="o">.</span><span class="n">configuration</span><span class="o">.</span><span class="n">motionControlEnable</span><span class="p">,</span> <span class="nv">data</span><span class="p">:</span> <span class="n">enabled</span> <span class="p">?</span> <span class="kt">UInt8</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="p">:</span> <span class="kt">UInt8</span><span class="p">(</span><span class="mi">0</span><span class="p">)),</span>
-            <span class="nv">listenTo</span><span class="p">:</span> <span class="kt">Characteristics</span><span class="o">.</span><span class="n">rigadoRX</span><span class="p">,</span>
-            <span class="nv">completion</span><span class="p">:</span> <span class="p">{</span> <span class="p">(</span><span class="nv">result</span><span class="p">:</span> <span class="kt">WriteResponse</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">ListenAction</span> <span class="k">in</span>
-                <span class="n">responseCode</span> <span class="o">=</span> <span class="kt">ResponseCode</span><span class="p">(</span><span class="nv">rawValue</span><span class="p">:</span> <span class="n">result</span><span class="o">.</span><span class="n">responseCode</span><span class="p">)</span>
-                <span class="k">return</span> <span class="o">.</span><span class="n">done</span>
-        <span class="p">})</span>
+<span class="n">bluejay</span><span class="o">.</span><span class="nf">run</span><span class="p">(</span><span class="nv">backgroundTask</span><span class="p">:</span> <span class="p">{</span> <span class="p">(</span><span class="n">peripheral</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">UInt8</span> <span class="k">in</span>
+    <span class="c1">// 1. Stop monitoring.</span>
+    <span class="nf">debugPrint</span><span class="p">(</span><span class="s">"Reset step 1: stop monitoring."</span><span class="p">)</span>
+    <span class="k">try</span> <span class="n">peripheral</span><span class="o">.</span><span class="nf">endListen</span><span class="p">(</span><span class="nv">to</span><span class="p">:</span> <span class="n">heartRateMeasurement</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">responseCode</span> <span class="o">!=</span> <span class="o">.</span><span class="n">ok</span> <span class="p">{</span>
-            <span class="k">throw</span> <span class="kt">NSError</span><span class="p">(</span><span class="nv">domain</span><span class="p">:</span> <span class="s">"MyApp"</span><span class="p">,</span> <span class="nv">code</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="nv">userInfo</span><span class="p">:</span> <span class="p">[</span><span class="kt">NSLocalizedDescriptionKey</span> <span class="p">:</span> <span class="s">"Failed writing to motion control enable."</span><span class="p">])</span>
-        <span class="p">}</span>
-    <span class="p">},</span> <span class="nv">completionOnMainThread</span><span class="p">:</span> <span class="p">{</span> <span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="k">in</span>
-        <span class="k">switch</span> <span class="n">result</span> <span class="p">{</span>
-        <span class="k">case</span> <span class="o">.</span><span class="nv">success</span><span class="p">:</span>
-            <span class="nf">debugPrint</span><span class="p">(</span><span class="s">"Motion control enable changed to: </span><span class="se">\(</span><span class="n">enabled</span><span class="se">)</span><span class="s">"</span><span class="p">)</span>            
-        <span class="k">case</span> <span class="o">.</span><span class="nv">cancelled</span><span class="p">:</span>
-            <span class="nf">debugPrint</span><span class="p">(</span><span class="s">"Change motion control enable cancelled."</span><span class="p">)</span>
-        <span class="k">case</span> <span class="o">.</span><span class="nf">failure</span><span class="p">(</span><span class="k">let</span> <span class="nv">error</span><span class="p">):</span>
-            <span class="nf">debugPrint</span><span class="p">(</span><span class="s">"Failed to change motion control enable with error: </span><span class="se">\(</span><span class="n">error</span><span class="o">.</span><span class="n">localizedDescription</span><span class="se">)</span><span class="s">"</span><span class="p">)</span>
-        <span class="p">}</span>
-    <span class="p">})</span>
-<span class="p">})</span>
+    <span class="c1">// 2. Set sensor location to 0.</span>
+    <span class="nf">debugPrint</span><span class="p">(</span><span class="s">"Reset step 2: set sensor location to 0."</span><span class="p">)</span>
+    <span class="k">try</span> <span class="n">peripheral</span><span class="o">.</span><span class="nf">write</span><span class="p">(</span><span class="nv">to</span><span class="p">:</span> <span class="n">sensorLocation</span><span class="p">,</span> <span class="nv">value</span><span class="p">:</span> <span class="kt">UInt8</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+
+    <span class="c1">// 3. Read sensor location.</span>
+    <span class="nf">debugPrint</span><span class="p">(</span><span class="s">"Reset step 3: read sensor location."</span><span class="p">)</span>
+    <span class="k">let</span> <span class="nv">sensorLocation</span> <span class="o">=</span> <span class="k">try</span> <span class="n">peripheral</span><span class="o">.</span><span class="nf">read</span><span class="p">(</span><span class="nv">from</span><span class="p">:</span> <span class="n">sensorLocation</span><span class="p">)</span> <span class="k">as</span> <span class="kt">UInt8</span>
+
+    <span class="cm">/*
+     Don't use the listen from the synchronized peripheral here to start monitoring the heart rate again, as it will actually block until it is turned off. The synchronous listen is for when you want to listen to and process some expected incoming values before moving on to the next steps in your background task. It is different from the regular asynchronous listen that is more commonly used for continuous monitoring.
+     */</span>
+
+    <span class="c1">// 4. Return the data interested and process it in the completion block on the main thread.</span>
+    <span class="nf">debugPrint</span><span class="p">(</span><span class="s">"Reset step 4: return sensor location."</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">sensorLocation</span>
+<span class="p">})</span> <span class="p">{</span> <span class="p">[</span><span class="k">weak</span> <span class="k">self</span><span class="p">]</span> <span class="p">(</span><span class="nv">result</span><span class="p">:</span> <span class="kt">RunResult</span><span class="o">&lt;</span><span class="kt">UInt8</span><span class="o">&gt;</span><span class="p">)</span> <span class="k">in</span>
+    <span class="k">guard</span> <span class="k">let</span> <span class="nv">weakSelf</span> <span class="o">=</span> <span class="k">self</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="k">return</span>
+    <span class="p">}</span>
+
+    <span class="k">switch</span> <span class="n">result</span> <span class="p">{</span>
+    <span class="k">case</span> <span class="o">.</span><span class="nf">success</span><span class="p">(</span><span class="k">let</span> <span class="nv">sensorLocation</span><span class="p">):</span>
+        <span class="c1">// Update the sensor location label on the main thread.</span>
+        <span class="n">weakSelf</span><span class="o">.</span><span class="nf">updateSensorLocationLabel</span><span class="p">(</span><span class="nv">value</span><span class="p">:</span> <span class="n">sensorLocation</span><span class="p">)</span>
+
+        <span class="c1">// Resume monitoring. Now we can use the non-blocking listen from Bluejay, not from the SynchronizedPeripheral.</span>
+        <span class="n">weakSelf</span><span class="o">.</span><span class="nf">startMonitoringHeartRate</span><span class="p">()</span>
+    <span class="k">case</span> <span class="o">.</span><span class="nv">cancelled</span><span class="p">:</span>
+        <span class="nf">debugPrint</span><span class="p">(</span><span class="s">"Cancelled reset background task."</span><span class="p">)</span>
+    <span class="k">case</span> <span class="o">.</span><span class="nf">failure</span><span class="p">(</span><span class="k">let</span> <span class="nv">error</span><span class="p">):</span>
+        <span class="nf">debugPrint</span><span class="p">(</span><span class="s">"Failed to complete reset background task with error: </span><span class="se">\(</span><span class="n">error</span><span class="o">.</span><span class="n">localizedDescription</span><span class="se">)</span><span class="s">"</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
 </code></pre>
 
 <p>It is critical though that when performing your Bluetooth operations in the background with <code>backgroundTask</code>, you <strong>must</strong> use the <code>SynchronizedPeripheral</code> given to you by this API. <strong>DO NOT</strong> call any <code>bluejay</code>.<code>read/write/listen</code> functions inside the <code>backgroundTask</code> block.</p>
@@ -688,6 +751,158 @@
 
 <span class="p">}</span>
 </code></pre>
+<h2 id='advanced-usage' class='heading'>Advanced Usage</h2>
+
+<p>The following section will demonstrate a few advanced usage of Bluejay.</p>
+<h3 id='connect-by-serial-number' class='heading'>Connect by Serial Number</h3>
+
+<p>In a project we&rsquo;ve worked on, we had a device with a known serial number stored in a known characteristic that we want to connect to directly. However, Core Bluetooth doesn&rsquo;t support connection using a value from a characteristic.</p>
+
+<p>To connect by serial number using Core Bluetooth, first you&rsquo;d have to scan for the services you know your device is advertising. Once your device is picked up by the scan, then you can grab its CBPeripheral handle and connect to it. But after connecting to it, you still have to verify its serial number by discovering and reading the value from the containing characteristic. If the serial number is not a match, then you&rsquo;d have to disconnect and repeat this process until you find the device with the serial number you&rsquo;re looking for.</p>
+
+<p>Ideally, you&rsquo;d want your Bluetooth vendor or engineer to include the serial number or any other important identifiers in the device&rsquo;s advertising packet. But more often than not, various resource constraints do apply, and we can&rsquo;t always expect everything to follow best practices perfectly. Luckily, Bluejay does make this easier.</p>
+
+<p>Here is a detailed summary of what the code below does and why:</p>
+
+<p>We are maintaining a local collection of <q>blacklisted</q> discoveries that persist over multiple scan sessions. These are devices that don&rsquo;t have matching serial numbers. We can&rsquo;t just rely on the scan function&rsquo;s <q>blacklist</q> <code>ScanAction</code> alone, because the scan function&rsquo;s blacklist shares the same lifecycle as the scan itself. And to allow enqueueing a connection to a device for verifying its serial number, the scan has to end first, so it can be removed from the top of the operation queue. Therefore, we have to start a new scan if the serial number doesn&rsquo;t match.</p>
+
+<p>Since we are starting a new scan every time we find a device with an incorrect serial number, the brand new scan session can still pick up a device we&rsquo;ve examined earlier. This is because the new scan session is unaware of devices previously blacklisted using the <q>blacklist</q> <code>ScanAction</code>. But, we can still find out whether a device is blacklisted using our <strong>own</strong> copy of the blacklist.</p>
+
+<p>Returning <code>.blacklist</code> is not just a ceremonial task to ignore the current discovery within this scan session and to continue scanning. Doing so also adds some safety by preventing further discovery of the same device within the current scan session if <code>allowDuplicates</code> is set to true for some reasons. Interestingly, setting <code>allowDuplicates</code> to false has similar ignoring effect due to its coalescing behaviour, but we are doing this for an entirely different purpose – to save battery.</p>
+
+<p>The keys to understanding this example is to keep in mind that there are <strong>two</strong> copies of blacklists at play here, and to understand why we need to stop and restart a new scan for every discovery that isn&rsquo;t what we&rsquo;re looking for. First, there is one blacklist we are <strong>required</strong> to maintain ourselves that persists over multiple scan sessions, because Bluejay&rsquo;s FIFO operation queue requires the scan to finish before it can run the connection task. Secondly, there&rsquo;s the blacklist that Bluejay maintains for a scan session, but it is cleared as soon as that scan is finished.</p>
+<pre class="highlight swift"><code><span class="c1">// Properties.</span>
+<span class="kd">private</span> <span class="k">var</span> <span class="nv">blacklistedDiscoveries</span> <span class="o">=</span> <span class="p">[</span><span class="kt">ScanDiscovery</span><span class="p">]()</span>    
+<span class="kd">private</span> <span class="k">var</span> <span class="nv">targetSerialNumber</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span>
+
+<span class="c1">// Scan by Serial Number function.</span>
+<span class="kd">private</span> <span class="kd">func</span> <span class="nf">scan</span><span class="p">(</span><span class="nv">services</span><span class="p">:</span> <span class="p">[</span><span class="kt">ServiceIdentifier</span><span class="p">],</span> <span class="nv">serialNumber</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nf">debugPrint</span><span class="p">(</span><span class="s">"Looking for peripheral with serial number </span><span class="se">\(</span><span class="n">serialNumber</span><span class="se">)</span><span class="s"> to connect to."</span><span class="p">)</span>
+
+    <span class="n">statusLabel</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="s">"Searching..."</span>
+
+    <span class="n">bluejay</span><span class="o">.</span><span class="nf">scan</span><span class="p">(</span>
+        <span class="nv">allowDuplicates</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+        <span class="nv">serviceIdentifiers</span><span class="p">:</span> <span class="n">services</span><span class="p">,</span>
+        <span class="nv">discovery</span><span class="p">:</span> <span class="p">{</span> <span class="p">[</span><span class="k">weak</span> <span class="k">self</span><span class="p">]</span> <span class="p">(</span><span class="n">discovery</span><span class="p">,</span> <span class="n">discoveries</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">ScanAction</span> <span class="k">in</span>
+            <span class="k">guard</span> <span class="k">let</span> <span class="nv">weakSelf</span> <span class="o">=</span> <span class="k">self</span> <span class="k">else</span> <span class="p">{</span>
+                <span class="k">return</span> <span class="o">.</span><span class="n">stop</span>
+            <span class="p">}</span>
+
+            <span class="k">if</span> <span class="n">weakSelf</span><span class="o">.</span><span class="n">blacklistedDiscoveries</span><span class="o">.</span><span class="nf">contains</span><span class="p">(</span><span class="nv">where</span><span class="p">:</span> <span class="p">{</span> <span class="p">(</span><span class="n">blacklistedDiscovery</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span> <span class="k">in</span>
+                <span class="k">return</span> <span class="n">blacklistedDiscovery</span><span class="o">.</span><span class="n">peripheral</span><span class="o">.</span><span class="n">identifier</span> <span class="o">==</span> <span class="n">discovery</span><span class="o">.</span><span class="n">peripheral</span><span class="o">.</span><span class="n">identifier</span>
+            <span class="p">})</span>
+            <span class="p">{</span>
+                <span class="k">return</span> <span class="o">.</span><span class="n">blacklist</span>
+            <span class="p">}</span>
+            <span class="k">else</span> <span class="p">{</span>
+                <span class="k">return</span> <span class="o">.</span><span class="nf">connect</span><span class="p">(</span><span class="n">discovery</span><span class="p">,</span> <span class="p">{</span> <span class="p">(</span><span class="n">connectionResult</span><span class="p">)</span> <span class="k">in</span>
+                    <span class="k">switch</span> <span class="n">connectionResult</span> <span class="p">{</span>
+                    <span class="k">case</span> <span class="o">.</span><span class="nf">success</span><span class="p">(</span><span class="k">let</span> <span class="nv">peripheral</span><span class="p">):</span>
+                        <span class="nf">debugPrint</span><span class="p">(</span><span class="s">"Connection to </span><span class="se">\(</span><span class="n">peripheral</span><span class="o">.</span><span class="n">identifier</span><span class="se">)</span><span class="s"> successful."</span><span class="p">)</span>
+
+                        <span class="n">weakSelf</span><span class="o">.</span><span class="n">bluejay</span><span class="o">.</span><span class="nf">read</span><span class="p">(</span><span class="nv">from</span><span class="p">:</span> <span class="kt">Charactersitics</span><span class="o">.</span><span class="n">serialNumber</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="p">{</span> <span class="p">(</span><span class="nv">readResult</span><span class="p">:</span> <span class="kt">ReadResult</span><span class="o">&lt;</span><span class="kt">String</span><span class="o">&gt;</span><span class="p">)</span> <span class="k">in</span>
+                            <span class="k">switch</span> <span class="n">readResult</span> <span class="p">{</span>
+                            <span class="k">case</span> <span class="o">.</span><span class="nf">success</span><span class="p">(</span><span class="k">let</span> <span class="nv">serialNumber</span><span class="p">):</span>
+                                <span class="k">if</span> <span class="n">serialNumber</span> <span class="o">==</span> <span class="n">weakSelf</span><span class="o">.</span><span class="n">targetSerialNumber</span> <span class="p">{</span>
+                                    <span class="nf">debugPrint</span><span class="p">(</span><span class="s">"Serial number matched."</span><span class="p">)</span>
+
+                                    <span class="n">weakSelf</span><span class="o">.</span><span class="n">statusLabel</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="s">"Connected"</span>
+                                <span class="p">}</span>
+                                <span class="k">else</span> <span class="p">{</span>
+                                    <span class="nf">debugPrint</span><span class="p">(</span><span class="s">"Serial number mismatch."</span><span class="p">)</span>
+
+                                    <span class="n">weakSelf</span><span class="o">.</span><span class="n">blacklistedDiscoveries</span><span class="o">.</span><span class="nf">append</span><span class="p">(</span><span class="n">discovery</span><span class="p">)</span>
+
+                                    <span class="n">weakSelf</span><span class="o">.</span><span class="n">bluejay</span><span class="o">.</span><span class="nf">disconnect</span><span class="p">(</span><span class="nv">completion</span><span class="p">:</span> <span class="p">{</span> <span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="k">in</span>
+                                        <span class="k">switch</span> <span class="n">result</span> <span class="p">{</span>
+                                        <span class="k">case</span> <span class="o">.</span><span class="nv">success</span><span class="p">:</span>
+                                            <span class="n">weakSelf</span><span class="o">.</span><span class="nf">scan</span><span class="p">(</span><span class="nv">services</span><span class="p">:</span> <span class="p">[</span><span class="kt">Services</span><span class="o">.</span><span class="n">deviceInfo</span><span class="p">],</span> <span class="nv">serialNumber</span><span class="p">:</span> <span class="n">weakSelf</span><span class="o">.</span><span class="n">targetSerialNumber</span><span class="o">!</span><span class="p">)</span>
+                                        <span class="k">case</span> <span class="o">.</span><span class="nv">cancelled</span><span class="p">:</span>
+                                            <span class="nf">preconditionFailure</span><span class="p">(</span><span class="s">"Disconnection cancelled unexpectedly."</span><span class="p">)</span>
+                                        <span class="k">case</span> <span class="o">.</span><span class="nf">failure</span><span class="p">(</span><span class="k">let</span> <span class="nv">error</span><span class="p">):</span>
+                                            <span class="nf">preconditionFailure</span><span class="p">(</span><span class="s">"Disconnection failed with error: </span><span class="se">\(</span><span class="n">error</span><span class="o">.</span><span class="n">localizedDescription</span><span class="se">)</span><span class="s">"</span><span class="p">)</span>
+                                        <span class="p">}</span>
+                                    <span class="p">})</span>
+                                <span class="p">}</span>
+                            <span class="k">case</span> <span class="o">.</span><span class="nv">cancelled</span><span class="p">:</span>
+                                <span class="nf">debugPrint</span><span class="p">(</span><span class="s">"Read serial number cancelled."</span><span class="p">)</span>
+
+                                <span class="n">weakSelf</span><span class="o">.</span><span class="n">statusLabel</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="s">"Read Cancelled"</span>
+                            <span class="k">case</span> <span class="o">.</span><span class="nf">failure</span><span class="p">(</span><span class="k">let</span> <span class="nv">error</span><span class="p">):</span>
+                                <span class="nf">debugPrint</span><span class="p">(</span><span class="s">"Read serial number failed with error: </span><span class="se">\(</span><span class="n">error</span><span class="o">.</span><span class="n">localizedDescription</span><span class="se">)</span><span class="s">."</span><span class="p">)</span>
+
+                                <span class="n">weakSelf</span><span class="o">.</span><span class="n">statusLabel</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="s">"Read Error: </span><span class="se">\(</span><span class="n">error</span><span class="o">.</span><span class="n">localizedDescription</span><span class="se">)</span><span class="s">"</span>
+                            <span class="p">}</span>
+                        <span class="p">})</span>
+                    <span class="k">case</span> <span class="o">.</span><span class="nv">cancelled</span><span class="p">:</span>
+                        <span class="nf">debugPrint</span><span class="p">(</span><span class="s">"Connection to </span><span class="se">\(</span><span class="n">discovery</span><span class="o">.</span><span class="n">peripheral</span><span class="o">.</span><span class="n">identifier</span><span class="se">)</span><span class="s"> cancelled."</span><span class="p">)</span>
+
+                        <span class="n">weakSelf</span><span class="o">.</span><span class="n">statusLabel</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="s">"Connection Cancelled"</span>
+                    <span class="k">case</span> <span class="o">.</span><span class="nf">failure</span><span class="p">(</span><span class="k">let</span> <span class="nv">error</span><span class="p">):</span>
+                        <span class="nf">debugPrint</span><span class="p">(</span><span class="s">"Connection to </span><span class="se">\(</span><span class="n">discovery</span><span class="o">.</span><span class="n">peripheral</span><span class="o">.</span><span class="n">identifier</span><span class="se">)</span><span class="s"> failed with error: </span><span class="se">\(</span><span class="n">error</span><span class="o">.</span><span class="n">localizedDescription</span><span class="se">)</span><span class="s">"</span><span class="p">)</span>
+
+                        <span class="n">weakSelf</span><span class="o">.</span><span class="n">statusLabel</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="s">"Connection Error: </span><span class="se">\(</span><span class="n">error</span><span class="o">.</span><span class="n">localizedDescription</span><span class="se">)</span><span class="s">"</span>
+                    <span class="p">}</span>
+                <span class="p">})</span>
+            <span class="p">}</span>
+        <span class="p">},</span>
+        <span class="nv">expired</span><span class="p">:</span> <span class="p">{</span> <span class="p">[</span><span class="k">weak</span> <span class="k">self</span><span class="p">]</span> <span class="p">(</span><span class="n">lostDiscovery</span><span class="p">,</span> <span class="n">discoveries</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">ScanAction</span> <span class="k">in</span>
+            <span class="k">if</span> <span class="k">self</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
+                <span class="k">return</span> <span class="o">.</span><span class="n">stop</span>
+            <span class="p">}</span>
+
+            <span class="nf">debugPrint</span><span class="p">(</span><span class="s">"Lost discovery: </span><span class="se">\(</span><span class="n">lostDiscovery</span><span class="se">)</span><span class="s">"</span><span class="p">)</span>
+
+            <span class="k">return</span> <span class="o">.</span><span class="k">continue</span>
+    <span class="p">})</span> <span class="p">{</span> <span class="p">[</span><span class="k">weak</span> <span class="k">self</span><span class="p">]</span> <span class="p">(</span><span class="n">discoveries</span><span class="p">,</span> <span class="n">error</span><span class="p">)</span> <span class="k">in</span>
+        <span class="k">guard</span> <span class="k">let</span> <span class="nv">weakSelf</span> <span class="o">=</span> <span class="k">self</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="k">return</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="k">let</span> <span class="nv">error</span> <span class="o">=</span> <span class="n">error</span> <span class="p">{</span>
+            <span class="nf">debugPrint</span><span class="p">(</span><span class="s">"Scan stopped with error: </span><span class="se">\(</span><span class="n">error</span><span class="o">.</span><span class="n">localizedDescription</span><span class="se">)</span><span class="s">"</span><span class="p">)</span>
+
+            <span class="n">weakSelf</span><span class="o">.</span><span class="n">statusLabel</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="s">"Scan Error: </span><span class="se">\(</span><span class="n">error</span><span class="o">.</span><span class="n">localizedDescription</span><span class="se">)</span><span class="s">"</span>
+        <span class="p">}</span>
+        <span class="k">else</span> <span class="p">{</span>
+            <span class="nf">debugPrint</span><span class="p">(</span><span class="s">"Scan stopped without error."</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+<h3 id='write-and-assemble' class='heading'>Write and Assemble</h3>
+
+<p>One of the Bluetooth modules we&rsquo;ve worked with doesn&rsquo;t always send back data in one packet, even if the data is smaller than its maximum allowed packet size. To handle these incoming data that can be broken up into any number of packets arbitrarily, we&rsquo;ve introduced the <code>writeAndAssemble</code> API that is very similar to <code>writeAndListen</code> on the <code>SynchronizedPeripheral</code>. Therefore, at least for now, this is only supported in the context of <code>run(backgroundTask:completionOnMainThread:)</code>.</p>
+
+<p>When using <code>writeAndAssemble</code>, we still expect you to know the total size of the data you are receiving, but Bluejay will keep listening and receiving packets until the expected size is reached before trying to deserialize the data into the object you need.</p>
+
+<p>You can also specify a timeout in case something hangs or takes abnormally long.</p>
+
+<p>Here is an example writing a request for a value to a Bluetooth module, so that it can return the value we want via a notification on a characteristic. And of course, we&rsquo;re not sure and have no control over how many packets the module will send back.</p>
+<pre class="highlight swift"><code><span class="k">try</span> <span class="n">peripheral</span><span class="o">.</span><span class="nf">writeAndAssemble</span><span class="p">(</span>
+    <span class="nv">writeTo</span><span class="p">:</span> <span class="kt">Characteristics</span><span class="o">.</span><span class="n">rigadoTX</span><span class="p">,</span>
+    <span class="nv">value</span><span class="p">:</span> <span class="kt">ReadRequest</span><span class="p">(</span><span class="nv">handle</span><span class="p">:</span> <span class="kt">Registers</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">firmwareVersion</span><span class="p">),</span>
+    <span class="nv">listenTo</span><span class="p">:</span> <span class="kt">Characteristics</span><span class="o">.</span><span class="n">rigadoRX</span><span class="p">,</span>
+    <span class="nv">expectedLength</span><span class="p">:</span> <span class="kt">FirmwareVersion</span><span class="o">.</span><span class="n">length</span><span class="p">,</span>
+    <span class="nv">completion</span><span class="p">:</span> <span class="p">{</span> <span class="p">(</span><span class="nv">firmwareVersion</span><span class="p">:</span> <span class="kt">FirmwareVersion</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">ListenAction</span> <span class="k">in</span>
+        <span class="n">settings</span><span class="o">.</span><span class="n">firmware</span> <span class="o">=</span> <span class="n">firmwareVersion</span><span class="o">.</span><span class="n">string</span>
+        <span class="k">return</span> <span class="o">.</span><span class="n">done</span>
+<span class="p">})</span>
+</code></pre>
+<h3 id='flush-listen' class='heading'>Flush Listen</h3>
+
+<p>Some Bluetooth modules will pause sending data when it loses connection to your app, and will resume sending the same set of data from where it left off when the connection is re-established. This isn&rsquo;t an issue most of the time. However, if the connection loss is due to a crash in your app, or something that causes your listen callback to be deallocated before the connection is re-established, then it is often very difficult to resume your app with the exact same content and context at the time of the connection loss.</p>
+
+<p>For example, you might have to re-authenticate the user when the app is re-opened. But if authentication requires listening to the same characteristic where the incomplete data set is still being sent, then you will be getting back unexpected values and most likely crash when trying to deserialize authentication related objects.</p>
+
+<p>To handle this, it is often a good idea to flush a notifiable characteristic before starting a critical first-time and/or setup related operation. This is also only available on the <code>SynchronizedPeripheral</code> in the context of <code>run(backgroundTask:completionOnMainThread:)</code> for now.</p>
+<pre class="highlight swift"><code><span class="k">try</span> <span class="n">peripheral</span><span class="o">.</span><span class="nf">flushListen</span><span class="p">(</span><span class="nv">to</span><span class="p">:</span> <span class="kt">Characteristics</span><span class="o">.</span><span class="n">rigadoRX</span><span class="p">,</span> <span class="nv">idleWindow</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nf">debugPrint</span><span class="p">(</span><span class="s">"Flushed buffered data on RigadoRX."</span><span class="p">)</span>
+<span class="p">})</span>
+</code></pre>
+
+<p>The <code>idleWindow</code> is in seconds, and basically specifies the duration of the absence of incoming data needed to predict that the flush is most likely completed. Note that this is still an estimation. Depending on your Bluetooth hardware and usage environments and conditions, a longer window might be necessary.</p>
 <h2 id='api-documentation' class='heading'>API Documentation</h2>
 
 <p>We have more <a href="https://steamclock.github.io/bluejay/index.html">in-depth API documentation for Bluejay</a> using inline documentation and Jazzy.</p>

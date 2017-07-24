@@ -9,6 +9,7 @@
 import Foundation
 import CoreBluetooth
 
+/// The available events a queue can and should respond to.
 enum Event {
     case didDiscoverServices
     case didDiscoverCharacteristics

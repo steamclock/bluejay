@@ -10,8 +10,11 @@ import Foundation
 
 /// Indicates a successful, cancelled, or failed read attempt, where the success case contains the value read.
 public enum ReadResult<R> {
+    /// The read is successful and the value read is captured in the associated value.
     case success(R)
+    /// The read is cancelled for a reason.
     case cancelled
+    /// The read has failed unexpectedly with an error.
     case failure(Swift.Error)
 }
 
