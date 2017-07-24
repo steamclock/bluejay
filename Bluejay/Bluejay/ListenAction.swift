@@ -8,7 +8,7 @@
 
 import Foundation
 
-/// Indicates whether the current listening action on a characteristic should continue or end.
+/// Indicates whether the current listening on a characteristic should continue or end.
 public enum ListenAction {
     case keepListening
     case done

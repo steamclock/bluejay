@@ -8,7 +8,7 @@
 
 import Foundation
 
-/// Indicates a successful or failed read attempt, where the success case contains the value read.
+/// Indicates a successful, cancelled, or failed read attempt, where the success case contains the value read.
 public enum ReadResult<R> {
     case success(R)
     case cancelled

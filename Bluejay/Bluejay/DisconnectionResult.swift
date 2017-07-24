@@ -9,6 +9,7 @@
 import Foundation
 import CoreBluetooth
 
+/// Indicates a successful, cancelled, or failed disconnection attempt, where the success case contains the peripheral disconnected from.
 public enum DisconnectionResult {
     case success(CBPeripheral)
     case cancelled

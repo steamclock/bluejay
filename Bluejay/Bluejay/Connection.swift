@@ -14,14 +14,22 @@ var standardConnectOptions: [String : AnyObject] = [
     CBConnectPeripheralOptionNotifyOnConnectionKey: true as AnyObject
 ]
 
+/// A connection operation.
 class Connection: Queueable {
     
+    /// The queue this operation belongs to.
     var queue: Queue?
+    
+    /// The state of this operation.
     var state: QueueableState
     
+    /// The peripheral this operation is for.
     let peripheral: CBPeripheral
+    
+    /// The manager responsible for this operation.
     let manager: CBCentralManager
     
+    /// Callback for the connection attempt.
     var callback: ((ConnectionResult) -> Void)?
     
     private var connectionTimer: Timer?

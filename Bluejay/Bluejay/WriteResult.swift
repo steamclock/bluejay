@@ -8,7 +8,7 @@
 
 import Foundation
 
-/// Indicates a successful or failed write attempt.
+/// Indicates a successful, cancelled, or failed write attempt.
 public enum WriteResult {
     case success
     case cancelled

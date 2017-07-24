@@ -8,28 +8,9 @@
 
 import Foundation
 
+/// Indicates a successful, cancelled, or failed `run(backgroundTask:completionOnMainThread:)` attempt, where the success case contains the value returned at the end of the background task.
 public enum RunResult<R> {
     case success(R)
     case cancelled
     case failure(Swift.Error)
-}
-
-extension RunResult where R: Receivable {
-    
-    init(dataResult: RunResult<Data?>) {
-        switch dataResult {
-        case .success(let data):
-            if let data = data {
-                self = .success(R(bluetoothData: data))
-            }
-            else {
-                self = .failure(Error.missingData())
-            }
-        case .cancelled:
-            self = .cancelled
-        case .failure(let error):
-            self = .failure(error)
-        }
-    }
-    
 }
