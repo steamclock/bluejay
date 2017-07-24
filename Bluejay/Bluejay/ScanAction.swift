@@ -8,6 +8,7 @@
 
 import Foundation
 
+/// Indicates whether a scan should continue, continue but blacklist the current discovery, stop, or stop and connect.
 public enum ScanAction {
     case `continue`
     case blacklist
