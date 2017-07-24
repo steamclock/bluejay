@@ -8,7 +8,7 @@
 
 import Foundation
 
-/// Protocol to indicate that a type can be received from the bluetooth connection.
+/// Protocol to indicate that a type can be received from the Bluetooth connection.
 public protocol Receivable {
     init(bluetoothData: Data)
 }

@@ -17,8 +17,8 @@ import Foundation
     - Note
     Available callbacks:
     * `func bluetoothAvailable(_ available: Bool)`
-    * `func connected(_ peripheral: BluejayPeripheral)`
-    * `func disconnected()`
+    * `func connected(to peripheral: Peripheral)`
+    * `func disconnected(from peripheral: Peripheral)`
 */
 public protocol ConnectionObserver: class {
     
@@ -37,7 +37,7 @@ extension ConnectionObserver {
     public func disconnected(from peripheral: Peripheral) {}
 }
 
-/// Allows creating weak references to ConnectionObserver objects, so that the Bluejay singleton does not prevent the deallocation of those objects.
+/// Allows creating weak references to ConnectionObserver objects, so that Bluejay does not keep strong references to observers and prevent them from being released in memory.
 struct WeakConnectionObserver {
     weak var weakReference: ConnectionObserver?
 }

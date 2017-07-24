@@ -9,14 +9,14 @@
 import Foundation
 import CoreBluetooth
 
+/**
+ A protocol allowing conforming objects to monitor the RSSI changes of a connected peripheral.
+*/
 public protocol RSSIObserver: class {
     func peripheral(_ peripheral: CBPeripheral, didReadRSSI RSSI: NSNumber, error: Swift.Error?)
 }
 
-extension RSSIObserver {
-    public func peripheral(_ peripheral: CBPeripheral, didReadRSSI RSSI: NSNumber, error: Swift.Error?) {}
-}
-
+/// Allows creating weak references to RSSIObserver objects, so that Bluejay does not keep strong references to observers and prevent them from being released in memory.
 struct WeakRSSIObserver {
     weak var weakReference: RSSIObserver?
 }
