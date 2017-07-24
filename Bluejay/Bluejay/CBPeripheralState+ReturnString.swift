@@ -11,6 +11,7 @@ import CoreBluetooth
 
 extension CBPeripheralState {
     
+    /// Returns the name of a `CBPeripheralState` as a string.
     public func string() -> String {
         switch self {
         case .connected: return "Connected"

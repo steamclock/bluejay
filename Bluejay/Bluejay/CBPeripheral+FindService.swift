@@ -11,7 +11,7 @@ import CoreBluetooth
 
 extension CBPeripheral {
     
-    /// Find a service on a peripheral by UUID.
+    /// Find a service on a peripheral by CBUUID.
     public func service(with uuid: CBUUID) -> CBService? {
         return services?.filter { $0.uuid == uuid }.first
     }
