@@ -678,11 +678,7 @@ extension Bluejay: CBCentralManagerDelegate {
     }
     
     /**
-     Figure out whether this is any kinds of disconnection when Bluejay is still connecting, an expected disconnection from a connected state, or an unexpected disconnection from a connected state. An unexpected disconnection from a connected state, such as walking out of range or restarting the Bluetooth device, is the only case where `shouldAutoReconnect` should be set to true.
-     
-     Make sure to update the states by updating the values of `connectingPeripheral` and `connectedPeripheral`, and broadcast the event to all observers.
-     
-     Finally, if `isConnecting` is true or if `isDisconnecting` is true, the current running operation in the queue has to be either a `Connection` or a `Disconnection` task. Therefore, it is important to pass either one of those tasks this event so that the pending `Connection` task can fail accordingly, and the `Disconnection` task can complete with a success. If the current operation is neither a `Connection` nor a `Disconnection` task, we should assume we've lost connection unexpectedly, and cancel everything in the queue with a `notConnected` error.
+     Handle a disconnection event from Core Bluetooth by figuring out what kind of disconnection it is (planned or unplanned), and updating Bluejay's internal state and sending notifications as appropriate.
     */
     public func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Swift.Error?) {
         let backgroundTask =  UIApplication.shared.beginBackgroundTask(expirationHandler: nil)
