@@ -13,7 +13,7 @@
     <a title="Enums  Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="index.html">Bluejay Docs</a> (43% documented)</p>
+        <p><a href="index.html">Bluejay Docs</a> (90% documented)</p>
         <p class="header-right"><a href="https://github.com/steamclock/bluejay"><img src="img/gh.png"/>View on GitHub</a></p>
       </div>
     </header>
@@ -54,9 +54,6 @@
                 <a href="Enums/DisconnectionResult.html">DisconnectionResult</a>
               </li>
               <li class="nav-group-task">
-                <a href="Enums/DiscoveryResult.html">DiscoveryResult</a>
-              </li>
-              <li class="nav-group-task">
                 <a href="Enums/ListenAction.html">ListenAction</a>
               </li>
               <li class="nav-group-task">
@@ -93,12 +90,6 @@
               </li>
               <li class="nav-group-task">
                 <a href="Extensions/Integer.html">Integer</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="Extensions/Notification.html">Notification</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="Extensions/Notification/Name.html">– Name</a>
               </li>
               <li class="nav-group-task">
                 <a href="Extensions/String.html">String</a>
@@ -170,7 +161,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Indicates a successful or failed read attempt, where the success case contains the value read.</p>
+                        <p>Indicates a successful, cancelled, or failed read attempt, where the success case contains the value read.</p>
 
                         <a href="Enums/ReadResult.html" class="slightly-smaller">See more</a>
                       </div>
@@ -234,9 +225,17 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Indicates a successful, cancelled, or failed disconnection attempt, where the success case contains the peripheral disconnected from.</p>
 
                         <a href="Enums/DisconnectionResult.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">enum</span> <span class="kt">DisconnectionResult</span></code></pre>
+
+                        </div>
                       </div>
                     </section>
                   </div>
@@ -258,9 +257,17 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Indicates whether a scan should continue, continue but blacklist the current discovery, stop, or stop and connect.</p>
 
                         <a href="Enums/ScanAction.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">enum</span> <span class="kt">ScanAction</span></code></pre>
+
+                        </div>
                       </div>
                     </section>
                   </div>
@@ -282,9 +289,17 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Indicates a successful, cancelled, or failed connection attempt, where the success case contains the peripheral connected to.</p>
 
                         <a href="Enums/ConnectionResult.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">enum</span> <span class="kt">ConnectionResult</span></code></pre>
+
+                        </div>
                       </div>
                     </section>
                   </div>
@@ -306,7 +321,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Indicates a successful or failed write attempt.</p>
+                        <p>Indicates a successful, cancelled, or failed write attempt.</p>
 
                         <a href="Enums/WriteResult.html" class="slightly-smaller">See more</a>
                       </div>
@@ -328,30 +343,6 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:O7Bluejay15DiscoveryResult"></a>
-                    <a name="//apple_ref/swift/Enum/DiscoveryResult" class="dashAnchor"></a>
-                    <a class="token" href="#/s:O7Bluejay15DiscoveryResult">DiscoveryResult</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Undocumented</p>
-
-                        <a href="Enums/DiscoveryResult.html" class="slightly-smaller">See more</a>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-              </ul>
-            </div>
-            <div class="task-group">
-              <ul>
-                <li class="item">
-                  <div>
-                    <code>
                     <a name="/s:O7Bluejay12ListenAction"></a>
                     <a name="//apple_ref/swift/Enum/ListenAction" class="dashAnchor"></a>
                     <a class="token" href="#/s:O7Bluejay12ListenAction">ListenAction</a>
@@ -362,7 +353,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Indicates whether the current listening action on a characteristic should continue or end.</p>
+                        <p>Indicates whether the current listen on a characteristic should continue or end.</p>
 
                         <a href="Enums/ListenAction.html" class="slightly-smaller">See more</a>
                       </div>
@@ -394,9 +385,17 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Indicates a successful, cancelled, or failed <code>run(backgroundTask:completionOnMainThread:)</code> attempt, where the success case contains the value returned at the end of the background task.</p>
 
                         <a href="Enums/RunResult.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">enum</span> <span class="kt">RunResult</span><span class="o">&lt;</span><span class="kt">R</span><span class="o">&gt;</span></code></pre>
+
+                        </div>
                       </div>
                     </section>
                   </div>

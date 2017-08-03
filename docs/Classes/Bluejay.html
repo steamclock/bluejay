@@ -14,7 +14,7 @@
     <a title="Bluejay Class Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="../index.html">Bluejay Docs</a> (43% documented)</p>
+        <p><a href="../index.html">Bluejay Docs</a> (90% documented)</p>
         <p class="header-right"><a href="https://github.com/steamclock/bluejay"><img src="../img/gh.png"/>View on GitHub</a></p>
       </div>
     </header>
@@ -55,9 +55,6 @@
                 <a href="../Enums/DisconnectionResult.html">DisconnectionResult</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Enums/DiscoveryResult.html">DiscoveryResult</a>
-              </li>
-              <li class="nav-group-task">
                 <a href="../Enums/ListenAction.html">ListenAction</a>
               </li>
               <li class="nav-group-task">
@@ -94,12 +91,6 @@
               </li>
               <li class="nav-group-task">
                 <a href="../Extensions/Integer.html">Integer</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Extensions/Notification.html">Notification</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Extensions/Notification/Name.html">– Name</a>
               </li>
               <li class="nav-group-task">
                 <a href="../Extensions/String.html">String</a>
@@ -359,7 +350,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Initializing a Bluejay instance will not yet initialize the CoreBluetooth stack. An explicit call to start running a Bluejay instance after it is intialized is required because in cases where a state resotration is trying to restore a listen on a characteristic, a listen restorer must be available before the CoreBluetooth stack is re-initialized. This two-step startup allows you to insert and gaurantee the setup of your listen restorer in between the initialization of Bluejay and the initialization of the CoreBluetooth stack triggered via this call.</p>
+                        <p>Initializing a Bluejay instance will not yet initialize the CoreBluetooth stack. An explicit call to start running a Bluejay instance after it is intialized is required because in cases where a state resotration is trying to restore a listen on a characteristic, a listen restorer must be available before the CoreBluetooth stack is re-initialized. This two-step startup allows you to insert and gaurantee the setup of your listen restorer in between the initialization of Bluejay and the initialization of the CoreBluetooth stack.</p>
 
                       </div>
                       <div class="declaration">
@@ -386,7 +377,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Starting Bluejay will initialize the CoreBluetooth stack. Initializing a Bluejay instance will not yet initialize the CoreBluetooth stack. An explicit call to start running a Bluejay instance after it is intialized is required because in cases where a state resotration is trying to restore a listen on a characteristic, a listen restorer must be available before the CoreBluetooth stack is re-initialized. This two-step startup allows you to insert and gaurantee the setup of your listen restorer in between the initialization of Bluejay and the initialization of the CoreBluetooth stack triggered via this call.</p>
+                        <p>Starting Bluejay will initialize the CoreBluetooth stack. Initializing a Bluejay instance will not yet initialize the CoreBluetooth stack. An explicit call to start running a Bluejay instance after it is intialized is required because in cases where a state resotration is trying to restore a listen on a characteristic, a listen restorer must be available before the CoreBluetooth stack is re-initialized. This two-step startup allows you to insert and gaurantee the setup of your listen restorer in between the initialization of Bluejay and the initialization of the CoreBluetooth stack.</p>
 
                       </div>
                       <div class="declaration">
@@ -1447,14 +1438,21 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Bluejay uses this to figure out whether Bluetooth is available or not.</p>
+
+<ul>
+<li>If Bluetooth is available for the first time, start running the queue.</li>
+<li>If Bluetooth is available for the first time and the app is already connected, then this is a state restoration event. Try listen restoration if possible.</li>
+<li>If Bluetooth is turned off, cancel everything with the <code>bluetoothUnavailable</code> error and disconnect.</li>
+<li>Broadcast state changes to observers.</li>
+</ul>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">Bluejay</span><span class="p">:</span> <span class="kt">NSObject</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">centralManagerDidUpdateState</span><span class="p">(</span><span class="n">_</span> <span class="nv">central</span><span class="p">:</span> <span class="kt">CBCentralManager</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -1474,14 +1472,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>If Core Bluetooth will restore state, update Bluejay&rsquo;s internal states to match the states of the Core Bluetooth stack by assigning the peripheral to <code>connectingPeripheral</code> or <code>connectedPeripheral</code>, or niling them out, depending on what the restored <code>CBPeripheral</code> state is.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">Bluejay</span><span class="p">:</span> <span class="kt">NSObject</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">centralManager</span><span class="p">(</span><span class="n">_</span> <span class="nv">central</span><span class="p">:</span> <span class="kt">CBCentralManager</span><span class="p">,</span> <span class="n">willRestoreState</span> <span class="nv">dict</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span> <span class="p">:</span> <span class="kt">Any</span><span class="p">])</span></code></pre>
 
                         </div>
                       </div>
@@ -1501,14 +1499,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>When connected, update Bluejay&rsquo;s states by updating the values for <code>connectingPeripheral</code>, <code>connectedPeripheral</code>, and <code>shouldAutoReconnect</code>. Also, make sure to broadcast the event to observers, and notify the queue so that the current operation in-flight can process this event and get a chance to finish.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">Bluejay</span><span class="p">:</span> <span class="kt">NSObject</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">centralManager</span><span class="p">(</span><span class="n">_</span> <span class="nv">central</span><span class="p">:</span> <span class="kt">CBCentralManager</span><span class="p">,</span> <span class="n">didConnect</span> <span class="nv">peripheral</span><span class="p">:</span> <span class="kt">CBPeripheral</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -1528,14 +1526,18 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Figure out whether this is any kinds of disconnection when Bluejay is still connecting, an expected disconnection from a connected state, or an unexpected disconnection from a connected state. An unexpected disconnection from a connected state, such as walking out of range or restarting the Bluetooth device, is the only case where <code>shouldAutoReconnect</code> should be set to true.</p>
+
+<p>Make sure to update the states by updating the values of <code>connectingPeripheral</code> and <code>connectedPeripheral</code>, and broadcast the event to all observers.</p>
+
+<p>Finally, if <code><a href="../Classes/Bluejay.html#/s:vC7Bluejay7Bluejay12isConnectingSb">isConnecting</a></code> is true or if <code><a href="../Classes/Bluejay.html#/s:vC7Bluejay7Bluejay15isDisconnectingSb">isDisconnecting</a></code> is true, the current running operation in the queue has to be either a <code>Connection</code> or a <code>Disconnection</code> task. Therefore, it is important to pass either one of those tasks this event so that the pending <code>Connection</code> task can fail accordingly, and the <code>Disconnection</code> task can complete with a success. If the current operation is neither a <code>Connection</code> nor a <code>Disconnection</code> task, we should assume we&rsquo;ve lost connection unexpectedly, and cancel everything in the queue with a <code>notConnected</code> error.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">Bluejay</span><span class="p">:</span> <span class="kt">NSObject</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">centralManager</span><span class="p">(</span><span class="n">_</span> <span class="nv">central</span><span class="p">:</span> <span class="kt">CBCentralManager</span><span class="p">,</span> <span class="n">didDisconnectPeripheral</span> <span class="nv">peripheral</span><span class="p">:</span> <span class="kt">CBPeripheral</span><span class="p">,</span> <span class="nv">error</span><span class="p">:</span> <span class="kt">Swift</span><span class="o">.</span><span class="kt">Error</span><span class="p">?)</span></code></pre>
 
                         </div>
                       </div>
@@ -1555,14 +1557,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>This mostly happens when either the Bluetooth device or the Core Bluetooth stack somehow only partially completes the negotiation of a connection. For simplicity, Bluejay is currently treating this as a disconnection event, so it can perform all the same clean up logic.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">Bluejay</span><span class="p">:</span> <span class="kt">NSObject</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">centralManager</span><span class="p">(</span><span class="n">_</span> <span class="nv">central</span><span class="p">:</span> <span class="kt">CBCentralManager</span><span class="p">,</span> <span class="n">didFailToConnect</span> <span class="nv">peripheral</span><span class="p">:</span> <span class="kt">CBPeripheral</span><span class="p">,</span> <span class="nv">error</span><span class="p">:</span> <span class="kt">Swift</span><span class="o">.</span><span class="kt">Error</span><span class="p">?)</span></code></pre>
 
                         </div>
                       </div>
@@ -1582,14 +1584,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>This should only be called when the current operation in the queue is a <code>Scan</code> task.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">Bluejay</span><span class="p">:</span> <span class="kt">NSObject</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">centralManager</span><span class="p">(</span><span class="n">_</span> <span class="nv">central</span><span class="p">:</span> <span class="kt">CBCentralManager</span><span class="p">,</span> <span class="n">didDiscover</span> <span class="nv">peripheral</span><span class="p">:</span> <span class="kt">CBPeripheral</span><span class="p">,</span> <span class="nv">advertisementData</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span> <span class="p">:</span> <span class="kt">Any</span><span class="p">],</span> <span class="n">rssi</span> <span class="kt">RSSI</span><span class="p">:</span> <span class="kt">NSNumber</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>

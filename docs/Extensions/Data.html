@@ -14,7 +14,7 @@
     <a title="Data Extension Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="../index.html">Bluejay Docs</a> (43% documented)</p>
+        <p><a href="../index.html">Bluejay Docs</a> (90% documented)</p>
         <p class="header-right"><a href="https://github.com/steamclock/bluejay"><img src="../img/gh.png"/>View on GitHub</a></p>
       </div>
     </header>
@@ -55,9 +55,6 @@
                 <a href="../Enums/DisconnectionResult.html">DisconnectionResult</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Enums/DiscoveryResult.html">DiscoveryResult</a>
-              </li>
-              <li class="nav-group-task">
                 <a href="../Enums/ListenAction.html">ListenAction</a>
               </li>
               <li class="nav-group-task">
@@ -94,12 +91,6 @@
               </li>
               <li class="nav-group-task">
                 <a href="../Extensions/Integer.html">Integer</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Extensions/Notification.html">Notification</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Extensions/Notification/Name.html">– Name</a>
               </li>
               <li class="nav-group-task">
                 <a href="../Extensions/String.html">String</a>
@@ -170,8 +161,47 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Convenience function to read a range of Data and deserialize it into the specified type.</p>
 
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">extract</span><span class="o">&lt;</span><span class="kt">T</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">start</span><span class="p">:</span> <span class="kt">Int</span><span class="p">,</span> <span class="nv">length</span><span class="p">:</span> <span class="kt">Int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">T</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>start</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The starting position of the range to read.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>length</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The number of bytes to read from <code>start</code>.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </section>
                   </div>
@@ -193,8 +223,16 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Allows using Data as is when using Bluejay and working with write-related operations.</p>
 
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">toBluetoothData</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">Data</span></code></pre>
+
+                        </div>
                       </div>
                     </section>
                   </div>
@@ -216,8 +254,16 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Allows using Data as is when using Bluejay and working with read-related operations.</p>
 
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">bluetoothData</span><span class="p">:</span> <span class="kt">Data</span><span class="p">)</span></code></pre>
+
+                        </div>
                       </div>
                     </section>
                   </div>

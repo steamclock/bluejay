@@ -9,14 +9,22 @@
 import Foundation
 import CoreBluetooth
 
+/// A disconnection operation.
 class Disconnection: Queueable {
     
+    /// The queue this operation belongs to.
     var queue: Queue?
+    
+    /// The state of this operation.
     var state: QueueableState
     
+    /// The peripheral this operation is for.
     let peripheral: CBPeripheral
+    
+    /// The manager responsible for this operation.
     let manager: CBCentralManager
     
+    /// Callback fro the disconnection attempt.
     var callback: ((DisconnectionResult) -> Void)?
     
     init(peripheral: CBPeripheral, manager: CBCentralManager, callback: @escaping (DisconnectionResult) -> Void) {

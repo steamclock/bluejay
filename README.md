@@ -36,6 +36,10 @@ Bluejay's primary goals are:
 - [Background Operation](#background-operation)
   - [State Restoration](#state-restoration)
   - [Listen Restoration](#listen-restoration)
+- [Advanced Usage](#advanced-usage)
+  - [Connect by Serial Number](#connect-by-serial-number)
+  - [Write and Assemble](#write-and-assemble)
+  - [Flush Listen](#flush-listen)
 
 ## Features
 
@@ -644,6 +648,168 @@ extension ViewController: ListenRestorer {
 
 }
 ```
+
+## Advanced Usage
+
+The following section will demonstrate a few advanced usage of Bluejay.
+
+### Connect by Serial Number
+
+In a project we've worked on, we had a device with a known serial number stored in a known characteristic that we want to connect to directly. However, Core Bluetooth doesn't support connection using a value from a characteristic.
+
+To connect by serial number using Core Bluetooth, first you'd have to scan for the services you know your device is advertising. Once your device is picked up by the scan, then you can grab its CBPeripheral handle and connect to it. But after connecting to it, you still have to verify its serial number by discovering and reading the value from the containing characteristic. If the serial number is not a match, then you'd have to disconnect and repeat this process until you find the device with the serial number you're looking for.
+
+Ideally, you'd want your Bluetooth vendor or engineer to include the serial number or any other important identifiers in the device's advertising packet. But more often than not, various resource constraints do apply, and we can't always expect everything to follow best practices perfectly. Luckily, Bluejay does make this easier.
+
+Here is a detailed summary of what the code below does and why:
+
+We are maintaining a local collection of "blacklisted" discoveries that persist over multiple scan sessions. These are devices that don't have matching serial numbers. We can't just rely on the scan function's "blacklist" `ScanAction` alone, because the scan function's blacklist shares the same lifecycle as the scan itself. And to allow enqueueing a connection to a device for verifying its serial number, the scan has to end first, so it can be removed from the top of the operation queue. Therefore, we have to start a new scan if the serial number doesn't match.
+
+Since we are starting a new scan every time we find a device with an incorrect serial number, the brand new scan session can still pick up a device we've examined earlier. This is because the new scan session is unaware of devices previously blacklisted using the "blacklist" `ScanAction`. But, we can still find out whether a device is blacklisted using our **own** copy of the blacklist.
+
+Returning `.blacklist` is not just a ceremonial task to ignore the current discovery within this scan session and to continue scanning. Doing so also adds some safety by preventing further discovery of the same device within the current scan session if `allowDuplicates` is set to true for some reasons. Interestingly, setting `allowDuplicates` to false has similar ignoring effect due to its coalescing behaviour, but we are doing this for an entirely different purpose – to save battery.
+
+The keys to understanding this example is to keep in mind that there are **two** copies of blacklists at play here, and to understand why we need to stop and restart a new scan for every discovery that isn't what we're looking for. First, there is one blacklist we are **required** to maintain ourselves that persists over multiple scan sessions, because Bluejay's FIFO operation queue requires the scan to finish before it can run the connection task. Secondly, there's the blacklist that Bluejay maintains for a scan session, but it is cleared as soon as that scan is finished.
+
+```swift
+// Properties.
+private var blacklistedDiscoveries = [ScanDiscovery]()    
+private var targetSerialNumber: String?
+
+// Scan by Serial Number function.
+private func scan(services: [ServiceIdentifier], serialNumber: String) {
+    debugPrint("Looking for peripheral with serial number \(serialNumber) to connect to.")
+
+    statusLabel.text = "Searching..."
+
+    bluejay.scan(
+        allowDuplicates: false,
+        serviceIdentifiers: services,
+        discovery: { [weak self] (discovery, discoveries) -> ScanAction in
+            guard let weakSelf = self else {
+                return .stop
+            }
+
+            if weakSelf.blacklistedDiscoveries.contains(where: { (blacklistedDiscovery) -> Bool in
+                return blacklistedDiscovery.peripheral.identifier == discovery.peripheral.identifier
+            })
+            {
+                return .blacklist
+            }
+            else {
+                return .connect(discovery, { (connectionResult) in
+                    switch connectionResult {
+                    case .success(let peripheral):
+                        debugPrint("Connection to \(peripheral.identifier) successful.")
+
+                        weakSelf.bluejay.read(from: Charactersitics.serialNumber, completion: { (readResult: ReadResult<String>) in
+                            switch readResult {
+                            case .success(let serialNumber):
+                                if serialNumber == weakSelf.targetSerialNumber {
+                                    debugPrint("Serial number matched.")
+
+                                    weakSelf.statusLabel.text = "Connected"
+                                }
+                                else {
+                                    debugPrint("Serial number mismatch.")
+
+                                    weakSelf.blacklistedDiscoveries.append(discovery)
+
+                                    weakSelf.bluejay.disconnect(completion: { (result) in
+                                        switch result {
+                                        case .success:
+                                            weakSelf.scan(services: [Services.deviceInfo], serialNumber: weakSelf.targetSerialNumber!)
+                                        case .cancelled:
+                                            preconditionFailure("Disconnection cancelled unexpectedly.")
+                                        case .failure(let error):
+                                            preconditionFailure("Disconnection failed with error: \(error.localizedDescription)")
+                                        }
+                                    })
+                                }
+                            case .cancelled:
+                                debugPrint("Read serial number cancelled.")
+
+                                weakSelf.statusLabel.text = "Read Cancelled"
+                            case .failure(let error):
+                                debugPrint("Read serial number failed with error: \(error.localizedDescription).")
+
+                                weakSelf.statusLabel.text = "Read Error: \(error.localizedDescription)"
+                            }
+                        })
+                    case .cancelled:
+                        debugPrint("Connection to \(discovery.peripheral.identifier) cancelled.")
+
+                        weakSelf.statusLabel.text = "Connection Cancelled"
+                    case .failure(let error):
+                        debugPrint("Connection to \(discovery.peripheral.identifier) failed with error: \(error.localizedDescription)")
+
+                        weakSelf.statusLabel.text = "Connection Error: \(error.localizedDescription)"
+                    }
+                })
+            }
+        },
+        expired: { [weak self] (lostDiscovery, discoveries) -> ScanAction in
+            if self == nil {
+                return .stop
+            }
+
+            debugPrint("Lost discovery: \(lostDiscovery)")
+
+            return .continue
+    }) { [weak self] (discoveries, error) in
+        guard let weakSelf = self else {
+            return
+        }
+
+        if let error = error {
+            debugPrint("Scan stopped with error: \(error.localizedDescription)")
+
+            weakSelf.statusLabel.text = "Scan Error: \(error.localizedDescription)"
+        }
+        else {
+            debugPrint("Scan stopped without error.")
+        }
+    }
+}
+```
+
+### Write and Assemble
+
+One of the Bluetooth modules we've worked with doesn't always send back data in one packet, even if the data is smaller than its maximum allowed packet size. To handle these incoming data that can be broken up into any number of packets arbitrarily, we've introduced the `writeAndAssemble` API that is very similar to `writeAndListen` on the `SynchronizedPeripheral`. Therefore, at least for now, this is only supported in the context of `run(backgroundTask:completionOnMainThread:)`.
+
+When using `writeAndAssemble`, we still expect you to know the total size of the data you are receiving, but Bluejay will keep listening and receiving packets until the expected size is reached before trying to deserialize the data into the object you need.
+
+You can also specify a timeout in case something hangs or takes abnormally long.
+
+Here is an example writing a request for a value to a Bluetooth module, so that it can return the value we want via a notification on a characteristic. And of course, we're not sure and have no control over how many packets the module will send back.
+
+```swift
+try peripheral.writeAndAssemble(
+    writeTo: Characteristics.rigadoTX,
+    value: ReadRequest(handle: Registers.system.firmwareVersion),
+    listenTo: Characteristics.rigadoRX,
+    expectedLength: FirmwareVersion.length,
+    completion: { (firmwareVersion: FirmwareVersion) -> ListenAction in
+        settings.firmware = firmwareVersion.string
+        return .done
+})
+```
+
+### Flush Listen
+
+Some Bluetooth modules will pause sending data when it loses connection to your app, and will resume sending the same set of data from where it left off when the connection is re-established. This isn't an issue most of the time. However, if the connection loss is due to a crash in your app, or something that causes your listen callback to be deallocated before the connection is re-established, then it is often very difficult to resume your app with the exact same content and context at the time of the connection loss.
+
+For example, you might have to re-authenticate the user when the app is re-opened. But if authentication requires listening to the same characteristic where the incomplete data set is still being sent, then you will be getting back unexpected values and most likely crash when trying to deserialize authentication related objects.
+
+To handle this, it is often a good idea to flush a notifiable characteristic before starting a critical first-time and/or setup related operation. This is also only available on the `SynchronizedPeripheral` in the context of `run(backgroundTask:completionOnMainThread:)` for now.
+
+```swift
+try peripheral.flushListen(to: Characteristics.rigadoRX, idleWindow: 1, completion: {
+    debugPrint("Flushed buffered data on RigadoRX.")
+})
+```
+
+The `idleWindow` is in seconds, and basically specifies the duration of the absence of incoming data needed to predict that the flush is most likely completed. Note that this is still an estimation. Depending on your Bluetooth hardware and usage environments and conditions, a longer window might be necessary.
 
 ## API Documentation
 

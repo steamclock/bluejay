@@ -9,16 +9,25 @@
 import Foundation
 import CoreBluetooth
 
+/// A write operation.
 class WriteCharacteristic<T: Sendable>: Operation {
     
+    /// The queue this operation belongs to.
     var queue: Queue?
+    
+    /// The state of this operation.
     var state: QueueableState
     
+    /// The peripheral this operation is for.
     var peripheral: CBPeripheral
     
+    /// The characteristic to write to.
     var characteristicIdentifier: CharacteristicIdentifier
+    
+    /// The value to write.
     var value: T
     
+    /// Callback for the write attempt.
     private var callback: ((WriteResult) -> Void)?
     
     init(characteristicIdentifier: CharacteristicIdentifier, peripheral: CBPeripheral, value: T, callback: @escaping (WriteResult) -> Void) {

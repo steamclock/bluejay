@@ -13,16 +13,22 @@ protocol QueueObserver: class {
     func willConnect(to peripheral: CBPeripheral)
 }
 
+/// A queue for running Bluetooth operations in a FIFO order.
 class Queue {
     
+    /// Reference to the Bluejay that owns this queue.
     private weak var bluejay: Bluejay?
     
+    /// Helps determine whether a scan is running or not.
     private var scan: Scan?
+    
+    /// The array of Bluetooth operations added.
     private var queue = [Queueable]()
     
     /// Helps distinguish one Queue instance from another.
     private var uuid = UUID()
     
+    /// Helps determine whether CBCentralManager is being started up for the first time.
     private var isCBCentralManagerReady = false
         
     init(bluejay: Bluejay) {

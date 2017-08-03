@@ -14,7 +14,7 @@
     <a title="DataPadding Struct Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="../index.html">Bluejay Docs</a> (43% documented)</p>
+        <p><a href="../index.html">Bluejay Docs</a> (90% documented)</p>
         <p class="header-right"><a href="https://github.com/steamclock/bluejay"><img src="../img/gh.png"/>View on GitHub</a></p>
       </div>
     </header>
@@ -55,9 +55,6 @@
                 <a href="../Enums/DisconnectionResult.html">DisconnectionResult</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Enums/DiscoveryResult.html">DiscoveryResult</a>
-              </li>
-              <li class="nav-group-task">
                 <a href="../Enums/ListenAction.html">ListenAction</a>
               </li>
               <li class="nav-group-task">
@@ -94,12 +91,6 @@
               </li>
               <li class="nav-group-task">
                 <a href="../Extensions/Integer.html">Integer</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Extensions/Notification.html">Notification</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Extensions/Notification/Name.html">– Name</a>
               </li>
               <li class="nav-group-task">
                 <a href="../Extensions/String.html">String</a>
@@ -158,7 +149,7 @@
 
                 </div>
               </div>
-            <p>Helper object to create padding in packets being constructed.</p>
+            <p>Helper object that can create empty data to be used as padding in packet construction.</p>
 
           </section>
           <section class="section task-group-section">
@@ -177,16 +168,35 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Create empty data.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">DataPadding</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Sendable.html">Sendable</a></span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="n">_</span> <span class="nv">amount</span><span class="p">:</span> <span class="kt">Int</span><span class="p">)</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>amount</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>number of bytes.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </section>
                   </div>
@@ -204,14 +214,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>This function is required to conform to the <code><a href="../Protocols/Sendable.html">Sendable</a></code> protocol, which allows Bluejay to serialize <code>DataPadding</code> when performing write-related operations.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">DataPadding</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Sendable.html">Sendable</a></span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">toBluetoothData</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">Data</span></code></pre>
 
                         </div>
                       </div>

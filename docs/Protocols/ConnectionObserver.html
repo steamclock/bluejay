@@ -14,7 +14,7 @@
     <a title="ConnectionObserver Protocol Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="../index.html">Bluejay Docs</a> (43% documented)</p>
+        <p><a href="../index.html">Bluejay Docs</a> (90% documented)</p>
         <p class="header-right"><a href="https://github.com/steamclock/bluejay"><img src="../img/gh.png"/>View on GitHub</a></p>
       </div>
     </header>
@@ -55,9 +55,6 @@
                 <a href="../Enums/DisconnectionResult.html">DisconnectionResult</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Enums/DiscoveryResult.html">DiscoveryResult</a>
-              </li>
-              <li class="nav-group-task">
                 <a href="../Enums/ListenAction.html">ListenAction</a>
               </li>
               <li class="nav-group-task">
@@ -94,12 +91,6 @@
               </li>
               <li class="nav-group-task">
                 <a href="../Extensions/Integer.html">Integer</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Extensions/Notification.html">Notification</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Extensions/Notification/Name.html">– Name</a>
               </li>
               <li class="nav-group-task">
                 <a href="../Extensions/String.html">String</a>
@@ -162,7 +153,7 @@
 <div class="aside aside-attention">
     <p class="aside-title">Attention</p>
     <p>Attention
-On initial subscription to Bluetooth events, <code>bluetoothAvailable(_ available: Bool)</code> will always be called immediately with whatever the current state is, and <code>connected(_ peripheral: BluejayPeripheral)</code> will also be called immediately if a device is already connected.</p>
+On initial subscription to Bluetooth events, <code>bluetoothAvailable(_ available: Bool)</code> will always be called immediately with whatever the current state is, and <code>connected(to peripheral: Peripheral)</code> will also be called immediately if a device is already connected.</p>
 
 </div>
 <div class="aside aside-note">
@@ -172,8 +163,8 @@ Available callbacks:</p>
 
 </div>
 <li><p><code>func bluetoothAvailable(_ available: Bool)</code></p></li>
-<li><p><code>func connected(_ peripheral: BluejayPeripheral)</code></p></li>
-<li><p><code>func disconnected()</code></p></li>
+<li><p><code>func connected(to peripheral: Peripheral)</code></p></li>
+<li><p><code>func disconnected(from peripheral: Peripheral)</code></p></li>
 
           </section>
           <section class="section task-group-section">
@@ -195,7 +186,7 @@ Available callbacks:</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Called whenever Bluetooth availability changes, as well as when an object first subscribes to observing Bluetooth events.</p>
+                        <p>Called whenever Bluetooth availability changes, as well as when an object first subscribes to become a ConnectionObserver.</p>
 
                       </div>
                       <h4>Default Implementation</h4>
@@ -229,19 +220,18 @@ Available callbacks:</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Called whenever a peripheral is connected, as well as when an object first subscribes to become a ConnectionObserver and the peripheral is already connected.</p>
 
                       </div>
                       <h4>Default Implementation</h4>
                       <div class="default_impl abstract">
-                        <p>Undocumented</p>
-
+                        
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">ConnectionObserver</span><span class="p">:</span> <span class="kd">class</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">func</span> <span class="nf">connected</span><span class="p">(</span><span class="n">to</span> <span class="nv">peripheral</span><span class="p">:</span> <span class="kt"><a href="../Classes/Peripheral.html">Peripheral</a></span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -251,9 +241,9 @@ Available callbacks:</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FP7Bluejay18ConnectionObserver12disconnectedFT_T_"></a>
-                    <a name="//apple_ref/swift/Method/disconnected()" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FP7Bluejay18ConnectionObserver12disconnectedFT_T_">disconnected()</a>
+                    <a name="/s:FP7Bluejay18ConnectionObserver12disconnectedFT4fromCS_10Peripheral_T_"></a>
+                    <a name="//apple_ref/swift/Method/disconnected(from:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FP7Bluejay18ConnectionObserver12disconnectedFT4fromCS_10Peripheral_T_">disconnected(from:)</a>
                     </code>
                       <span class="declaration-note">
                         Default implementation
@@ -264,19 +254,18 @@ Available callbacks:</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Called whenever a peripheral is disconnected.</p>
 
                       </div>
                       <h4>Default Implementation</h4>
                       <div class="default_impl abstract">
-                        <p>Undocumented</p>
-
+                        
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">ConnectionObserver</span><span class="p">:</span> <span class="kd">class</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">func</span> <span class="nf">disconnected</span><span class="p">(</span><span class="n">from</span> <span class="nv">peripheral</span><span class="p">:</span> <span class="kt"><a href="../Classes/Peripheral.html">Peripheral</a></span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>

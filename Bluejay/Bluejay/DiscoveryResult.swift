@@ -8,7 +8,7 @@
 
 import Foundation
 
-public enum DiscoveryResult {
+enum DiscoveryResult {
     case success
     case cancelled
     case failure(Swift.Error)

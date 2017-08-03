@@ -8,7 +8,11 @@
 
 import Foundation
 
-/// Protocol to indicate that a type can be sent via the bluetooth connection.
+/// Protocol to indicate that a type can be sent via the Bluetooth connection.
 public protocol Sendable {
+    
+    /**
+     A place to implement your serialization logic.     
+     */
     func toBluetoothData() -> Data
 }

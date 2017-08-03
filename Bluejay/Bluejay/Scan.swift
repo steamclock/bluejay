@@ -12,22 +12,43 @@ import CoreBluetooth
 private let deviceInfoService = ServiceIdentifier(uuid: "180A")
 private let serialNumberCharacteristic = CharacteristicIdentifier(uuid: "2A25", service: deviceInfoService)
 
+/// A scan operation.
 class Scan: Queueable {
     
+    /// The queue this operation belongs to.
     var queue: Queue?
+    
+    /// The state of this operation.
     var state: QueueableState
     
+    /// The manager responsible for this operation.
     private let manager: CBCentralManager
     
+    /// The duration of the scan.
     private let duration: TimeInterval
+    
+    /// If allowDuplicates is true, the scan will repeatedly discover the same device as long as its advertisement is picked up. This is a Core Bluetooth option, and it does consume more battery, doesn't work in the background, and is often advised to turn off.
     private let allowDuplicates: Bool
+    
+    /// The scan will only look for peripherals broadcasting the specified services.
     private let serviceIdentifiers: [ServiceIdentifier]?
+    
+    /// The discovery callback.
     private let discovery: (ScanDiscovery, [ScanDiscovery]) -> ScanAction
+    
+    /// The expired callback.
     private let expired: ((ScanDiscovery, [ScanDiscovery]) -> ScanAction)?
+    
+    /// The stopped callback. Called when stopped normally as well, not just when there is an error.
     private let stopped: ([ScanDiscovery], Swift.Error?) -> Void
     
+    /// The discoveries made so far in a given scan session.
     private var discoveries = [ScanDiscovery]()
+    
+    /// The blacklisted discoveries collected so far in a gvien scan session.
     private var blacklist = [ScanDiscovery]()
+    
+    /// The timers used to estimate an expiry callback, indicating that the peripheral is potentially no longer accessible.
     private var timers = [(UUID, Timer)]()
     
     init(duration: TimeInterval,

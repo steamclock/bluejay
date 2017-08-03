@@ -9,18 +9,28 @@
 import Foundation
 import CoreBluetooth
 
+/// A listen operation.
 class ListenCharacteristic: Operation {
     
+    /// The queue this operation belongs to.
     var queue: Queue?
+    
+    /// The state of this operation.
     var state: QueueableState
     
+    /// The peripheral this operation is for.
     var peripheral: CBPeripheral
     
+    /// The characteristic to listen to.
     var characteristicIdentifier: CharacteristicIdentifier
+    
+    /// Whether to start listening or to stop listening.
     var value: Bool
     
+    /// Callback for the attempt to start or stop listening, not the values received from the characteristic.
     private var callback: ((WriteResult) -> Void)?
     
+    /// Internal reference to the CBCharacteristic. 
     private var characteristic: CBCharacteristic?
     
     init(characteristicIdentifier: CharacteristicIdentifier, peripheral: CBPeripheral, value: Bool, callback: @escaping (WriteResult) -> Void) {

@@ -69,7 +69,6 @@
 		B8DEDE741E4A4B9100B2244D /* Bluejay.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B8C70F751E1C22850006CF58 /* Bluejay.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		B8E9B3971EE0A724007519B0 /* RunResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8E9B3961EE0A724007519B0 /* RunResult.swift */; };
 		B8E9B3991EE0BDD0007519B0 /* BackgroundRestoreMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8E9B3981EE0BDD0007519B0 /* BackgroundRestoreMode.swift */; };
-		B8F6DC561E2D6A9C004891D8 /* Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8F6DC551E2D6A9C004891D8 /* Notifications.swift */; };
 		B8F8C0ED1E4E7CA300A0D0F7 /* Disconnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8F8C0EC1E4E7CA300A0D0F7 /* Disconnection.swift */; };
 		B8FE9DF51E73597A00D361CE /* RSSIObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8FE9DF41E73597A00D361CE /* RSSIObserver.swift */; };
 		C963376F716F30DEAA2F47E9 /* Pods_BluejayTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B30F88AC6C11B812FB55A055 /* Pods_BluejayTests.framework */; };
@@ -177,7 +176,6 @@
 		B8DEDE6F1E4A4B5800B2244D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B8E9B3961EE0A724007519B0 /* RunResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RunResult.swift; sourceTree = "<group>"; };
 		B8E9B3981EE0BDD0007519B0 /* BackgroundRestoreMode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackgroundRestoreMode.swift; sourceTree = "<group>"; };
-		B8F6DC551E2D6A9C004891D8 /* Notifications.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Notifications.swift; sourceTree = "<group>"; };
 		B8F8C0EC1E4E7CA300A0D0F7 /* Disconnection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Disconnection.swift; sourceTree = "<group>"; };
 		B8FE9DF41E73597A00D361CE /* RSSIObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RSSIObserver.swift; sourceTree = "<group>"; };
 		CA9D0DDBCE2F5733134B0ED6 /* Pods-BluejayTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BluejayTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BluejayTests/Pods-BluejayTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -325,7 +323,6 @@
 				B8C70FA71E1C696A0006CF58 /* Protocols */,
 				B8C70FA61E1C68AD0006CF58 /* Structs */,
 				B8C70F931E1C56D80006CF58 /* Extensions */,
-				B8F6DC541E2D6A8B004891D8 /* Notifications */,
 				B8C70F791E1C22850006CF58 /* Info.plist */,
 			);
 			path = Bluejay;
@@ -415,14 +412,6 @@
 				B8DEDE6F1E4A4B5800B2244D /* Info.plist */,
 			);
 			path = BluejayDemo;
-			sourceTree = "<group>";
-		};
-		B8F6DC541E2D6A8B004891D8 /* Notifications */ = {
-			isa = PBXGroup;
-			children = (
-				B8F6DC551E2D6A9C004891D8 /* Notifications.swift */,
-			);
-			name = Notifications;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -745,7 +734,6 @@
 				B8C70F9B1E1C5A910006CF58 /* CharacteristicIdentifier.swift in Sources */,
 				B869A2971E721D50003C1278 /* Data+Sendable.swift in Sources */,
 				B8D2078C1E26D446007E670A /* CBPeripheralState+ReturnString.swift in Sources */,
-				B8F6DC561E2D6A9C004891D8 /* Notifications.swift in Sources */,
 				B88F79951EB7DB420094D8D1 /* Operation.swift in Sources */,
 				B88F50F01EB3E81E00D11CD8 /* Constant.swift in Sources */,
 				B88A0D9C1E1DAA1600A00FF8 /* Event.swift in Sources */,

@@ -9,14 +9,22 @@
 import Foundation
 import CoreBluetooth
 
+/// A read operation.
 class ReadCharacteristic<T: Receivable>: Operation {
     
+    /// The queue this operation belongs to.
     var queue: Queue?
+    
+    /// The state of this operation.
     var state: QueueableState
 
+    /// The peripheral this operation is for.
     var peripheral: CBPeripheral
     
+    /// The characteristic to read from.
     private var characteristicIdentifier: CharacteristicIdentifier
+    
+    /// Callback for the read attempt.
     private var callback: ((ReadResult<T>) -> Void)?
     
     init(characteristicIdentifier: CharacteristicIdentifier, peripheral: CBPeripheral, callback: @escaping (ReadResult<T>) -> Void) {

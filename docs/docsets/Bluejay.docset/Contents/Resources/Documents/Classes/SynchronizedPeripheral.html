@@ -14,7 +14,7 @@
     <a title="SynchronizedPeripheral Class Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="../index.html">Bluejay Docs</a> (43% documented)</p>
+        <p><a href="../index.html">Bluejay Docs</a> (90% documented)</p>
         <p class="header-right"><a href="https://github.com/steamclock/bluejay"><img src="../img/gh.png"/>View on GitHub</a></p>
       </div>
     </header>
@@ -55,9 +55,6 @@
                 <a href="../Enums/DisconnectionResult.html">DisconnectionResult</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Enums/DiscoveryResult.html">DiscoveryResult</a>
-              </li>
-              <li class="nav-group-task">
                 <a href="../Enums/ListenAction.html">ListenAction</a>
               </li>
               <li class="nav-group-task">
@@ -94,12 +91,6 @@
               </li>
               <li class="nav-group-task">
                 <a href="../Extensions/Integer.html">Integer</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Extensions/Notification.html">Notification</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Extensions/Notification/Name.html">– Name</a>
               </li>
               <li class="nav-group-task">
                 <a href="../Extensions/String.html">String</a>
@@ -158,7 +149,7 @@
 
                 </div>
               </div>
-            <p>A synchronous interface to the Bluetooth peripheral, intended to be used from a background thread to perform multi-part operations without the need for a complicated callback or promise setup.</p>
+            <p>A synchronous interface to the Bluetooth peripheral, intended to be used inside the backgroundTask block of <code>run(backgroundTask:completionOnMainThread:)</code> to perform multi-part operations without the need for a complicated callback or promise setup.</p>
 
           </section>
           <section class="section task-group-section">
@@ -255,6 +246,33 @@
                 <li class="item">
                   <div>
                     <code>
+                    <a name="/s:FC7Bluejay22SynchronizedPeripheral9endListenFzT2toVS_24CharacteristicIdentifier5errorGSqPs5Error__10completionGSqFOS_11WriteResultT___T_"></a>
+                    <a name="//apple_ref/swift/Method/endListen(to:error:completion:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC7Bluejay22SynchronizedPeripheral9endListenFzT2toVS_24CharacteristicIdentifier5errorGSqPs5Error__10completionGSqFOS_11WriteResultT___T_">endListen(to:error:completion:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Stop listening to a characteristic synchronously.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">endListen</span><span class="p">(</span><span class="n">to</span> <span class="nv">characteristicIdentifier</span><span class="p">:</span> <span class="kt"><a href="../Structs/CharacteristicIdentifier.html">CharacteristicIdentifier</a></span><span class="p">,</span> <span class="nv">error</span><span class="p">:</span> <span class="kt">Swift</span><span class="o">.</span><span class="kt">Error</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="p">((</span><span class="kt"><a href="../Enums/WriteResult.html">WriteResult</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span> <span class="k">throws</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
                     <a name="/s:FC7Bluejay22SynchronizedPeripheral11flushListenFzT2toVS_24CharacteristicIdentifier10idleWindowSi10completionFT_T__T_"></a>
                     <a name="//apple_ref/swift/Method/flushListen(to:idleWindow:completion:)" class="dashAnchor"></a>
                     <a class="token" href="#/s:FC7Bluejay22SynchronizedPeripheral11flushListenFzT2toVS_24CharacteristicIdentifier10idleWindowSi10completionFT_T__T_">flushListen(to:idleWindow:completion:)</a>
@@ -265,16 +283,59 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Flush a listen to a characteristic by receiving and discarding values for the specified duration.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">SynchronizedPeripheral</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">flushListen</span><span class="p">(</span><span class="n">to</span> <span class="nv">characteristicIdentifier</span><span class="p">:</span> <span class="kt"><a href="../Structs/CharacteristicIdentifier.html">CharacteristicIdentifier</a></span><span class="p">,</span> <span class="nv">idleWindow</span><span class="p">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span> <span class="k">throws</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>characteristicIdentifier</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The characteristic to flush.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>idleWindow</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>How long to flush for in seconds.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Block to call when the flush is complete.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </section>
                   </div>
@@ -326,14 +387,20 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Similar to <code>writeAndListen</code>, but use this if you don&rsquo;t know or don&rsquo;t have control over how many packets will be sent to you. You still need to know the total size of the data you&rsquo;re receiving.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">SynchronizedPeripheral</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">writeAndAssemble</span><span class="o">&lt;</span><span class="kt">S</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Sendable.html">Sendable</a></span><span class="p">,</span> <span class="kt">R</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Receivable.html">Receivable</a></span><span class="o">&gt;</span><span class="p">(</span>
+        <span class="n">writeTo</span> <span class="nv">charToWriteTo</span><span class="p">:</span> <span class="kt"><a href="../Structs/CharacteristicIdentifier.html">CharacteristicIdentifier</a></span><span class="p">,</span>
+        <span class="nv">value</span><span class="p">:</span> <span class="kt">S</span><span class="p">,</span>
+        <span class="n">listenTo</span> <span class="nv">charToListenTo</span><span class="p">:</span> <span class="kt"><a href="../Structs/CharacteristicIdentifier.html">CharacteristicIdentifier</a></span><span class="p">,</span>
+        <span class="nv">expectedLength</span><span class="p">:</span> <span class="kt">Int</span><span class="p">,</span>
+        <span class="nv">timeoutInSeconds</span><span class="p">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">R</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Enums/ListenAction.html">ListenAction</a></span><span class="p">)</span> <span class="k">throws</span></code></pre>
 
                         </div>
                       </div>
