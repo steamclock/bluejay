@@ -176,24 +176,10 @@ public class Bluejay: NSObject {
     public func cancelEverything(_ error: NSError? = nil) {
         shouldAutoReconnect = false
 
-        cancelAllListens(error)
         queue.cancelAll(error)
         
         if isConnected {
             cbCentralManager.cancelPeripheralConnection(connectedPeripheral!.cbPeripheral)
-        }
-    }
-    
-    /**
-     This will cancel the listening on all subscribed characteristics.
-     
-     - Important: This does not remove any cached listens for state restoration. Use `clearListeCaches` to explicitly remove all cached listens for state restoration, or use `endListen` to stop a specific listen in addition to removing it from the cache for state restoration.
-     
-     - Parameter error: If nil, all listen callbacks will be cancelled without any errors. If an error is provided, all listen callbacks will be failed with the supplied error.
-     */
-    public func cancelAllListens(_ error: NSError? = nil) {
-        if let connectedPeripheral = connectedPeripheral {
-            connectedPeripheral.cancelAllListens(error)
         }
     }
     

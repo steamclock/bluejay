@@ -47,20 +47,7 @@ public class Peripheral: NSObject {
     }
     
     // MARK: - Operations
-    
-    func cancelAllListens(_ error: NSError? = nil) {
-        for callback in listeners.values {
-            if let error = error {
-                callback(.failure(error))
-            }
-            else {
-                callback(.cancelled)
-            }
-        }
         
-        listeners = [:]
-    }
-    
     private func updateOperations() {
         guard let bluejay = bluejay else {
             preconditionFailure("Cannot update operation: Bluejay is nil.")
