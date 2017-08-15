@@ -53,7 +53,7 @@ Bluejay's primary goals are:
 
 ## Requirements
 
-- iOS 10 or above
+- iOS 9.3 or above
 - Xcode 8.2.1 or above
 - Swift 3.2 or above
 
