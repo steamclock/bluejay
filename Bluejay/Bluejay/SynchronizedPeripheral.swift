@@ -76,6 +76,12 @@ public class SynchronizedPeripheral {
         }
     }
     
+    /// Write to one characterestic then reading a value from another.
+    public func writeAndRead<R: Receivable, S: Sendable> (writeTo: CharacteristicIdentifier, value: S, readFrom: CharacteristicIdentifier) throws -> R {
+        try write(to: writeTo, value: value)
+        return try read(from: readFrom)
+    }
+    
     /// Listen for changes on a specified characterstic synchronously.
     public func listen<R: Receivable>(to characteristicIdentifier: CharacteristicIdentifier, completion: @escaping (R) -> ListenAction) throws {
         let sem = DispatchSemaphore(value: 0)
