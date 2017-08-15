@@ -20,7 +20,9 @@ class HeartSensorViewController: UITableViewController {
     @IBOutlet var sensorLocationCell: UITableViewCell!
     @IBOutlet var connectCell: UITableViewCell!
     @IBOutlet var disconnectCell: UITableViewCell!
+    @IBOutlet var startMonitoringCell: UITableViewCell!
     @IBOutlet var resetCell: UITableViewCell!
+    @IBOutlet var cancelEverythingCell: UITableViewCell!
     
     fileprivate var isMonitoringHeartRate = false
     
@@ -267,6 +269,15 @@ class HeartSensorViewController: UITableViewController {
         }
     }
     
+    private func cancelEverything() {
+        guard let bluejay = bluejay else {
+            showBluejayMissingAlert()
+            return
+        }
+     
+        bluejay.cancelEverything()
+    }
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
@@ -282,8 +293,14 @@ class HeartSensorViewController: UITableViewController {
             else if selectedCell == disconnectCell {
                 disconnect()
             }
+            else if selectedCell == startMonitoringCell {
+                startMonitoringHeartRate()
+            }
             else if selectedCell == resetCell {
                 reset()
+            }
+            else if selectedCell == cancelEverythingCell {
+                cancelEverything()
             }
         }
     }
@@ -308,14 +325,12 @@ extension HeartSensorViewController: ConnectionObserver {
         readSensorLocation()
     }
     
-    func disconnected() {
+    func disconnected(from peripheral: Peripheral) {
         isMonitoringHeartRate = false
-
+        
         statusCell.detailTextLabel?.text = "Disconnected"
         bpmCell.detailTextLabel?.text = "0"
         sensorLocationCell.detailTextLabel?.text = "Unknown"
-        
-        stopMonitoringHeartRate()
     }
-    
+        
 }

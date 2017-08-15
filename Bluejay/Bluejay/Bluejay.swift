@@ -21,9 +21,6 @@ public class Bluejay: NSObject {
     /// Internal reference to CoreBluetooth's CBCentralManager.
     fileprivate var cbCentralManager: CBCentralManager!
     
-    /// The value for CBCentralManagerOptionRestoreIdentifierKey.
-    fileprivate var restoreIdentifier: String?
-    
     /// List of weak references to objects interested in receiving notifications on Bluetooth connection events and state changes.
     fileprivate var observers = [WeakConnectionObserver]()
     
@@ -42,9 +39,6 @@ public class Bluejay: NSObject {
     /// Reference to the peripheral identifier used for supporting state restoration.
     fileprivate var peripheralIdentifierToRestore: PeripheralIdentifier?
     
-    /// Reference to the object capable of restoring listens during state restoration.
-    fileprivate var listenRestorer: WeakListenRestorer?
-    
     /// Determines whether state restoration is allowed.
     fileprivate var shouldRestoreState = false
     
@@ -55,6 +49,12 @@ public class Bluejay: NSObject {
     
     /// Contains the operations to execute in FIFO order.
     var queue: Queue!
+    
+    /// The value for CBCentralManagerOptionRestoreIdentifierKey.
+    var restoreIdentifier: RestoreIdentifier?
+    
+    /// Reference to the object capable of restoring listens during state restoration.
+    var listenRestorer: WeakListenRestorer?
     
     // MARK: - Public Properties
     
@@ -139,13 +139,15 @@ public class Bluejay: NSObject {
         switch restoreMode {
         case .disable:
             break
-        case .enable(let restoreIdentifier):
+        case .enable(let restoreID):
             checkBackgroundSupportForBluetooth()
+            restoreIdentifier = restoreID
             options[CBCentralManagerOptionRestoreIdentifierKey] = restoreIdentifier
-        case .enableWithListenRestorer(let restoreIdentifier, let restorer):
+        case .enableWithListenRestorer(let restoreID, let restorer):
             checkBackgroundSupportForBluetooth()
-            options[CBCentralManagerOptionRestoreIdentifierKey] = restoreIdentifier
+            restoreIdentifier = restoreID
             listenRestorer = WeakListenRestorer(weakReference: restorer)
+            options[CBCentralManagerOptionRestoreIdentifierKey] = restoreIdentifier
         }
         
         cbCentralManager = CBCentralManager(
@@ -168,6 +170,8 @@ public class Bluejay: NSObject {
         }
     }
     
+    // MARK: - Cancellation
+    
     /**
      This will cancel the current and all pending operations in the Bluejay queue, as well as stop any ongoing scan, and disconnect any connected peripheral.
      
@@ -181,9 +185,27 @@ public class Bluejay: NSObject {
         if isConnected {
             cbCentralManager.cancelPeripheralConnection(connectedPeripheral!.cbPeripheral)
         }
+    }
+    
+    /**
+     This will remove any cached listens associated with the receiving Bluejay's restore identifier. Call this if you want to stop Bluejay from attempting to restore any listens when state restoration occurs.
+     
+     - Note: For handling a single specific characteristic, use `endListen`. If that succeeds, it will not only stop the listening on that characteristic, it will also remove that listen from the cache for state restoration if listen restoration is enabled, and if that listen was indeed cached for restoration.
+     */
+    public func clearListenCaches() {
+        guard
+            let restoreIdentifier = restoreIdentifier,
+            let listenCaches = UserDefaults.standard.dictionary(forKey: Constant.listenCaches)
+        else {
+            log("Unable to clear listen caches: nothing to clear.")
+            return
+        }
         
-        connectingPeripheral = nil
-        connectedPeripheral = nil
+        var newListenCaches = listenCaches
+        newListenCaches.removeValue(forKey: restoreIdentifier)
+        
+        UserDefaults.standard.set(newListenCaches, forKey: Constant.listenCaches)
+        UserDefaults.standard.synchronize()
     }
     
     // MARK: - Events Registration
@@ -799,7 +821,9 @@ extension Bluejay: CBCentralManagerDelegate {
         }
         
         for observer in observers {
-            observer.weakReference?.disconnected(from: Peripheral(bluejay: self, cbPeripheral: peripheral))
+            let disconnectedPeripheral = connectingPeripheral ?? connectedPeripheral
+            precondition(disconnectedPeripheral != nil, "Disconnected from an unexpected peripheral.")
+            observer.weakReference?.disconnected(from: disconnectedPeripheral!)
         }
         
         if !queue.isEmpty() {

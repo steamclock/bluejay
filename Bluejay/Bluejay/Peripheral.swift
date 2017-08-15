@@ -32,6 +32,10 @@ public class Peripheral: NSObject {
         self.cbPeripheral.delegate = self
     }
     
+    deinit {
+        log("Deinit peripheral: \(String(describing: cbPeripheral.name ?? cbPeripheral.identifier.uuidString))")
+    }
+    
     // MARK: - Attributes
     
     public var uuid: PeripheralIdentifier {
@@ -43,26 +47,7 @@ public class Peripheral: NSObject {
     }
     
     // MARK: - Operations
-    
-    func cancelAllOperations(_ error: NSError? = nil) {
-        for callback in listeners.values {
-            if let error = error {
-                callback(.failure(error))
-            }
-            else {
-                callback(.cancelled)
-            }
-        }
         
-        listeners = [:]
-        
-        guard let bluejay = bluejay else {
-            preconditionFailure("Cannot cancel all operations: Bluejay is nil.")
-        }
-        
-        bluejay.queue.cancelAll(error)
-    }
-    
     private func updateOperations() {
         guard let bluejay = bluejay else {
             preconditionFailure("Cannot update operation: Bluejay is nil.")
@@ -205,11 +190,16 @@ public class Peripheral: NSObject {
                         completion(ReadResult<R>(dataResult: dataResult))
                     }
                     
-                    // Make sure a successful listen is cached, so Bluejay can inform which characteristics need their listens restored on state restoration.
-                    weakSelf.cache(listeningCharacteristic: characteristicIdentifier)
+                    // Only bother caching if listen restoration is enabled.
+                    if
+                        let restoreIdentifier = weakSelf.bluejay?.restoreIdentifier,
+                        weakSelf.bluejay?.listenRestorer != nil
+                    {
+                        // Make sure a successful listen is cached, so Bluejay can inform its delegate on which characteristics need their listens restored during state restoration.
+                        weakSelf.cache(listeningCharacteristic: characteristicIdentifier, restoreIdentifier: restoreIdentifier)
+                    }
                 case .cancelled:
                     completion(.cancelled)
-                    weakSelf.remove(listeningCharacteristic: characteristicIdentifier)
                 case .failure(let error):
                     completion(.failure(error))
                 }
@@ -246,10 +236,16 @@ public class Peripheral: NSObject {
                         listenCallback?(.cancelled)
                     }
                     
-                    completion?(result)
+                    // Only bother removing the listen cache if listen restoration is enabled.
+                    if
+                        let restoreIdentifier = weakSelf.bluejay?.restoreIdentifier,
+                        weakSelf.bluejay?.listenRestorer != nil
+                    {
+                        // Make sure an ended listen does not exist in the cache, as we don't want to restore a cancelled listen on state restoration.
+                        weakSelf.remove(listeningCharacteristic: characteristicIdentifier, restoreIdentifier: restoreIdentifier)
+                    }
                     
-                    // Make sure an ended listen does not exist in the cache, as we don't want to restore a cancelled listen on state restoration.
-                    weakSelf.remove(listeningCharacteristic: characteristicIdentifier)
+                    completion?(result)
                 }))
         })
     }
@@ -264,72 +260,54 @@ public class Peripheral: NSObject {
         listeners[characteristicIdentifier] = { dataResult in
             completion(ReadResult<R>(dataResult: dataResult))
         }
-        
-        // Make sure restored listens are cached again for future restoration. The cache method will handle any duplicate uuid, so this sanity check should not create any redundancy.
-        cache(listeningCharacteristic: characteristicIdentifier)
     }
     
-    private func cache(listeningCharacteristic: CharacteristicIdentifier) {
-        guard let bluejay = bluejay else {
-            preconditionFailure("Cannot cache listening on: \(listeningCharacteristic.uuid.uuidString): Bluejay is nil.")
-        }
-        
+    // MARK: - Listen Caching
+    
+    private func cache(listeningCharacteristic: CharacteristicIdentifier, restoreIdentifier: RestoreIdentifier) {
         let serviceUUID = listeningCharacteristic.service.uuid.uuidString
         let characteristicUUID = listeningCharacteristic.uuid.uuidString
         
-        // Create a new entry in user defaults if none exists.
-        guard let listenCaches = UserDefaults.standard.dictionary(forKey: Constant.listenCaches) else {
-            let cacheData = NSKeyedArchiver.archivedData(
-                withRootObject: ListenCache(serviceUUID: serviceUUID, characteristicUUID: characteristicUUID).encoded!
-            )
-            
-            UserDefaults.standard.set([bluejay.uuid.uuidString : [cacheData]], forKey: Constant.listenCaches)
-            UserDefaults.standard.synchronize()
-            return
-        }
-        
-        // Create a new listen cache if none exists.
-        guard
-            let listenCacheData = listenCaches[bluejay.uuid.uuidString] as? [Data]
-        else {
-            let cacheData = NSKeyedArchiver.archivedData(
-                withRootObject: ListenCache(serviceUUID: serviceUUID, characteristicUUID: characteristicUUID).encoded!
-            )
-            
-            var newListenCaches = listenCaches
-            newListenCaches[bluejay.uuid.uuidString] = [cacheData]
-            
-            UserDefaults.standard.set(newListenCaches, forKey: Constant.listenCaches)
-            UserDefaults.standard.synchronize()
-            return
-        }
-        
-        // Add to existing listen cache.
         let cacheData = NSKeyedArchiver.archivedData(
             withRootObject: ListenCache(serviceUUID: serviceUUID, characteristicUUID: characteristicUUID).encoded!
         )
         
-        var newListenCacheData = listenCacheData
-        newListenCacheData.append(cacheData)
-        
-        var newListenCaches = listenCaches
-        newListenCaches[bluejay.uuid.uuidString] = newListenCacheData
-        
-        UserDefaults.standard.set(newListenCaches, forKey: Constant.listenCaches)
-        UserDefaults.standard.synchronize()
-    }
-    
-    private func remove(listeningCharacteristic: CharacteristicIdentifier) {
-        guard let bluejay = bluejay else {
-            preconditionFailure("Cannot remove listening on \(listeningCharacteristic.uuid.uuidString): Bluejay is nil.")
+        // If the UserDefaults for the specified restore identifier doesn't exist yet, create one and add the ListenCache to it.
+        guard
+            let listenCaches = UserDefaults.standard.dictionary(forKey: Constant.listenCaches),
+            let listenCacheData = listenCaches[restoreIdentifier] as? [Data]
+        else
+        {
+            UserDefaults.standard.set([restoreIdentifier : [cacheData]], forKey: Constant.listenCaches)
+            UserDefaults.standard.synchronize()
+            
+            return
         }
         
+        // If the ListenCache already exists, don't add it to the cache again.
+        if listenCacheData.contains(cacheData) {
+            return
+        }
+        else {
+            // Add the ListenCache to the existing UserDefaults for the specified restore identifier.
+            var newListenCacheData = listenCacheData
+            newListenCacheData.append(cacheData)
+            
+            var newListenCaches = listenCaches
+            newListenCaches[restoreIdentifier] = newListenCacheData
+            
+            UserDefaults.standard.set(newListenCaches, forKey: Constant.listenCaches)
+            UserDefaults.standard.synchronize()
+        }
+    }
+    
+    private func remove(listeningCharacteristic: CharacteristicIdentifier, restoreIdentifier: RestoreIdentifier) {
         let serviceUUID = listeningCharacteristic.service.uuid.uuidString
         let characteristicUUID = listeningCharacteristic.uuid.uuidString
         
         guard
             let listenCaches = UserDefaults.standard.dictionary(forKey: Constant.listenCaches),
-            let cacheData = listenCaches[bluejay.uuid.uuidString] as? [Data]
+            let cacheData = listenCaches[restoreIdentifier] as? [Data]
         else {
             // Nothing to remove.
             return
@@ -337,14 +315,20 @@ public class Peripheral: NSObject {
         
         var newCacheData = cacheData
         newCacheData = newCacheData.filter { (data) -> Bool in
-            let listenCache = (NSKeyedUnarchiver.unarchiveObject(with: data) as? (ListenCache.Coding))!
-                .decoded as! ListenCache
+            let listenCache = (NSKeyedUnarchiver.unarchiveObject(with: data) as? (ListenCache.Coding))!.decoded as! ListenCache
             return (listenCache.serviceUUID != serviceUUID) && (listenCache.characteristicUUID != characteristicUUID)
         }
         
         var newListenCaches = listenCaches
-        newListenCaches[bluejay.uuid.uuidString] = newCacheData
-
+        
+        // If the new cache data is empty after the filter removal, remove the entire cache entry for the specified restore identifier as well.
+        if newCacheData.isEmpty {
+            newListenCaches.removeValue(forKey: restoreIdentifier)
+        }
+        else {
+            newListenCaches[restoreIdentifier] = newCacheData
+        }
+        
         UserDefaults.standard.set(newListenCaches, forKey: Constant.listenCaches)
         UserDefaults.standard.synchronize()
         
@@ -381,7 +365,7 @@ extension Peripheral: CBPeripheralDelegate {
                 return characteristicIdentifier.uuid.uuidString == characteristic.uuid.uuidString
             })
             
-            let isReadUnhandled = isCancellingListenOnCurrentRead || bluejay.queue.isEmpty()
+            let isReadUnhandled = isCancellingListenOnCurrentRead || (listeners.isEmpty && bluejay.queue.isEmpty())
             
             if isReadUnhandled {
                 return
