@@ -715,6 +715,9 @@ extension Bluejay: CBCentralManagerDelegate {
         
         if central.state == .poweredOff {
             cancelEverything(Error.bluetoothUnavailable())
+            
+            connectingPeripheral = nil
+            connectedPeripheral = nil
         }
         
         for observer in observers {
@@ -843,7 +846,7 @@ extension Bluejay: CBCentralManagerDelegate {
     */
     public func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Swift.Error?) {
         let backgroundTask =  UIApplication.shared.beginBackgroundTask(expirationHandler: nil)
-                
+        
         let peripheralString = peripheral.name ?? peripheral.identifier.uuidString
         let errorString = error?.localizedDescription
         
