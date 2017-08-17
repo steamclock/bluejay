@@ -425,6 +425,17 @@
                     </section>
                   </div>
                 </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Cancellation"></a>
+                <a name="//apple_ref/swift/Section/Cancellation" class="dashAnchor"></a>
+                <a href="#/Cancellation">
+                  <h3 class="section-name">Cancellation</h3>
+                </a>
+              </div>
+              <ul>
                 <li class="item">
                   <div>
                     <code>
@@ -467,6 +478,38 @@
                             </tr>
                           </tbody>
                         </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC7Bluejay7Bluejay17clearListenCachesFT_T_"></a>
+                    <a name="//apple_ref/swift/Method/clearListenCaches()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC7Bluejay7Bluejay17clearListenCachesFT_T_">clearListenCaches()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>This will remove any cached listens associated with the receiving Bluejay&rsquo;s restore identifier. Call this if you want to stop Bluejay from attempting to restore any listens when state restoration occurs.</p>
+<div class="aside aside-note">
+    <p class="aside-title">Note</p>
+    For handling a single specific characteristic, use <code>endListen</code>. If that succeeds, it will not only stop the listening on that characteristic, it will also remove that listen from the cache for state restoration if listen restoration is enabled, and if that listen was indeed cached for restoration.
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">clearListenCaches</span><span class="p">()</span></code></pre>
+
+                        </div>
                       </div>
                     </section>
                   </div>
@@ -1526,11 +1569,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Figure out whether this is any kinds of disconnection when Bluejay is still connecting, an expected disconnection from a connected state, or an unexpected disconnection from a connected state. An unexpected disconnection from a connected state, such as walking out of range or restarting the Bluetooth device, is the only case where <code>shouldAutoReconnect</code> should be set to true.</p>
-
-<p>Make sure to update the states by updating the values of <code>connectingPeripheral</code> and <code>connectedPeripheral</code>, and broadcast the event to all observers.</p>
-
-<p>Finally, if <code><a href="../Classes/Bluejay.html#/s:vC7Bluejay7Bluejay12isConnectingSb">isConnecting</a></code> is true or if <code><a href="../Classes/Bluejay.html#/s:vC7Bluejay7Bluejay15isDisconnectingSb">isDisconnecting</a></code> is true, the current running operation in the queue has to be either a <code>Connection</code> or a <code>Disconnection</code> task. Therefore, it is important to pass either one of those tasks this event so that the pending <code>Connection</code> task can fail accordingly, and the <code>Disconnection</code> task can complete with a success. If the current operation is neither a <code>Connection</code> nor a <code>Disconnection</code> task, we should assume we&rsquo;ve lost connection unexpectedly, and cancel everything in the queue with a <code>notConnected</code> error.</p>
+                        <p>Handle a disconnection event from Core Bluetooth by figuring out what kind of disconnection it is (planned or unplanned), and updating Bluejay&rsquo;s internal state and sending notifications as appropriate.</p>
 
                       </div>
                       <div class="declaration">
