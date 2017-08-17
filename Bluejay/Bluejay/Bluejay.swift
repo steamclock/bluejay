@@ -30,8 +30,8 @@ public class Bluejay: NSObject {
     /// Reference to a peripheral that is connected. If this is nil, then the peripheral should either be disconnected or still connecting. This is used to help determine the state of the peripheral's connection.
     fileprivate var connectedPeripheral: Peripheral?
     
-    /// Allowing or disallowing reconnection attempts upon a disconnection. It should always be set to true, unless there is a manual and explicit disconnection request that is not caused by an error or an unexpected and programmatic disconnection.
-    fileprivate var shouldAutoReconnect = true
+    /// Allowing or disallowing reconnection attempts upon a disconnection. It should only be set to true after a successful connection to a peripheral, and remain true unless there is an explicit and expected disconnection.
+    fileprivate var shouldAutoReconnect = false
     
     /// Reference to the background task used for supporting state restoration.
     fileprivate var startupBackgroundTask: UIBackgroundTaskIdentifier = UIBackgroundTaskInvalid
@@ -843,14 +843,7 @@ extension Bluejay: CBCentralManagerDelegate {
     */
     public func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Swift.Error?) {
         let backgroundTask =  UIApplication.shared.beginBackgroundTask(expirationHandler: nil)
-        
-        /*
-         If Bluejay is not even connected when `didDisconnectPeripheral` is called (can happen when a pending connection is cancelled), Bluejay should not try to auto reconnect. Also, do not override if `shouldAutoReconnect` is already explicitly set to false from `cancelEverything` or from a manual disconnect.
-         */
-        if shouldAutoReconnect {
-            shouldAutoReconnect = isConnected
-        }
-        
+                
         let peripheralString = peripheral.name ?? peripheral.identifier.uuidString
         let errorString = error?.localizedDescription
         
