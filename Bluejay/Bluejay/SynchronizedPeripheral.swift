@@ -309,7 +309,7 @@ public class SynchronizedPeripheral {
         let sem = DispatchSemaphore(value: 0)
         
         var listenResult: ReadResult<Data>?
-        var error: Swift.Error?
+        var listenError: Swift.Error?
         
         var assembledData = Data()
         
@@ -326,7 +326,12 @@ public class SynchronizedPeripheral {
                     }
                     
                     if assembledData.count == expectedLength {
-                        action = completion(R(bluetoothData: assembledData))
+                        do {
+                            action = completion(try R(bluetoothData: assembledData))
+                        }
+                        catch {
+                            listenError = error
+                        }
                     }
                     else {
                         log("Need to continue to assemble data.")
@@ -336,10 +341,10 @@ public class SynchronizedPeripheral {
                     sem.signal()
                 case .failure(let e):
                     action = .done
-                    error = e
+                    listenError = e
                 }
                 
-                if error != nil || action == .done {
+                if listenError != nil || action == .done {
                     if self.parent.isListening(to: charToListenTo) {
                         // TODO: Handle end listen failures.
                         self.parent.endListen(to: charToListenTo)
@@ -347,17 +352,19 @@ public class SynchronizedPeripheral {
                 }
             })
             
-            self.parent.write(to: charToWriteTo, value: value, completion: { result in
-                if case .failure(let e) = result {
-                    error = e
-                    
-                    if self.parent.isListening(to: charToListenTo) {
-                        // TODO: Handle end listen failures.
-                        self.parent.endListen(to: charToListenTo)
+            // Don't attempt the write if the assemble didn't complete as expected.
+            if listenError == nil {
+                self.parent.write(to: charToWriteTo, value: value, completion: { result in
+                    if case .failure(let e) = result {
+                        listenError = e
+                        
+                        if self.parent.isListening(to: charToListenTo) {
+                            // TODO: Handle end listen failures.
+                            self.parent.endListen(to: charToListenTo)
+                        }
                     }
-                }
-            })
-            
+                })
+            }
         }
         
         _ = sem.wait(timeout: timeoutInSeconds == 0 ? DispatchTime.distantFuture : DispatchTime.now() + .seconds(timeoutInSeconds))
@@ -367,7 +374,7 @@ public class SynchronizedPeripheral {
             self.parent.endListen(to: charToListenTo)
         }
         
-        if let error = error {
+        if let error = listenError {
             throw error
         }
         else if listenResult == nil {

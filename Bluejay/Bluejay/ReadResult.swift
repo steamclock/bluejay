@@ -25,7 +25,12 @@ extension ReadResult where R: Receivable {
         switch dataResult {
         case .success(let data):
             if let data = data {
-                self = .success(R(bluetoothData: data))
+                do {
+                    self = .success(try R(bluetoothData: data))
+                }
+                catch {
+                    self = .failure(error)
+                }
             }
             else {
                 self = .failure(Error.missingData())
