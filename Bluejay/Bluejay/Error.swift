@@ -116,11 +116,19 @@ struct Error {
             userInfo: [NSLocalizedDescriptionKey: "No data from peripheral."]
         )
     }
+    
+    static func dataOutOfBounds(start: Int, length: Int, count: Int) -> NSError {
+        return NSError(
+            domain: "Bluejay",
+            code: 13,
+            userInfo: [NSLocalizedDescriptionKey: "Cannot extract data with a size of \(count) using start: \(start), length: \(length)."]
+        )
+    }
         
     static func unexpectedPeripheral(_ peripheral: PeripheralIdentifier) -> NSError {
         return NSError(
             domain: "Bluejay",
-            code: 13,
+            code: 14,
             userInfo: [NSLocalizedDescriptionKey: "Unexpected peripheral: \(peripheral.uuid)."]
         )
     }
@@ -128,7 +136,7 @@ struct Error {
     static func allowDuplicatesInBackground() -> NSError {
         return NSError(
             domain: "Bluejay",
-            code: 14,
+            code: 15,
             userInfo: [NSLocalizedDescriptionKey: "Scanning with allow duplicates while in the background is not supported."]
         )
     }
@@ -136,7 +144,7 @@ struct Error {
     static func missingServiceIdentifiersInBackground() -> NSError {
         return NSError(
             domain: "Bluejay",
-            code: 15,
+            code: 16,
             userInfo: [NSLocalizedDescriptionKey: "Scanning without specifying any service identifiers while in the background is not supported."]
         )
     }
@@ -144,7 +152,7 @@ struct Error {
     static func backgroundTaskRunning() -> NSError {
         return NSError(
             domain: "Bluejay",
-            code: 16,
+            code: 17,
             userInfo: [NSLocalizedDescriptionKey: "Regular Bluetooth operation is not available when a background task is running. For reading, writing, and listening, please use only the API found in the Synchronized Peripheral provided to you when working inside a background task block."]
         )
     }
@@ -152,7 +160,7 @@ struct Error {
     static func multipleBackgroundTask() -> NSError {
         return NSError(
             domain: "Bluejay",
-            code: 17,
+            code: 18,
             userInfo: [NSLocalizedDescriptionKey: "Multiple background task is not supported."]
         )
     }
