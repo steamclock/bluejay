@@ -476,16 +476,21 @@
         <span class="k">return</span> <span class="n">isMeasurementIn8bits</span> <span class="p">?</span> <span class="kt">Int</span><span class="p">(</span><span class="n">measurement8bits</span><span class="p">)</span> <span class="p">:</span> <span class="kt">Int</span><span class="p">(</span><span class="n">measurement16bits</span><span class="p">)</span>
     <span class="p">}</span>
 
-    <span class="nf">init</span><span class="p">(</span><span class="nv">bluetoothData</span><span class="p">:</span> <span class="kt">Data</span><span class="p">)</span> <span class="p">{</span>
-        <span class="n">flags</span> <span class="o">=</span> <span class="n">bluetoothData</span><span class="o">.</span><span class="nf">extract</span><span class="p">(</span><span class="nv">start</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="nv">length</span><span class="p">:</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="nf">init</span><span class="p">(</span><span class="nv">bluetoothData</span><span class="p">:</span> <span class="kt">Data</span><span class="p">)</span> <span class="k">throws</span> <span class="p">{</span>
+        <span class="k">do</span> <span class="p">{</span>
+            <span class="n">flags</span> <span class="o">=</span> <span class="k">try</span> <span class="n">bluetoothData</span><span class="o">.</span><span class="nf">extract</span><span class="p">(</span><span class="nv">start</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="nv">length</span><span class="p">:</span> <span class="mi">1</span><span class="p">)</span>
 
-        <span class="n">isMeasurementIn8bits</span> <span class="o">=</span> <span class="p">(</span><span class="n">flags</span> <span class="o">&amp;</span> <span class="mb">0b00000001</span><span class="p">)</span> <span class="o">==</span> <span class="mb">0b00000000</span>
+            <span class="n">isMeasurementIn8bits</span> <span class="o">=</span> <span class="p">(</span><span class="n">flags</span> <span class="o">&amp;</span> <span class="mb">0b00000001</span><span class="p">)</span> <span class="o">==</span> <span class="mb">0b00000000</span>
 
-        <span class="k">if</span> <span class="n">isMeasurementIn8bits</span> <span class="p">{</span>
-            <span class="n">measurement8bits</span> <span class="o">=</span> <span class="n">bluetoothData</span><span class="o">.</span><span class="nf">extract</span><span class="p">(</span><span class="nv">start</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="nv">length</span><span class="p">:</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">isMeasurementIn8bits</span> <span class="p">{</span>
+                <span class="n">measurement8bits</span> <span class="o">=</span> <span class="k">try</span> <span class="n">bluetoothData</span><span class="o">.</span><span class="nf">extract</span><span class="p">(</span><span class="nv">start</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="nv">length</span><span class="p">:</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="p">}</span>
+            <span class="k">else</span> <span class="p">{</span>
+                <span class="n">measurement16bits</span> <span class="o">=</span> <span class="k">try</span> <span class="n">bluetoothData</span><span class="o">.</span><span class="nf">extract</span><span class="p">(</span><span class="nv">start</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="nv">length</span><span class="p">:</span> <span class="mi">2</span><span class="p">)</span>
+            <span class="p">}</span>
         <span class="p">}</span>
-        <span class="k">else</span> <span class="p">{</span>
-            <span class="n">measurement16bits</span> <span class="o">=</span> <span class="n">bluetoothData</span><span class="o">.</span><span class="nf">extract</span><span class="p">(</span><span class="nv">start</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="nv">length</span><span class="p">:</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="k">catch</span> <span class="p">{</span>
+            <span class="k">throw</span> <span class="n">error</span>
         <span class="p">}</span>
     <span class="p">}</span>
 
