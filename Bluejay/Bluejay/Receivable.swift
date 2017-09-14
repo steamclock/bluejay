@@ -16,6 +16,6 @@ public protocol Receivable {
      
      - Parameter bluetoothData: The data received over Bluetooth and needing to be deserialized.
     */
-    init(bluetoothData: Data)
+    init(bluetoothData: Data) throws
     
 }

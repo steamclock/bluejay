@@ -16,84 +16,84 @@
     },
     {
       "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/Peripheral.swift",
-      "line": 37,
+      "line": 41,
       "symbol": "Peripheral.uuid",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/Peripheral.swift",
-      "line": 41,
+      "line": 45,
       "symbol": "Peripheral.name",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/Peripheral.swift",
-      "line": 128,
+      "line": 113,
       "symbol": "Peripheral.readRSSI()",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/Peripheral.swift",
-      "line": 132,
+      "line": 117,
       "symbol": "Peripheral.register(observer:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/Peripheral.swift",
-      "line": 137,
+      "line": 122,
       "symbol": "Peripheral.unregister(observer:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/Peripheral.swift",
-      "line": 183,
+      "line": 168,
       "symbol": "Peripheral.isListening(to:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/Peripheral.swift",
-      "line": 361,
+      "line": 345,
       "symbol": "Peripheral.peripheral(_:didDiscoverServices:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/Peripheral.swift",
-      "line": 365,
+      "line": 349,
       "symbol": "Peripheral.peripheral(_:didDiscoverCharacteristicsFor:error:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/Peripheral.swift",
-      "line": 369,
+      "line": 353,
       "symbol": "Peripheral.peripheral(_:didWriteValueFor:error:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/Peripheral.swift",
-      "line": 373,
+      "line": 357,
       "symbol": "Peripheral.peripheral(_:didUpdateValueFor:error:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/Peripheral.swift",
-      "line": 403,
+      "line": 387,
       "symbol": "Peripheral.peripheral(_:didUpdateNotificationStateFor:error:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/Peripheral.swift",
-      "line": 407,
+      "line": 391,
       "symbol": "Peripheral.peripheral(_:didReadRSSI:error:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"

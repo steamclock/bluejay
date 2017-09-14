@@ -17,7 +17,11 @@ extension Data {
         - start: The starting position of the range to read.
         - length: The number of bytes to read from `start`.
     */
-    public func extract<T>(start: Int, length: Int) -> T {
+    public func extract<T>(start: Int, length: Int) throws -> T {
+        if start + length > self.count {
+            throw Error.dataOutOfBounds(start: start, length: length, count: self.count)
+        }
+        
         return self.subdata(in: start..<start+length).withUnsafeBytes { $0.pointee }
     }
     

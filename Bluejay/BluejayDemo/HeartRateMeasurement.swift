@@ -25,16 +25,16 @@ struct HeartRateMeasurement: Receivable {
         return isMeasurementIn8bits ? Int(measurement8bits) : Int(measurement16bits)
     }
     
-    init(bluetoothData: Data) {
-        flags = bluetoothData.extract(start: 0, length: 1)
+    init(bluetoothData: Data) throws {
+        flags = try bluetoothData.extract(start: 0, length: 1)
         
         isMeasurementIn8bits = (flags & 0b00000001) == 0b00000000
         
         if isMeasurementIn8bits {
-            measurement8bits = bluetoothData.extract(start: 1, length: 1)
+            measurement8bits = try bluetoothData.extract(start: 1, length: 1)
         }
         else {
-            measurement16bits = bluetoothData.extract(start: 1, length: 2)
+            measurement16bits = try bluetoothData.extract(start: 1, length: 2)
         }
     }
     
