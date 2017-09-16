@@ -555,7 +555,7 @@ public class Bluejay: NSObject {
                     
                     DispatchQueue.main.async {
                         self?.isRunningBackgroundTask = false
-                        completionOnMainThread(.success())
+                        completionOnMainThread(.success(()))
                     }
                 }
                 catch let error as NSError {

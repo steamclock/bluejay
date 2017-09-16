@@ -14,6 +14,7 @@ struct ListenCache {
     let serviceUUID: String
     let characteristicUUID: String
     
+    @objc(BJListenCacheCoding)
     class Coding: NSObject, NSCoding {
         
         let entry: ListenCache?

@@ -9,7 +9,7 @@
 import Foundation
 
 /// Extension to Int to make it Sendable and Receivable.
-extension Integer {
+extension BinaryInteger {
     
     /// This function is required to conform to `Sendable`, and figures out the size of the `Integer` used by the iOS device.
     public func toBluetoothData() -> Data {
