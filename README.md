@@ -61,7 +61,7 @@ Bluejay's primary goals are:
 
 Install using CocoaPods:
 
-`pod 'Bluejay', '~> 0.1'`
+`pod 'Bluejay', '~> 0.3'`
 
 Or to try the latest master:
 
@@ -69,7 +69,7 @@ Or to try the latest master:
 
 Cartfile:
 
-`github "steamclock/bluejay" ~> 0.1`
+`github "steamclock/bluejay" ~> 0.3`
 
 Import using:
 
@@ -346,9 +346,9 @@ struct HeartRateMeasurement: Receivable {
 
     init(bluetoothData: Data) throws {
         flags = try bluetoothData.extract(start: 0, length: 1)
-        
+
         isMeasurementIn8bits = (flags & 0b00000001) == 0b00000000
-        
+
         if isMeasurementIn8bits {
             measurement8bits = try bluetoothData.extract(start: 1, length: 1)
         }
