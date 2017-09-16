@@ -15,7 +15,7 @@ public enum ReadResult<R> {
     /// The read is cancelled for a reason.
     case cancelled
     /// The read has failed unexpectedly with an error.
-    case failure(Swift.Error)
+    case failure(Error)
 }
 
 extension ReadResult where R: Receivable {
@@ -33,7 +33,7 @@ extension ReadResult where R: Receivable {
                 }
             }
             else {
-                self = .failure(Error.missingData())
+                self = .failure(BluejayError.missingData)
             }
         case .cancelled:
             self = .cancelled

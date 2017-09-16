@@ -76,7 +76,7 @@ class Disconnection: Queueable {
         updateQueue()
     }
     
-    func fail(_ error: NSError) {
+    func fail(_ error: Error) {
         state = .failed(error)
         
         log("Failed disconnecting from: \(peripheral.name ?? peripheral.identifier.uuidString) with error: \(error.localizedDescription)")

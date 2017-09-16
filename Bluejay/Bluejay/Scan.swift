@@ -40,7 +40,7 @@ class Scan: Queueable {
     private let expired: ((ScanDiscovery, [ScanDiscovery]) -> ScanAction)?
     
     /// The stopped callback. Called when stopped normally as well, not just when there is an error.
-    private let stopped: ([ScanDiscovery], Swift.Error?) -> Void
+    private let stopped: ([ScanDiscovery], Error?) -> Void
     
     /// The discoveries made so far in a given scan session.
     private var discoveries = [ScanDiscovery]()
@@ -56,7 +56,7 @@ class Scan: Queueable {
          serviceIdentifiers: [ServiceIdentifier]?,
          discovery: @escaping (ScanDiscovery, [ScanDiscovery]) -> ScanAction,
          expired: ((ScanDiscovery, [ScanDiscovery]) -> ScanAction)?,
-         stopped: @escaping ([ScanDiscovery], Swift.Error?) -> Void,
+         stopped: @escaping ([ScanDiscovery], Error?) -> Void,
          manager: CBCentralManager)
     {
         self.state = .notStarted
@@ -161,7 +161,7 @@ class Scan: Queueable {
                         queue.add(Connection(peripheral: cbPeripheral, manager: manager, callback: completion))
                     }
                     else {
-                        completion(.failure(Error.unexpectedPeripheral(PeripheralIdentifier(uuid: discovery.peripheral.identifier))))
+                        completion(.failure(BluejayError.unexpectedPeripheral(PeripheralIdentifier(uuid: discovery.peripheral.identifier))))
                     }
                 }
                 else {
@@ -186,7 +186,7 @@ class Scan: Queueable {
         stopScan(with: discoveries, error: nil)
     }
     
-    func fail(_ error : NSError) {
+    func fail(_ error : Error) {
         state = .failed(error)
         
         log("Failed scanning with error: \(error.localizedDescription)")
@@ -195,14 +195,14 @@ class Scan: Queueable {
     }
     
     @objc func didEnterBackgroundWithAllowDuplicates() {
-        fail(Error.allowDuplicatesInBackground())
+        fail(BluejayError.scanningWithAllowDuplicatesInBackgroundNotSupported)
     }
     
     @objc func didEnterBackgroundWithoutServiceIdentifiers() {
-        fail(Error.missingServiceIdentifiersInBackground())
+        fail(BluejayError.missingServiceIdentifiersInBackground)
     }
     
-    private func stopScan(with discoveries: [ScanDiscovery], error: Swift.Error?) {
+    private func stopScan(with discoveries: [ScanDiscovery], error: Error?) {
         clearTimers()
         
         // There is no point trying to stop the scan if the error is due to the manager being powered off, as trying to do so has no effect and will also cause CoreBluetooth to log an "API MISUSE" warning.

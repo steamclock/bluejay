@@ -15,7 +15,7 @@ import CoreBluetooth
 public protocol RSSIObserver: class {
     
     /// Called whenever a peripheral's RSSI value changes.
-    func peripheral(_ peripheral: CBPeripheral, didReadRSSI RSSI: NSNumber, error: Swift.Error?)
+    func peripheral(_ peripheral: CBPeripheral, didReadRSSI RSSI: NSNumber, error: Error?)
     
 }
 

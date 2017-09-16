@@ -121,7 +121,7 @@ class Connection: Queueable {
         updateQueue()
     }
     
-    func fail(_ error: NSError) {
+    func fail(_ error: Error) {
         cancelTimer()
         
         state = .failed(error)
@@ -129,7 +129,7 @@ class Connection: Queueable {
         // There is no point trying to cancel the connection if the error is due to the manager being powered off, as trying to do so has no effect and will also cause CoreBluetooth to log an "API MISUSE" warning.
         if manager.state == .poweredOn {
             // Don't cancel the existing connection if the error is caused by mistakingly adding another connection request while Bluejay is still connecting or connected.
-            if error != Error.multipleConnect() {
+            if case BluejayError.multipleConnectNotSupported = error {
                 manager.cancelPeripheralConnection(peripheral)
             }
             else {
@@ -138,7 +138,7 @@ class Connection: Queueable {
         }
     }
     
-    func failed(_ error: NSError) {
+    func failed(_ error: Error) {
         log("Failed connecting to: \(peripheral.name ?? peripheral.identifier.uuidString) with error: \(error.localizedDescription)")
         
         callback?(.failure(error))
@@ -153,7 +153,7 @@ class Connection: Queueable {
     }
     
     @objc private func timedOut() {
-        fail(Error.connectionTimedOut())
+        fail(BluejayError.connectionTimedOut)
     }
     
 }

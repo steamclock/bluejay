@@ -47,7 +47,7 @@ class ListenCharacteristic: Operation {
             let service = peripheral.service(with: characteristicIdentifier.service.uuid),
             let characteristic = service.characteristic(with: characteristicIdentifier.uuid)
             else {
-                fail(Error.missingCharacteristic(characteristicIdentifier))
+                fail(BluejayError.missingCharacteristic(characteristicIdentifier))
                 return
         }
         
@@ -113,7 +113,7 @@ class ListenCharacteristic: Operation {
         updateQueue()
     }
     
-    func fail(_ error: NSError) {
+    func fail(_ error: Error) {
         state = .failed(error)
         
         log("Failed listening to \(characteristicIdentifier.uuid) on \(peripheral.name ?? peripheral.identifier.uuidString) with error: \(error.localizedDescription)")

@@ -41,7 +41,7 @@ class DiscoverService: Operation {
     func process(event: Event) {
         if case .didDiscoverServices = event {
             if peripheral.service(with: serviceIdentifier.uuid) == nil {
-                fail(Error.missingService(serviceIdentifier))
+                fail(BluejayError.missingService(serviceIdentifier))
             }
             else {
                 success()
@@ -74,7 +74,7 @@ class DiscoverService: Operation {
         updateQueue()
     }
     
-    func fail(_ error: NSError) {
+    func fail(_ error: Error) {
         state = .failed(error)
 
         callback?(.failure(error))

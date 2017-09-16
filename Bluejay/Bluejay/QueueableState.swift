@@ -17,7 +17,7 @@ enum QueueableState {
     case running
     case cancelling
     case cancelled
-    case failed(NSError)
+    case failed(Error)
     case completed
     
     var isFinished: Bool {

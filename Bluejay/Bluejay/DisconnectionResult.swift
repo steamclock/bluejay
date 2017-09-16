@@ -16,5 +16,5 @@ public enum DisconnectionResult {
     /// The disconnection is cancelled for a reason.
     case cancelled
     /// The disconnection has failed unexpectedly with an error.
-    case failure(Swift.Error)
+    case failure(Error)
 }

@@ -11,5 +11,5 @@ import Foundation
 enum DiscoveryResult {
     case success
     case cancelled
-    case failure(Swift.Error)
+    case failure(Error)
 }

@@ -15,5 +15,5 @@ public enum RunResult<R> {
     /// The background task is cancelled for a reason.
     case cancelled
     /// The background task has failed unexpectedly with an error.
-    case failure(Swift.Error)
+    case failure(Error)
 }
