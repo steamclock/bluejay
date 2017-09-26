@@ -16,5 +16,5 @@ public enum ConnectionResult {
     /// The connection is cancelled for a reason.
     case cancelled
     /// The connection has failed unexpectedly with an error.
-    case failure(Swift.Error)
+    case failure(Error)
 }

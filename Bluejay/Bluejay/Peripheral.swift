@@ -54,7 +54,7 @@ public class Peripheral: NSObject {
         }
         
         if cbPeripheral.state == .disconnected {
-            bluejay.queue.cancelAll(Error.notConnected())
+            bluejay.queue.cancelAll(BluejayError.notConnected)
             return
         }
         
@@ -145,7 +145,7 @@ public class Peripheral: NSObject {
                 )
             }
             else {
-                completion(.failure(Error.missingCharacteristic(characteristicIdentifier)))
+                completion(.failure(BluejayError.missingCharacteristic(characteristicIdentifier)))
             }
         })
     }
@@ -215,7 +215,7 @@ public class Peripheral: NSObject {
      - Note
      Currently this can also cancel a regular in-progress read as well, but that behaviour may change down the road.
      */
-    public func endListen(to characteristicIdentifier: CharacteristicIdentifier, error: Swift.Error? = nil, completion: ((WriteResult) -> Void)? = nil) {
+    public func endListen(to characteristicIdentifier: CharacteristicIdentifier, error: Error? = nil, completion: ((WriteResult) -> Void)? = nil) {
         discoverCharactersitic(characteristicIdentifier, callback: { [weak self] success in
             guard let weakSelf = self else {
                 return
@@ -342,19 +342,19 @@ public class Peripheral: NSObject {
 
 extension Peripheral: CBPeripheralDelegate {
     
-    public func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Swift.Error?) {
+    public func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
         handleEvent(.didDiscoverServices, error: error as NSError?)
     }
     
-    public func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Swift.Error?) {
+    public func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
         handleEvent(.didDiscoverCharacteristics, error: error as NSError?)
     }
     
-    public func peripheral(_ peripheral: CBPeripheral, didWriteValueFor characteristic: CBCharacteristic, error: Swift.Error?) {
+    public func peripheral(_ peripheral: CBPeripheral, didWriteValueFor characteristic: CBCharacteristic, error: Error?) {
         handleEvent(.didWriteCharacteristic(characteristic), error: error as NSError?)
     }
     
-    public func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Swift.Error?) {
+    public func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
         guard let bluejay = bluejay else {
             preconditionFailure("Cannot handle did update value for \(characteristic.uuid.uuidString): Bluejay is nil.")
         }
@@ -384,11 +384,11 @@ extension Peripheral: CBPeripheralDelegate {
         }
     }
     
-    public func peripheral(_ peripheral: CBPeripheral, didUpdateNotificationStateFor characteristic: CBCharacteristic, error: Swift.Error?) {
+    public func peripheral(_ peripheral: CBPeripheral, didUpdateNotificationStateFor characteristic: CBCharacteristic, error: Error?) {
         handleEvent(.didUpdateCharacteristicNotificationState(characteristic), error: error as NSError?)
     }
     
-    public func peripheral(_ peripheral: CBPeripheral, didReadRSSI RSSI: NSNumber, error: Swift.Error?) {
+    public func peripheral(_ peripheral: CBPeripheral, didReadRSSI RSSI: NSNumber, error: Error?) {
         for observer in observers {
             observer.weakReference?.peripheral(peripheral, didReadRSSI: RSSI, error: error)
         }

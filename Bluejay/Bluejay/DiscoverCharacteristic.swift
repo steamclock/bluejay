@@ -29,7 +29,7 @@ class DiscoverCharacteristic: Operation {
     
     func start() {
         guard let service = peripheral.service(with: characteristicIdentifier.service.uuid) else {
-            fail(Error.missingService(characteristicIdentifier.service))
+            fail(BluejayError.missingService(characteristicIdentifier.service))
             return
         }
         
@@ -45,13 +45,13 @@ class DiscoverCharacteristic: Operation {
     
     func process(event: Event) {
         guard let service = peripheral.service(with: characteristicIdentifier.service.uuid) else {
-            fail(Error.missingService(characteristicIdentifier.service))
+            fail(BluejayError.missingService(characteristicIdentifier.service))
             return
         }
         
         if case .didDiscoverCharacteristics = event {
             if service.characteristic(with: characteristicIdentifier.uuid) == nil {
-                fail(Error.missingCharacteristic(characteristicIdentifier))
+                fail(BluejayError.missingCharacteristic(characteristicIdentifier))
             }
             else {
                 success()
@@ -84,7 +84,7 @@ class DiscoverCharacteristic: Operation {
         updateQueue()
     }
     
-    func fail(_ error: NSError) {
+    func fail(_ error: Error) {
         state = .failed(error)
 
         callback?(.failure(error))

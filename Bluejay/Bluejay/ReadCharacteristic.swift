@@ -40,7 +40,7 @@ class ReadCharacteristic<T: Receivable>: Operation {
             let service = peripheral.service(with: characteristicIdentifier.service.uuid),
             let characteristic = service.characteristic(with: characteristicIdentifier.uuid)
         else {
-            fail(Error.missingCharacteristic(characteristicIdentifier))
+            fail(BluejayError.missingCharacteristic(characteristicIdentifier))
             return
         }
         
@@ -86,7 +86,7 @@ class ReadCharacteristic<T: Receivable>: Operation {
         updateQueue()
     }
     
-    func fail(_ error: NSError) {
+    func fail(_ error: Error) {
         state = .failed(error)
         
         log("Failed reading for \(characteristicIdentifier.uuid) on \(peripheral.identifier) with error: \(error.localizedDescription)")

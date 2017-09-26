@@ -28,7 +28,7 @@ public class SynchronizedPeripheral {
     
     /// Read a value from the specified characteristic synchronously.
     public func read<R: Receivable>(from characteristicIdentifier: CharacteristicIdentifier) throws -> R {
-        var finalResult: ReadResult<R> = .failure(Error.readFailed())
+        var finalResult: ReadResult<R> = .failure(BluejayError.readFailed)
         
         let sem = DispatchSemaphore(value: 0)
         
@@ -46,7 +46,7 @@ public class SynchronizedPeripheral {
         case .success(let r):
             return r
         case .cancelled:
-            throw Error.cancelled()
+            throw BluejayError.cancelled
         case .failure(let error):
             throw error
         }
@@ -54,7 +54,7 @@ public class SynchronizedPeripheral {
     
     /// Write a value from the specified characteristic synchronously.
     public func write<S: Sendable>(to characteristicIdentifier: CharacteristicIdentifier, value: S) throws {
-        var finalResult: WriteResult = .failure(Error.writeFailed())
+        var finalResult: WriteResult = .failure(BluejayError.writeFailed)
         
         let sem = DispatchSemaphore(value: 0)
         
@@ -69,7 +69,7 @@ public class SynchronizedPeripheral {
         _ = sem.wait(timeout: DispatchTime.distantFuture)
         
         if case .cancelled = finalResult {
-            throw Error.cancelled()
+            throw BluejayError.cancelled
         }
         else if case .failure(let error) = finalResult {
             throw error
@@ -85,7 +85,7 @@ public class SynchronizedPeripheral {
     /// Listen for changes on a specified characterstic synchronously.
     public func listen<R: Receivable>(to characteristicIdentifier: CharacteristicIdentifier, completion: @escaping (R) -> ListenAction) throws {
         let sem = DispatchSemaphore(value: 0)
-        var error : Swift.Error?
+        var error : Error?
         
         DispatchQueue.main.async {
             self.parent.listen(to: characteristicIdentifier, completion: { (result : ReadResult<R>) in
@@ -117,9 +117,9 @@ public class SynchronizedPeripheral {
     }
     
     /// Stop listening to a characteristic synchronously.
-    public func endListen(to characteristicIdentifier: CharacteristicIdentifier, error: Swift.Error? = nil, completion: ((WriteResult) -> Void)? = nil) throws {
+    public func endListen(to characteristicIdentifier: CharacteristicIdentifier, error: Error? = nil, completion: ((WriteResult) -> Void)? = nil) throws {
         let sem = DispatchSemaphore(value: 0)
-        var errorToThrow: Swift.Error?
+        var errorToThrow: Error?
         
         DispatchQueue.main.async {
             if self.parent.isListening(to: characteristicIdentifier) {
@@ -128,7 +128,7 @@ public class SynchronizedPeripheral {
                     case .success:
                         sem.signal()
                     case .cancelled:
-                        errorToThrow = Error.cancelled()
+                        errorToThrow = BluejayError.cancelled
                         sem.signal()
                     case .failure(let endListenError):
                         errorToThrow = endListenError
@@ -160,7 +160,7 @@ public class SynchronizedPeripheral {
         let flushSem = DispatchSemaphore(value: 0)
         let cleanUpSem = DispatchSemaphore(value: 0)
         let sem = DispatchSemaphore(value: 0)
-        var error : Swift.Error?
+        var error : Error?
         
         var shouldListenAgain = false
         
@@ -243,7 +243,7 @@ public class SynchronizedPeripheral {
         let sem = DispatchSemaphore(value: 0)
         
         var listenResult: ReadResult<R>?
-        var error: Swift.Error?
+        var error: Error?
         
         DispatchQueue.main.sync {
             self.parent.listen(to: charToListenTo, completion: { (result : ReadResult<R>) in
@@ -291,7 +291,7 @@ public class SynchronizedPeripheral {
                 self.parent.endListen(to: charToListenTo)
             }
             
-            throw Error.listenTimedOut()
+            throw BluejayError.listenTimedOut
         }
     }
     
@@ -309,7 +309,7 @@ public class SynchronizedPeripheral {
         let sem = DispatchSemaphore(value: 0)
         
         var listenResult: ReadResult<Data>?
-        var listenError: Swift.Error?
+        var listenError: Error?
         
         var assembledData = Data()
         
@@ -378,7 +378,7 @@ public class SynchronizedPeripheral {
             throw error
         }
         else if listenResult == nil {
-            throw Error.listenTimedOut()
+            throw BluejayError.listenTimedOut
         }
     }
     

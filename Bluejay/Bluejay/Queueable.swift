@@ -32,7 +32,7 @@ protocol Queueable: class {
     func cancelled()
     
     /// Called when the queue has determined that the operation in question has failed.
-    func fail(_ error: NSError)
+    func fail(_ error: Error)
     
 }
 

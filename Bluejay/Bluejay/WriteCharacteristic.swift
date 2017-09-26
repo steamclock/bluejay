@@ -44,7 +44,7 @@ class WriteCharacteristic<T: Sendable>: Operation {
             let service = peripheral.service(with: characteristicIdentifier.service.uuid),
             let characteristic = service.characteristic(with: characteristicIdentifier.uuid)
         else {
-            fail(Error.missingCharacteristic(characteristicIdentifier))
+            fail(BluejayError.missingCharacteristic(characteristicIdentifier))
             return
         }
         
@@ -90,7 +90,7 @@ class WriteCharacteristic<T: Sendable>: Operation {
         updateQueue()
     }
     
-    func fail(_ error: NSError) {
+    func fail(_ error: Error) {
         state = .failed(error)
         
         log("Failed writing to \(characteristicIdentifier.uuid) on \(peripheral.identifier) with error: \(error.localizedDescription)")

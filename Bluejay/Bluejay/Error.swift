@@ -8,161 +8,109 @@
 
 import Foundation
 
-/**
-    A struct for generating Bluejay-specific errors.
- */
-struct Error {
-    
-    static func bluetoothUnavailable() -> NSError {
-        return NSError(
-            domain: "Bluejay",
-            code: 0,
-            userInfo: [NSLocalizedDescriptionKey: "Bluetooth unavailable."]
-        )
+public enum BluejayError {
+    case bluetoothUnavailable
+    case multipleScanNotSupported
+    case multipleConnectNotSupported
+    case multipleDisconnectNotSupported
+    case connectionTimedOut
+    case notConnected
+    case missingService(ServiceIdentifier)
+    case missingCharacteristic(CharacteristicIdentifier)
+    case cancelled
+    case listenTimedOut
+    case readFailed
+    case writeFailed
+    case missingData
+    case dataOutOfBounds(start: Int, length: Int, count: Int)
+    case unexpectedPeripheral(PeripheralIdentifier)
+    case scanningWithAllowDuplicatesInBackgroundNotSupported
+    case missingServiceIdentifiersInBackground
+    case backgroundTaskRunning
+    case multipleBackgroundTaskNotSupported
+}
+
+extension BluejayError: LocalizedError {
+    public var errorDescription: String? {
+        switch self {
+        case .bluetoothUnavailable:
+            return "Bluetooth unavailable."
+        case .multipleScanNotSupported:
+            return "Multiple scan is not supported."
+        case .multipleConnectNotSupported:
+            return "Multiple connect is not supported."
+        case .multipleDisconnectNotSupported:
+            return "Multiple disconnect is not supported."
+        case .connectionTimedOut:
+            return "Connection timed out."
+        case .notConnected:
+            return "Not connected to a peripheral."
+        case let .missingService(service):
+            return "Service not found: \(service.uuid)."
+        case let .missingCharacteristic(characteristic):
+            return "Characteristic not found: \(characteristic.uuid)."
+        case .cancelled:
+            return "Cancelled"
+        case .listenTimedOut:
+            return "Listen timed out."
+        case .readFailed:
+            return "Read failed."
+        case .writeFailed:
+            return "Write failed."
+        case .missingData:
+            return "No data from peripheral."
+        case let .dataOutOfBounds(start, length, count):
+            return "Cannot extract data with a size of \(count) using start: \(start), length: \(length)."
+        case let .unexpectedPeripheral(peripheral):
+            return "Unexpected peripheral: \(peripheral.uuid)."
+        case .scanningWithAllowDuplicatesInBackgroundNotSupported:
+            return "Scanning with allow duplicates while in the background is not supported."
+        case .missingServiceIdentifiersInBackground:
+            return "Scanning without specifying any service identifiers while in the background is not supported."
+        case .backgroundTaskRunning:
+            return "Regular Bluetooth operation is not available when a background task is running. For reading, writing, and listening, please use only the API found in the Synchronized Peripheral provided to you when working inside a background task block."
+        case .multipleBackgroundTaskNotSupported:
+            return "Multiple background task is not supported."
+        }
     }
-    
-    static func multipleScan() -> NSError {
-        return NSError(
-            domain: "Bluejay",
-            code: 1,
-            userInfo: [NSLocalizedDescriptionKey: "Multiple scan is not supported."]
-        )
+}
+
+extension BluejayError: CustomNSError {
+    public var errorDomain: String {
+        return "Bluejay"
     }
-    
-    static func multipleConnect() -> NSError {
-        return NSError(
-            domain: "Bluejay",
-            code: 2,
-            userInfo: [NSLocalizedDescriptionKey: "Multiple connect is not supported."]
-        )
+
+    public var errorCode: Int {
+        switch self {
+        case .bluetoothUnavailable: return 1
+        case .multipleScanNotSupported: return 2
+        case .multipleConnectNotSupported: return 3
+        case .multipleDisconnectNotSupported: return 4
+        case .connectionTimedOut: return 5
+        case .notConnected: return 6
+        case .missingService: return 7
+        case .missingCharacteristic: return 8
+        case .cancelled: return 9
+        case .listenTimedOut: return 10
+        case .readFailed: return 11
+        case .writeFailed: return 12
+        case .missingData: return 13
+        case .dataOutOfBounds: return 14
+        case .unexpectedPeripheral: return 15
+        case .scanningWithAllowDuplicatesInBackgroundNotSupported: return 16
+        case .missingServiceIdentifiersInBackground: return 17
+        case .backgroundTaskRunning: return 18
+        case .multipleBackgroundTaskNotSupported: return 19
+        }
     }
-    
-    static func multipleDisconnect() -> NSError {
-        return NSError(
-            domain: "Bluejay",
-            code: 3,
-            userInfo: [NSLocalizedDescriptionKey: "Multiple disconnect is not supported."]
-        )
+
+    public var errorUserInfo: [String : Any] {
+        guard let errorDescription = errorDescription else {
+            return [:]
+        }
+
+        return [
+            NSLocalizedDescriptionKey: errorDescription
+        ]
     }
-    
-    static func connectionTimedOut() -> NSError {
-        return NSError(
-            domain: "Bluejay",
-            code: 4,
-            userInfo: [NSLocalizedDescriptionKey: "Connection timed out."]
-        )
-    }
-    
-    static func notConnected() -> NSError {
-        return NSError(
-            domain: "Bluejay",
-            code: 5,
-            userInfo: [NSLocalizedDescriptionKey: "Not connected to a peripheral."]
-        )
-    }
-    
-    static func missingService(_ service: ServiceIdentifier) -> NSError {
-        return NSError(
-            domain: "Bluejay",
-            code: 6,
-            userInfo: [NSLocalizedDescriptionKey: "Service not found: \(service.uuid)."]
-        )
-    }
-    
-    static func missingCharacteristic(_ char: CharacteristicIdentifier) -> NSError {
-        return NSError(
-            domain: "Bluejay",
-            code: 7,
-            userInfo: [NSLocalizedDescriptionKey: "Characteristic not found: \(char.uuid)."]
-        )
-    }
-    
-    static func cancelled() -> NSError {
-        return NSError(
-            domain: "Bluejay",
-            code: 8,
-            userInfo: [NSLocalizedDescriptionKey: "Cancelled."]
-        )
-    }
-    
-    static func listenTimedOut() -> NSError {
-        return NSError(
-            domain: "Bluejay",
-            code: 9,
-            userInfo: [NSLocalizedDescriptionKey: "Listen timed out."]
-        )
-    }
-    
-    static func readFailed() -> NSError {
-        return NSError(
-            domain: "Bluejay",
-            code: 10,
-            userInfo: [NSLocalizedDescriptionKey: "Read failed."]
-        )
-    }
-    
-    static func writeFailed() -> NSError {
-        return NSError(
-            domain: "Bluejay",
-            code: 11,
-            userInfo: [NSLocalizedDescriptionKey: "Write failed."]
-        )
-    }
-    
-    static func missingData() -> NSError {
-        return NSError(
-            domain: "Bluejay",
-            code: 12,
-            userInfo: [NSLocalizedDescriptionKey: "No data from peripheral."]
-        )
-    }
-    
-    static func dataOutOfBounds(start: Int, length: Int, count: Int) -> NSError {
-        return NSError(
-            domain: "Bluejay",
-            code: 13,
-            userInfo: [NSLocalizedDescriptionKey: "Cannot extract data with a size of \(count) using start: \(start), length: \(length)."]
-        )
-    }
-        
-    static func unexpectedPeripheral(_ peripheral: PeripheralIdentifier) -> NSError {
-        return NSError(
-            domain: "Bluejay",
-            code: 14,
-            userInfo: [NSLocalizedDescriptionKey: "Unexpected peripheral: \(peripheral.uuid)."]
-        )
-    }
-    
-    static func allowDuplicatesInBackground() -> NSError {
-        return NSError(
-            domain: "Bluejay",
-            code: 15,
-            userInfo: [NSLocalizedDescriptionKey: "Scanning with allow duplicates while in the background is not supported."]
-        )
-    }
-    
-    static func missingServiceIdentifiersInBackground() -> NSError {
-        return NSError(
-            domain: "Bluejay",
-            code: 16,
-            userInfo: [NSLocalizedDescriptionKey: "Scanning without specifying any service identifiers while in the background is not supported."]
-        )
-    }
-    
-    static func backgroundTaskRunning() -> NSError {
-        return NSError(
-            domain: "Bluejay",
-            code: 17,
-            userInfo: [NSLocalizedDescriptionKey: "Regular Bluetooth operation is not available when a background task is running. For reading, writing, and listening, please use only the API found in the Synchronized Peripheral provided to you when working inside a background task block."]
-        )
-    }
-    
-    static func multipleBackgroundTask() -> NSError {
-        return NSError(
-            domain: "Bluejay",
-            code: 18,
-            userInfo: [NSLocalizedDescriptionKey: "Multiple background task is not supported."]
-        )
-    }
-    
 }

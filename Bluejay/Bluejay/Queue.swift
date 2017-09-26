@@ -80,13 +80,13 @@ class Queue {
                 scan = queueable as? Scan
             }
             else {
-                queueable.fail(Error.multipleScan())
+                queueable.fail(BluejayError.multipleScanNotSupported)
             }
         }
         else if queueable is Connection {
             // Fail the connection request immediately if Bluejay is still connecting or connected.
             if bluejay.isConnecting || bluejay.isConnected {
-                queueable.fail(Error.multipleConnect())
+                queueable.fail(BluejayError.multipleConnectNotSupported)
                 return
             }
             
@@ -102,7 +102,7 @@ class Queue {
     
     // MARK: - Cancellation
     
-    @objc func cancelAll(_ error: NSError? = nil) {
+    @objc func cancelAll(_ error: Error? = nil) {
         stopScanning(error)
         
         for queueable in queue where !queueable.state.isFinished {
@@ -117,7 +117,7 @@ class Queue {
         queue = []
     }
     
-    func stopScanning(_ error: NSError? = nil) {
+    func stopScanning(_ error: Error? = nil) {
         if let error = error {
             scan?.fail(error)
         }
@@ -158,11 +158,11 @@ class Queue {
             if let bluejay = bluejay {
                 if !bluejay.isBluetoothAvailable {
                     // Fail any queuable if Bluetooth is not even available.
-                    queueable.fail(Error.bluetoothUnavailable())
+                    queueable.fail(BluejayError.bluetoothUnavailable)
                 }
                 else if !bluejay.isConnected && !(queueable is Scan) && !(queueable is Connection) {
                     // Fail any queueable that is not a Scan nor a Connection if no peripheral is connected.
-                    queueable.fail(Error.notConnected())
+                    queueable.fail(BluejayError.notConnected)
                 }
                 else if case .running = queueable.state {
                     // Do nothing if the current queueable is still running.
@@ -182,7 +182,7 @@ class Queue {
         }
     }
     
-    func process(event: Event, error: NSError?) {
+    func process(event: Event, error: Error?) {
         if isEmpty() {
             log("Queue is empty but received an event: \(event)")
             return
@@ -219,7 +219,7 @@ extension Queue: ConnectionObserver {
         }
         else {
             if !isEmpty() {
-                cancelAll(Error.bluetoothUnavailable())
+                cancelAll(BluejayError.bluetoothUnavailable)
             }
         }
     }

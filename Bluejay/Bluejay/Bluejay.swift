@@ -177,7 +177,7 @@ public class Bluejay: NSObject {
      
      - Parameter error: If nil, all tasks in the queue will be cancelled without any errors. If an error is provided, all tasks in the queue will be failed with the supplied error.
      */
-    public func cancelEverything(_ error: NSError? = nil) {
+    public func cancelEverything(_ error: Error? = nil) {
         shouldAutoReconnect = false
 
         queue.cancelAll(error)
@@ -256,7 +256,7 @@ public class Bluejay: NSObject {
         serviceIdentifiers: [ServiceIdentifier]?,
         discovery: @escaping (ScanDiscovery, [ScanDiscovery]) -> ScanAction,
         expired: ((ScanDiscovery, [ScanDiscovery]) -> ScanAction)? = nil,
-        stopped: @escaping ([ScanDiscovery], Swift.Error?) -> Void
+        stopped: @escaping ([ScanDiscovery], Error?) -> Void
         )
     {
         if isRunningBackgroundTask {
@@ -316,7 +316,7 @@ public class Bluejay: NSObject {
             } else {
                 // Fallback on earlier versions
             }
-            completion(.failure(Error.backgroundTaskRunning()))
+            completion(.failure(BluejayError.backgroundTaskRunning))
             return
         }
         
@@ -331,7 +331,7 @@ public class Bluejay: NSObject {
             queue.add(Connection(peripheral: cbPeripheral, manager: cbCentralManager, callback: completion))
         }
         else {
-            completion(.failure(Error.unexpectedPeripheral(peripheralIdentifier)))
+            completion(.failure(BluejayError.unexpectedPeripheral(peripheralIdentifier)))
         }
     }
     
@@ -349,12 +349,12 @@ public class Bluejay: NSObject {
                 // Fallback on earlier versions
             }
             log("Warning: You've tried to disconnect while a background task is still running. The disconnect call will either do nothing, or fail if a completion block is provided.")
-            completion?(.failure(Error.backgroundTaskRunning()))
+            completion?(.failure(BluejayError.backgroundTaskRunning))
             return
         }
         
         if isDisconnecting {
-            completion?(.failure(Error.multipleDisconnect()))
+            completion?(.failure(BluejayError.multipleDisconnectNotSupported))
             return
         }
         
@@ -384,7 +384,7 @@ public class Bluejay: NSObject {
         else {
             log("Cannot disconnect: there is no connected peripheral.")
             isDisconnecting = false
-            completion?(.failure(Error.notConnected()))
+            completion?(.failure(BluejayError.notConnected))
         }
     }
     
@@ -405,7 +405,7 @@ public class Bluejay: NSObject {
             } else {
                 // Fallback on earlier versions
             }
-            completion(.failure(Error.backgroundTaskRunning()))
+            completion(.failure(BluejayError.backgroundTaskRunning))
             return
         }
         
@@ -413,7 +413,7 @@ public class Bluejay: NSObject {
             peripheral.read(from: characteristicIdentifier, completion: completion)
         }
         else {
-            completion(.failure(Error.notConnected()))
+            completion(.failure(BluejayError.notConnected))
         }
     }
     
@@ -432,7 +432,7 @@ public class Bluejay: NSObject {
             } else {
                 // Fallback on earlier versions
             }
-            completion(.failure(Error.backgroundTaskRunning()))
+            completion(.failure(BluejayError.backgroundTaskRunning))
             return
         }
         
@@ -440,7 +440,7 @@ public class Bluejay: NSObject {
             peripheral.write(to: characteristicIdentifier, value: value, completion: completion)
         }
         else {
-            completion(.failure(Error.notConnected()))
+            completion(.failure(BluejayError.notConnected))
         }
     }
     
@@ -459,7 +459,7 @@ public class Bluejay: NSObject {
             } else {
                 // Fallback on earlier versions
             }
-            completion(.failure(Error.backgroundTaskRunning()))
+            completion(.failure(BluejayError.backgroundTaskRunning))
             return
         }
         
@@ -467,7 +467,7 @@ public class Bluejay: NSObject {
             peripheral.listen(to: characteristicIdentifier, completion: completion)
         }
         else {
-            completion(.failure(Error.notConnected()))
+            completion(.failure(BluejayError.notConnected))
         }
     }
     
@@ -487,7 +487,7 @@ public class Bluejay: NSObject {
                 // Fallback on earlier versions
             }
             log("Warning: You've tried to end a listen while a background task is still running. The endListen call will either do nothing, or fail if a completion block is provided.")
-            completion?(.failure(Error.backgroundTaskRunning()))
+            completion?(.failure(BluejayError.backgroundTaskRunning))
             return
         }
         
@@ -495,7 +495,7 @@ public class Bluejay: NSObject {
             peripheral.endListen(to: characteristicIdentifier, error: nil, completion: completion)
         }
         else {
-            completion?(.failure(Error.notConnected()))
+            completion?(.failure(BluejayError.notConnected))
         }
     }
     
@@ -514,7 +514,7 @@ public class Bluejay: NSObject {
             } else {
                 // Fallback on earlier versions
             }
-            completion(.failure(Error.backgroundTaskRunning()))
+            completion(.failure(BluejayError.backgroundTaskRunning))
             return
         }
         
@@ -522,7 +522,7 @@ public class Bluejay: NSObject {
             peripheral.restoreListen(to: characteristicIdentifier, completion: completion)
         }
         else {
-            completion(.failure(Error.notConnected()))
+            completion(.failure(BluejayError.notConnected))
         }
     }
     
@@ -542,7 +542,7 @@ public class Bluejay: NSObject {
         completionOnMainThread: @escaping (RunResult<Void>) -> Void)
     {
         if isRunningBackgroundTask {
-            completionOnMainThread(.failure(Error.multipleBackgroundTask()))
+            completionOnMainThread(.failure(BluejayError.multipleBackgroundTaskNotSupported))
             return
         }
         
@@ -568,7 +568,7 @@ public class Bluejay: NSObject {
         }
         else {
             isRunningBackgroundTask = false
-            completionOnMainThread(.failure(Error.notConnected()))
+            completionOnMainThread(.failure(BluejayError.notConnected))
         }
     }
     
@@ -586,7 +586,7 @@ public class Bluejay: NSObject {
         completionOnMainThread: @escaping (RunResult<Result>) -> Void)
     {
         if isRunningBackgroundTask {
-            completionOnMainThread(.failure(Error.multipleBackgroundTask()))
+            completionOnMainThread(.failure(BluejayError.multipleBackgroundTaskNotSupported))
             return
         }
         
@@ -612,7 +612,7 @@ public class Bluejay: NSObject {
         }
         else {
             isRunningBackgroundTask = false
-            completionOnMainThread(.failure(Error.notConnected()))
+            completionOnMainThread(.failure(BluejayError.notConnected))
         }
     }
     
@@ -632,7 +632,7 @@ public class Bluejay: NSObject {
         completionOnMainThread: @escaping (RunResult<Result>) -> Void)
     {
         if isRunningBackgroundTask {
-            completionOnMainThread(.failure(Error.multipleBackgroundTask()))
+            completionOnMainThread(.failure(BluejayError.multipleBackgroundTaskNotSupported))
             return
         }
         
@@ -658,7 +658,7 @@ public class Bluejay: NSObject {
         }
         else {
             isRunningBackgroundTask = false
-            completionOnMainThread(.failure(Error.notConnected()))
+            completionOnMainThread(.failure(BluejayError.notConnected))
         }
     }
     
@@ -714,7 +714,7 @@ extension Bluejay: CBCentralManagerDelegate {
         }
         
         if central.state == .poweredOff {
-            cancelEverything(Error.bluetoothUnavailable())
+            cancelEverything(BluejayError.bluetoothUnavailable)
             
             connectingPeripheral = nil
             connectedPeripheral = nil
@@ -844,7 +844,7 @@ extension Bluejay: CBCentralManagerDelegate {
     /**
      Handle a disconnection event from Core Bluetooth by figuring out what kind of disconnection it is (planned or unplanned), and updating Bluejay's internal state and sending notifications as appropriate.
     */
-    public func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Swift.Error?) {
+    public func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
         let backgroundTask =  UIApplication.shared.beginBackgroundTask(expirationHandler: nil)
         
         let peripheralString = peripheral.name ?? peripheral.identifier.uuidString
@@ -869,7 +869,7 @@ extension Bluejay: CBCentralManagerDelegate {
                 queue.process(event: .didDisconnectPeripheral(peripheral), error: error as NSError?)
             }
             else {
-                queue.cancelAll(Error.notConnected())
+                queue.cancelAll(BluejayError.notConnected)
             }
         }
         
@@ -889,7 +889,7 @@ extension Bluejay: CBCentralManagerDelegate {
     /**
      This mostly happens when either the Bluetooth device or the Core Bluetooth stack somehow only partially completes the negotiation of a connection. For simplicity, Bluejay is currently treating this as a disconnection event, so it can perform all the same clean up logic.
      */
-    public func centralManager(_ central: CBCentralManager, didFailToConnect peripheral: CBPeripheral, error: Swift.Error?) {
+    public func centralManager(_ central: CBCentralManager, didFailToConnect peripheral: CBPeripheral, error: Error?) {
         // Use the same clean up logic provided in the did disconnect callback.
         centralManager(central, didDisconnectPeripheral: peripheral, error: error)
     }
