@@ -57,6 +57,10 @@ class WriteCharacteristic<T: Sendable>: Operation {
         peripheral.writeValue(value.toBluetoothData(), for: characteristic, type: type)
         
         log("Started write to \(characteristicIdentifier.uuid) on \(peripheral.identifier).")
+        
+        if type == .withoutResponse {
+            process(event: .didWriteCharacteristic(characteristic))
+        }
     }
     
     func process(event: Event) {
