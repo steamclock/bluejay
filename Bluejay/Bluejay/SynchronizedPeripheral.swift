@@ -53,13 +53,13 @@ public class SynchronizedPeripheral {
     }
     
     /// Write a value from the specified characteristic synchronously.
-    public func write<S: Sendable>(to characteristicIdentifier: CharacteristicIdentifier, value: S) throws {
+    public func write<S: Sendable>(to characteristicIdentifier: CharacteristicIdentifier, value: S, type: CBCharacteristicWriteType = .withResponse) throws {
         var finalResult: WriteResult = .failure(BluejayError.writeFailed)
         
         let sem = DispatchSemaphore(value: 0)
         
         DispatchQueue.main.async {
-            self.parent.write(to: characteristicIdentifier, value: value, completion: { (result) in
+            self.parent.write(to: characteristicIdentifier, value: value, type: type, completion: { (result) in
                 finalResult = result
                 sem.signal()
             })
@@ -77,8 +77,8 @@ public class SynchronizedPeripheral {
     }
     
     /// Write to one characterestic then reading a value from another.
-    public func writeAndRead<R: Receivable, S: Sendable> (writeTo: CharacteristicIdentifier, value: S, readFrom: CharacteristicIdentifier) throws -> R {
-        try write(to: writeTo, value: value)
+    public func writeAndRead<R: Receivable, S: Sendable> (writeTo: CharacteristicIdentifier, value: S, type: CBCharacteristicWriteType = .withResponse, readFrom: CharacteristicIdentifier) throws -> R {
+        try write(to: writeTo, value: value, type: type)
         return try read(from: readFrom)
     }
     
@@ -236,6 +236,7 @@ public class SynchronizedPeripheral {
     public func writeAndListen<S: Sendable, R:Receivable>(
         writeTo charToWriteTo: CharacteristicIdentifier,
         value: S,
+        type: CBCharacteristicWriteType = .withResponse,
         listenTo charToListenTo: CharacteristicIdentifier,
         timeoutInSeconds: Int = 0,
         completion: @escaping (R) -> ListenAction) throws
@@ -267,7 +268,7 @@ public class SynchronizedPeripheral {
                 }
             })
             
-            self.parent.write(to: charToWriteTo, value: value, completion: { result in
+            self.parent.write(to: charToWriteTo, value: value, type: type, completion: { result in
                 if case .failure(let e) = result {
                     error = e
                     
