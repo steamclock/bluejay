@@ -151,7 +151,7 @@ public class Peripheral: NSObject {
     }
     
     /// Write to a specified characteristic.
-    public func write<S: Sendable>(to characteristicIdentifier: CharacteristicIdentifier, value: S, completion: @escaping (WriteResult) -> Void) {
+    public func write<S: Sendable>(to characteristicIdentifier: CharacteristicIdentifier, value: S, type: CBCharacteristicWriteType = .withResponse, completion: @escaping (WriteResult) -> Void) {
         // log.debug("Queueing write to: \(characteristicIdentifier.uuid.uuidString) with value of: \(value)")
         
         discoverCharactersitic(characteristicIdentifier, callback: { [weak self] success in
@@ -161,7 +161,7 @@ public class Peripheral: NSObject {
             
             // Not using the success variable here because the write operation will also catch the error if the service or the characteristic is not discovered.
             weakSelf.addOperation(
-                WriteCharacteristic(characteristicIdentifier: characteristicIdentifier, peripheral: weakSelf.cbPeripheral, value: value, callback: completion))
+                WriteCharacteristic(characteristicIdentifier: characteristicIdentifier, peripheral: weakSelf.cbPeripheral, value: value, type: type, callback: completion))
         })
     }
     

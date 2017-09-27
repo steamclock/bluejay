@@ -27,15 +27,19 @@ class WriteCharacteristic<T: Sendable>: Operation {
     /// The value to write.
     var value: T
     
+    // Type of write
+    var type: CBCharacteristicWriteType
+    
     /// Callback for the write attempt.
     private var callback: ((WriteResult) -> Void)?
     
-    init(characteristicIdentifier: CharacteristicIdentifier, peripheral: CBPeripheral, value: T, callback: @escaping (WriteResult) -> Void) {
+    init(characteristicIdentifier: CharacteristicIdentifier, peripheral: CBPeripheral, value: T, type: CBCharacteristicWriteType = .withResponse, callback: @escaping (WriteResult) -> Void) {
         self.state = .notStarted
         
         self.characteristicIdentifier = characteristicIdentifier
         self.peripheral = peripheral
         self.value = value
+        self.type = type
         self.callback = callback
     }
     
@@ -50,7 +54,7 @@ class WriteCharacteristic<T: Sendable>: Operation {
         
         state = .running
         
-        peripheral.writeValue(value.toBluetoothData(), for: characteristic, type: .withResponse)
+        peripheral.writeValue(value.toBluetoothData(), for: characteristic, type: type)
         
         log("Started write to \(characteristicIdentifier.uuid) on \(peripheral.identifier).")
     }
