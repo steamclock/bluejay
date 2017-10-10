@@ -14,7 +14,7 @@
     <a title="Peripheral Class Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="../index.html">Bluejay Docs</a> (90% documented)</p>
+        <p><a href="../index.html">Bluejay Docs</a> (96% documented)</p>
         <p class="header-right"><a href="https://github.com/steamclock/bluejay"><img src="../img/gh.png"/>View on GitHub</a></p>
       </div>
     </header>
@@ -49,6 +49,9 @@
                 <a href="../Enums/BackgroundRestoreMode.html">BackgroundRestoreMode</a>
               </li>
               <li class="nav-group-task">
+                <a href="../Enums/BluejayError.html">BluejayError</a>
+              </li>
+              <li class="nav-group-task">
                 <a href="../Enums/ConnectionResult.html">ConnectionResult</a>
               </li>
               <li class="nav-group-task">
@@ -75,6 +78,9 @@
             <a href="../Extensions.html">Extensions</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
+                <a href="../Extensions/BinaryInteger.html">BinaryInteger</a>
+              </li>
+              <li class="nav-group-task">
                 <a href="../Extensions/CBManagerState.html">CBManagerState</a>
               </li>
               <li class="nav-group-task">
@@ -88,9 +94,6 @@
               </li>
               <li class="nav-group-task">
                 <a href="../Extensions/Data.html">Data</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Extensions/Integer.html">Integer</a>
               </li>
               <li class="nav-group-task">
                 <a href="../Extensions/String.html">String</a>
@@ -143,7 +146,13 @@
         <section>
           <section class="section">
             <h1>Peripheral</h1>
-            <p>Undocumented</p>
+              <div class="declaration">
+                <div class="language">
+                  <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">Peripheral</span><span class="p">:</span> <span class="kt">NSObject</span></code></pre>
+
+                </div>
+              </div>
+            <p>An interface to the Bluetooth peripheral.</p>
 
           </section>
           <section class="section task-group-section">
@@ -159,9 +168,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:vC7Bluejay10Peripheral4uuidVS_20PeripheralIdentifier"></a>
+                    <a name="/s:7Bluejay10PeripheralC4uuidAA0B10IdentifierVv"></a>
                     <a name="//apple_ref/swift/Property/uuid" class="dashAnchor"></a>
-                    <a class="token" href="#/s:vC7Bluejay10Peripheral4uuidVS_20PeripheralIdentifier">uuid</a>
+                    <a class="token" href="#/s:7Bluejay10PeripheralC4uuidAA0B10IdentifierVv">uuid</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -169,8 +178,16 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>The UUID of the peripheral.</p>
 
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">uuid</span><span class="p">:</span> <span class="kt"><a href="../Structs/PeripheralIdentifier.html">PeripheralIdentifier</a></span></code></pre>
+
+                        </div>
                       </div>
                     </section>
                   </div>
@@ -178,9 +195,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:vC7Bluejay10Peripheral4nameGSqSS_"></a>
+                    <a name="/s:7Bluejay10PeripheralC4nameSSSgv"></a>
                     <a name="//apple_ref/swift/Property/name" class="dashAnchor"></a>
-                    <a class="token" href="#/s:vC7Bluejay10Peripheral4nameGSqSS_">name</a>
+                    <a class="token" href="#/s:7Bluejay10PeripheralC4nameSSSgv">name</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -188,8 +205,16 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>The name of the peripheral.</p>
 
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">name</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span></code></pre>
+
+                        </div>
                       </div>
                     </section>
                   </div>
@@ -208,9 +233,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FC7Bluejay10Peripheral8readRSSIFT_T_"></a>
+                    <a name="/s:7Bluejay10PeripheralC8readRSSIyyF"></a>
                     <a name="//apple_ref/swift/Method/readRSSI()" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FC7Bluejay10Peripheral8readRSSIFT_T_">readRSSI()</a>
+                    <a class="token" href="#/s:7Bluejay10PeripheralC8readRSSIyyF">readRSSI()</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -218,8 +243,16 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Requests the current RSSI value from the peripheral, and the value is returned via the <code><a href="../Protocols/RSSIObserver.html">RSSIObserver</a></code> delegation.</p>
 
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">readRSSI</span><span class="p">()</span></code></pre>
+
+                        </div>
                       </div>
                     </section>
                   </div>
@@ -227,9 +260,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FC7Bluejay10Peripheral8registerFT8observerPS_12RSSIObserver__T_"></a>
+                    <a name="/s:7Bluejay10PeripheralC8registeryAA12RSSIObserver_p8observer_tF"></a>
                     <a name="//apple_ref/swift/Method/register(observer:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FC7Bluejay10Peripheral8registerFT8observerPS_12RSSIObserver__T_">register(observer:)</a>
+                    <a class="token" href="#/s:7Bluejay10PeripheralC8registeryAA12RSSIObserver_p8observer_tF">register(observer:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -237,8 +270,16 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Register a RSSI observer that can receive the RSSI value when <code>readRSSI</code> is called.</p>
 
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">register</span><span class="p">(</span><span class="nv">observer</span><span class="p">:</span> <span class="kt"><a href="../Protocols/RSSIObserver.html">RSSIObserver</a></span><span class="p">)</span></code></pre>
+
+                        </div>
                       </div>
                     </section>
                   </div>
@@ -246,9 +287,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FC7Bluejay10Peripheral10unregisterFT8observerPS_12RSSIObserver__T_"></a>
+                    <a name="/s:7Bluejay10PeripheralC10unregisteryAA12RSSIObserver_p8observer_tF"></a>
                     <a name="//apple_ref/swift/Method/unregister(observer:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FC7Bluejay10Peripheral10unregisterFT8observerPS_12RSSIObserver__T_">unregister(observer:)</a>
+                    <a class="token" href="#/s:7Bluejay10PeripheralC10unregisteryAA12RSSIObserver_p8observer_tF">unregister(observer:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -256,8 +297,16 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Unregister a RSSI observer.</p>
 
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">unregister</span><span class="p">(</span><span class="nv">observer</span><span class="p">:</span> <span class="kt"><a href="../Protocols/RSSIObserver.html">RSSIObserver</a></span><span class="p">)</span></code></pre>
+
+                        </div>
                       </div>
                     </section>
                   </div>
@@ -276,9 +325,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FC7Bluejay10Peripheral4readuRxS_10ReceivablerFT4fromVS_24CharacteristicIdentifier10completionFGOS_10ReadResultx_T__T_"></a>
+                    <a name="/s:7Bluejay10PeripheralC4readyAA24CharacteristicIdentifierV4from_yAA10ReadResultOyxGc10completiontAA10ReceivableRzlF"></a>
                     <a name="//apple_ref/swift/Method/read(from:completion:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FC7Bluejay10Peripheral4readuRxS_10ReceivablerFT4fromVS_24CharacteristicIdentifier10completionFGOS_10ReadResultx_T__T_">read(from:completion:)</a>
+                    <a class="token" href="#/s:7Bluejay10PeripheralC4readyAA24CharacteristicIdentifierV4from_yAA10ReadResultOyxGc10completiontAA10ReceivableRzlF">read(from:completion:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -303,9 +352,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FC7Bluejay10Peripheral5writeuRxS_8SendablerFT2toVS_24CharacteristicIdentifier5valuex10completionFOS_11WriteResultT__T_"></a>
+                    <a name="/s:7Bluejay10PeripheralC5writeyAA24CharacteristicIdentifierV2to_x5valueyAA11WriteResultOc10completiontAA8SendableRzlF"></a>
                     <a name="//apple_ref/swift/Method/write(to:value:completion:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FC7Bluejay10Peripheral5writeuRxS_8SendablerFT2toVS_24CharacteristicIdentifier5valuex10completionFOS_11WriteResultT__T_">write(to:value:completion:)</a>
+                    <a class="token" href="#/s:7Bluejay10PeripheralC5writeyAA24CharacteristicIdentifierV2to_x5valueyAA11WriteResultOc10completiontAA8SendableRzlF">write(to:value:completion:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -330,9 +379,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FC7Bluejay10Peripheral11isListeningFT2toVS_24CharacteristicIdentifier_Sb"></a>
+                    <a name="/s:7Bluejay10PeripheralC11isListeningSbAA24CharacteristicIdentifierV2to_tF"></a>
                     <a name="//apple_ref/swift/Method/isListening(to:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FC7Bluejay10Peripheral11isListeningFT2toVS_24CharacteristicIdentifier_Sb">isListening(to:)</a>
+                    <a class="token" href="#/s:7Bluejay10PeripheralC11isListeningSbAA24CharacteristicIdentifierV2to_tF">isListening(to:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -340,8 +389,16 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Checks whether Bluejay is currently listening to the specified charactersitic.</p>
 
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">isListening</span><span class="p">(</span><span class="n">to</span> <span class="nv">characteristicIdentifier</span><span class="p">:</span> <span class="kt"><a href="../Structs/CharacteristicIdentifier.html">CharacteristicIdentifier</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span></code></pre>
+
+                        </div>
                       </div>
                     </section>
                   </div>
@@ -349,9 +406,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FC7Bluejay10Peripheral6listenuRxS_10ReceivablerFT2toVS_24CharacteristicIdentifier10completionFGOS_10ReadResultx_T__T_"></a>
+                    <a name="/s:7Bluejay10PeripheralC6listenyAA24CharacteristicIdentifierV2to_yAA10ReadResultOyxGc10completiontAA10ReceivableRzlF"></a>
                     <a name="//apple_ref/swift/Method/listen(to:completion:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FC7Bluejay10Peripheral6listenuRxS_10ReceivablerFT2toVS_24CharacteristicIdentifier10completionFGOS_10ReadResultx_T__T_">listen(to:completion:)</a>
+                    <a class="token" href="#/s:7Bluejay10PeripheralC6listenyAA24CharacteristicIdentifierV2to_yAA10ReadResultOyxGc10completiontAA10ReceivableRzlF">listen(to:completion:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -376,9 +433,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FC7Bluejay10Peripheral9endListenFT2toVS_24CharacteristicIdentifier5errorGSqPs5Error__10completionGSqFOS_11WriteResultT___T_"></a>
+                    <a name="/s:7Bluejay10PeripheralC9endListenyAA24CharacteristicIdentifierV2to_s5Error_pSg5erroryAA11WriteResultOcSg10completiontF"></a>
                     <a name="//apple_ref/swift/Method/endListen(to:error:completion:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FC7Bluejay10Peripheral9endListenFT2toVS_24CharacteristicIdentifier5errorGSqPs5Error__10completionGSqFOS_11WriteResultT___T_">endListen(to:error:completion:)</a>
+                    <a class="token" href="#/s:7Bluejay10PeripheralC9endListenyAA24CharacteristicIdentifierV2to_s5Error_pSg5erroryAA11WriteResultOcSg10completiontF">endListen(to:error:completion:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -401,7 +458,7 @@ Currently this can also cancel a regular in-progress read as well, but that beha
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">endListen</span><span class="p">(</span><span class="n">to</span> <span class="nv">characteristicIdentifier</span><span class="p">:</span> <span class="kt"><a href="../Structs/CharacteristicIdentifier.html">CharacteristicIdentifier</a></span><span class="p">,</span> <span class="nv">error</span><span class="p">:</span> <span class="kt">Swift</span><span class="o">.</span><span class="kt">Error</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="p">((</span><span class="kt"><a href="../Enums/WriteResult.html">WriteResult</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">endListen</span><span class="p">(</span><span class="n">to</span> <span class="nv">characteristicIdentifier</span><span class="p">:</span> <span class="kt"><a href="../Structs/CharacteristicIdentifier.html">CharacteristicIdentifier</a></span><span class="p">,</span> <span class="nv">error</span><span class="p">:</span> <span class="kt">Error</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="p">((</span><span class="kt"><a href="../Enums/WriteResult.html">WriteResult</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -411,9 +468,9 @@ Currently this can also cancel a regular in-progress read as well, but that beha
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FC7Bluejay10Peripheral13restoreListenuRxS_10ReceivablerFT2toVS_24CharacteristicIdentifier10completionFGOS_10ReadResultx_T__T_"></a>
+                    <a name="/s:7Bluejay10PeripheralC13restoreListenyAA24CharacteristicIdentifierV2to_yAA10ReadResultOyxGc10completiontAA10ReceivableRzlF"></a>
                     <a name="//apple_ref/swift/Method/restoreListen(to:completion:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FC7Bluejay10Peripheral13restoreListenuRxS_10ReceivablerFT2toVS_24CharacteristicIdentifier10completionFGOS_10ReadResultx_T__T_">restoreListen(to:completion:)</a>
+                    <a class="token" href="#/s:7Bluejay10PeripheralC13restoreListenyAA24CharacteristicIdentifierV2to_yAA10ReadResultOyxGc10completiontAA10ReceivableRzlF">restoreListen(to:completion:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -442,9 +499,9 @@ Currently this can also cancel a regular in-progress read as well, but that beha
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FC7Bluejay10Peripheral10peripheralFTCSo12CBPeripheral19didDiscoverServicesGSqPs5Error___T_"></a>
+                    <a name="/c:@CM@Bluejay@objc(cs)Peripheral(im)peripheral:didDiscoverServices:"></a>
                     <a name="//apple_ref/swift/Method/peripheral(_:didDiscoverServices:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FC7Bluejay10Peripheral10peripheralFTCSo12CBPeripheral19didDiscoverServicesGSqPs5Error___T_">peripheral(_:didDiscoverServices:)</a>
+                    <a class="token" href="#/c:@CM@Bluejay@objc(cs)Peripheral(im)peripheral:didDiscoverServices:">peripheral(_:didDiscoverServices:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -455,15 +512,23 @@ Currently this can also cancel a regular in-progress read as well, but that beha
                         <p>Undocumented</p>
 
                       </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">Peripheral</span><span class="p">:</span> <span class="kt">NSObject</span></code></pre>
+
+                        </div>
+                      </div>
                     </section>
                   </div>
                 </li>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FC7Bluejay10Peripheral10peripheralFTCSo12CBPeripheral29didDiscoverCharacteristicsForCSo9CBService5errorGSqPs5Error___T_"></a>
+                    <a name="/c:@CM@Bluejay@objc(cs)Peripheral(im)peripheral:didDiscoverCharacteristicsForService:error:"></a>
                     <a name="//apple_ref/swift/Method/peripheral(_:didDiscoverCharacteristicsFor:error:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FC7Bluejay10Peripheral10peripheralFTCSo12CBPeripheral29didDiscoverCharacteristicsForCSo9CBService5errorGSqPs5Error___T_">peripheral(_:didDiscoverCharacteristicsFor:error:)</a>
+                    <a class="token" href="#/c:@CM@Bluejay@objc(cs)Peripheral(im)peripheral:didDiscoverCharacteristicsForService:error:">peripheral(_:didDiscoverCharacteristicsFor:error:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -474,15 +539,23 @@ Currently this can also cancel a regular in-progress read as well, but that beha
                         <p>Undocumented</p>
 
                       </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">Peripheral</span><span class="p">:</span> <span class="kt">NSObject</span></code></pre>
+
+                        </div>
+                      </div>
                     </section>
                   </div>
                 </li>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FC7Bluejay10Peripheral10peripheralFTCSo12CBPeripheral16didWriteValueForCSo16CBCharacteristic5errorGSqPs5Error___T_"></a>
+                    <a name="/c:@CM@Bluejay@objc(cs)Peripheral(im)peripheral:didWriteValueForCharacteristic:error:"></a>
                     <a name="//apple_ref/swift/Method/peripheral(_:didWriteValueFor:error:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FC7Bluejay10Peripheral10peripheralFTCSo12CBPeripheral16didWriteValueForCSo16CBCharacteristic5errorGSqPs5Error___T_">peripheral(_:didWriteValueFor:error:)</a>
+                    <a class="token" href="#/c:@CM@Bluejay@objc(cs)Peripheral(im)peripheral:didWriteValueForCharacteristic:error:">peripheral(_:didWriteValueFor:error:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -493,15 +566,23 @@ Currently this can also cancel a regular in-progress read as well, but that beha
                         <p>Undocumented</p>
 
                       </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">Peripheral</span><span class="p">:</span> <span class="kt">NSObject</span></code></pre>
+
+                        </div>
+                      </div>
                     </section>
                   </div>
                 </li>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FC7Bluejay10Peripheral10peripheralFTCSo12CBPeripheral17didUpdateValueForCSo16CBCharacteristic5errorGSqPs5Error___T_"></a>
+                    <a name="/c:@CM@Bluejay@objc(cs)Peripheral(im)peripheral:didUpdateValueForCharacteristic:error:"></a>
                     <a name="//apple_ref/swift/Method/peripheral(_:didUpdateValueFor:error:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FC7Bluejay10Peripheral10peripheralFTCSo12CBPeripheral17didUpdateValueForCSo16CBCharacteristic5errorGSqPs5Error___T_">peripheral(_:didUpdateValueFor:error:)</a>
+                    <a class="token" href="#/c:@CM@Bluejay@objc(cs)Peripheral(im)peripheral:didUpdateValueForCharacteristic:error:">peripheral(_:didUpdateValueFor:error:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -512,15 +593,23 @@ Currently this can also cancel a regular in-progress read as well, but that beha
                         <p>Undocumented</p>
 
                       </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">Peripheral</span><span class="p">:</span> <span class="kt">NSObject</span></code></pre>
+
+                        </div>
+                      </div>
                     </section>
                   </div>
                 </li>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FC7Bluejay10Peripheral10peripheralFTCSo12CBPeripheral29didUpdateNotificationStateForCSo16CBCharacteristic5errorGSqPs5Error___T_"></a>
+                    <a name="/c:@CM@Bluejay@objc(cs)Peripheral(im)peripheral:didUpdateNotificationStateForCharacteristic:error:"></a>
                     <a name="//apple_ref/swift/Method/peripheral(_:didUpdateNotificationStateFor:error:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FC7Bluejay10Peripheral10peripheralFTCSo12CBPeripheral29didUpdateNotificationStateForCSo16CBCharacteristic5errorGSqPs5Error___T_">peripheral(_:didUpdateNotificationStateFor:error:)</a>
+                    <a class="token" href="#/c:@CM@Bluejay@objc(cs)Peripheral(im)peripheral:didUpdateNotificationStateForCharacteristic:error:">peripheral(_:didUpdateNotificationStateFor:error:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -531,15 +620,23 @@ Currently this can also cancel a regular in-progress read as well, but that beha
                         <p>Undocumented</p>
 
                       </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">Peripheral</span><span class="p">:</span> <span class="kt">NSObject</span></code></pre>
+
+                        </div>
+                      </div>
                     </section>
                   </div>
                 </li>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FC7Bluejay10Peripheral10peripheralFTCSo12CBPeripheral11didReadRSSICSo8NSNumber5errorGSqPs5Error___T_"></a>
+                    <a name="/c:@CM@Bluejay@objc(cs)Peripheral(im)peripheral:didReadRSSI:error:"></a>
                     <a name="//apple_ref/swift/Method/peripheral(_:didReadRSSI:error:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FC7Bluejay10Peripheral10peripheralFTCSo12CBPeripheral11didReadRSSICSo8NSNumber5errorGSqPs5Error___T_">peripheral(_:didReadRSSI:error:)</a>
+                    <a class="token" href="#/c:@CM@Bluejay@objc(cs)Peripheral(im)peripheral:didReadRSSI:error:">peripheral(_:didReadRSSI:error:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -549,6 +646,14 @@ Currently this can also cancel a regular in-progress read as well, but that beha
                       <div class="abstract">
                         <p>Undocumented</p>
 
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">Peripheral</span><span class="p">:</span> <span class="kt">NSObject</span></code></pre>
+
+                        </div>
                       </div>
                     </section>
                   </div>

@@ -918,10 +918,10 @@ extension Bluejay: CBCentralManagerDelegate {
     
 }
 
-/// Allows communication between a queue and the Bluejay instance it belongs to.
+/// Allows Bluejay to receive events and delegation from its queue.
 extension Bluejay: QueueObserver {
     
-    /// A way for Bluejay to update the `isConnecting` state with a more accurate timing by waiting to be informed by the queue only when it is about to start running the enqueued `Connection` task.
+    /// Support for the will connect state that CBCentralManagerDelegate does not have.
     func willConnect(to peripheral: CBPeripheral) {
         connectingPeripheral = Peripheral(bluejay: self, cbPeripheral: peripheral)
     }

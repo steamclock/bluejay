@@ -9,6 +9,9 @@
 import Foundation
 import CoreBluetooth
 
+/**
+ An interface to the Bluetooth peripheral.
+ */
 public class Peripheral: NSObject {
     
     // MARK: Properties
@@ -38,10 +41,12 @@ public class Peripheral: NSObject {
     
     // MARK: - Attributes
     
+    /// The UUID of the peripheral.
     public var uuid: PeripheralIdentifier {
         return PeripheralIdentifier(uuid: cbPeripheral.identifier)
     }
     
+    /// The name of the peripheral.
     public var name: String? {
         return cbPeripheral.name
     }
@@ -110,15 +115,18 @@ public class Peripheral: NSObject {
     
     // MARK: - RSSI Event
     
+    /// Requests the current RSSI value from the peripheral, and the value is returned via the `RSSIObserver` delegation.
     public func readRSSI() {
         cbPeripheral.readRSSI()
     }
     
+    /// Register a RSSI observer that can receive the RSSI value when `readRSSI` is called.
     public func register(observer: RSSIObserver) {
         observers = observers.filter { $0.weakReference != nil && $0.weakReference !== observer }
         observers.append(WeakRSSIObserver(weakReference: observer))
     }
     
+    /// Unregister a RSSI observer.
     public func unregister(observer: RSSIObserver) {
         observers = observers.filter { $0.weakReference != nil && $0.weakReference !== observer }
     }
@@ -165,6 +173,7 @@ public class Peripheral: NSObject {
         })
     }
     
+    /// Checks whether Bluejay is currently listening to the specified charactersitic.
     public func isListening(to characteristicIdentifier: CharacteristicIdentifier) -> Bool {
         return listeners.keys.contains(characteristicIdentifier)
     }

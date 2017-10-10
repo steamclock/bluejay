@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>BluejayError Enum Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset='utf-8'>
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+  </head>
+  <body>
+    <a name="//apple_ref/swift/Enum/BluejayError" class="dashAnchor"></a>
+    <a title="BluejayError Enum Reference"></a>
+    <header>
+      <div class="content-wrapper">
+        <p><a href="../index.html">Bluejay Docs</a> (96% documented)</p>
+        <p class="header-right"><a href="https://github.com/steamclock/bluejay"><img src="../img/gh.png"/>View on GitHub</a></p>
+      </div>
+    </header>
+    <div class="content-wrapper">
+      <p id="breadcrumbs">
+        <a href="../index.html">Bluejay Reference</a>
+        <img id="carat" src="../img/carat.png" />
+        BluejayError Enum Reference
+      </p>
+    </div>
+    <div class="content-wrapper">
+      <nav class="sidebar">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a href="../Classes.html">Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/Bluejay.html">Bluejay</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Peripheral.html">Peripheral</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/SynchronizedPeripheral.html">SynchronizedPeripheral</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Enums.html">Enums</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Enums/BackgroundRestoreMode.html">BackgroundRestoreMode</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/BluejayError.html">BluejayError</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/ConnectionResult.html">ConnectionResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/DisconnectionResult.html">DisconnectionResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/ListenAction.html">ListenAction</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/ReadResult.html">ReadResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/RunResult.html">RunResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/ScanAction.html">ScanAction</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/WriteResult.html">WriteResult</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Extensions.html">Extensions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Extensions/BinaryInteger.html">BinaryInteger</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/CBManagerState.html">CBManagerState</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/CBPeripheral.html">CBPeripheral</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/CBPeripheralState.html">CBPeripheralState</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/CBService.html">CBService</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/Data.html">Data</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/String.html">String</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Protocols.html">Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Protocols/ConnectionObserver.html">ConnectionObserver</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/ListenRestorer.html">ListenRestorer</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/RSSIObserver.html">RSSIObserver</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/Receivable.html">Receivable</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/Sendable.html">Sendable</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Structs.html">Structs</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Structs/CharacteristicIdentifier.html">CharacteristicIdentifier</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/DataPadding.html">DataPadding</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/PeripheralIdentifier.html">PeripheralIdentifier</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/ScanDiscovery.html">ScanDiscovery</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/ServiceIdentifier.html">ServiceIdentifier</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+        <section>
+          <section class="section">
+            <h1>BluejayError</h1>
+              <div class="declaration">
+                <div class="language">
+                  <pre class="highlight"><code><span class="kd">public</span> <span class="kd">enum</span> <span class="kt">BluejayError</span></code></pre>
+
+                </div>
+              </div>
+            <p>Errors specific to Bluejay.</p>
+
+          </section>
+          <section class="section task-group-section">
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7Bluejay0A5ErrorO20bluetoothUnavailableA2CmF"></a>
+                    <a name="//apple_ref/swift/Element/bluetoothUnavailable" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Bluejay0A5ErrorO20bluetoothUnavailableA2CmF">bluetoothUnavailable</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Bluetooth is either turned off or unavailable.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="k">case</span> <span class="n">bluetoothUnavailable</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7Bluejay0A5ErrorO24multipleScanNotSupportedA2CmF"></a>
+                    <a name="//apple_ref/swift/Element/multipleScanNotSupported" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Bluejay0A5ErrorO24multipleScanNotSupportedA2CmF">multipleScanNotSupported</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Bluejay does not support another scanning request if Bluejay is still scanning.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="k">case</span> <span class="n">multipleScanNotSupported</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7Bluejay0A5ErrorO27multipleConnectNotSupportedA2CmF"></a>
+                    <a name="//apple_ref/swift/Element/multipleConnectNotSupported" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Bluejay0A5ErrorO27multipleConnectNotSupportedA2CmF">multipleConnectNotSupported</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Bluejay does not support another connection request if Bluejay is already connected or still connecting.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="k">case</span> <span class="n">multipleConnectNotSupported</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7Bluejay0A5ErrorO30multipleDisconnectNotSupportedA2CmF"></a>
+                    <a name="//apple_ref/swift/Element/multipleDisconnectNotSupported" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Bluejay0A5ErrorO30multipleDisconnectNotSupportedA2CmF">multipleDisconnectNotSupported</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Bluejay does not support another disconnection request if Bluejay is still disconnecting.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="k">case</span> <span class="n">multipleDisconnectNotSupported</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7Bluejay0A5ErrorO18connectionTimedOutA2CmF"></a>
+                    <a name="//apple_ref/swift/Element/connectionTimedOut" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Bluejay0A5ErrorO18connectionTimedOutA2CmF">connectionTimedOut</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>A connection request in Bluejay has timed out.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="k">case</span> <span class="n">connectionTimedOut</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7Bluejay0A5ErrorO12notConnectedA2CmF"></a>
+                    <a name="//apple_ref/swift/Element/notConnected" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Bluejay0A5ErrorO12notConnectedA2CmF">notConnected</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>A Bluetooth operation such as, reading or writing, is attempted when Bluejay is not connected to a peripheral.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="k">case</span> <span class="n">notConnected</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7Bluejay0A5ErrorO14missingServiceAcA0D10IdentifierVcACmF"></a>
+                    <a name="//apple_ref/swift/Element/missingService" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Bluejay0A5ErrorO14missingServiceAcA0D10IdentifierVcACmF">missingService</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>A Bluetooth service is not found.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="k">case</span> <span class="nf">missingService</span><span class="p">(</span><span class="kt"><a href="../Structs/ServiceIdentifier.html">ServiceIdentifier</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7Bluejay0A5ErrorO21missingCharacteristicAcA0D10IdentifierVcACmF"></a>
+                    <a name="//apple_ref/swift/Element/missingCharacteristic" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Bluejay0A5ErrorO21missingCharacteristicAcA0D10IdentifierVcACmF">missingCharacteristic</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>A Bluetooth characteristic is not found.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="k">case</span> <span class="nf">missingCharacteristic</span><span class="p">(</span><span class="kt"><a href="../Structs/CharacteristicIdentifier.html">CharacteristicIdentifier</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7Bluejay0A5ErrorO9cancelledA2CmF"></a>
+                    <a name="//apple_ref/swift/Element/cancelled" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Bluejay0A5ErrorO9cancelledA2CmF">cancelled</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>A Bluetooth operation is cancelled.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="k">case</span> <span class="n">cancelled</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7Bluejay0A5ErrorO14listenTimedOutA2CmF"></a>
+                    <a name="//apple_ref/swift/Element/listenTimedOut" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Bluejay0A5ErrorO14listenTimedOutA2CmF">listenTimedOut</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>An attempt to listen on a characteristic has timed out.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="k">case</span> <span class="n">listenTimedOut</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7Bluejay0A5ErrorO10readFailedA2CmF"></a>
+                    <a name="//apple_ref/swift/Element/readFailed" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Bluejay0A5ErrorO10readFailedA2CmF">readFailed</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>An attempt to read a characteristic has failed.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="k">case</span> <span class="n">readFailed</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7Bluejay0A5ErrorO11writeFailedA2CmF"></a>
+                    <a name="//apple_ref/swift/Element/writeFailed" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Bluejay0A5ErrorO11writeFailedA2CmF">writeFailed</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>An attempt to write a characteristic has failed.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="k">case</span> <span class="n">writeFailed</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7Bluejay0A5ErrorO11missingDataA2CmF"></a>
+                    <a name="//apple_ref/swift/Element/missingData" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Bluejay0A5ErrorO11missingDataA2CmF">missingData</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>An attempt to read a value from a characteristic has returned no data unexpectedly.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="k">case</span> <span class="n">missingData</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7Bluejay0A5ErrorO15dataOutOfBoundsACSi5start_Si6lengthSi5counttcACmF"></a>
+                    <a name="//apple_ref/swift/Element/dataOutOfBounds" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Bluejay0A5ErrorO15dataOutOfBoundsACSi5start_Si6lengthSi5counttcACmF">dataOutOfBounds</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>An attempt to read a range of data has failed due to incorrect bounds or an unexpected length.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="k">case</span> <span class="nf">dataOutOfBounds</span><span class="p">(</span><span class="nv">start</span><span class="p">:</span> <span class="kt">Int</span><span class="p">,</span> <span class="nv">length</span><span class="p">:</span> <span class="kt">Int</span><span class="p">,</span> <span class="nv">count</span><span class="p">:</span> <span class="kt">Int</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7Bluejay0A5ErrorO20unexpectedPeripheralAcA0D10IdentifierVcACmF"></a>
+                    <a name="//apple_ref/swift/Element/unexpectedPeripheral" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Bluejay0A5ErrorO20unexpectedPeripheralAcA0D10IdentifierVcACmF">unexpectedPeripheral</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>An unexpected peripheral is cached and retrieved from CoreBluetooth.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="k">case</span> <span class="nf">unexpectedPeripheral</span><span class="p">(</span><span class="kt"><a href="../Structs/PeripheralIdentifier.html">PeripheralIdentifier</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7Bluejay0A5ErrorO51scanningWithAllowDuplicatesInBackgroundNotSupportedA2CmF"></a>
+                    <a name="//apple_ref/swift/Element/scanningWithAllowDuplicatesInBackgroundNotSupported" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Bluejay0A5ErrorO51scanningWithAllowDuplicatesInBackgroundNotSupportedA2CmF">scanningWithAllowDuplicatesInBackgroundNotSupported</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>iOS will not continue scanning in the background if allow duplicates is turned on.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="k">case</span> <span class="n">scanningWithAllowDuplicatesInBackgroundNotSupported</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7Bluejay0A5ErrorO37missingServiceIdentifiersInBackgroundA2CmF"></a>
+                    <a name="//apple_ref/swift/Element/missingServiceIdentifiersInBackground" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Bluejay0A5ErrorO37missingServiceIdentifiersInBackgroundA2CmF">missingServiceIdentifiersInBackground</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>iOS will not continue scanning in the background if no service identifiers are specified.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="k">case</span> <span class="n">missingServiceIdentifiersInBackground</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7Bluejay0A5ErrorO21backgroundTaskRunningA2CmF"></a>
+                    <a name="//apple_ref/swift/Element/backgroundTaskRunning" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Bluejay0A5ErrorO21backgroundTaskRunningA2CmF">backgroundTaskRunning</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Bluejay does not support further Bluetooth operations while a Bluejay background task is still running.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="k">case</span> <span class="n">backgroundTaskRunning</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7Bluejay0A5ErrorO34multipleBackgroundTaskNotSupportedA2CmF"></a>
+                    <a name="//apple_ref/swift/Element/multipleBackgroundTaskNotSupported" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Bluejay0A5ErrorO34multipleBackgroundTaskNotSupportedA2CmF">multipleBackgroundTaskNotSupported</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Bluejay does not support another Bluejay background task when there is already one that is still running.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="k">case</span> <span class="n">multipleBackgroundTaskNotSupported</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7Bluejay0A5ErrorO19listenCacheEncodingACs0B0_pcACmF"></a>
+                    <a name="//apple_ref/swift/Element/listenCacheEncoding" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Bluejay0A5ErrorO19listenCacheEncodingACs0B0_pcACmF">listenCacheEncoding</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Bluejay has failed to encode a listen cache.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="k">case</span> <span class="nf">listenCacheEncoding</span><span class="p">(</span><span class="kt">Error</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7Bluejay0A5ErrorO19listenCacheDecodingACs0B0_pcACmF"></a>
+                    <a name="//apple_ref/swift/Element/listenCacheDecoding" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Bluejay0A5ErrorO19listenCacheDecodingACs0B0_pcACmF">listenCacheDecoding</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Bluejay has failed to decode a listen cache.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="k">case</span> <span class="nf">listenCacheDecoding</span><span class="p">(</span><span class="kt">Error</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10Foundation14LocalizedErrorP16errorDescriptionSSSgv"></a>
+                    <a name="//apple_ref/swift/Property/errorDescription" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10Foundation14LocalizedErrorP16errorDescriptionSSSgv">errorDescription</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">errorDescription</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10Foundation13CustomNSErrorP11errorDomainSSvZ"></a>
+                    <a name="//apple_ref/swift/Variable/errorDomain" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10Foundation13CustomNSErrorP11errorDomainSSvZ">errorDomain</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">var</span> <span class="nv">errorDomain</span><span class="p">:</span> <span class="kt">String</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10Foundation13CustomNSErrorP9errorCodeSiv"></a>
+                    <a name="//apple_ref/swift/Property/errorCode" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10Foundation13CustomNSErrorP9errorCodeSiv">errorCode</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">errorCode</span><span class="p">:</span> <span class="kt">Int</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10Foundation13CustomNSErrorP13errorUserInfos10DictionaryVySSypGv"></a>
+                    <a name="//apple_ref/swift/Property/errorUserInfo" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10Foundation13CustomNSErrorP13errorUserInfos10DictionaryVySSypGv">errorUserInfo</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">errorUserInfo</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span> <span class="p">:</span> <span class="kt">Any</span><span class="p">]</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </section>
+        </section>
+        <section id="footer">
+          <p>Copyright © 2017 Steamclock Software. All rights reserved.</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.8.3</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+        </section>
+      </article>
+    </div>
+  </body>
+</div>
+</html>

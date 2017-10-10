@@ -58,42 +58,42 @@
     },
     {
       "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/Peripheral.swift",
-      "line": 345,
+      "line": 364,
       "symbol": "Peripheral.peripheral(_:didDiscoverServices:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/Peripheral.swift",
-      "line": 349,
+      "line": 368,
       "symbol": "Peripheral.peripheral(_:didDiscoverCharacteristicsFor:error:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/Peripheral.swift",
-      "line": 353,
+      "line": 372,
       "symbol": "Peripheral.peripheral(_:didWriteValueFor:error:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/Peripheral.swift",
-      "line": 357,
+      "line": 376,
       "symbol": "Peripheral.peripheral(_:didUpdateValueFor:error:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/Peripheral.swift",
-      "line": 387,
+      "line": 406,
       "symbol": "Peripheral.peripheral(_:didUpdateNotificationStateFor:error:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/Peripheral.swift",
-      "line": 391,
+      "line": 410,
       "symbol": "Peripheral.peripheral(_:didReadRSSI:error:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
