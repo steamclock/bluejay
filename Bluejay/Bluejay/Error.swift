@@ -82,7 +82,8 @@ extension BluejayError: LocalizedError {
 }
 
 extension BluejayError: CustomNSError {
-    public var errorDomain: String {
+    
+    public static var errorDomain: String {
         return "Bluejay"
     }
 
