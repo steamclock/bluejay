@@ -28,6 +28,8 @@ public enum BluejayError {
     case missingServiceIdentifiersInBackground
     case backgroundTaskRunning
     case multipleBackgroundTaskNotSupported
+    case listenCacheEncoding(Error)
+    case listenCacheDecoding(Error)
 }
 
 extension BluejayError: LocalizedError {
@@ -71,6 +73,10 @@ extension BluejayError: LocalizedError {
             return "Regular Bluetooth operation is not available when a background task is running. For reading, writing, and listening, please use only the API found in the Synchronized Peripheral provided to you when working inside a background task block."
         case .multipleBackgroundTaskNotSupported:
             return "Multiple background task is not supported."
+        case let .listenCacheEncoding(error):
+            return "Listen cache encoding failed with error: \(error.localizedDescription)"
+        case let .listenCacheDecoding(error):
+            return "Listen cache decoding failed with error: \(error.localizedDescription)"
         }
     }
 }
@@ -101,6 +107,8 @@ extension BluejayError: CustomNSError {
         case .missingServiceIdentifiersInBackground: return 17
         case .backgroundTaskRunning: return 18
         case .multipleBackgroundTaskNotSupported: return 19
+        case .listenCacheEncoding: return 20
+        case .listenCacheDecoding: return 21
         }
     }
 
