@@ -555,7 +555,7 @@ public class Bluejay: NSObject {
                     
                     DispatchQueue.main.async {
                         self?.isRunningBackgroundTask = false
-                        completionOnMainThread(.success())
+                        completionOnMainThread(.success(()))
                     }
                 }
                 catch let error as NSError {
@@ -710,7 +710,12 @@ extension Bluejay: CBCentralManagerDelegate {
         }
         
         if central.state == .poweredOn && connectedPeripheral != nil {
-            attemptListenRestoration()
+            do {
+                try requestListenRestoration()
+            }
+            catch {
+                log("Failed to complete listen restoration with error: \(error)")
+            }
         }
         
         if central.state == .poweredOff {
@@ -730,38 +735,45 @@ extension Bluejay: CBCentralManagerDelegate {
     /**
      Examine the listen cache in `UserDefaults` to determine whether there are any listens that might need restoration.
      */
-    private func attemptListenRestoration() {
-        debugPrint("Starting listen restoration.")
+    private func requestListenRestoration() throws {
+        log("Starting listen restoration.")
         
         guard
             let listenCaches = UserDefaults.standard.dictionary(forKey: Constant.listenCaches),
             let cacheData = listenCaches[uuid.uuidString] as? [Data]
         else {
-            debugPrint("No listens to restore.")
+            log("No listens to restore.")
             return
         }
         
+        let decoder = JSONDecoder()
+        
         for data in cacheData {
-            let listenCache = (NSKeyedUnarchiver.unarchiveObject(with: data) as? (ListenCache.Coding))!
-                .decoded as! ListenCache
-            
-            debugPrint("Listen cache to restore: \(listenCache)")
-            
-            let serviceIdentifier = ServiceIdentifier(uuid: listenCache.serviceUUID)
-            let characteristicIdentifier = CharacteristicIdentifier(uuid: listenCache.characteristicUUID, service: serviceIdentifier)
-            
-            if let listenRestorer = listenRestorer?.weakReference {
-                if !listenRestorer.willRestoreListen(on: characteristicIdentifier) {
+            do {
+                let listenCache = try decoder.decode(ListenCache.self, from: data)
+                
+                log("Listen cache to restore: \(listenCache)")
+                
+                let serviceIdentifier = ServiceIdentifier(uuid: listenCache.serviceUUID)
+                let characteristicIdentifier = CharacteristicIdentifier(uuid: listenCache.characteristicUUID, service: serviceIdentifier)
+                
+                if let listenRestorer = listenRestorer?.weakReference {
+                    // If true, assume the listen restorable delegate will restore the listen accordingly, otherwise end the listen.
+                    if !listenRestorer.willRestoreListen(on: characteristicIdentifier) {
+                        endListen(to: characteristicIdentifier)
+                    }
+                }
+                else {
+                    // If there is no listen restorable delegate, end the listen as well.
                     endListen(to: characteristicIdentifier)
                 }
             }
-            else {
-                // If there is no listen restorable delegate, end all active listening.
-                endListen(to: characteristicIdentifier)
+            catch {
+                throw BluejayError.listenCacheDecoding(error)
             }
         }
         
-        debugPrint("Listen restoration finished.")
+        log("Listen restoration finished.")
     }
     
     /**
@@ -906,10 +918,10 @@ extension Bluejay: CBCentralManagerDelegate {
     
 }
 
-/// Allows communication between a queue and the Bluejay instance it belongs to.
+/// Allows Bluejay to receive events and delegation from its queue.
 extension Bluejay: QueueObserver {
     
-    /// A way for Bluejay to update the `isConnecting` state with a more accurate timing by waiting to be informed by the queue only when it is about to start running the enqueued `Connection` task.
+    /// Support for the will connect state that CBCentralManagerDelegate does not have.
     func willConnect(to peripheral: CBPeripheral) {
         connectingPeripheral = Peripheral(bluejay: self, cbPeripheral: peripheral)
     }

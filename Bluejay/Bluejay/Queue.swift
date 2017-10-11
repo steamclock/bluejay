@@ -9,7 +9,9 @@
 import Foundation
 import CoreBluetooth
 
+/// Allows the queue to notify states or delegate tasks.
 protocol QueueObserver: class {
+    /// Called when a queue is about to run a connection operation.
     func willConnect(to peripheral: CBPeripheral)
 }
 
