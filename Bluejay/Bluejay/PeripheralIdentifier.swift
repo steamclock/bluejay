@@ -12,18 +12,8 @@ import Foundation
 public struct PeripheralIdentifier {
     
     /// The UUID of the peripheral.
-    public private(set) var uuid: UUID
-    
-    /// Create a PeripheralIdentifier using a UUID string.
-    public init?(uuid: String) {
-        if let uuid = UUID(uuidString: uuid) {
-            self.uuid = uuid
-        }
-        else {
-            return nil
-        }
-    }
-    
+    public let uuid: UUID
+        
     /// Create a PeripheralIdentifier using a UUID.
     public init(uuid: UUID) {
         self.uuid = uuid

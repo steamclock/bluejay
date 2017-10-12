@@ -13,24 +13,34 @@ import CoreBluetooth
 public struct CharacteristicIdentifier: Hashable {
     
     /// The service this characteristic belongs to.
-    public private(set) var service: ServiceIdentifier
+    public let service: ServiceIdentifier
     
-    /// The CBUUID of this characteristic.
-    public private(set) var uuid: CBUUID
+    /// The `CBUUID` of this characteristic.
+    public let uuid: CBUUID
     
-    /// Create a CharacteristicIdentifier using a CBCharacterstic.
+    /// Create a `CharacteristicIdentifier` using a `CBCharacterstic`.
     public init(_ cbCharacteristic: CBCharacteristic) {
-        self.service = ServiceIdentifier(cbCharacteristic.service.uuid)
+        self.service = ServiceIdentifier(uuid: cbCharacteristic.service.uuid)
         self.uuid = cbCharacteristic.uuid
     }
     
-    /// Create a CharacteristicIdentifier using a uuid String and a ServiceIdentifier.
+    /**
+     * Create a `CharacteristicIdentifier` using a string and a `ServiceIdentifier`. Please supply a valid 128-bit UUID, or a valid 16 or 32-bit commonly used UUID.
+     *
+     * - Warning: If the uuid string provided is invalid and cannot be converted to a `CBUUID`, then there will be a fatal error.
+     */
     public init(uuid: String, service: ServiceIdentifier) {
-        self.service = service
         self.uuid = CBUUID(string: uuid)
+        self.service = service
     }
     
-    /// The hash value of the CBUUID.
+    /// Create a `CharacteristicIdentifier` using a `CBUUID` and a `ServiceIdentifier`.
+    public init(uuid: CBUUID, service: ServiceIdentifier) {
+        self.uuid = uuid
+        self.service = service
+    }
+    
+    /// The hash value of the `CBUUID`.
     public var hashValue: Int {
         return uuid.hashValue
     }
@@ -40,7 +50,7 @@ public struct CharacteristicIdentifier: Hashable {
         return (lhs.uuid == rhs.uuid) && (lhs.service.uuid == rhs.service.uuid)
     }
     
-    /// Check equality between a CharacteristicIdentifier and a CBCharacterstic.
+    /// Check equality between a `CharacteristicIdentifier` and a `CBCharacterstic`.
     public static func ==(lhs: CharacteristicIdentifier, rhs: CBCharacteristic) -> Bool {
         return (lhs.uuid == rhs.uuid) && (lhs.service.uuid == rhs.service.uuid)
     }

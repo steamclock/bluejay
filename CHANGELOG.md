@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 ### Added
 - Changelog
+### Changed
+- Improve handling of UUID and CBUUID
 
 ## [0.3.0] - 2017-10-11
 ### Changed
