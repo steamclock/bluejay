@@ -210,11 +210,11 @@ class HeartSensorViewController: UITableViewController {
         bluejay.disconnect { (result) in
             switch result {
             case .success(let peripheral):
-                debugPrint("Disconnection from \(peripheral.identifier) successful.")
+                debugPrint("Disconnect from \(peripheral.identifier) successful.")
             case .cancelled:
-                debugPrint("Disconnection from \(peripheralIdentifier.uuid.uuidString) cancelled.")
+                debugPrint("Disconnect from \(peripheralIdentifier.uuid.uuidString) cancelled.")
             case .failure(let error):
-                debugPrint("Disconnection from \(peripheralIdentifier.uuid.uuidString) failed with error: \(error.localizedDescription)")
+                debugPrint("Disconnect from \(peripheralIdentifier.uuid.uuidString) failed with error: \(error.localizedDescription)")
             }
         }
     }
@@ -246,7 +246,7 @@ class HeartSensorViewController: UITableViewController {
              Don't use the listen from the synchronized peripheral here to start monitoring the heart rate again, as it will actually block until it is turned off. The synchronous listen is for when you want to listen to and process some expected incoming values before moving on to the next steps in your background task. It is different from the regular asynchronous listen that is more commonly used for continuous monitoring.
              */
             
-            // 4. Return the data interested and process it in the completion block on the main thread.
+            // 4. Return the data of interest and process it in the completion block on the main thread.
             debugPrint("Reset step 4: return sensor location.")
             return sensorLocation
         }) { [weak self] (result: RunResult<UInt8>) in

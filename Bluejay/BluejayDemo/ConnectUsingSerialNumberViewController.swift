@@ -119,9 +119,9 @@ class ConnectUsingSerialNumberViewController: UIViewController {
                                             case .success:
                                                 weakSelf.scan(services: [Services.deviceInfo], serialNumber: weakSelf.targetSerialNumber!)
                                             case .cancelled:
-                                                preconditionFailure("Disconnection cancelled unexpectedly.")
+                                                preconditionFailure("Disconnect cancelled unexpectedly.")
                                             case .failure(let error):
-                                                preconditionFailure("Disconnection failed with error: \(error.localizedDescription)")
+                                                preconditionFailure("Disconnect failed with error: \(error.localizedDescription)")
                                             }
                                         })
                                     }

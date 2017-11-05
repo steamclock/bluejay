@@ -87,9 +87,9 @@ class ScanHeartRateSensorsViewController: UITableViewController {
                         }
                     }
                 case .cancelled:
-                    preconditionFailure("Disconnection cancelled unexpectedly.")
+                    preconditionFailure("Disconnect cancelled unexpectedly.")
                 case .failure(let error):
-                    preconditionFailure("Disconnection failed with error: \(error.localizedDescription)")
+                    preconditionFailure("Disconnect failed with error: \(error.localizedDescription)")
                 }
             })
         }
