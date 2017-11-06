@@ -9,7 +9,7 @@
 import Foundation
 import CoreBluetooth
 
-/// A wrapper for `CBUUI`D specific to a service to help distinguish it from a `CBUUID` of a charactersitc.
+/// A wrapper for `CBUUID` specific to a service to help distinguish it from a `CBUUID` of a characteristic.
 public struct ServiceIdentifier {
     
     /// The `CBUUID` of this service.
