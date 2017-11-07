@@ -17,7 +17,7 @@ public class Peripheral: NSObject {
     // MARK: Properties
     
     private(set) weak var bluejay: Bluejay?
-    private(set) var cbPeripheral: CBPeripheral
+    public private(set) var cbPeripheral: CBPeripheral
     
     fileprivate var listeners: [CharacteristicIdentifier : (ReadResult<Data?>) -> Void] = [:]
     fileprivate var listenersBeingCancelled: [CharacteristicIdentifier] = []
