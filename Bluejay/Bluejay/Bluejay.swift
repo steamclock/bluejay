@@ -422,7 +422,7 @@ public class Bluejay: NSObject {
      
      - Parameters:
         - characteristicIdentifier: The characteristic to write to.
-        - type: Write type
+        - type: Write type.
         - completion: Called with the result of the attempt to write to the specified characteristic.
     */
     public func write<S: Sendable>(to characteristicIdentifier: CharacteristicIdentifier, value: S, type: CBCharacteristicWriteType = .withResponse, completion: @escaping (WriteResult) -> Void) {
