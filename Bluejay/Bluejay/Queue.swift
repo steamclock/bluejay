@@ -19,7 +19,7 @@ protocol QueueObserver: class {
 class Queue {
     
     /// Reference to the Bluejay that owns this queue.
-    private weak var bluejay: Bluejay?
+    public private(set) weak var bluejay: Bluejay?
     
     /// Helps determine whether a scan is running or not.
     private var scan: Scan?

@@ -86,13 +86,23 @@ class Connection: Queueable {
     }
     
     func success(_ peripheral: CBPeripheral) {
+        guard let queue = queue else {
+            fail(BluejayError.missingQueue)
+            return
+        }
+        
+        guard let bluejay = queue.bluejay else {
+            fail(BluejayError.missingBluejay)
+            return
+        }
+        
         cancelTimer()
         
         state = .completed
         
         log("Connected to: \(peripheral.name ?? peripheral.identifier.uuidString).")
         
-        callback?(.success(peripheral))
+        callback?(.success(Peripheral(bluejay: bluejay, cbPeripheral: peripheral)))
         callback = nil
         
         updateQueue()

@@ -17,7 +17,7 @@ public class Peripheral: NSObject {
     // MARK: Properties
     
     private(set) weak var bluejay: Bluejay?
-    public private(set) var cbPeripheral: CBPeripheral
+    private(set) var cbPeripheral: CBPeripheral
     
     fileprivate var listeners: [CharacteristicIdentifier : (ReadResult<Data?>) -> Void] = [:]
     fileprivate var listenersBeingCancelled: [CharacteristicIdentifier] = []
@@ -41,8 +41,8 @@ public class Peripheral: NSObject {
     
     // MARK: - Attributes
     
-    /// The UUID of the peripheral.
-    public var uuid: PeripheralIdentifier {
+    /// The identifier of the peripheral.
+    public var identifier: PeripheralIdentifier {
         return PeripheralIdentifier(uuid: cbPeripheral.identifier)
     }
     

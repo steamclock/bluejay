@@ -187,7 +187,7 @@ class HeartSensorViewController: UITableViewController {
         bluejay.connect(peripheralIdentifier) { (result) in
             switch result {
             case .success(let peripheral):
-                debugPrint("Connection to \(peripheral.identifier) successful.")
+                debugPrint("Connection to \(peripheral.identifier.uuid) successful.")
             case .cancelled:
                 debugPrint("Connection to \(peripheralIdentifier.uuid.uuidString) cancelled.")
             case .failure(let error):
@@ -210,7 +210,7 @@ class HeartSensorViewController: UITableViewController {
         bluejay.disconnect { (result) in
             switch result {
             case .success(let peripheral):
-                debugPrint("Disconnection from \(peripheral.identifier) successful.")
+                debugPrint("Disconnection from \(peripheral.identifier.uuid) successful.")
             case .cancelled:
                 debugPrint("Disconnection from \(peripheralIdentifier.uuid.uuidString) cancelled.")
             case .failure(let error):
