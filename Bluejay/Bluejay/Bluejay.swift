@@ -422,9 +422,10 @@ public class Bluejay: NSObject {
      
      - Parameters:
         - characteristicIdentifier: The characteristic to write to.
+        - type: Write type
         - completion: Called with the result of the attempt to write to the specified characteristic.
     */
-    public func write<S: Sendable>(to characteristicIdentifier: CharacteristicIdentifier, value: S, completion: @escaping (WriteResult) -> Void) {
+    public func write<S: Sendable>(to characteristicIdentifier: CharacteristicIdentifier, value: S, type: CBCharacteristicWriteType = .withResponse, completion: @escaping (WriteResult) -> Void) {
         if isRunningBackgroundTask {
             // Terminate the app if this is called from the same thread as the running background task.
             if #available(iOS 10.0, *) {
@@ -437,7 +438,7 @@ public class Bluejay: NSObject {
         }
         
         if let peripheral = connectedPeripheral {
-            peripheral.write(to: characteristicIdentifier, value: value, completion: completion)
+            peripheral.write(to: characteristicIdentifier, value: value, type: type, completion: completion)
         }
         else {
             completion(.failure(BluejayError.notConnected))
