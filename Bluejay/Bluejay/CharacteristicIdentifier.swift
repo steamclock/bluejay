@@ -10,7 +10,7 @@ import Foundation
 import CoreBluetooth
 
 /// A wrapper for CBUUID specific to a characteristic to help distinguish it from a CBUUID of a service.
-public struct CharacteristicIdentifier: Hashable {
+public struct CharacteristicIdentifier {
     
     /// The service this characteristic belongs to.
     public let service: ServiceIdentifier
@@ -40,19 +40,24 @@ public struct CharacteristicIdentifier: Hashable {
         self.service = service
     }
     
+    /// Check equality between a `CharacteristicIdentifier` and a `CBCharacterstic`.
+    public static func == (lhs: CharacteristicIdentifier, rhs: CBCharacteristic) -> Bool {
+        return (lhs.uuid == rhs.uuid) && (lhs.service.uuid == rhs.service.uuid)
+    }
+}
+
+extension CharacteristicIdentifier: Equatable {
+
+    /// Check equality between two CharacteristicIdentifiers.
+    public static func == (lhs: CharacteristicIdentifier, rhs: CharacteristicIdentifier) -> Bool {
+        return (lhs.uuid == rhs.uuid) && (lhs.service.uuid == rhs.service.uuid)
+    }
+}
+
+extension CharacteristicIdentifier: Hashable {
+
     /// The hash value of the `CBUUID`.
     public var hashValue: Int {
         return uuid.hashValue
     }
-    
-    /// Check equality between two CharacteristicIdentifiers.
-    public static func ==(lhs: CharacteristicIdentifier, rhs: CharacteristicIdentifier) -> Bool {
-        return (lhs.uuid == rhs.uuid) && (lhs.service.uuid == rhs.service.uuid)
-    }
-    
-    /// Check equality between a `CharacteristicIdentifier` and a `CBCharacterstic`.
-    public static func ==(lhs: CharacteristicIdentifier, rhs: CBCharacteristic) -> Bool {
-        return (lhs.uuid == rhs.uuid) && (lhs.service.uuid == rhs.service.uuid)
-    }
-    
 }

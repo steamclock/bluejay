@@ -28,5 +28,20 @@ public struct ServiceIdentifier {
     public init(uuid: CBUUID) {
         self.uuid = uuid
     }
-    
+}
+
+extension ServiceIdentifier: Equatable {
+
+    /// Check equality between two ServiceIdentifier.
+    public static func == (lhs: ServiceIdentifier, rhs: ServiceIdentifier) -> Bool {
+        return lhs.uuid == rhs.uuid
+    }
+}
+
+extension ServiceIdentifier: Hashable {
+
+    /// The hash value of the `CBUUID`.
+    public var hashValue: Int {
+        return uuid.hashValue
+    }
 }
