@@ -102,11 +102,17 @@ class Scan: Queueable {
     
     func process(event: Event) {
         if case .didDiscoverPeripheral(let peripheral, let advertisementData, let rssi) = event {
-            let newDiscovery = ScanDiscovery(peripheral: peripheral, advertisementPacket: advertisementData, rssi: rssi.intValue)
+            let peripheralIdentifier = PeripheralIdentifier(
+                uuid: peripheral.identifier)
+            let newDiscovery = ScanDiscovery(
+                peripheralIdentifier: peripheralIdentifier,
+                peripheralName: peripheral.name,
+                advertisementPacket: advertisementData,
+                rssi: rssi.intValue)
             
             // Ignore discovery if it is blacklisted.
             if blacklist.contains(where: { (blacklistedDiscovery) -> Bool in
-                return newDiscovery.peripheral.identifier == blacklistedDiscovery.peripheral.identifier
+                return newDiscovery.peripheralIdentifier == blacklistedDiscovery.peripheralIdentifier
             })
             {
                 return
@@ -120,11 +126,11 @@ class Scan: Queueable {
             
             // Only predict losing signals to broadcasting peripherals if allow duplicates is enabled, as that mode is mostly used in monitoring context where we need to keep track of advertising peripherals continously.
             if allowDuplicates {
-                refreshTimer(identifier: newDiscovery.peripheral.identifier)
+                refreshTimer(identifier: newDiscovery.peripheralIdentifier.uuid)
             }
             
             if let indexOfExistingDiscovery = discoveries.index(where: { (existingDiscovery) -> Bool in
-                return existingDiscovery.peripheral.identifier == peripheral.identifier
+                return existingDiscovery.peripheralIdentifier == peripheralIdentifier
             })
             {
                 let existingDiscovery = discoveries[indexOfExistingDiscovery]
@@ -157,11 +163,11 @@ class Scan: Queueable {
                 stopScan(with: discoveries, error: nil)
                 
                 if let queue = queue {
-                    if let cbPeripheral = manager.retrievePeripherals(withIdentifiers: [discovery.peripheral.identifier]).first {
+                    if let cbPeripheral = manager.retrievePeripherals(withIdentifiers: [discovery.peripheralIdentifier.uuid]).first {
                         queue.add(Connection(peripheral: cbPeripheral, manager: manager, callback: completion))
                     }
                     else {
-                        completion(.failure(BluejayError.unexpectedPeripheral(PeripheralIdentifier(uuid: discovery.peripheral.identifier))))
+                        completion(.failure(BluejayError.unexpectedPeripheral(discovery.peripheralIdentifier)))
                     }
                 }
                 else {
@@ -255,7 +261,7 @@ class Scan: Queueable {
         }
         
         if let indexOfExpiredDiscovery = discoveries.index(where: { (discovery) -> Bool in
-            return discovery.peripheral.identifier == identifier
+            return discovery.peripheralIdentifier.uuid == identifier
         })
         {
             let expiredDiscovery = discoveries[indexOfExpiredDiscovery]
