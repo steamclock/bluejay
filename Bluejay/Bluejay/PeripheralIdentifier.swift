@@ -18,5 +18,16 @@ public struct PeripheralIdentifier {
     public init(uuid: UUID) {
         self.uuid = uuid
     }
-    
+}
+
+extension PeripheralIdentifier: Equatable {
+    public static func == (lhs: PeripheralIdentifier, rhs: PeripheralIdentifier) -> Bool {
+        return lhs.uuid == rhs.uuid
+    }
+}
+
+extension PeripheralIdentifier: Hashable {
+    public var hashValue: Int {
+        return uuid.hashValue
+    }
 }
