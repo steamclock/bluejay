@@ -96,7 +96,7 @@ public class Bluejay: NSObject {
         shouldRestoreState = UIApplication.shared.applicationState == .background
         
         if shouldRestoreState {
-            debugPrint("Begin startup background task for restoring CoreBluetooth.")
+            log("Begin startup background task for restoring CoreBluetooth.")
             startupBackgroundTask = UIApplication.shared.beginBackgroundTask(expirationHandler: nil)
         }
         
@@ -781,7 +781,7 @@ extension Bluejay: CBCentralManagerDelegate {
      If Core Bluetooth will restore state, update Bluejay's internal states to match the states of the Core Bluetooth stack by assigning the peripheral to `connectingPeripheral` or `connectedPeripheral`, or niling them out, depending on what the restored `CBPeripheral` state is.
      */
     public func centralManager(_ central: CBCentralManager, willRestoreState dict: [String : Any]) {
-        debugPrint("Will restore state.")
+        log("Will restore state.")
         
         shouldRestoreState = false
         
@@ -804,7 +804,7 @@ extension Bluejay: CBCentralManagerDelegate {
         
         precondition(peripherals.count == 1, "Invalid number of peripheral to restore.")
         
-        debugPrint("Peripheral state to restore: \(cbPeripheral.state.string())")
+        log("Peripheral state to restore: \(cbPeripheral.state.string())")
         
         switch cbPeripheral.state {
         case .connecting:
@@ -824,10 +824,10 @@ extension Bluejay: CBCentralManagerDelegate {
                          "Connecting and connected peripherals are not nil during willRestoreState for state: disconnected.")
         }
         
-        debugPrint("State restoration finished.")
+        log("State restoration finished.")
         
         if startupBackgroundTask != UIBackgroundTaskInvalid {
-            debugPrint("Cancelling startup background task.")
+            log("Cancelling startup background task.")
             UIApplication.shared.endBackgroundTask(startupBackgroundTask)
         }
     }
@@ -838,7 +838,7 @@ extension Bluejay: CBCentralManagerDelegate {
     public func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
         let backgroundTask =  UIApplication.shared.beginBackgroundTask(expirationHandler: nil)
         
-        debugPrint("Did connect to: \(peripheral.name ?? peripheral.identifier.uuidString)")
+        log("Did connect to: \(peripheral.name ?? peripheral.identifier.uuidString)")
 
         connectedPeripheral = connectingPeripheral
         connectingPeripheral = nil
@@ -912,7 +912,7 @@ extension Bluejay: CBCentralManagerDelegate {
     */
     public func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
         // let peripheralString = advertisementData[CBAdvertisementDataLocalNameKey] ?? peripheral.identifier.uuidString
-        // debugPrint("Did discover: \(peripheralString)")
+        // log("Did discover: \(peripheralString)")
         
         queue.process(event: .didDiscoverPeripheral(peripheral, advertisementData, RSSI), error: nil)
     }
