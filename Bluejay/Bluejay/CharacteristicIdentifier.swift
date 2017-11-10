@@ -58,6 +58,8 @@ extension CharacteristicIdentifier: Hashable {
 
     /// The hash value of the `CBUUID`.
     public var hashValue: Int {
-        return uuid.hashValue
+        let cHashValue = uuid.hashValue
+        let sHashValue = service.uuid.hashValue
+        return (cHashValue << 5) &+ cHashValue &+ sHashValue
     }
 }
