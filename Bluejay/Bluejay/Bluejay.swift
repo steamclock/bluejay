@@ -123,6 +123,17 @@ public class Bluejay: NSObject {
         backgroundRestore restoreMode: BackgroundRestoreMode = .disable
         )
     {
+        /**
+         If a call to start is made while the app is still in the background (can happen if Bluejay is instantiated and started in the initialization of UIApplicationDelegate for example), Bluejay will mistake its unexpectedly early instantiation as an instantiation from background restoration.
+         
+         Therefore, an explicit call to start should assume that Bluejay is not initialized from background restoration, as the code flow for background restoration should not involve a call to start.
+        */
+        shouldRestoreState = false
+        if startupBackgroundTask != UIBackgroundTaskInvalid {
+            debugPrint("Cancelling startup background task.")
+            UIApplication.shared.endBackgroundTask(startupBackgroundTask)
+        }
+        
         if cbCentralManager != nil {
             log("Error: The Bluejay instance with UUID: \(uuid.uuidString) has already started.")
             return
