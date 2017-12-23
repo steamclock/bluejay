@@ -9,9 +9,6 @@
 import Foundation
 import CoreBluetooth
 
-private let deviceInfoService = ServiceIdentifier(uuid: "180A")
-private let serialNumberCharacteristic = CharacteristicIdentifier(uuid: "2A25", service: deviceInfoService)
-
 /// A scan operation.
 class Scan: Queueable {
     
