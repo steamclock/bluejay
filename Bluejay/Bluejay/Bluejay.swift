@@ -163,7 +163,7 @@ public class Bluejay: NSObject {
         
         cbCentralManager = CBCentralManager(
             delegate: self,
-            queue: DispatchQueue.main,
+            queue: .main,
             options: options
         )
     }
@@ -273,7 +273,7 @@ public class Bluejay: NSObject {
         if isRunningBackgroundTask {
             // Terminate the app if this is called from the same thread as the running background task.
             if #available(iOS 10.0, *) {
-                Dispatch.dispatchPrecondition(condition: .notOnQueue(DispatchQueue.global()))
+                Dispatch.dispatchPrecondition(condition: .notOnQueue(.global()))
             } else {
                 // Fallback on earlier versions
             }
@@ -299,7 +299,7 @@ public class Bluejay: NSObject {
         if isRunningBackgroundTask {
             // Terminate the app if this is called from the same thread as the running background task.
             if #available(iOS 10.0, *) {
-                Dispatch.dispatchPrecondition(condition: .notOnQueue(DispatchQueue.global()))
+                Dispatch.dispatchPrecondition(condition: .notOnQueue(.global()))
             } else {
                 // Fallback on earlier versions
             }
@@ -323,7 +323,7 @@ public class Bluejay: NSObject {
         if isRunningBackgroundTask {
             // Terminate the app if this is called from the same thread as the running background task.
             if #available(iOS 10.0, *) {
-                Dispatch.dispatchPrecondition(condition: .notOnQueue(DispatchQueue.global()))
+                Dispatch.dispatchPrecondition(condition: .notOnQueue(.global()))
             } else {
                 // Fallback on earlier versions
             }
@@ -355,7 +355,7 @@ public class Bluejay: NSObject {
         if isRunningBackgroundTask {
             // Terminate the app if this is called from the same thread as the running background task.
             if #available(iOS 10.0, *) {
-                Dispatch.dispatchPrecondition(condition: .notOnQueue(DispatchQueue.global()))
+                Dispatch.dispatchPrecondition(condition: .notOnQueue(.global()))
             } else {
                 // Fallback on earlier versions
             }
@@ -412,7 +412,7 @@ public class Bluejay: NSObject {
         if isRunningBackgroundTask {
             // Terminate the app if this is called from the same thread as the running background task.
             if #available(iOS 10.0, *) {
-                Dispatch.dispatchPrecondition(condition: .notOnQueue(DispatchQueue.global()))
+                Dispatch.dispatchPrecondition(condition: .notOnQueue(.global()))
             } else {
                 // Fallback on earlier versions
             }
@@ -440,7 +440,7 @@ public class Bluejay: NSObject {
         if isRunningBackgroundTask {
             // Terminate the app if this is called from the same thread as the running background task.
             if #available(iOS 10.0, *) {
-                Dispatch.dispatchPrecondition(condition: .notOnQueue(DispatchQueue.global()))
+                Dispatch.dispatchPrecondition(condition: .notOnQueue(.global()))
             } else {
                 // Fallback on earlier versions
             }
@@ -467,7 +467,7 @@ public class Bluejay: NSObject {
         if isRunningBackgroundTask {
             // Terminate the app if this is called from the same thread as the running background task.
             if #available(iOS 10.0, *) {
-                Dispatch.dispatchPrecondition(condition: .notOnQueue(DispatchQueue.global()))
+                Dispatch.dispatchPrecondition(condition: .notOnQueue(.global()))
             } else {
                 // Fallback on earlier versions
             }
@@ -494,7 +494,7 @@ public class Bluejay: NSObject {
         if isRunningBackgroundTask {
             // Terminate the app if this is called from the same thread as the running background task.
             if #available(iOS 10.0, *) {
-                Dispatch.dispatchPrecondition(condition: .notOnQueue(DispatchQueue.global()))
+                Dispatch.dispatchPrecondition(condition: .notOnQueue(.global()))
             } else {
                 // Fallback on earlier versions
             }
@@ -522,7 +522,7 @@ public class Bluejay: NSObject {
         if isRunningBackgroundTask {
             // Terminate the app if this is called from the same thread as the running background task.
             if #available(iOS 10.0, *) {
-                Dispatch.dispatchPrecondition(condition: .notOnQueue(DispatchQueue.global()))
+                Dispatch.dispatchPrecondition(condition: .notOnQueue(.global()))
             } else {
                 // Fallback on earlier versions
             }

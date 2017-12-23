@@ -80,7 +80,7 @@ class Scan: Queueable {
             NotificationCenter.default.addObserver(
                 self,
                 selector: #selector(didEnterBackgroundWithAllowDuplicates),
-                name: NSNotification.Name.UIApplicationDidEnterBackground,
+                name: .UIApplicationDidEnterBackground,
                 object: nil
             )
         }
@@ -89,7 +89,7 @@ class Scan: Queueable {
             NotificationCenter.default.addObserver(
                 self,
                 selector: #selector(didEnterBackgroundWithoutServiceIdentifiers),
-                name: NSNotification.Name.UIApplicationDidEnterBackground,
+                name: .UIApplicationDidEnterBackground,
                 object: nil
             )
         }

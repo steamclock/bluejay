@@ -141,7 +141,7 @@ public class SynchronizedPeripheral {
             }
         }
         
-        _ = sem.wait(timeout: DispatchTime.distantFuture)
+        _ = sem.wait(timeout: .distantFuture)
 
         if let errorToThrow = errorToThrow {
             throw errorToThrow
@@ -189,7 +189,7 @@ public class SynchronizedPeripheral {
                 })
             }
             
-            _ = flushSem.wait(timeout: DispatchTime.now() + .seconds(idleWindow))
+            _ = flushSem.wait(timeout: .now() + .seconds(idleWindow))
             
             DispatchQueue.main.async {
                 if self.parent.isListening(to: characteristicIdentifier) {
@@ -208,7 +208,7 @@ public class SynchronizedPeripheral {
                 }
             }
             
-            _ = cleanUpSem.wait(timeout: DispatchTime.distantFuture)
+            _ = cleanUpSem.wait(timeout: .distantFuture)
             
             DispatchQueue.main.async {
                 log("Flush to \(characteristicIdentifier.uuid.uuidString) finished, should flush again: \(shouldListenAgain).")
@@ -219,7 +219,7 @@ public class SynchronizedPeripheral {
             }
         } while shouldListenAgain
         
-        _ = sem.wait(timeout: DispatchTime.distantFuture)
+        _ = sem.wait(timeout: .distantFuture)
         
         if let error = error {
             throw error
@@ -249,7 +249,7 @@ public class SynchronizedPeripheral {
         DispatchQueue.main.sync {
             self.parent.listen(to: charToListenTo, completion: { (result : ReadResult<R>) in
                 listenResult = result
-                var action = ListenAction.done
+                var action: ListenAction = .done
                 
                 switch result {
                 case .success(let r):
@@ -281,7 +281,7 @@ public class SynchronizedPeripheral {
             
         }
         
-        _ = sem.wait(timeout: timeoutInSeconds == 0 ? DispatchTime.distantFuture : DispatchTime.now() + .seconds(timeoutInSeconds))
+        _ = sem.wait(timeout: timeoutInSeconds == 0 ? .distantFuture : .now() + .seconds(timeoutInSeconds))
         
         if let error = error {
             throw error
@@ -368,7 +368,7 @@ public class SynchronizedPeripheral {
             }
         }
         
-        _ = sem.wait(timeout: timeoutInSeconds == 0 ? DispatchTime.distantFuture : DispatchTime.now() + .seconds(timeoutInSeconds))
+        _ = sem.wait(timeout: timeoutInSeconds == 0 ? .distantFuture : .now() + .seconds(timeoutInSeconds))
         
         if self.parent.isListening(to: charToListenTo) {
             // TODO: Handle end listen failures.
