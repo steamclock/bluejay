@@ -26,6 +26,9 @@ class Scan: Queueable {
     
     /// The duration of the scan.
     private let duration: TimeInterval
+
+    /// The timer that completes when timeout equal to `duration` occurs.
+    private var timeoutTimer: Timer?
     
     /// If allowDuplicates is true, the scan will repeatedly discover the same device as long as its advertisement is picked up. This is a Core Bluetooth option, and it does consume more battery, doesn't work in the background, and is often advised to turn off.
     private let allowDuplicates: Bool
@@ -72,6 +75,16 @@ class Scan: Queueable {
         
     func start() {        
         state = .running
+
+        let timeoutTimer = Timer(
+            timeInterval: duration,
+            target: self,
+            selector: #selector(timeoutTimerAction(_:)),
+            userInfo: nil,
+            repeats: false)
+        let runLoop: RunLoop = .current
+        runLoop.add(timeoutTimer, forMode: .defaultRunLoopMode)
+        self.timeoutTimer = timeoutTimer
         
         let services = serviceIdentifiers?.map({ (element) -> CBUUID in
             return element.uuid
@@ -294,5 +307,21 @@ class Scan: Queueable {
         
         timers = []
     }
-    
+
+    @objc func timeoutTimerAction(_ timer: Timer) {
+        self.timeoutTimer = nil
+
+        switch state {
+        case .cancelled, .cancelling, .completed, .failed:
+            break
+        case .notStarted:
+            assertionFailure()
+        case .running:
+            state = .completed
+
+            log("Finished scanning on timeout.")
+
+            stopScan(with: discoveries, error: nil)
+        }
+    }
 }
