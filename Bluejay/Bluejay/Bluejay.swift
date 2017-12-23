@@ -19,28 +19,28 @@ public class Bluejay: NSObject {
     // MARK: - Private Properties
     
     /// Internal reference to CoreBluetooth's CBCentralManager.
-    fileprivate var cbCentralManager: CBCentralManager!
+    private var cbCentralManager: CBCentralManager!
     
     /// List of weak references to objects interested in receiving notifications on Bluetooth connection events and state changes.
-    fileprivate var observers = [WeakConnectionObserver]()
+    private var observers = [WeakConnectionObserver]()
     
     /// Reference to a peripheral that is still connecting. If this is nil, then the peripheral should either be disconnected or connected. This is used to help determine the state of the peripheral's connection.
-    fileprivate var connectingPeripheral: Peripheral?
+    private var connectingPeripheral: Peripheral?
     
     /// Reference to a peripheral that is connected. If this is nil, then the peripheral should either be disconnected or still connecting. This is used to help determine the state of the peripheral's connection.
-    fileprivate var connectedPeripheral: Peripheral?
+    private var connectedPeripheral: Peripheral?
     
     /// Allowing or disallowing reconnection attempts upon a disconnection. It should only be set to true after a successful connection to a peripheral, and remain true unless there is an explicit and expected disconnection.
-    fileprivate var shouldAutoReconnect = false
+    private var shouldAutoReconnect = false
     
     /// Reference to the background task used for supporting state restoration.
-    fileprivate var startupBackgroundTask: UIBackgroundTaskIdentifier = UIBackgroundTaskInvalid
+    private var startupBackgroundTask: UIBackgroundTaskIdentifier = UIBackgroundTaskInvalid
     
     /// Reference to the peripheral identifier used for supporting state restoration.
-    fileprivate var peripheralIdentifierToRestore: PeripheralIdentifier?
+    private var peripheralIdentifierToRestore: PeripheralIdentifier?
     
     /// Determines whether state restoration is allowed.
-    fileprivate var shouldRestoreState = false
+    private var shouldRestoreState = false
     
     /// True when background task is running, and helps prevent calling regular read/write/listen.
     private var isRunningBackgroundTask = false

@@ -24,10 +24,10 @@ class HeartSensorViewController: UITableViewController {
     @IBOutlet var resetCell: UITableViewCell!
     @IBOutlet var cancelEverythingCell: UITableViewCell!
     
-    fileprivate var isMonitoringHeartRate = false
+    private var isMonitoringHeartRate = false
     
     private var shouldRefreshSensorLocation = false
-    fileprivate var sensorLocation: UInt8?
+    private var sensorLocation: UInt8?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -53,7 +53,7 @@ class HeartSensorViewController: UITableViewController {
         }
     }
     
-    fileprivate func showBluejayMissingAlert() {
+    private func showBluejayMissingAlert() {
         let alert = UIAlertController(title: "Bluejay Error", message: "Bluejay is missing.", preferredStyle: .alert)
         let dismiss = UIAlertAction(title: "Dismiss", style: .default, handler: nil)
         
@@ -62,7 +62,7 @@ class HeartSensorViewController: UITableViewController {
         navigationController?.present(alert, animated: true, completion: nil)
     }
     
-    fileprivate func readSensorLocation() {
+    private func readSensorLocation() {
         guard let bluejay = bluejay else {
             showBluejayMissingAlert()
             return
@@ -116,7 +116,7 @@ class HeartSensorViewController: UITableViewController {
         sensorLocation = value
     }
     
-    fileprivate func startMonitoringHeartRate() {
+    private func startMonitoringHeartRate() {
         if isMonitoringHeartRate {
             return
         }
@@ -161,7 +161,7 @@ class HeartSensorViewController: UITableViewController {
         }
     }
     
-    fileprivate func stopMonitoringHeartRate() {
+    private func stopMonitoringHeartRate() {
         guard let bluejay = bluejay else {
             showBluejayMissingAlert()
             return

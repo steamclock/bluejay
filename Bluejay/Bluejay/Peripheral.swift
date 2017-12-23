@@ -19,10 +19,10 @@ public class Peripheral: NSObject {
     private(set) weak var bluejay: Bluejay?
     private(set) var cbPeripheral: CBPeripheral
     
-    fileprivate var listeners: [CharacteristicIdentifier : (ReadResult<Data?>) -> Void] = [:]
-    fileprivate var listenersBeingCancelled: [CharacteristicIdentifier] = []
+    private var listeners: [CharacteristicIdentifier : (ReadResult<Data?>) -> Void] = [:]
+    private var listenersBeingCancelled: [CharacteristicIdentifier] = []
     
-    fileprivate var observers: [WeakRSSIObserver] = []
+    private var observers: [WeakRSSIObserver] = []
     
     // MARK: - Initialization
     
@@ -104,7 +104,7 @@ public class Peripheral: NSObject {
     
     // MARK: - Bluetooth Event
     
-    fileprivate func handleEvent(_ event: Event, error: NSError?) {
+    private func handleEvent(_ event: Event, error: NSError?) {
         guard let bluejay = bluejay else {
             preconditionFailure("Cannot handle event: Bluejay is nil.")
         }
