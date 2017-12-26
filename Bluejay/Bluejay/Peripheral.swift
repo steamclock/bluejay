@@ -393,7 +393,7 @@ extension Peripheral: CBPeripheralDelegate {
                 return characteristicIdentifier.uuid.uuidString == characteristic.uuid.uuidString
             })
             
-            let isReadUnhandled = isCancellingListenOnCurrentRead || (listeners.isEmpty && bluejay.queue.isEmpty())
+            let isReadUnhandled = isCancellingListenOnCurrentRead || (listeners.isEmpty && bluejay.queue.isEmpty)
             
             if isReadUnhandled {
                 return

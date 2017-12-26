@@ -82,7 +82,7 @@ public class Bluejay: NSObject {
     /// Allows checking whether Bluejay is currently scanning.
     public var isScanning: Bool {
         // Cannot rely on the manager's state for isScanning as it is not usually updated immediately, and while that delay might be a more accurate representation of the current state, it is almost always more useful to evaluate whether Bluejay is running a scan request at the top of its queue.
-        return queue.isScanning()
+        return queue.isScanning
     }
     
     // MARK: - Initialization
@@ -887,7 +887,7 @@ extension Bluejay: CBCentralManagerDelegate {
             observer.weakReference?.disconnected(from: disconnectedPeripheral!)
         }
         
-        if !queue.isEmpty() {
+        if !queue.isEmpty {
             // If Bluejay is currently connecting or disconnecting, the queue needs to process this disconnection event. Otherwise, this is an unexpected disconnection.
             if isConnecting || isDisconnecting {
                 queue.process(event: .didDisconnectPeripheral(peripheral), error: error as NSError?)
