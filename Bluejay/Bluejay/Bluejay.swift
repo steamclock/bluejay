@@ -19,28 +19,28 @@ public class Bluejay: NSObject {
     // MARK: - Private Properties
     
     /// Internal reference to CoreBluetooth's CBCentralManager.
-    fileprivate var cbCentralManager: CBCentralManager!
+    private var cbCentralManager: CBCentralManager!
     
     /// List of weak references to objects interested in receiving notifications on Bluetooth connection events and state changes.
-    fileprivate var observers = [WeakConnectionObserver]()
+    private var observers = [WeakConnectionObserver]()
     
     /// Reference to a peripheral that is still connecting. If this is nil, then the peripheral should either be disconnected or connected. This is used to help determine the state of the peripheral's connection.
-    fileprivate var connectingPeripheral: Peripheral?
+    private var connectingPeripheral: Peripheral?
     
     /// Reference to a peripheral that is connected. If this is nil, then the peripheral should either be disconnected or still connecting. This is used to help determine the state of the peripheral's connection.
-    fileprivate var connectedPeripheral: Peripheral?
+    private var connectedPeripheral: Peripheral?
     
     /// Allowing or disallowing reconnection attempts upon a disconnection. It should only be set to true after a successful connection to a peripheral, and remain true unless there is an explicit and expected disconnection.
-    fileprivate var shouldAutoReconnect = false
+    private var shouldAutoReconnect = false
     
     /// Reference to the background task used for supporting state restoration.
-    fileprivate var startupBackgroundTask: UIBackgroundTaskIdentifier = UIBackgroundTaskInvalid
+    private var startupBackgroundTask: UIBackgroundTaskIdentifier = UIBackgroundTaskInvalid
     
     /// Reference to the peripheral identifier used for supporting state restoration.
-    fileprivate var peripheralIdentifierToRestore: PeripheralIdentifier?
+    private var peripheralIdentifierToRestore: PeripheralIdentifier?
     
     /// Determines whether state restoration is allowed.
-    fileprivate var shouldRestoreState = false
+    private var shouldRestoreState = false
     
     /// True when background task is running, and helps prevent calling regular read/write/listen.
     private var isRunningBackgroundTask = false
@@ -82,7 +82,7 @@ public class Bluejay: NSObject {
     /// Allows checking whether Bluejay is currently scanning.
     public var isScanning: Bool {
         // Cannot rely on the manager's state for isScanning as it is not usually updated immediately, and while that delay might be a more accurate representation of the current state, it is almost always more useful to evaluate whether Bluejay is running a scan request at the top of its queue.
-        return queue.isScanning()
+        return queue.isScanning
     }
     
     // MARK: - Initialization
@@ -163,7 +163,7 @@ public class Bluejay: NSObject {
         
         cbCentralManager = CBCentralManager(
             delegate: self,
-            queue: DispatchQueue.main,
+            queue: .main,
             options: options
         )
     }
@@ -273,7 +273,7 @@ public class Bluejay: NSObject {
         if isRunningBackgroundTask {
             // Terminate the app if this is called from the same thread as the running background task.
             if #available(iOS 10.0, *) {
-                Dispatch.dispatchPrecondition(condition: .notOnQueue(DispatchQueue.global()))
+                Dispatch.dispatchPrecondition(condition: .notOnQueue(.global()))
             } else {
                 // Fallback on earlier versions
             }
@@ -299,7 +299,7 @@ public class Bluejay: NSObject {
         if isRunningBackgroundTask {
             // Terminate the app if this is called from the same thread as the running background task.
             if #available(iOS 10.0, *) {
-                Dispatch.dispatchPrecondition(condition: .notOnQueue(DispatchQueue.global()))
+                Dispatch.dispatchPrecondition(condition: .notOnQueue(.global()))
             } else {
                 // Fallback on earlier versions
             }
@@ -323,7 +323,7 @@ public class Bluejay: NSObject {
         if isRunningBackgroundTask {
             // Terminate the app if this is called from the same thread as the running background task.
             if #available(iOS 10.0, *) {
-                Dispatch.dispatchPrecondition(condition: .notOnQueue(DispatchQueue.global()))
+                Dispatch.dispatchPrecondition(condition: .notOnQueue(.global()))
             } else {
                 // Fallback on earlier versions
             }
@@ -355,7 +355,7 @@ public class Bluejay: NSObject {
         if isRunningBackgroundTask {
             // Terminate the app if this is called from the same thread as the running background task.
             if #available(iOS 10.0, *) {
-                Dispatch.dispatchPrecondition(condition: .notOnQueue(DispatchQueue.global()))
+                Dispatch.dispatchPrecondition(condition: .notOnQueue(.global()))
             } else {
                 // Fallback on earlier versions
             }
@@ -412,7 +412,7 @@ public class Bluejay: NSObject {
         if isRunningBackgroundTask {
             // Terminate the app if this is called from the same thread as the running background task.
             if #available(iOS 10.0, *) {
-                Dispatch.dispatchPrecondition(condition: .notOnQueue(DispatchQueue.global()))
+                Dispatch.dispatchPrecondition(condition: .notOnQueue(.global()))
             } else {
                 // Fallback on earlier versions
             }
@@ -440,7 +440,7 @@ public class Bluejay: NSObject {
         if isRunningBackgroundTask {
             // Terminate the app if this is called from the same thread as the running background task.
             if #available(iOS 10.0, *) {
-                Dispatch.dispatchPrecondition(condition: .notOnQueue(DispatchQueue.global()))
+                Dispatch.dispatchPrecondition(condition: .notOnQueue(.global()))
             } else {
                 // Fallback on earlier versions
             }
@@ -467,7 +467,7 @@ public class Bluejay: NSObject {
         if isRunningBackgroundTask {
             // Terminate the app if this is called from the same thread as the running background task.
             if #available(iOS 10.0, *) {
-                Dispatch.dispatchPrecondition(condition: .notOnQueue(DispatchQueue.global()))
+                Dispatch.dispatchPrecondition(condition: .notOnQueue(.global()))
             } else {
                 // Fallback on earlier versions
             }
@@ -494,7 +494,7 @@ public class Bluejay: NSObject {
         if isRunningBackgroundTask {
             // Terminate the app if this is called from the same thread as the running background task.
             if #available(iOS 10.0, *) {
-                Dispatch.dispatchPrecondition(condition: .notOnQueue(DispatchQueue.global()))
+                Dispatch.dispatchPrecondition(condition: .notOnQueue(.global()))
             } else {
                 // Fallback on earlier versions
             }
@@ -522,7 +522,7 @@ public class Bluejay: NSObject {
         if isRunningBackgroundTask {
             // Terminate the app if this is called from the same thread as the running background task.
             if #available(iOS 10.0, *) {
-                Dispatch.dispatchPrecondition(condition: .notOnQueue(DispatchQueue.global()))
+                Dispatch.dispatchPrecondition(condition: .notOnQueue(.global()))
             } else {
                 // Fallback on earlier versions
             }
@@ -684,13 +684,13 @@ public class Bluejay: NSObject {
      - Returns: The resulting data of all the Sendables combined in the order of the passed in array.
      */
     public static func combine(sendables: [Sendable]) -> Data {
-        let data = NSMutableData()
+        var data = Data()
         
         for sendable in sendables {
             data.append(sendable.toBluetoothData())
         }
         
-        return data as Data
+        return data
     }
     
 }
@@ -887,7 +887,7 @@ extension Bluejay: CBCentralManagerDelegate {
             observer.weakReference?.disconnected(from: disconnectedPeripheral!)
         }
         
-        if !queue.isEmpty() {
+        if !queue.isEmpty {
             // If Bluejay is currently connecting or disconnecting, the queue needs to process this disconnection event. Otherwise, this is an unexpected disconnection.
             if isConnecting || isDisconnecting {
                 queue.process(event: .didDisconnectPeripheral(peripheral), error: error as NSError?)

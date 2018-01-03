@@ -13,7 +13,7 @@ extension CBService {
     
     /// Find a characteristic on a service by CBUUID.
     public func characteristic(with uuid: CBUUID) -> CBCharacteristic? {
-        return characteristics?.filter { $0.uuid == uuid }.first
+        return characteristics?.first(where: { $0.uuid == uuid })
     }
     
 }

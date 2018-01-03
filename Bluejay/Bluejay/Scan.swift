@@ -9,9 +9,6 @@
 import Foundation
 import CoreBluetooth
 
-private let deviceInfoService = ServiceIdentifier(uuid: "180A")
-private let serialNumberCharacteristic = CharacteristicIdentifier(uuid: "2A25", service: deviceInfoService)
-
 /// A scan operation.
 class Scan: Queueable {
     
@@ -83,7 +80,7 @@ class Scan: Queueable {
             NotificationCenter.default.addObserver(
                 self,
                 selector: #selector(didEnterBackgroundWithAllowDuplicates),
-                name: NSNotification.Name.UIApplicationDidEnterBackground,
+                name: .UIApplicationDidEnterBackground,
                 object: nil
             )
         }
@@ -92,7 +89,7 @@ class Scan: Queueable {
             NotificationCenter.default.addObserver(
                 self,
                 selector: #selector(didEnterBackgroundWithoutServiceIdentifiers),
-                name: NSNotification.Name.UIApplicationDidEnterBackground,
+                name: .UIApplicationDidEnterBackground,
                 object: nil
             )
         }

@@ -11,7 +11,7 @@ import Bluejay
 
 class ScanHeartRateSensorsViewController: UITableViewController {
     
-    fileprivate let bluejay = Bluejay()
+    private let bluejay = Bluejay()
     
     private var peripherals = [ScanDiscovery]() {
         didSet {
@@ -33,7 +33,7 @@ class ScanHeartRateSensorsViewController: UITableViewController {
         scanHeartSensors()
     }
     
-    fileprivate func scanHeartSensors() {
+    private func scanHeartSensors() {
         let heartRateService = ServiceIdentifier(uuid: "180D")
         
         bluejay.scan(

@@ -93,7 +93,7 @@ class Queue {
             }
             
             // Stop scanning when a connection is enqueued while a scan is still active, so that the queue can pop the scan task and proceed to the connection task without requiring the caller to explicitly stop the scan before making the connection request.
-            if isScanning() {
+            if isScanning {
                 stopScanning()
                 return
             }
@@ -185,7 +185,7 @@ class Queue {
     }
     
     func process(event: Event, error: Error?) {
-        if isEmpty() {
+        if isEmpty {
             log("Queue is empty but received an event: \(event)")
             return
         }
@@ -203,11 +203,11 @@ class Queue {
     
     // MARK: - States
     
-    func isEmpty() -> Bool {
+    var isEmpty: Bool {
         return queue.isEmpty
     }
     
-    func isScanning() -> Bool {
+    var isScanning: Bool {
         return scan != nil
     }
     
@@ -220,7 +220,7 @@ extension Queue: ConnectionObserver {
             update()
         }
         else {
-            if !isEmpty() {
+            if !isEmpty {
                 cancelAll(BluejayError.bluetoothUnavailable)
             }
         }
