@@ -75,7 +75,7 @@ class ScanEverythingViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "peripheralCell", for: indexPath)
         
-        cell.textLabel?.text = peripherals[indexPath.row].peripheral.name ?? "Unknown"
+        cell.textLabel?.text = peripherals[indexPath.row].peripheralName ?? "Unknown"
         cell.detailTextLabel?.text = "RSSI: \(peripherals[indexPath.row].rssi)"
         
         return cell

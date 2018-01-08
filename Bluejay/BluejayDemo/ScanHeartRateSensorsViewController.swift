@@ -109,16 +109,16 @@ class ScanHeartRateSensorsViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "heartCell", for: indexPath)
         
-        cell.textLabel?.text = peripherals[indexPath.row].peripheral.name ?? "Unknown"
+        cell.textLabel?.text = peripherals[indexPath.row].peripheralName ?? "Unknown"
         cell.detailTextLabel?.text = "RSSI: \(peripherals[indexPath.row].rssi)"
         
         return cell
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let peripheral = peripherals[indexPath.row].peripheral
+        let peripheral = peripherals[indexPath.row]
         
-        let peripheralIdentifier = PeripheralIdentifier(uuid: peripheral.identifier)
+        let peripheralIdentifier = peripherals[indexPath.row].peripheralIdentifier
         
         bluejay.connect(peripheralIdentifier) { [weak self] (result) in
             switch result {
@@ -133,9 +133,9 @@ class ScanHeartRateSensorsViewController: UITableViewController {
                 
                 weakSelf.performSegue(withIdentifier: "showHeartSensor", sender: self)
             case .cancelled:
-                debugPrint("Connection to \(peripheral.identifier) cancelled.")
+                debugPrint("Connection to \(peripheral.peripheralIdentifier) cancelled.")
             case .failure(let error):
-                debugPrint("Connection to \(peripheral.identifier) failed with error: \(error.localizedDescription)")
+                debugPrint("Connection to \(peripheral.peripheralIdentifier) failed with error: \(error.localizedDescription)")
             }
         }
     }

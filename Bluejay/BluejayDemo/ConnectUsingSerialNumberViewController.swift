@@ -90,7 +90,7 @@ class ConnectUsingSerialNumberViewController: UIViewController {
                 }
                 
                 if weakSelf.blacklistedDiscoveries.contains(where: { (blacklistedDiscovery) -> Bool in
-                    return blacklistedDiscovery.peripheral.identifier == discovery.peripheral.identifier
+                    return blacklistedDiscovery.peripheralIdentifier == discovery.peripheralIdentifier
                 })
                 {
                     return .blacklist
@@ -136,11 +136,11 @@ class ConnectUsingSerialNumberViewController: UIViewController {
                                 }
                             })
                         case .cancelled:
-                            debugPrint("Connection to \(discovery.peripheral.identifier) cancelled.")
+                            debugPrint("Connection to \(discovery.peripheralIdentifier) cancelled.")
                             
                             weakSelf.statusLabel.text = "Connection Cancelled"
                         case .failure(let error):
-                            debugPrint("Connection to \(discovery.peripheral.identifier) failed with error: \(error.localizedDescription)")
+                            debugPrint("Connection to \(discovery.peripheralIdentifier) failed with error: \(error.localizedDescription)")
                             
                             weakSelf.statusLabel.text = "Connection Error: \(error.localizedDescription)"
                         }
