@@ -73,15 +73,17 @@ class Scan: Queueable {
     func start() {        
         state = .running
 
-        let timeoutTimer = Timer(
-            timeInterval: duration,
-            target: self,
-            selector: #selector(timeoutTimerAction(_:)),
-            userInfo: nil,
-            repeats: false)
-        let runLoop: RunLoop = .current
-        runLoop.add(timeoutTimer, forMode: .defaultRunLoopMode)
-        self.timeoutTimer = timeoutTimer
+        if duration > 0 {
+            let timeoutTimer = Timer(
+                timeInterval: duration,
+                target: self,
+                selector: #selector(timeoutTimerAction(_:)),
+                userInfo: nil,
+                repeats: false)
+            let runLoop: RunLoop = .current
+            runLoop.add(timeoutTimer, forMode: .defaultRunLoopMode)
+            self.timeoutTimer = timeoutTimer
+        }
         
         let services = serviceIdentifiers?.map({ (element) -> CBUUID in
             return element.uuid
