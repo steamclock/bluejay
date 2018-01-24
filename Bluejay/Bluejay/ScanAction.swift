@@ -17,5 +17,5 @@ public enum ScanAction {
     /// Stop scanning.
     case stop
     /// Stop scanning, and connect to a discovery.
-    case connect(ScanDiscovery, ConnectionTimeout, (ConnectionResult) -> Void)
+    case connect(ScanDiscovery, Timeout, (ConnectionResult) -> Void)
 }

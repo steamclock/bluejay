@@ -15,9 +15,9 @@ var standardConnectOptions: [String : AnyObject] = [
 ]
 
 /// Types of connection time outs. Can specify a time out in seconds, or no time out.
-public enum ConnectionTimeout {
+public enum Timeout {
     case seconds(TimeInterval)
-    case noTimeout
+    case none
 }
 
 /// A connection operation.
@@ -39,9 +39,9 @@ class Connection: Queueable {
     var callback: ((ConnectionResult) -> Void)?
     
     private var connectionTimer: Timer?
-    private let timeout: ConnectionTimeout?
+    private let timeout: Timeout?
     
-    init(peripheral: CBPeripheral, manager: CBCentralManager, timeout: ConnectionTimeout, callback: @escaping (ConnectionResult) -> Void) {
+    init(peripheral: CBPeripheral, manager: CBCentralManager, timeout: Timeout, callback: @escaping (ConnectionResult) -> Void) {
         self.state = .notStarted
         
         self.peripheral = peripheral

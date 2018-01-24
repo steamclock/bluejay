@@ -57,7 +57,7 @@ public class Bluejay: NSObject {
     var listenRestorer: WeakListenRestorer?
     
     /// The previous connection timeout used.
-    var previousConnectionTimeout: ConnectionTimeout?
+    var previousConnectionTimeout: Timeout?
     
     // MARK: - Public Properties
     
@@ -323,7 +323,7 @@ public class Bluejay: NSObject {
         - timeout: Specify how long the connection time out should be.
         - completion: Called when the connection request has fully finished and indicates whether it was successful, cancelled, or failed.
     */
-    public func connect(_ peripheralIdentifier: PeripheralIdentifier, timeout: ConnectionTimeout, completion: @escaping (ConnectionResult) -> Void) {
+    public func connect(_ peripheralIdentifier: PeripheralIdentifier, timeout: Timeout, completion: @escaping (ConnectionResult) -> Void) {
         previousConnectionTimeout = timeout
         
         if isRunningBackgroundTask {
@@ -811,7 +811,7 @@ extension Bluejay: CBCentralManagerDelegate {
                 // try to trigger a reconnect if we have a stored
                 // peripheral
                 if let id = peripheralIdentifierToRestore {
-                    connect(id, timeout: previousConnectionTimeout ?? .noTimeout, completion: { _ in })
+                    connect(id, timeout: previousConnectionTimeout ?? .none, completion: { _ in })
                 }
                 
                 return
@@ -910,7 +910,7 @@ extension Bluejay: CBCentralManagerDelegate {
         
         if shouldAutoReconnect {
             log("Issuing reconnect to: \(peripheral.name ?? peripheral.identifier.uuidString)")
-            connect(PeripheralIdentifier(uuid: peripheral.identifier), timeout: previousConnectionTimeout ?? .noTimeout, completion: {_ in })
+            connect(PeripheralIdentifier(uuid: peripheral.identifier), timeout: previousConnectionTimeout ?? .none, completion: {_ in })
         }
         
         UIApplication.shared.endBackgroundTask(backgroundTask)
