@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>ScanDiscovery Struct Reference</title>
+    <title>ScanDiscovery Structure Reference</title>
     <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
     <meta charset='utf-8'>
@@ -11,10 +11,10 @@
   </head>
   <body>
     <a name="//apple_ref/swift/Struct/ScanDiscovery" class="dashAnchor"></a>
-    <a title="ScanDiscovery Struct Reference"></a>
+    <a title="ScanDiscovery Structure Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="../index.html">Bluejay Docs</a> (96% documented)</p>
+        <p><a href="../index.html">Bluejay Docs</a> (95% documented)</p>
         <p class="header-right"><a href="https://github.com/steamclock/bluejay"><img src="../img/gh.png"/>View on GitHub</a></p>
       </div>
     </header>
@@ -22,7 +22,7 @@
       <p id="breadcrumbs">
         <a href="../index.html">Bluejay Reference</a>
         <img id="carat" src="../img/carat.png" />
-        ScanDiscovery Struct Reference
+        ScanDiscovery Structure Reference
       </p>
     </div>
     <div class="content-wrapper">
@@ -43,7 +43,7 @@
             </ul>
           </li>
           <li class="nav-group-name">
-            <a href="../Enums.html">Enums</a>
+            <a href="../Enums.html">Enumerations</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a href="../Enums/BackgroundRestoreMode.html">BackgroundRestoreMode</a>
@@ -53,6 +53,9 @@
               </li>
               <li class="nav-group-task">
                 <a href="../Enums/ConnectionResult.html">ConnectionResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/ConnectionTimeout.html">ConnectionTimeout</a>
               </li>
               <li class="nav-group-task">
                 <a href="../Enums/DisconnectionResult.html">DisconnectionResult</a>
@@ -121,7 +124,7 @@
             </ul>
           </li>
           <li class="nav-group-name">
-            <a href="../Structs.html">Structs</a>
+            <a href="../Structs.html">Structures</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a href="../Structs/CharacteristicIdentifier.html">CharacteristicIdentifier</a>
@@ -148,7 +151,7 @@
             <h1>ScanDiscovery</h1>
               <div class="declaration">
                 <div class="language">
-                  <pre class="highlight"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">ScanDiscovery</span></code></pre>
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">ScanDiscovery</span></code></pre>
 
                 </div>
               </div>
@@ -161,9 +164,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7Bluejay13ScanDiscoveryV10peripheralSo12CBPeripheralCv"></a>
-                    <a name="//apple_ref/swift/Property/peripheral" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7Bluejay13ScanDiscoveryV10peripheralSo12CBPeripheralCv">peripheral</a>
+                    <a name="/s:7Bluejay13ScanDiscoveryV20peripheralIdentifierAA010PeripheralE0Vv"></a>
+                    <a name="//apple_ref/swift/Property/peripheralIdentifier" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Bluejay13ScanDiscoveryV20peripheralIdentifierAA010PeripheralE0Vv">peripheralIdentifier</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -171,14 +174,41 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>The <code>CBPeripheral</code> discovered.</p>
+                        <p>The unique, persistent identifier associated with the peer.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">peripheral</span><span class="p">:</span> <span class="kt">CBPeripheral</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">peripheralIdentifier</span><span class="p">:</span> <span class="kt"><a href="../Structs/PeripheralIdentifier.html">PeripheralIdentifier</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7Bluejay13ScanDiscoveryV14peripheralNameSSSgv"></a>
+                    <a name="//apple_ref/swift/Property/peripheralName" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Bluejay13ScanDiscoveryV14peripheralNameSSSgv">peripheralName</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The name of the peripheral.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">peripheralName</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span></code></pre>
 
                         </div>
                       </div>
@@ -205,7 +235,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">advertisementPacket</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span><span class="p">:</span> <span class="kt">Any</span><span class="p">]</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">advertisementPacket</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span><span class="p">:</span> <span class="kt">Any</span><span class="p">]</span></code></pre>
 
                         </div>
                       </div>
@@ -232,7 +262,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">rssi</span><span class="p">:</span> <span class="kt">Int</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">rssi</span><span class="p">:</span> <span class="kt">Int</span></code></pre>
 
                         </div>
                       </div>
@@ -245,7 +275,7 @@
         </section>
         <section id="footer">
           <p>Copyright © 2017 Steamclock Software. All rights reserved.</p>
-          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.8.3</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.1</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>
     </div>

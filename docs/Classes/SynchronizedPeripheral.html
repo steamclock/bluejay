@@ -14,7 +14,7 @@
     <a title="SynchronizedPeripheral Class Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="../index.html">Bluejay Docs</a> (96% documented)</p>
+        <p><a href="../index.html">Bluejay Docs</a> (95% documented)</p>
         <p class="header-right"><a href="https://github.com/steamclock/bluejay"><img src="../img/gh.png"/>View on GitHub</a></p>
       </div>
     </header>
@@ -43,7 +43,7 @@
             </ul>
           </li>
           <li class="nav-group-name">
-            <a href="../Enums.html">Enums</a>
+            <a href="../Enums.html">Enumerations</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a href="../Enums/BackgroundRestoreMode.html">BackgroundRestoreMode</a>
@@ -53,6 +53,9 @@
               </li>
               <li class="nav-group-task">
                 <a href="../Enums/ConnectionResult.html">ConnectionResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/ConnectionTimeout.html">ConnectionTimeout</a>
               </li>
               <li class="nav-group-task">
                 <a href="../Enums/DisconnectionResult.html">DisconnectionResult</a>
@@ -121,7 +124,7 @@
             </ul>
           </li>
           <li class="nav-group-name">
-            <a href="../Structs.html">Structs</a>
+            <a href="../Structs.html">Structures</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a href="../Structs/CharacteristicIdentifier.html">CharacteristicIdentifier</a>
@@ -148,7 +151,7 @@
             <h1>SynchronizedPeripheral</h1>
               <div class="declaration">
                 <div class="language">
-                  <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">SynchronizedPeripheral</span></code></pre>
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">SynchronizedPeripheral</span></code></pre>
 
                 </div>
               </div>
@@ -185,7 +188,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">read</span><span class="o">&lt;</span><span class="kt">R</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Receivable.html">Receivable</a></span><span class="o">&gt;</span><span class="p">(</span><span class="n">from</span> <span class="nv">characteristicIdentifier</span><span class="p">:</span> <span class="kt"><a href="../Structs/CharacteristicIdentifier.html">CharacteristicIdentifier</a></span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">R</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">read</span><span class="o">&lt;</span><span class="kt">R</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Receivable.html">Receivable</a></span><span class="o">&gt;</span><span class="p">(</span><span class="n">from</span> <span class="nv">characteristicIdentifier</span><span class="p">:</span> <span class="kt"><a href="../Structs/CharacteristicIdentifier.html">CharacteristicIdentifier</a></span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">R</span></code></pre>
 
                         </div>
                       </div>
@@ -195,9 +198,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7Bluejay22SynchronizedPeripheralC5writeyAA24CharacteristicIdentifierV2to_x5valuetKAA8SendableRzlF"></a>
-                    <a name="//apple_ref/swift/Method/write(to:value:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7Bluejay22SynchronizedPeripheralC5writeyAA24CharacteristicIdentifierV2to_x5valuetKAA8SendableRzlF">write(to:value:)</a>
+                    <a name="/s:7Bluejay22SynchronizedPeripheralC5writeyAA24CharacteristicIdentifierV2to_x5valueSC25CBCharacteristicWriteTypeO4typetKAA8SendableRzlF"></a>
+                    <a name="//apple_ref/swift/Method/write(to:value:type:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Bluejay22SynchronizedPeripheralC5writeyAA24CharacteristicIdentifierV2to_x5valueSC25CBCharacteristicWriteTypeO4typetKAA8SendableRzlF">write(to:value:type:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -212,7 +215,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">write</span><span class="o">&lt;</span><span class="kt">S</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Sendable.html">Sendable</a></span><span class="o">&gt;</span><span class="p">(</span><span class="n">to</span> <span class="nv">characteristicIdentifier</span><span class="p">:</span> <span class="kt"><a href="../Structs/CharacteristicIdentifier.html">CharacteristicIdentifier</a></span><span class="p">,</span> <span class="nv">value</span><span class="p">:</span> <span class="kt">S</span><span class="p">)</span> <span class="k">throws</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">write</span><span class="o">&lt;</span><span class="kt">S</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Sendable.html">Sendable</a></span><span class="o">&gt;</span><span class="p">(</span><span class="n">to</span> <span class="nv">characteristicIdentifier</span><span class="p">:</span> <span class="kt"><a href="../Structs/CharacteristicIdentifier.html">CharacteristicIdentifier</a></span><span class="p">,</span> <span class="nv">value</span><span class="p">:</span> <span class="kt">S</span><span class="p">,</span> <span class="nv">type</span><span class="p">:</span> <span class="kt">CBCharacteristicWriteType</span> <span class="o">=</span> <span class="o">.</span><span class="n">withResponse</span><span class="p">)</span> <span class="k">throws</span></code></pre>
 
                         </div>
                       </div>
@@ -222,9 +225,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7Bluejay22SynchronizedPeripheralC12writeAndReadxAA24CharacteristicIdentifierV0D2To_q_5valueAF8readFromtKAA10ReceivableRzAA8SendableR_r0_lF"></a>
-                    <a name="//apple_ref/swift/Method/writeAndRead(writeTo:value:readFrom:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7Bluejay22SynchronizedPeripheralC12writeAndReadxAA24CharacteristicIdentifierV0D2To_q_5valueAF8readFromtKAA10ReceivableRzAA8SendableR_r0_lF">writeAndRead(writeTo:value:readFrom:)</a>
+                    <a name="/s:7Bluejay22SynchronizedPeripheralC12writeAndReadxAA24CharacteristicIdentifierV0D2To_q_5valueSC25CBCharacteristicWriteTypeO4typeAF8readFromtKAA10ReceivableRzAA8SendableR_r0_lF"></a>
+                    <a name="//apple_ref/swift/Method/writeAndRead(writeTo:value:type:readFrom:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Bluejay22SynchronizedPeripheralC12writeAndReadxAA24CharacteristicIdentifierV0D2To_q_5valueSC25CBCharacteristicWriteTypeO4typeAF8readFromtKAA10ReceivableRzAA8SendableR_r0_lF">writeAndRead(writeTo:value:type:readFrom:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -239,7 +242,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">writeAndRead</span><span class="o">&lt;</span><span class="kt">R</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Receivable.html">Receivable</a></span><span class="p">,</span> <span class="kt">S</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Sendable.html">Sendable</a></span><span class="o">&gt;</span> <span class="p">(</span><span class="nv">writeTo</span><span class="p">:</span> <span class="kt"><a href="../Structs/CharacteristicIdentifier.html">CharacteristicIdentifier</a></span><span class="p">,</span> <span class="nv">value</span><span class="p">:</span> <span class="kt">S</span><span class="p">,</span> <span class="nv">readFrom</span><span class="p">:</span> <span class="kt"><a href="../Structs/CharacteristicIdentifier.html">CharacteristicIdentifier</a></span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">R</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">writeAndRead</span><span class="o">&lt;</span><span class="kt">R</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Receivable.html">Receivable</a></span><span class="p">,</span> <span class="kt">S</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Sendable.html">Sendable</a></span><span class="o">&gt;</span> <span class="p">(</span><span class="nv">writeTo</span><span class="p">:</span> <span class="kt"><a href="../Structs/CharacteristicIdentifier.html">CharacteristicIdentifier</a></span><span class="p">,</span> <span class="nv">value</span><span class="p">:</span> <span class="kt">S</span><span class="p">,</span> <span class="nv">type</span><span class="p">:</span> <span class="kt">CBCharacteristicWriteType</span> <span class="o">=</span> <span class="o">.</span><span class="n">withResponse</span><span class="p">,</span> <span class="nv">readFrom</span><span class="p">:</span> <span class="kt"><a href="../Structs/CharacteristicIdentifier.html">CharacteristicIdentifier</a></span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">R</span></code></pre>
 
                         </div>
                       </div>
@@ -266,7 +269,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">listen</span><span class="o">&lt;</span><span class="kt">R</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Receivable.html">Receivable</a></span><span class="o">&gt;</span><span class="p">(</span><span class="n">to</span> <span class="nv">characteristicIdentifier</span><span class="p">:</span> <span class="kt"><a href="../Structs/CharacteristicIdentifier.html">CharacteristicIdentifier</a></span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">R</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Enums/ListenAction.html">ListenAction</a></span><span class="p">)</span> <span class="k">throws</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">listen</span><span class="o">&lt;</span><span class="kt">R</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Receivable.html">Receivable</a></span><span class="o">&gt;</span><span class="p">(</span><span class="n">to</span> <span class="nv">characteristicIdentifier</span><span class="p">:</span> <span class="kt"><a href="../Structs/CharacteristicIdentifier.html">CharacteristicIdentifier</a></span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">R</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Enums/ListenAction.html">ListenAction</a></span><span class="p">)</span> <span class="k">throws</span></code></pre>
 
                         </div>
                       </div>
@@ -293,7 +296,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">endListen</span><span class="p">(</span><span class="n">to</span> <span class="nv">characteristicIdentifier</span><span class="p">:</span> <span class="kt"><a href="../Structs/CharacteristicIdentifier.html">CharacteristicIdentifier</a></span><span class="p">,</span> <span class="nv">error</span><span class="p">:</span> <span class="kt">Error</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="p">((</span><span class="kt"><a href="../Enums/WriteResult.html">WriteResult</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span> <span class="k">throws</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">endListen</span><span class="p">(</span><span class="n">to</span> <span class="nv">characteristicIdentifier</span><span class="p">:</span> <span class="kt"><a href="../Structs/CharacteristicIdentifier.html">CharacteristicIdentifier</a></span><span class="p">,</span> <span class="nv">error</span><span class="p">:</span> <span class="kt">Error</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="p">((</span><span class="kt"><a href="../Enums/WriteResult.html">WriteResult</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span> <span class="k">throws</span></code></pre>
 
                         </div>
                       </div>
@@ -320,7 +323,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">flushListen</span><span class="p">(</span><span class="n">to</span> <span class="nv">characteristicIdentifier</span><span class="p">:</span> <span class="kt"><a href="../Structs/CharacteristicIdentifier.html">CharacteristicIdentifier</a></span><span class="p">,</span> <span class="nv">idleWindow</span><span class="p">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span> <span class="k">throws</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">flushListen</span><span class="p">(</span><span class="n">to</span> <span class="nv">characteristicIdentifier</span><span class="p">:</span> <span class="kt"><a href="../Structs/CharacteristicIdentifier.html">CharacteristicIdentifier</a></span><span class="p">,</span> <span class="nv">idleWindow</span><span class="p">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span> <span class="k">throws</span></code></pre>
 
                         </div>
                       </div>
@@ -373,9 +376,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7Bluejay22SynchronizedPeripheralC14writeAndListenyAA24CharacteristicIdentifierV0D2To_x5valueAF06listenI0Si16timeoutInSecondsAA0F6ActionOq_c10completiontKAA8SendableRzAA10ReceivableR_r0_lF"></a>
-                    <a name="//apple_ref/swift/Method/writeAndListen(writeTo:value:listenTo:timeoutInSeconds:completion:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7Bluejay22SynchronizedPeripheralC14writeAndListenyAA24CharacteristicIdentifierV0D2To_x5valueAF06listenI0Si16timeoutInSecondsAA0F6ActionOq_c10completiontKAA8SendableRzAA10ReceivableR_r0_lF">writeAndListen(writeTo:value:listenTo:timeoutInSeconds:completion:)</a>
+                    <a name="/s:7Bluejay22SynchronizedPeripheralC14writeAndListenyAA24CharacteristicIdentifierV0D2To_x5valueSC25CBCharacteristicWriteTypeO4typeAF06listenI0Si16timeoutInSecondsAA0F6ActionOq_c10completiontKAA8SendableRzAA10ReceivableR_r0_lF"></a>
+                    <a name="//apple_ref/swift/Method/writeAndListen(writeTo:value:type:listenTo:timeoutInSeconds:completion:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Bluejay22SynchronizedPeripheralC14writeAndListenyAA24CharacteristicIdentifierV0D2To_x5valueSC25CBCharacteristicWriteTypeO4typeAF06listenI0Si16timeoutInSecondsAA0F6ActionOq_c10completiontKAA8SendableRzAA10ReceivableR_r0_lF">writeAndListen(writeTo:value:type:listenTo:timeoutInSeconds:completion:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -392,12 +395,13 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">writeAndListen</span><span class="o">&lt;</span><span class="kt">S</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Sendable.html">Sendable</a></span><span class="p">,</span> <span class="kt">R</span><span class="p">:</span><span class="kt"><a href="../Protocols/Receivable.html">Receivable</a></span><span class="o">&gt;</span><span class="p">(</span>
-        <span class="n">writeTo</span> <span class="nv">charToWriteTo</span><span class="p">:</span> <span class="kt"><a href="../Structs/CharacteristicIdentifier.html">CharacteristicIdentifier</a></span><span class="p">,</span>
-        <span class="nv">value</span><span class="p">:</span> <span class="kt">S</span><span class="p">,</span>
-        <span class="n">listenTo</span> <span class="nv">charToListenTo</span><span class="p">:</span> <span class="kt"><a href="../Structs/CharacteristicIdentifier.html">CharacteristicIdentifier</a></span><span class="p">,</span>
-        <span class="nv">timeoutInSeconds</span><span class="p">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-        <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">R</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Enums/ListenAction.html">ListenAction</a></span><span class="p">)</span> <span class="k">throws</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">writeAndListen</span><span class="o">&lt;</span><span class="kt">S</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Sendable.html">Sendable</a></span><span class="p">,</span> <span class="kt">R</span><span class="p">:</span><span class="kt"><a href="../Protocols/Receivable.html">Receivable</a></span><span class="o">&gt;</span><span class="p">(</span>
+    <span class="n">writeTo</span> <span class="nv">charToWriteTo</span><span class="p">:</span> <span class="kt"><a href="../Structs/CharacteristicIdentifier.html">CharacteristicIdentifier</a></span><span class="p">,</span>
+    <span class="nv">value</span><span class="p">:</span> <span class="kt">S</span><span class="p">,</span>
+    <span class="nv">type</span><span class="p">:</span> <span class="kt">CBCharacteristicWriteType</span> <span class="o">=</span> <span class="o">.</span><span class="n">withResponse</span><span class="p">,</span>
+    <span class="n">listenTo</span> <span class="nv">charToListenTo</span><span class="p">:</span> <span class="kt"><a href="../Structs/CharacteristicIdentifier.html">CharacteristicIdentifier</a></span><span class="p">,</span>
+    <span class="nv">timeoutInSeconds</span><span class="p">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">R</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Enums/ListenAction.html">ListenAction</a></span><span class="p">)</span> <span class="k">throws</span></code></pre>
 
                         </div>
                       </div>
@@ -424,13 +428,13 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">writeAndAssemble</span><span class="o">&lt;</span><span class="kt">S</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Sendable.html">Sendable</a></span><span class="p">,</span> <span class="kt">R</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Receivable.html">Receivable</a></span><span class="o">&gt;</span><span class="p">(</span>
-        <span class="n">writeTo</span> <span class="nv">charToWriteTo</span><span class="p">:</span> <span class="kt"><a href="../Structs/CharacteristicIdentifier.html">CharacteristicIdentifier</a></span><span class="p">,</span>
-        <span class="nv">value</span><span class="p">:</span> <span class="kt">S</span><span class="p">,</span>
-        <span class="n">listenTo</span> <span class="nv">charToListenTo</span><span class="p">:</span> <span class="kt"><a href="../Structs/CharacteristicIdentifier.html">CharacteristicIdentifier</a></span><span class="p">,</span>
-        <span class="nv">expectedLength</span><span class="p">:</span> <span class="kt">Int</span><span class="p">,</span>
-        <span class="nv">timeoutInSeconds</span><span class="p">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-        <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">R</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Enums/ListenAction.html">ListenAction</a></span><span class="p">)</span> <span class="k">throws</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">writeAndAssemble</span><span class="o">&lt;</span><span class="kt">S</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Sendable.html">Sendable</a></span><span class="p">,</span> <span class="kt">R</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Receivable.html">Receivable</a></span><span class="o">&gt;</span><span class="p">(</span>
+    <span class="n">writeTo</span> <span class="nv">charToWriteTo</span><span class="p">:</span> <span class="kt"><a href="../Structs/CharacteristicIdentifier.html">CharacteristicIdentifier</a></span><span class="p">,</span>
+    <span class="nv">value</span><span class="p">:</span> <span class="kt">S</span><span class="p">,</span>
+    <span class="n">listenTo</span> <span class="nv">charToListenTo</span><span class="p">:</span> <span class="kt"><a href="../Structs/CharacteristicIdentifier.html">CharacteristicIdentifier</a></span><span class="p">,</span>
+    <span class="nv">expectedLength</span><span class="p">:</span> <span class="kt">Int</span><span class="p">,</span>
+    <span class="nv">timeoutInSeconds</span><span class="p">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">R</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Enums/ListenAction.html">ListenAction</a></span><span class="p">)</span> <span class="k">throws</span></code></pre>
 
                         </div>
                       </div>
@@ -443,7 +447,7 @@
         </section>
         <section id="footer">
           <p>Copyright © 2017 Steamclock Software. All rights reserved.</p>
-          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.8.3</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.1</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>
     </div>

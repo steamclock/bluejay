@@ -1,6 +1,20 @@
 {
   "warnings": [
     {
+      "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/Connection.swift",
+      "line": 19,
+      "symbol": "ConnectionTimeout.seconds",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/Connection.swift",
+      "line": 20,
+      "symbol": "ConnectionTimeout.noTimeout",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
       "file": "/Users/jeremychiang/Dropbox/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/Peripheral.swift",
       "line": 373,
       "symbol": "Peripheral.peripheral(_:didDiscoverServices:)",
