@@ -13,7 +13,7 @@
     <a title="Bluejay  Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="index.html">Bluejay Docs</a> (96% documented)</p>
+        <p><a href="index.html">Bluejay Docs</a> (95% documented)</p>
         <p class="header-right"><a href="https://github.com/steamclock/bluejay"><img src="img/gh.png"/>View on GitHub</a></p>
       </div>
     </header>
@@ -42,7 +42,7 @@
             </ul>
           </li>
           <li class="nav-group-name">
-            <a href="Enums.html">Enums</a>
+            <a href="Enums.html">Enumerations</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a href="Enums/BackgroundRestoreMode.html">BackgroundRestoreMode</a>
@@ -52,6 +52,9 @@
               </li>
               <li class="nav-group-task">
                 <a href="Enums/ConnectionResult.html">ConnectionResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Enums/ConnectionTimeout.html">ConnectionTimeout</a>
               </li>
               <li class="nav-group-task">
                 <a href="Enums/DisconnectionResult.html">DisconnectionResult</a>
@@ -120,7 +123,7 @@
             </ul>
           </li>
           <li class="nav-group-name">
-            <a href="Structs.html">Structs</a>
+            <a href="Structs.html">Structures</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a href="Structs/CharacteristicIdentifier.html">CharacteristicIdentifier</a>
@@ -288,7 +291,7 @@
 <p>If you want to support <a href="https://developer.apple.com/library/content/documentation/NetworkingInternetWeb/Conceptual/CoreBluetooth_concepts/CoreBluetoothBackgroundProcessingForIOSApps/PerformingTasksWhileYourAppIsInTheBackground.html#//apple_ref/doc/uid/TP40013257-CH7-SW1">Background Mode</a> and <a href="https://developer.apple.com/library/content/documentation/NetworkingInternetWeb/Conceptual/CoreBluetooth_concepts/CoreBluetoothBackgroundProcessingForIOSApps/PerformingTasksWhileYourAppIsInTheBackground.html#//apple_ref/doc/uid/TP40013257-CH7-SW10">State Restoration</a> in your app, <a href="#background-operation">it will take some extra work</a>, which is necessary for Bluetooth apps that do work in the background.</p>
 <h3 id='bluetooth-events' class='heading'>Bluetooth Events</h3>
 
-<p>The <code>ConnectionObserver</code> protocol allows a class to monitor and respond to major Bluetooth and connection-related events:</p>
+<p>The <code><a href="Protocols/ConnectionObserver.html">ConnectionObserver</a></code> protocol allows a class to monitor and respond to major Bluetooth and connection-related events:</p>
 <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">ConnectionObserver</span><span class="p">:</span> <span class="kd">class</span> <span class="p">{</span>
     <span class="kd">func</span> <span class="nf">bluetoothAvailable</span><span class="p">(</span><span class="n">_</span> <span class="nv">available</span><span class="p">:</span> <span class="kt">Bool</span><span class="p">)</span>
     <span class="kd">func</span> <span class="nf">connected</span><span class="p">(</span><span class="n">to</span> <span class="nv">peripheral</span><span class="p">:</span> <span class="kt">Peripheral</span><span class="p">)</span>
@@ -296,7 +299,7 @@
 <span class="p">}</span>
 </code></pre>
 
-<p>You can register a <code>ConnectionObserver</code> when starting Bluejay:</p>
+<p>You can register a <code><a href="Protocols/ConnectionObserver.html">ConnectionObserver</a></code> when starting Bluejay:</p>
 <pre class="highlight swift"><code><span class="n">bluejay</span><span class="o">.</span><span class="nf">start</span><span class="p">(</span><span class="nv">connectionObserver</span><span class="p">:</span> <span class="k">self</span><span class="p">)</span>
 </code></pre>
 
@@ -319,7 +322,7 @@
 <span class="k">let</span> <span class="nv">heartRate</span> <span class="o">=</span> <span class="kt">CharacteristicIdentifier</span><span class="p">(</span><span class="nv">uuid</span><span class="p">:</span> <span class="s">"2A37"</span><span class="p">,</span> <span class="nv">service</span><span class="p">:</span> <span class="n">heartRateService</span><span class="p">)</span>
 </code></pre>
 
-<p>Bluejay uses the <code>ServiceIdentifier</code> and <code>CharacteristicIdentifier</code> structs to avoid problems like accidentally specifying a Service when a Characteristic is expected.</p>
+<p>Bluejay uses the <code><a href="Structs/ServiceIdentifier.html">ServiceIdentifier</a></code> and <code><a href="Structs/CharacteristicIdentifier.html">CharacteristicIdentifier</a></code> structs to avoid problems like accidentally specifying a Service when a Characteristic is expected.</p>
 <h3 id='scanning' class='heading'>Scanning</h3>
 
 <p>Bluejay has a powerful device scanning API that can be be used simply or customized to satisfy many use cases.</p>
@@ -353,7 +356,7 @@
 <p>The stopped result contains all the discoveries made, and an error if there is one.</p>
 <h4 id='scan-action' class='heading'>Scan Action</h4>
 
-<p>A <code>ScanAction</code> is returned at the end of a discovery callback to tell Bluejay whether to keep scanning or to stop.</p>
+<p>A <code><a href="Enums/ScanAction.html">ScanAction</a></code> is returned at the end of a discovery callback to tell Bluejay whether to keep scanning or to stop.</p>
 <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">enum</span> <span class="kt">ScanAction</span> <span class="p">{</span>
     <span class="k">case</span> <span class="err">`</span><span class="k">continue</span><span class="err">`</span>
     <span class="k">case</span> <span class="n">blacklist</span>
@@ -364,7 +367,7 @@
 
 <p>Returning <code>blacklist</code> will ignore any future discovery of the same peripheral within the current scan session. This is only useful when <code>allowDuplicates</code> is set to true.</p>
 
-<p>Returning <code>connect</code> will first stop the current scan, and have Bluejay make your connection request. This is useful if you want to connect right away when you&rsquo;ve found the peripheral you&rsquo;re looking for. You can set up the <code>ConnectionResult</code> block outside the scan call to reduce callback nesting.</p>
+<p>Returning <code>connect</code> will first stop the current scan, and have Bluejay make your connection request. This is useful if you want to connect right away when you&rsquo;ve found the peripheral you&rsquo;re looking for. You can set up the <code><a href="Enums/ConnectionResult.html">ConnectionResult</a></code> block outside the scan call to reduce callback nesting.</p>
 <h4 id='monitoring' class='heading'>Monitoring</h4>
 
 <p>Another useful way to use the scanning API is to monitor the RSSI changes of nearby peripherals to estimate their proximity:</p>
@@ -459,10 +462,10 @@
 </ul>
 <h2 id='deserialization-and-serialization' class='heading'>Deserialization and Serialization</h2>
 
-<p>Reading, writing, and listening to Characteristics is straightforward in Bluejay. Most of the work involved is building out the deserialization and serialization of data. Let&rsquo;s have a quick look at how Bluejay helps standardize this process in your app via the <code>Receivable</code> and <code>Sendable</code> protocols.</p>
+<p>Reading, writing, and listening to Characteristics is straightforward in Bluejay. Most of the work involved is building out the deserialization and serialization of data. Let&rsquo;s have a quick look at how Bluejay helps standardize this process in your app via the <code><a href="Protocols/Receivable.html">Receivable</a></code> and <code><a href="Protocols/Sendable.html">Sendable</a></code> protocols.</p>
 <h4 id='receivable' class='heading'>Receivable</h4>
 
-<p>The models that represent data you wish to read and receive from your peripheral should all conform to the <code>Receivable</code> protocol.</p>
+<p>The models that represent data you wish to read and receive from your peripheral should all conform to the <code><a href="Protocols/Receivable.html">Receivable</a></code> protocol.</p>
 
 <p>Here is a partial example for the <a href="https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.heart_rate_measurement.xml">Heart Rate Measurement Characteristic</a>:</p>
 <pre class="highlight swift"><code><span class="kd">struct</span> <span class="kt">HeartRateMeasurement</span><span class="p">:</span> <span class="kt">Receivable</span> <span class="p">{</span>
@@ -500,7 +503,7 @@
 <p>Finally, while it is not essential and it will depend on the context, we suggest only exposing the needed and computed properties of your models.</p>
 <h4 id='sendable' class='heading'>Sendable</h4>
 
-<p>The models representing data you wish to send to your peripheral should all conform to the <code>Sendable</code> protocol.</p>
+<p>The models representing data you wish to send to your peripheral should all conform to the <code><a href="Protocols/Sendable.html">Sendable</a></code> protocol.</p>
 
 <p>In a nutshell, this is how you help Bluejay determine how to convert your models into <code>Data</code>:</p>
 <pre class="highlight swift"><code><span class="kd">struct</span> <span class="kt">WriteRequest</span><span class="p">:</span> <span class="kt">Sendable</span> <span class="p">{</span>
@@ -536,17 +539,17 @@
 <span class="p">}</span>
 </code></pre>
 
-<p>Note how we have a nested <code>Sendable</code> in this slightly more complicated model, as well as making use of the <code>combine</code> helper function to group and to arrange the data bytes in a particular order.</p>
+<p>Note how we have a nested <code><a href="Protocols/Sendable.html">Sendable</a></code> in this slightly more complicated model, as well as making use of the <code>combine</code> helper function to group and to arrange the data bytes in a particular order.</p>
 <h4 id='sending-and-receiving-primitives' class='heading'>Sending and Receiving Primitives</h4>
 
-<p>In some cases, you may want to send or receive data that is simple enough that creating a custom struct that implements <code>Sendable</code> or <code>Receivable</code> to hold it is unnecessarily complicated. For those cases, Bluejay also retroactively conforms several built-in Swift types to <code>Sendable</code> and <code>Receivable</code>. <code>Int8</code>, <code>Int16</code>, <code>Int32</code>, <code>Int64</code>, <code>UInt8</code>, <code>UInt16</code>, <code>UInt32</code>, <code>UInt64</code>, <code>Data</code> and <code>String</code>are all conformed to both protocols and so can be sent or received directly.</p>
+<p>In some cases, you may want to send or receive data that is simple enough that creating a custom struct that implements <code><a href="Protocols/Sendable.html">Sendable</a></code> or <code><a href="Protocols/Receivable.html">Receivable</a></code> to hold it is unnecessarily complicated. For those cases, Bluejay also retroactively conforms several built-in Swift types to <code><a href="Protocols/Sendable.html">Sendable</a></code> and <code><a href="Protocols/Receivable.html">Receivable</a></code>. <code>Int8</code>, <code>Int16</code>, <code>Int32</code>, <code>Int64</code>, <code>UInt8</code>, <code>UInt16</code>, <code>UInt32</code>, <code>UInt64</code>, <code>Data</code> and <code>String</code>are all conformed to both protocols and so can be sent or received directly.</p>
 
 <p><code>Int</code> and <code>UInt</code> are intentionally not conformed. Values are sent and/or received at a specific bit width. The intended bit width for an <code>Int</code> is ambiguous, and trying to use one often indicates a programmer error, in the form of not considering the bit width the Bluetooth device is expecting on a characteristic.</p>
 
 <p><code>String</code> is sent and/or received UTF8 encoded.</p>
 <h2 id='interactions' class='heading'>Interactions</h2>
 
-<p>Once you have your data modelled using either the <code>Receivable</code> or <code>Sendable</code> protocol, the read, write, and listen APIs in Bluejay should handle the deserialization and serialization seamlessly for you. All you need to do is to specify the type for the generic result wrappers: <code>ReadResult&lt;T&gt;</code> or <code>WriteResult&lt;T&gt;</code>.</p>
+<p>Once you have your data modelled using either the <code><a href="Protocols/Receivable.html">Receivable</a></code> or <code><a href="Protocols/Sendable.html">Sendable</a></code> protocol, the read, write, and listen APIs in Bluejay should handle the deserialization and serialization seamlessly for you. All you need to do is to specify the type for the generic result wrappers: <code><a href="Enums/ReadResult.html">ReadResult&lt;T&gt;</a></code> or <code><a href="Enums/WriteResult.html">WriteResult&lt;T&gt;</a></code>.</p>
 <h3 id='reading' class='heading'>Reading</h3>
 
 <p>Here is an example showing how to read the <a href="https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.body_sensor_location.xml">sensor body location characteristic</a>, and converting its value to its corresponding label.</p>
@@ -688,7 +691,7 @@
 <span class="p">}</span>
 </code></pre>
 
-<p>It is critical though that when performing your Bluetooth operations in the background with <code>backgroundTask</code>, you <strong>must</strong> use the <code>SynchronizedPeripheral</code> given to you by this API. <strong>DO NOT</strong> call any <code>bluejay</code>.<code>read/write/listen</code> functions inside the <code>backgroundTask</code> block.</p>
+<p>It is critical though that when performing your Bluetooth operations in the background with <code>backgroundTask</code>, you <strong>must</strong> use the <code><a href="Classes/SynchronizedPeripheral.html">SynchronizedPeripheral</a></code> given to you by this API. <strong>DO NOT</strong> call any <code>bluejay</code>.<code>read/write/listen</code> functions inside the <code>backgroundTask</code> block.</p>
 
 <p>Note that because the <code>backgroundTask</code> block is running on a background thread, you need to be careful about accessing any global or captured data inside that block for thread safety reasons, like you would with any GCD or OperationQueue task. To help with this, Bluejay provides some other forms of <code>run(backgroundTask:completionOnMainThread:)</code> that allow you to pass user data into the background block and/or return a value from the background block that will be available in the success case of the result in the main thread block.</p>
 <h2 id='background-operation' class='heading'>Background Operation</h2>
@@ -709,7 +712,7 @@
 </code></pre>
 <h3 id='listen-restoration' class='heading'>Listen Restoration</h3>
 
-<p>If State Restoration is enabled and your app has stopped running either due to memory pressure or by staying in the background past the allowed duration (this has been 3 minutes since iOS 7), then the next time your app is launched in the background or foreground, Bluejay will call the <code>willRestoreListen</code> function on your <code>ListenRestorer</code> during state restoration if there are any active listens preserved.</p>
+<p>If State Restoration is enabled and your app has stopped running either due to memory pressure or by staying in the background past the allowed duration (this has been 3 minutes since iOS 7), then the next time your app is launched in the background or foreground, Bluejay will call the <code>willRestoreListen</code> function on your <code><a href="Protocols/ListenRestorer.html">ListenRestorer</a></code> during state restoration if there are any active listens preserved.</p>
 
 <p>The listen restorer protocol looks like this:</p>
 <pre class="highlight swift"><code><span class="cm">/**
@@ -730,7 +733,7 @@
 <span class="p">}</span>
 </code></pre>
 
-<p>By default, if there is no <code>ListenRestorer</code> delegate provided in the <code>start</code> function, then Bluejay will cancel <strong>all</strong> active listens during state restoration.</p>
+<p>By default, if there is no <code><a href="Protocols/ListenRestorer.html">ListenRestorer</a></code> delegate provided in the <code>start</code> function, then Bluejay will cancel <strong>all</strong> active listens during state restoration.</p>
 
 <p>Example:</p>
 <pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">ViewController</span><span class="p">:</span> <span class="kt">ListenRestorer</span> <span class="p">{</span>
@@ -767,9 +770,9 @@
 
 <p>Here is a detailed summary of what the code below does and why:</p>
 
-<p>We are maintaining a local collection of <q>blacklisted</q> discoveries that persist over multiple scan sessions. These are devices that don&rsquo;t have matching serial numbers. We can&rsquo;t just rely on the scan function&rsquo;s <q>blacklist</q> <code>ScanAction</code> alone, because the scan function&rsquo;s blacklist shares the same lifecycle as the scan itself. And to allow enqueueing a connection to a device for verifying its serial number, the scan has to end first, so it can be removed from the top of the operation queue. Therefore, we have to start a new scan if the serial number doesn&rsquo;t match.</p>
+<p>We are maintaining a local collection of <q>blacklisted</q> discoveries that persist over multiple scan sessions. These are devices that don&rsquo;t have matching serial numbers. We can&rsquo;t just rely on the scan function&rsquo;s <q>blacklist</q> <code><a href="Enums/ScanAction.html">ScanAction</a></code> alone, because the scan function&rsquo;s blacklist shares the same lifecycle as the scan itself. And to allow enqueueing a connection to a device for verifying its serial number, the scan has to end first, so it can be removed from the top of the operation queue. Therefore, we have to start a new scan if the serial number doesn&rsquo;t match.</p>
 
-<p>Since we are starting a new scan every time we find a device with an incorrect serial number, the brand new scan session can still pick up a device we&rsquo;ve examined earlier. This is because the new scan session is unaware of devices previously blacklisted using the <q>blacklist</q> <code>ScanAction</code>. But, we can still find out whether a device is blacklisted using our <strong>own</strong> copy of the blacklist.</p>
+<p>Since we are starting a new scan every time we find a device with an incorrect serial number, the brand new scan session can still pick up a device we&rsquo;ve examined earlier. This is because the new scan session is unaware of devices previously blacklisted using the <q>blacklist</q> <code><a href="Enums/ScanAction.html">ScanAction</a></code>. But, we can still find out whether a device is blacklisted using our <strong>own</strong> copy of the blacklist.</p>
 
 <p>Returning <code>.blacklist</code> is not just a ceremonial task to ignore the current discovery within this scan session and to continue scanning. Doing so also adds some safety by preventing further discovery of the same device within the current scan session if <code>allowDuplicates</code> is set to true for some reasons. Interestingly, setting <code>allowDuplicates</code> to false has similar ignoring effect due to its coalescing behaviour, but we are doing this for an entirely different purpose – to save battery.</p>
 
@@ -876,7 +879,7 @@
 </code></pre>
 <h3 id='write-and-assemble' class='heading'>Write and Assemble</h3>
 
-<p>One of the Bluetooth modules we&rsquo;ve worked with doesn&rsquo;t always send back data in one packet, even if the data is smaller than its maximum allowed packet size. To handle these incoming data that can be broken up into any number of packets arbitrarily, we&rsquo;ve introduced the <code>writeAndAssemble</code> API that is very similar to <code>writeAndListen</code> on the <code>SynchronizedPeripheral</code>. Therefore, at least for now, this is only supported in the context of <code>run(backgroundTask:completionOnMainThread:)</code>.</p>
+<p>One of the Bluetooth modules we&rsquo;ve worked with doesn&rsquo;t always send back data in one packet, even if the data is smaller than its maximum allowed packet size. To handle these incoming data that can be broken up into any number of packets arbitrarily, we&rsquo;ve introduced the <code>writeAndAssemble</code> API that is very similar to <code>writeAndListen</code> on the <code><a href="Classes/SynchronizedPeripheral.html">SynchronizedPeripheral</a></code>. Therefore, at least for now, this is only supported in the context of <code>run(backgroundTask:completionOnMainThread:)</code>.</p>
 
 <p>When using <code>writeAndAssemble</code>, we still expect you to know the total size of the data you are receiving, but Bluejay will keep listening and receiving packets until the expected size is reached before trying to deserialize the data into the object you need.</p>
 
@@ -899,7 +902,7 @@
 
 <p>For example, you might have to re-authenticate the user when the app is re-opened. But if authentication requires listening to the same characteristic where the incomplete data set is still being sent, then you will be getting back unexpected values and most likely crash when trying to deserialize authentication related objects.</p>
 
-<p>To handle this, it is often a good idea to flush a notifiable characteristic before starting a critical first-time and/or setup related operation. This is also only available on the <code>SynchronizedPeripheral</code> in the context of <code>run(backgroundTask:completionOnMainThread:)</code> for now.</p>
+<p>To handle this, it is often a good idea to flush a notifiable characteristic before starting a critical first-time and/or setup related operation. This is also only available on the <code><a href="Classes/SynchronizedPeripheral.html">SynchronizedPeripheral</a></code> in the context of <code>run(backgroundTask:completionOnMainThread:)</code> for now.</p>
 <pre class="highlight swift"><code><span class="k">try</span> <span class="n">peripheral</span><span class="o">.</span><span class="nf">flushListen</span><span class="p">(</span><span class="nv">to</span><span class="p">:</span> <span class="kt">Characteristics</span><span class="o">.</span><span class="n">rigadoRX</span><span class="p">,</span> <span class="nv">idleWindow</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="p">{</span>
     <span class="nf">debugPrint</span><span class="p">(</span><span class="s">"Flushed buffered data on RigadoRX."</span><span class="p">)</span>
 <span class="p">})</span>
@@ -914,7 +917,7 @@
         </section>
         <section id="footer">
           <p>Copyright © 2017 Steamclock Software. All rights reserved.</p>
-          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.8.3</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.1</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>
     </div>

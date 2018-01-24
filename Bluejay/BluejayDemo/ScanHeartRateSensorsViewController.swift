@@ -120,7 +120,7 @@ class ScanHeartRateSensorsViewController: UITableViewController {
         
         let peripheralIdentifier = peripherals[indexPath.row].peripheralIdentifier
         
-        bluejay.connect(peripheralIdentifier) { [weak self] (result) in
+        bluejay.connect(peripheralIdentifier, timeout: .none) { [weak self] (result) in
             switch result {
             case .success(let peripheral):
                 debugPrint("Connection to \(peripheral.identifier) successful.")
