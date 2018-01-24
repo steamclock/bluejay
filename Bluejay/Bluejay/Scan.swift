@@ -167,7 +167,7 @@ class Scan: Queueable {
 
                 stopScan(with: discoveries, error: nil)
             }
-            else if case .connect(let discovery, let completion) = discovery(newDiscovery, discoveries) {
+            else if case .connect(let discovery, let timeout, let completion) = discovery(newDiscovery, discoveries) {
                 state = .completed
                 
                 log("Finished scanning.")
@@ -176,7 +176,7 @@ class Scan: Queueable {
                 
                 if let queue = queue {
                     if let cbPeripheral = manager.retrievePeripherals(withIdentifiers: [discovery.peripheralIdentifier.uuid]).first {
-                        queue.add(Connection(peripheral: cbPeripheral, manager: manager, callback: completion))
+                        queue.add(Connection(peripheral: cbPeripheral, manager: manager, timeout: timeout, callback: completion))
                     }
                     else {
                         completion(.failure(BluejayError.unexpectedPeripheral(discovery.peripheralIdentifier)))

@@ -184,7 +184,7 @@ class HeartSensorViewController: UITableViewController {
             return
         }
         
-        bluejay.connect(peripheralIdentifier) { (result) in
+        bluejay.connect(peripheralIdentifier, timeout: .noTimeout) { (result) in
             switch result {
             case .success(let peripheral):
                 debugPrint("Connection to \(peripheral.identifier) successful.")

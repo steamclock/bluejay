@@ -14,6 +14,12 @@ var standardConnectOptions: [String : AnyObject] = [
     CBConnectPeripheralOptionNotifyOnConnectionKey: true as AnyObject
 ]
 
+/// Types of connection time outs. Can specify a time out in seconds, or no time out.
+public enum ConnectionTimeout {
+    case seconds(TimeInterval)
+    case noTimeout
+}
+
 /// A connection operation.
 class Connection: Queueable {
     
@@ -33,13 +39,15 @@ class Connection: Queueable {
     var callback: ((ConnectionResult) -> Void)?
     
     private var connectionTimer: Timer?
-    private let timeoutInterval: TimeInterval = 15
+    private let timeout: ConnectionTimeout?
     
-    init(peripheral: CBPeripheral, manager: CBCentralManager, callback: @escaping (ConnectionResult) -> Void) {
+    init(peripheral: CBPeripheral, manager: CBCentralManager, timeout: ConnectionTimeout, callback: @escaping (ConnectionResult) -> Void) {
         self.state = .notStarted
         
         self.peripheral = peripheral
         self.manager = manager
+        
+        self.timeout = timeout
         
         self.callback = callback
     }
@@ -50,19 +58,21 @@ class Connection: Queueable {
         
         cancelTimer()
         
-        if #available(iOS 10.0, *) {
-            connectionTimer = Timer.scheduledTimer(withTimeInterval: timeoutInterval, repeats: false, block: { (timer) in
-                self.timedOut()
-            })
-        } else {
-            // Fallback on earlier versions
-            connectionTimer = Timer.scheduledTimer(
-                timeInterval: timeoutInterval,
-                target: self,
-                selector: #selector(timedOut),
-                userInfo: nil,
-                repeats: false
-            )
+        if let timeOut = timeout, case let .seconds(timeoutInterval) = timeOut  {
+            if #available(iOS 10.0, *) {
+                connectionTimer = Timer.scheduledTimer(withTimeInterval: timeoutInterval, repeats: false, block: { (timer) in
+                    self.timedOut()
+                })
+            } else {
+                // Fallback on earlier versions
+                connectionTimer = Timer.scheduledTimer(
+                    timeInterval: timeoutInterval,
+                    target: self,
+                    selector: #selector(timedOut),
+                    userInfo: nil,
+                    repeats: false
+                )
+            }
         }
         
         log("Started connecting to \(peripheral.name ?? peripheral.identifier.uuidString).")

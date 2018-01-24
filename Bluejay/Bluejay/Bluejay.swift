@@ -56,6 +56,9 @@ public class Bluejay: NSObject {
     /// Reference to the object capable of restoring listens during state restoration.
     var listenRestorer: WeakListenRestorer?
     
+    /// The previous connection timeout used.
+    var previousConnectionTimeout: ConnectionTimeout?
+    
     // MARK: - Public Properties
     
     /// Helps distinguish one Bluejay instance from another.
@@ -317,9 +320,12 @@ public class Bluejay: NSObject {
      
      - Parameters:
         - peripheralIdentifier: The peripheral to connect to.
+        - timeout: Specify how long the connection time out should be.
         - completion: Called when the connection request has fully finished and indicates whether it was successful, cancelled, or failed.
     */
-    public func connect(_ peripheralIdentifier: PeripheralIdentifier, completion: @escaping (ConnectionResult) -> Void) {
+    public func connect(_ peripheralIdentifier: PeripheralIdentifier, timeout: ConnectionTimeout, completion: @escaping (ConnectionResult) -> Void) {
+        previousConnectionTimeout = timeout
+        
         if isRunningBackgroundTask {
             // Terminate the app if this is called from the same thread as the running background task.
             if #available(iOS 10.0, *) {
@@ -339,7 +345,7 @@ public class Bluejay: NSObject {
         }
         
         if let cbPeripheral = cbCentralManager.retrievePeripherals(withIdentifiers: [peripheralIdentifier.uuid]).first {
-            queue.add(Connection(peripheral: cbPeripheral, manager: cbCentralManager, callback: completion))
+            queue.add(Connection(peripheral: cbPeripheral, manager: cbCentralManager, timeout: timeout, callback: completion))
         }
         else {
             completion(.failure(BluejayError.unexpectedPeripheral(peripheralIdentifier)))
@@ -805,7 +811,7 @@ extension Bluejay: CBCentralManagerDelegate {
                 // try to trigger a reconnect if we have a stored
                 // peripheral
                 if let id = peripheralIdentifierToRestore {
-                    connect(id, completion: { _ in })
+                    connect(id, timeout: previousConnectionTimeout ?? .noTimeout, completion: { _ in })
                 }
                 
                 return
@@ -904,7 +910,7 @@ extension Bluejay: CBCentralManagerDelegate {
         
         if shouldAutoReconnect {
             log("Issuing reconnect to: \(peripheral.name ?? peripheral.identifier.uuidString)")
-            connect(PeripheralIdentifier(uuid: peripheral.identifier), completion: {_ in })
+            connect(PeripheralIdentifier(uuid: peripheral.identifier), timeout: previousConnectionTimeout ?? .noTimeout, completion: {_ in })
         }
         
         UIApplication.shared.endBackgroundTask(backgroundTask)
