@@ -19,7 +19,7 @@ public class SynchronizedPeripheral {
     private var parent: Peripheral
     
     private var bluetoothAvailable = false
-    private var bluetoothUnavailableTermination: (() -> Void)?
+    private var backupTermination: ((BluejayError) -> Void)?
     
     // MARK: - Initialization
     
@@ -253,8 +253,8 @@ public class SynchronizedPeripheral {
         var listenResult: ReadResult<R>?
         var error: Error?
         
-        bluetoothUnavailableTermination = {
-            error = BluejayError.bluetoothUnavailable
+        backupTermination = { bluejayError in
+            error = bluejayError
             sem.signal()
         }
         
@@ -268,17 +268,15 @@ public class SynchronizedPeripheral {
                     action = completion(r)
                 case .cancelled:
                     error = BluejayError.cancelled
-                    sem.signal()
                 case .failure(let e):
                     error = e
                 }
                 
                 if error != nil || action == .done {
-                    if self.parent.isListening(to: charToListenTo) && self.bluetoothAvailable {
-                        self.parent.endListen(to: charToListenTo)
-                    }
-                    
                     sem.signal()
+                    if self.parent.isListening(to: charToListenTo) && self.bluetoothAvailable {
+                        self.parent.endListen(to: charToListenTo, error: nil)
+                    }
                 }
             })
             
@@ -300,11 +298,11 @@ public class SynchronizedPeripheral {
         _ = sem.wait(timeout: timeoutInSeconds == 0 ? .distantFuture : .now() + .seconds(timeoutInSeconds))
         
         if let error = error {
-            bluetoothUnavailableTermination = nil
+            backupTermination = nil
             throw error
         }
         else if listenResult == nil {
-            bluetoothUnavailableTermination = nil
+            backupTermination = nil
             
             if self.parent.isListening(to: charToListenTo) && self.bluetoothAvailable {
                 self.parent.endListen(to: charToListenTo)
@@ -409,8 +407,13 @@ extension SynchronizedPeripheral: ConnectionObserver {
         bluetoothAvailable = available
         
         if !available {
-            bluetoothUnavailableTermination?()
+            backupTermination?(BluejayError.bluetoothUnavailable)
         }
     }
     
+    public func disconnected(from peripheral: Peripheral) {
+        backupTermination?(BluejayError.notConnected)
+    }
+    
 }
+
