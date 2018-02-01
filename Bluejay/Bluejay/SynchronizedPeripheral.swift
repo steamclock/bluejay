@@ -275,9 +275,10 @@ public class SynchronizedPeripheral {
                 
                 if error != nil || action == .done {
                     if self.parent.isListening(to: charToListenTo) && self.bluetoothAvailable {
-                        // TODO: Handle end listen failures.
                         self.parent.endListen(to: charToListenTo)
                     }
+                    
+                    sem.signal()
                 }
             })
             
@@ -306,7 +307,6 @@ public class SynchronizedPeripheral {
             bluetoothUnavailableTermination = nil
             
             if self.parent.isListening(to: charToListenTo) && self.bluetoothAvailable {
-                // TODO: Handle end listen failures.
                 self.parent.endListen(to: charToListenTo)
             }
             
