@@ -247,7 +247,14 @@ public class Peripheral: NSObject {
                         listenCallback?(.failure(error))
                     }
                     else {
-                        listenCallback?(.cancelled)
+                        switch result {
+                        case .success:
+                            break
+                        case .cancelled:
+                            listenCallback?(.cancelled)
+                        case .failure(let error):
+                            listenCallback?(.failure(error))
+                        }
                     }
                     
                     // Only bother removing the listen cache if listen restoration is enabled.

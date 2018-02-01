@@ -568,18 +568,27 @@ public class Bluejay: NSObject {
         
         if let peripheral = connectedPeripheral {
             DispatchQueue.global().async { [weak self] in
+                guard let weakSelf = self else {
+                    return
+                }
+                
+                let synchronizedPeripheral = SynchronizedPeripheral(parent: peripheral)
+                
                 do {
-                    try backgroundTask(SynchronizedPeripheral(parent: peripheral))
+                    weakSelf.register(observer: synchronizedPeripheral)
+                    try backgroundTask(synchronizedPeripheral)
                     
                     DispatchQueue.main.async {
-                        self?.isRunningBackgroundTask = false
+                        weakSelf.isRunningBackgroundTask = false
                         completionOnMainThread(.success(()))
+                        weakSelf.unregister(observer: synchronizedPeripheral)
                     }
                 }
                 catch let error as NSError {
                     DispatchQueue.main.async {
-                        self?.isRunningBackgroundTask = false
+                        weakSelf.isRunningBackgroundTask = false
                         completionOnMainThread(.failure(error))
+                        weakSelf.unregister(observer: synchronizedPeripheral)
                     }
                 }
             }
@@ -612,18 +621,27 @@ public class Bluejay: NSObject {
         
         if let peripheral = connectedPeripheral {
             DispatchQueue.global().async { [weak self] in
+                guard let weakSelf = self else {
+                    return
+                }
+                
+                let synchronizedPeripheral = SynchronizedPeripheral(parent: peripheral)
+                
                 do {
-                    let result = try backgroundTask(SynchronizedPeripheral(parent: peripheral))
+                    weakSelf.register(observer: synchronizedPeripheral)
+                    let result = try backgroundTask(synchronizedPeripheral)
                     
                     DispatchQueue.main.async {
-                        self?.isRunningBackgroundTask = false
+                        weakSelf.isRunningBackgroundTask = false
                         completionOnMainThread(.success(result))
+                        weakSelf.unregister(observer: synchronizedPeripheral)
                     }
                 }
                 catch let error as NSError {
                     DispatchQueue.main.async {
-                        self?.isRunningBackgroundTask = false
+                        weakSelf.isRunningBackgroundTask = false
                         completionOnMainThread(.failure(error))
+                        weakSelf.unregister(observer: synchronizedPeripheral)
                     }
                 }
             }
@@ -658,18 +676,27 @@ public class Bluejay: NSObject {
         
         if let peripheral = connectedPeripheral {
             DispatchQueue.global().async { [weak self] in
+                guard let weakSelf = self else {
+                    return
+                }
+                
+                let synchronizedPeripheral = SynchronizedPeripheral(parent: peripheral)
+                
                 do {
-                    let result = try backgroundTask(SynchronizedPeripheral(parent: peripheral), userData)
+                    weakSelf.register(observer: synchronizedPeripheral)
+                    let result = try backgroundTask(synchronizedPeripheral, userData)
                     
                     DispatchQueue.main.async {
-                        self?.isRunningBackgroundTask = false
+                        weakSelf.isRunningBackgroundTask = false
                         completionOnMainThread(.success(result))
+                        weakSelf.unregister(observer: synchronizedPeripheral)
                     }
                 }
                 catch let error as NSError {
                     DispatchQueue.main.async {
-                        self?.isRunningBackgroundTask = false
+                        weakSelf.isRunningBackgroundTask = false
                         completionOnMainThread(.failure(error))
+                        weakSelf.unregister(observer: synchronizedPeripheral)
                     }
                 }
             }
