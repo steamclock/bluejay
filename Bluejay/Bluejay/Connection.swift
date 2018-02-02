@@ -142,6 +142,9 @@ class Connection: Queueable {
             if case BluejayError.multipleConnectNotSupported = error {
                 manager.cancelPeripheralConnection(peripheral)
             }
+            else if case BluejayError.connectionTimedOut = error {
+                manager.cancelPeripheralConnection(peripheral)
+            }
             else {
                 failed(error)
             }
