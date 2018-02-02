@@ -133,14 +133,14 @@ public class SynchronizedPeripheral {
                 self.parent.endListen(to: characteristicIdentifier, error: error, completion: { (result) in
                     switch result {
                     case .success:
-                        sem.signal()
+                        break
                     case .cancelled:
                         errorToThrow = BluejayError.cancelled
-                        sem.signal()
                     case .failure(let endListenError):
                         errorToThrow = endListenError
-                        sem.signal()
                     }
+                    
+                    sem.signal()
                 })
             }
             else {
