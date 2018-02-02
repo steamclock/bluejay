@@ -108,9 +108,9 @@ public class SynchronizedPeripheral {
                 }
                                 
                 if error != nil || action == .done {
-                    if self.parent.isListening(to: characteristicIdentifier) {
-                        // TODO: Handle end listen failures.
-                        self.parent.endListen(to: characteristicIdentifier)
+                    sem.signal()
+                    if self.parent.isListening(to: characteristicIdentifier) && self.bluetoothAvailable {
+                        self.parent.endListen(to: characteristicIdentifier, error: nil)
                     }
                 }
             })
