@@ -196,7 +196,9 @@ public class Bluejay: NSObject {
 
         queue.cancelAll(error)
         
-        if isConnected {
+        if isConnecting {
+            cbCentralManager.cancelPeripheralConnection(connectingPeripheral!.cbPeripheral)
+        } else if isConnected {
             cbCentralManager.cancelPeripheralConnection(connectedPeripheral!.cbPeripheral)
         }
     }
@@ -854,7 +856,7 @@ extension Bluejay: CBCentralManagerDelegate {
         case .connecting:
             precondition(connectedPeripheral == nil,
                          "Connected peripheral is not nil during willRestoreState for state: connecting.")
-            connectingPeripheral = peripheral
+            connect(PeripheralIdentifier(uuid: cbPeripheral.identifier), timeout: .none, completion: { _ in})
         case .connected:
             precondition(connectingPeripheral == nil,
                          "Connecting peripheral is not nil during willRestoreState for state: connected.")
@@ -862,7 +864,6 @@ extension Bluejay: CBCentralManagerDelegate {
         case .disconnecting:
             precondition(connectingPeripheral == nil,
                          "Connecting peripheral is not nil during willRestoreState for state: disconnecting.")
-            connectedPeripheral = peripheral
         case .disconnected:
             precondition(connectingPeripheral == nil && connectedPeripheral == nil,
                          "Connecting and connected peripherals are not nil during willRestoreState for state: disconnected.")
@@ -914,10 +915,13 @@ extension Bluejay: CBCentralManagerDelegate {
             log("Did disconnect from \(peripheralString) without errors.")
         }
         
+        guard let disconnectedPeripheral = connectingPeripheral ?? connectedPeripheral else {
+            log("Disconnected from an unexpected peripheral.")
+            return
+        }
+        
         for observer in observers {
-            let disconnectedPeripheral = connectingPeripheral ?? connectedPeripheral
-            precondition(disconnectedPeripheral != nil, "Disconnected from an unexpected peripheral.")
-            observer.weakReference?.disconnected(from: disconnectedPeripheral!)
+            observer.weakReference?.disconnected(from: disconnectedPeripheral)
         }
         
         if !queue.isEmpty {
