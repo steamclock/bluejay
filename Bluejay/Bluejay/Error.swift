@@ -52,6 +52,8 @@ public enum BluejayError {
     case listenCacheEncoding(Error)
     /// Bluejay has failed to decode a listen cache.
     case listenCacheDecoding(Error)
+    /// Bluejay has cancelled an expected end listen request.
+    case endListenCancelled
 }
 
 extension BluejayError: LocalizedError {
@@ -99,6 +101,8 @@ extension BluejayError: LocalizedError {
             return "Listen cache encoding failed with error: \(error.localizedDescription)"
         case let .listenCacheDecoding(error):
             return "Listen cache decoding failed with error: \(error.localizedDescription)"
+        case let .endListenCancelled:
+            return "End listen cancelled."
         }
     }
 }
@@ -132,6 +136,7 @@ extension BluejayError: CustomNSError {
         case .multipleBackgroundTaskNotSupported: return 19
         case .listenCacheEncoding: return 20
         case .listenCacheDecoding: return 21
+        case .endListenCancelled: return 22
         }
     }
 
