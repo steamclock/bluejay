@@ -594,6 +594,7 @@ public class Bluejay: NSObject {
                         
                         if error == BluejayError.notConnected as NSError {
                             weakSelf.disconnectCleanUp?()
+                            weakSelf.disconnectCleanUp = nil
                         }
                     }
                 }
@@ -651,6 +652,7 @@ public class Bluejay: NSObject {
                         
                         if error == BluejayError.notConnected as NSError {
                             weakSelf.disconnectCleanUp?()
+                            weakSelf.disconnectCleanUp = nil
                         }
                     }
                 }
@@ -710,6 +712,7 @@ public class Bluejay: NSObject {
                         
                         if error == BluejayError.notConnected as NSError {
                             weakSelf.disconnectCleanUp?()
+                            weakSelf.disconnectCleanUp = nil
                         }
                     }
                 }
