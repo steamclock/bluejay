@@ -30,8 +30,8 @@ public class Bluejay: NSObject {
     /// Reference to a peripheral that is connected. If this is nil, then the peripheral should either be disconnected or still connecting. This is used to help determine the state of the peripheral's connection.
     private var connectedPeripheral: Peripheral?
     
-    /// Allowing or disallowing reconnection attempts upon a disconnection. It should only be set to true after a successful connection to a peripheral, and remain true unless there is an explicit and expected disconnection.
-    private var shouldAutoReconnect = false
+    /// Allowing or disallowing reconnection attempts upon a disconnection. It should only be set to false after an explicit and expected disconnection.
+    private var shouldAutoReconnect = true
     
     /// Reference to the background task used for supporting state restoration.
     private var startupBackgroundTask: UIBackgroundTaskIdentifier = UIBackgroundTaskInvalid
@@ -44,6 +44,8 @@ public class Bluejay: NSObject {
     
     /// True when background task is running, and helps prevent calling regular read/write/listen.
     private var isRunningBackgroundTask = false
+    
+    private var disconnectCleanUp: (() -> Void)?
     
     // MARK: - Internal Properties
     
@@ -192,8 +194,6 @@ public class Bluejay: NSObject {
      - Parameter error: If nil, all tasks in the queue will be cancelled without any errors. If an error is provided, all tasks in the queue will be failed with the supplied error.
      */
     public func cancelEverything(_ error: Error? = nil) {
-        shouldAutoReconnect = false
-
         queue.cancelAll(error)
         
         if isConnecting {
@@ -591,6 +591,10 @@ public class Bluejay: NSObject {
                         weakSelf.isRunningBackgroundTask = false
                         completionOnMainThread(.failure(error))
                         weakSelf.unregister(observer: synchronizedPeripheral)
+                        
+                        if error == BluejayError.notConnected as NSError {
+                            weakSelf.disconnectCleanUp?()
+                        }
                     }
                 }
             }
@@ -644,6 +648,10 @@ public class Bluejay: NSObject {
                         weakSelf.isRunningBackgroundTask = false
                         completionOnMainThread(.failure(error))
                         weakSelf.unregister(observer: synchronizedPeripheral)
+                        
+                        if error == BluejayError.notConnected as NSError {
+                            weakSelf.disconnectCleanUp?()
+                        }
                     }
                 }
             }
@@ -699,6 +707,10 @@ public class Bluejay: NSObject {
                         weakSelf.isRunningBackgroundTask = false
                         completionOnMainThread(.failure(error))
                         weakSelf.unregister(observer: synchronizedPeripheral)
+                        
+                        if error == BluejayError.notConnected as NSError {
+                            weakSelf.disconnectCleanUp?()
+                        }
                     }
                 }
             }
@@ -893,6 +905,7 @@ extension Bluejay: CBCentralManagerDelegate {
         }
         
         shouldAutoReconnect = true
+        log("Should auto-reconnect: \(shouldAutoReconnect)")
         
         queue.process(event: .didConnectPeripheral(peripheral), error: nil)
         
@@ -934,17 +947,35 @@ extension Bluejay: CBCentralManagerDelegate {
             }
         }
         
-        connectingPeripheral = nil
-        connectedPeripheral = nil
-        
-        log("Should auto-reconnect: \(shouldAutoReconnect)")
-        
-        if shouldAutoReconnect {
-            log("Issuing reconnect to: \(peripheral.name ?? peripheral.identifier.uuidString)")
-            connect(PeripheralIdentifier(uuid: peripheral.identifier), timeout: previousConnectionTimeout ?? .none, completion: {_ in })
+        disconnectCleanUp = { [weak self] in
+            guard let weakSelf = self else {
+                return
+            }
+            
+            log("Disconnect clean up.")
+            
+            weakSelf.connectingPeripheral = nil
+            weakSelf.connectedPeripheral = nil
+            
+            log("Should auto-reconnect: \(weakSelf.shouldAutoReconnect)")
+            
+            if weakSelf.shouldAutoReconnect {
+                log("Issuing reconnect to: \(peripheral.name ?? peripheral.identifier.uuidString)")
+                weakSelf.connect(
+                    PeripheralIdentifier(uuid: peripheral.identifier),
+                    timeout: weakSelf.previousConnectionTimeout ?? .none,
+                    completion: {_ in }
+                )
+            }
+            
+            UIApplication.shared.endBackgroundTask(backgroundTask)
         }
         
-        UIApplication.shared.endBackgroundTask(backgroundTask)
+        if isRunningBackgroundTask {
+            log("Delaying disconnect clean up due to running background task.")
+        } else {
+            disconnectCleanUp?()
+        }
     }
     
     /**
