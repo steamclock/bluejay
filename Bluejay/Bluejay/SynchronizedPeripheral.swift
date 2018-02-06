@@ -108,9 +108,27 @@ public class SynchronizedPeripheral {
                 }
                                 
                 if error != nil || action == .done {
-                    sem.signal()
                     if self.parent.isListening(to: characteristicIdentifier) && self.bluetoothAvailable {
-                        self.parent.endListen(to: characteristicIdentifier, error: nil)
+                        self.parent.endListen(to: characteristicIdentifier, error: nil, completion: { (result) in
+                            switch result {
+                            case .success:
+                                break
+                            case .cancelled:
+                                // Don't overwrite the more important error from the original listen call.
+                                if error == nil {
+                                    error = BluejayError.endListenCancelled
+                                }
+                            case .failure(let e):
+                                // Don't overwrite the more important error from the original listen call.
+                                if error == nil {
+                                    error = e
+                                }
+                            }
+                            
+                            sem.signal()
+                        })
+                    } else {
+                        sem.signal()
                     }
                 }
             })
@@ -135,7 +153,7 @@ public class SynchronizedPeripheral {
                     case .success:
                         break
                     case .cancelled:
-                        errorToThrow = BluejayError.cancelled
+                        errorToThrow = BluejayError.endListenCancelled
                     case .failure(let endListenError):
                         errorToThrow = endListenError
                     }
@@ -273,9 +291,27 @@ public class SynchronizedPeripheral {
                 }
                 
                 if error != nil || action == .done {
-                    sem.signal()
                     if self.parent.isListening(to: charToListenTo) && self.bluetoothAvailable {
-                        self.parent.endListen(to: charToListenTo, error: nil)
+                        self.parent.endListen(to: charToListenTo, error: nil, completion: { (result) in
+                            switch result {
+                            case .success:
+                                break
+                            case .cancelled:
+                                // Don't overwrite the more important error from the original listen call.
+                                if error == nil {
+                                    error = BluejayError.endListenCancelled
+                                }
+                            case .failure(let e):
+                                // Don't overwrite the more important error from the original listen call.
+                                if error == nil {
+                                    error = e
+                                }
+                            }
+                            
+                            sem.signal()
+                        })
+                    } else {
+                        sem.signal()
                     }
                 }
             })
@@ -416,4 +452,3 @@ extension SynchronizedPeripheral: ConnectionObserver {
     }
     
 }
-
