@@ -101,7 +101,7 @@ extension BluejayError: LocalizedError {
             return "Listen cache encoding failed with error: \(error.localizedDescription)"
         case let .listenCacheDecoding(error):
             return "Listen cache decoding failed with error: \(error.localizedDescription)"
-        case let .endListenCancelled:
+        case .endListenCancelled:
             return "End listen cancelled."
         }
     }
