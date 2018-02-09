@@ -70,6 +70,14 @@ public class Bluejay: NSObject {
     public var isBluetoothAvailable: Bool {
         return cbCentralManager.state == .poweredOn
     }
+
+    /// Allows checking for if CoreBluetooth state is
+    /// transitional (will immediately try again to see if
+    /// bluetooth is on or off)
+    public var isBluetoothStateUpdateImminent: Bool {
+        return cbCentralManager.state == .unknown ||
+            cbCentralManager.state == .resetting
+    }
     
     /// Allows checking whether Bluejay is currently connecting to a peripheral.
     public var isConnecting: Bool {
