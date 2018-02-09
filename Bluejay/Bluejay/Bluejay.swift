@@ -71,9 +71,8 @@ public class Bluejay: NSObject {
         return cbCentralManager.state == .poweredOn
     }
 
-    /// Allows checking for if CoreBluetooth state is
-    /// transitional (will immediately try again to see if
-    /// bluetooth is on or off)
+    /// Allows checking for if CoreBluetooth state is transitional (update is imminent)
+    /// please re-evaluate the bluetooth state again as it may change momentarily after it has returned true 
     public var isBluetoothStateUpdateImminent: Bool {
         return cbCentralManager.state == .unknown ||
             cbCentralManager.state == .resetting
