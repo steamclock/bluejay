@@ -362,14 +362,18 @@ public class SynchronizedPeripheral {
         let sem = DispatchSemaphore(value: 0)
         
         var listenResult: ReadResult<Data>?
-        var listenError: Error?
+        var writeAndAssembleError: Error?
         
         var assembledData = Data()
+        
+        backupTermination = { bluejayError in
+            writeAndAssembleError = bluejayError
+            sem.signal()
+        }
         
         DispatchQueue.main.sync {
             self.parent.listen(to: charToListenTo, completion: { (result : ReadResult<Data>) in
                 listenResult = result
-                
                 var action = ListenAction.keepListening
                 
                 switch result {
@@ -383,54 +387,71 @@ public class SynchronizedPeripheral {
                             action = completion(try R(bluetoothData: assembledData))
                         }
                         catch {
-                            listenError = error
+                            writeAndAssembleError = error
                         }
                     }
                     else {
                         log("Need to continue to assemble data.")
                     }
                 case .cancelled:
-                    action = .done
-                    sem.signal()
+                    writeAndAssembleError = BluejayError.cancelled
                 case .failure(let e):
-                    action = .done
-                    listenError = e
+                    writeAndAssembleError = e
                 }
                 
-                if listenError != nil || action == .done {
-                    if self.parent.isListening(to: charToListenTo) {
-                        // TODO: Handle end listen failures.
-                        self.parent.endListen(to: charToListenTo)
+                if writeAndAssembleError != nil || action == .done {
+                    if self.parent.isListening(to: charToListenTo) && self.bluetoothAvailable {
+                        self.parent.endListen(to: charToListenTo, error: nil, completion: { (result) in
+                            switch result {
+                            case .success:
+                                break
+                            case .cancelled:
+                                // Don't overwrite the more important error from the original listen call.
+                                if writeAndAssembleError == nil {
+                                    writeAndAssembleError = BluejayError.endListenCancelled
+                                }
+                            case .failure(let e):
+                                // Don't overwrite the more important error from the original listen call.
+                                if writeAndAssembleError == nil {
+                                    writeAndAssembleError = e
+                                }
+                            }
+                            
+                            sem.signal()
+                        })
+                    } else {
+                        sem.signal()
                     }
                 }
             })
             
-            // Don't attempt the write if the assemble didn't complete as expected.
-            if listenError == nil {
-                self.parent.write(to: charToWriteTo, value: value, completion: { result in
-                    if case .failure(let e) = result {
-                        listenError = e
-                        
-                        if self.parent.isListening(to: charToListenTo) {
-                            // TODO: Handle end listen failures.
-                            self.parent.endListen(to: charToListenTo)
-                        }
-                    }
-                })
-            }
+            self.parent.write(to: charToWriteTo, value: value, completion: { result in
+                switch result {
+                case .success:
+                    return
+                case .cancelled:
+                    writeAndAssembleError = BluejayError.cancelled
+                    sem.signal()
+                case .failure(let e):
+                    writeAndAssembleError = e
+                    sem.signal()
+                }
+            })
         }
         
         _ = sem.wait(timeout: timeoutInSeconds == 0 ? .distantFuture : .now() + .seconds(timeoutInSeconds))
         
-        if self.parent.isListening(to: charToListenTo) {
-            // TODO: Handle end listen failures.
-            self.parent.endListen(to: charToListenTo)
-        }
-        
-        if let error = listenError {
+        if let error = writeAndAssembleError {
+            backupTermination = nil
             throw error
         }
         else if listenResult == nil {
+            backupTermination = nil
+            
+            if self.parent.isListening(to: charToListenTo) && self.bluetoothAvailable {
+                self.parent.endListen(to: charToListenTo)
+            }
+            
             throw BluejayError.listenTimedOut
         }
     }
