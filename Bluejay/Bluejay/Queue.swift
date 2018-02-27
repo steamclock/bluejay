@@ -86,8 +86,8 @@ class Queue {
             }
         }
         else if queueable is Connection {
-            // Fail the connection request immediately if Bluejay is still connecting or connected.
-            if bluejay.isConnecting || bluejay.isConnected {
+            // Fail the connection request immediately if there is no disconnection queued and Bluejay is still connecting or connected.
+            if !isDisconnectionQueued() && (bluejay.isConnecting || bluejay.isConnected) {
                 queueable.fail(BluejayError.multipleConnectNotSupported)
                 return
             }
@@ -100,6 +100,12 @@ class Queue {
         }
         
         update()
+    }
+    
+    private func isDisconnectionQueued() -> Bool {
+        return queue.contains(where: { (queueable) -> Bool in
+            return queueable is Disconnection
+        })
     }
     
     // MARK: - Cancellation
@@ -196,7 +202,6 @@ class Queue {
             }
             else {
                 queueable.process(event: event)
-
             }
         }
     }

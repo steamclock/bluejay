@@ -950,6 +950,10 @@ extension Bluejay: CBCentralManagerDelegate {
         if !queue.isEmpty {
             // If Bluejay is currently connecting or disconnecting, the queue needs to process this disconnection event. Otherwise, this is an unexpected disconnection.
             if isConnecting || isDisconnecting {
+                // Make sure the connecting and connected references are cleared before either the connection or disconnection completion block.
+                connectingPeripheral = nil
+                connectedPeripheral = nil
+                
                 queue.process(event: .didDisconnectPeripheral(peripheral), error: error as NSError?)
             }
             else {
