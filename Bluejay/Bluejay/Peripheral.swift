@@ -356,6 +356,10 @@ public class Peripheral: NSObject {
             return characteristicIdentifier.uuid.uuidString != listeningCharacteristic.uuid.uuidString
         }
     }
+    
+    public func maximumWriteValueLength(`for` writeType: CBCharacteristicWriteType) -> Int {
+        return cbPeripheral.maximumWriteValueLength(for: writeType)
+    }
 }
 
 // MARK: - CBPeripheralDelegate
