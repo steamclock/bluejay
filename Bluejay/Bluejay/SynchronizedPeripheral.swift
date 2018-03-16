@@ -202,14 +202,20 @@ public class SynchronizedPeripheral {
     /**
      Flush a listen to a characteristic by receiving and discarding values for the specified duration.
      
+     **Warning** Timeout defaults to 3 seconds. Specifying no timeout will result in an error.
+     
      - Parameters:
         - characteristicIdentifier: The characteristic to flush.
-        - idleWindow: How long to flush for in seconds.
+        - timeout: How long to wait for incoming data.
         - completion: Block to call when the flush is complete.
     */
-    public func flushListen(to characteristicIdentifier: CharacteristicIdentifier, idleWindow: Int = 3, completion: @escaping () -> Void) throws {
-        let flushSem = DispatchSemaphore(value: 0)
-        let cleanUpSem = DispatchSemaphore(value: 0)
+    public func flushListen(to characteristicIdentifier: CharacteristicIdentifier, timeout: Timeout = .seconds(3), completion: @escaping () -> Void) throws {
+        guard case let .seconds(timeoutInterval) = timeout else {
+            throw BluejayError.indefiniteFlush
+        }
+        
+        let listenSem = DispatchSemaphore(value: 0)
+        let endListenSem = DispatchSemaphore(value: 0)
         let sem = DispatchSemaphore(value: 0)
         var error : Error?
         
@@ -225,22 +231,25 @@ public class SynchronizedPeripheral {
                     switch result {
                     case .success:
                         log("Flushed some data.")
-                        shouldListenAgain = true
                         
-                        flushSem.signal()
+                        shouldListenAgain = true
                     case .cancelled:
-                        break
+                        log("Flush cancelled.")
+                        
+                        shouldListenAgain = false
+                        error = BluejayError.cancelled
                     case .failure(let e):
                         log("Flush failed with error: \(e.localizedDescription)")
+                        
                         shouldListenAgain = false
                         error = e
-                        
-                        flushSem.signal()
                     }
+                    
+                    listenSem.signal()
                 })
             }
             
-            _ = flushSem.wait(timeout: .now() + .seconds(idleWindow))
+            _ = listenSem.wait(timeout: .now() + DispatchTimeInterval.seconds(Int(timeoutInterval)))
             
             DispatchQueue.main.async {
                 if self.parent.isListening(to: characteristicIdentifier) {
@@ -254,16 +263,18 @@ public class SynchronizedPeripheral {
                             error = e
                         }
                         
-                        cleanUpSem.signal()
+                        endListenSem.signal()
                     })
+                } else {
+                    endListenSem.signal()
                 }
             }
             
-            _ = cleanUpSem.wait(timeout: .distantFuture)
+            _ = endListenSem.wait(timeout: .now() + DispatchTimeInterval.seconds(Int(timeoutInterval)))
             
             DispatchQueue.main.async {
                 log("Flush to \(characteristicIdentifier.uuid.uuidString) finished, should flush again: \(shouldListenAgain).")
-
+                
                 if !shouldListenAgain {
                     sem.signal()
                 }
