@@ -456,6 +456,10 @@ public class SynchronizedPeripheral {
         }
     }
     
+    public func maximumWriteValueLength(`for` writeType: CBCharacteristicWriteType) -> Int {
+        return parent.maximumWriteValueLength(for: writeType)
+    }
+    
 }
 
 extension SynchronizedPeripheral: ConnectionObserver {
