@@ -90,23 +90,35 @@ public class SynchronizedPeripheral {
     }
     
     /// Listen for changes on a specified characterstic synchronously.
-    public func listen<R: Receivable>(to characteristicIdentifier: CharacteristicIdentifier, completion: @escaping (R) -> ListenAction) throws {
+    public func listen<R: Receivable>(
+        to characteristicIdentifier: CharacteristicIdentifier,
+        timeout: Timeout = .none,
+        completion: @escaping (R) -> ListenAction) throws
+    {
         let sem = DispatchSemaphore(value: 0)
+        
+        var listenResult: ReadResult<R>?
         var error : Error?
+        
+        backupTermination = { bluejayError in
+            error = bluejayError
+            sem.signal()
+        }
         
         DispatchQueue.main.async {
             self.parent.listen(to: characteristicIdentifier, completion: { (result : ReadResult<R>) in
+                listenResult = result
                 var action = ListenAction.done
                 
                 switch result {
                 case .success(let r):
                     action = completion(r)
                 case .cancelled:
-                    sem.signal()
+                    error = BluejayError.cancelled
                 case .failure(let e):
                     error = e
                 }
-                                
+                
                 if error != nil || action == .done {
                     if self.parent.isListening(to: characteristicIdentifier) && self.bluetoothAvailable {
                         self.parent.endListen(to: characteristicIdentifier, error: nil, completion: { (result) in
@@ -134,10 +146,24 @@ public class SynchronizedPeripheral {
             })
         }
         
-        _ = sem.wait(timeout: DispatchTime.distantFuture)
+        if case let .seconds(timeoutInterval) = timeout {
+            _ = sem.wait(timeout: .now() + DispatchTimeInterval.seconds(Int(timeoutInterval)))
+        } else {
+            _ = sem.wait(timeout: .distantFuture)
+        }
         
         if let error = error {
+            backupTermination = nil
             throw error
+        }
+        else if listenResult == nil {
+            backupTermination = nil
+            
+            if self.parent.isListening(to: characteristicIdentifier) && self.bluetoothAvailable {
+                self.parent.endListen(to: characteristicIdentifier)
+            }
+            
+            throw BluejayError.listenTimedOut
         }
     }
     
