@@ -92,7 +92,7 @@ public class SynchronizedPeripheral {
     /// Listen for changes on a specified characterstic synchronously.
     public func listen<R: Receivable>(
         to characteristicIdentifier: CharacteristicIdentifier,
-        timeoutInSeconds: Int = 0,
+        timeout: Timeout,
         completion: @escaping (R) -> ListenAction) throws
     {
         let sem = DispatchSemaphore(value: 0)
@@ -146,7 +146,11 @@ public class SynchronizedPeripheral {
             })
         }
         
-        _ = sem.wait(timeout: timeoutInSeconds == 0 ? .distantFuture : .now() + .seconds(timeoutInSeconds))
+        if case let .seconds(timeoutInterval) = timeout {
+            _ = sem.wait(timeout: .now() + DispatchTimeInterval.seconds(Int(timeoutInterval)))
+        } else {
+            _ = sem.wait(timeout: .distantFuture)
+        }
         
         if let error = error {
             backupTermination = nil
