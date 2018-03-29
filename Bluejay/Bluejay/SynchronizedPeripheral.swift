@@ -202,86 +202,77 @@ public class SynchronizedPeripheral {
     /**
      Flush a listen to a characteristic by receiving and discarding values for the specified duration.
      
-     **Warning** Timeout defaults to 3 seconds. Specifying no timeout will result in an error.
+     **Warning** Timeout defaults to 3 seconds. Specifying no timeout or a timeout with zero second will result in a fatal error.
      
      - Parameters:
         - characteristicIdentifier: The characteristic to flush.
-        - timeout: How long to wait for incoming data.
+        - nonZeroTimeout: How long to wait for incoming data.
         - completion: Block to call when the flush is complete.
     */
-    public func flushListen(to characteristicIdentifier: CharacteristicIdentifier, timeout: Timeout = .seconds(3), completion: @escaping () -> Void) throws {
-        guard case let .seconds(timeoutInterval) = timeout else {
-            throw BluejayError.indefiniteFlush
+    public func flushListen(to characteristicIdentifier: CharacteristicIdentifier, nonZeroTimeout: Timeout = .seconds(3), completion: @escaping () -> Void) throws {
+        guard case let .seconds(timeoutInterval) = nonZeroTimeout, timeoutInterval > 0 else {
+            fatalError(BluejayError.indefiniteFlush.errorDescription!)
         }
         
         let listenSem = DispatchSemaphore(value: 0)
         let endListenSem = DispatchSemaphore(value: 0)
-        let sem = DispatchSemaphore(value: 0)
         var error : Error?
         
         var shouldListenAgain = false
         
+        DispatchQueue.main.async {
+            log("Flushing listen to \(characteristicIdentifier.uuid.uuidString)")
+            
+            shouldListenAgain = false
+            
+            self.parent.listen(to: characteristicIdentifier, completion: { (result : ReadResult<Data>) in
+                switch result {
+                case .success:
+                    log("Flushed some data.")
+                    
+                    shouldListenAgain = true
+                case .cancelled:
+                    log("Flush cancelled.")
+                    
+                    shouldListenAgain = false
+                    error = BluejayError.cancelled
+                case .failure(let e):
+                    log("Flush failed with error: \(e.localizedDescription)")
+                    
+                    shouldListenAgain = false
+                    error = e
+                }
+                
+                listenSem.signal()
+            })
+        }
+        
         repeat {
-            DispatchQueue.main.async {
-                log("Flushing listen to \(characteristicIdentifier.uuid.uuidString)")
-                
-                shouldListenAgain = false
-                
-                self.parent.listen(to: characteristicIdentifier, completion: { (result : ReadResult<Data>) in
+            shouldListenAgain = false
+            _ = listenSem.wait(timeout: .now() + DispatchTimeInterval.seconds(Int(timeoutInterval)))
+            log("Flush to \(characteristicIdentifier.uuid.uuidString) finished, should flush again: \(shouldListenAgain).")
+        } while shouldListenAgain
+        
+        DispatchQueue.main.async {
+            if self.parent.isListening(to: characteristicIdentifier) {
+                self.parent.endListen(to: characteristicIdentifier, error: nil, completion: { (result) in
                     switch result {
                     case .success:
-                        log("Flushed some data.")
-                        
-                        shouldListenAgain = true
+                        break
                     case .cancelled:
-                        log("Flush cancelled.")
-                        
-                        shouldListenAgain = false
-                        error = BluejayError.cancelled
+                        break
                     case .failure(let e):
-                        log("Flush failed with error: \(e.localizedDescription)")
-                        
-                        shouldListenAgain = false
                         error = e
                     }
                     
-                    listenSem.signal()
-                })
-            }
-            
-            _ = listenSem.wait(timeout: .now() + DispatchTimeInterval.seconds(Int(timeoutInterval)))
-            
-            DispatchQueue.main.async {
-                if self.parent.isListening(to: characteristicIdentifier) {
-                    self.parent.endListen(to: characteristicIdentifier, error: nil, completion: { (result) in
-                        switch result {
-                        case .success:
-                            break
-                        case .cancelled:
-                            break
-                        case .failure(let e):
-                            error = e
-                        }
-                        
-                        endListenSem.signal()
-                    })
-                } else {
                     endListenSem.signal()
-                }
+                })
+            } else {
+                endListenSem.signal()
             }
-            
-            _ = endListenSem.wait(timeout: .now() + DispatchTimeInterval.seconds(Int(timeoutInterval)))
-            
-            DispatchQueue.main.async {
-                log("Flush to \(characteristicIdentifier.uuid.uuidString) finished, should flush again: \(shouldListenAgain).")
-                
-                if !shouldListenAgain {
-                    sem.signal()
-                }
-            }
-        } while shouldListenAgain
+        }
         
-        _ = sem.wait(timeout: .distantFuture)
+        _ = endListenSem.wait(timeout: .now() + DispatchTimeInterval.seconds(Int(timeoutInterval)))
         
         if let error = error {
             throw error

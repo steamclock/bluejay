@@ -106,7 +106,7 @@ extension BluejayError: LocalizedError {
         case .endListenCancelled:
             return "End listen cancelled."
         case .indefiniteFlush:
-            return "Indefinite flush will not exit."
+            return "Flush listen timeout cannot be none or zero."
         }
     }
 }
