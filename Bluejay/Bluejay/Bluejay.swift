@@ -129,10 +129,12 @@ public class Bluejay: NSObject {
      - Parameters:
         - observer: An object interested in observing Bluetooth connection events and state changes. You can register more observers using the `register` function.
         - restoreMode: Determines whether Bluejay will opt-in to state restoration, and if so, can optionally provide a listen restorer as well for restoring listens.
+        - coreBluetoothState: Allows starting Bluejay with an existing Core Bluetooth manager and peripheral.
     */
     public func start(
         connectionObserver observer: ConnectionObserver? = nil,
-        backgroundRestore restoreMode: BackgroundRestoreMode = .disable
+        backgroundRestore restoreMode: BackgroundRestoreMode = .disable,
+        coreBluetoothState: (manager: CBCentralManager, peripheral: CBPeripheral?)? = nil
         )
     {
         /**
@@ -173,11 +175,44 @@ public class Bluejay: NSObject {
             options[CBCentralManagerOptionRestoreIdentifierKey] = restoreIdentifier
         }
         
-        cbCentralManager = CBCentralManager(
-            delegate: self,
-            queue: .main,
-            options: options
-        )
+        if let cbState = coreBluetoothState {
+            cbCentralManager = cbState.manager
+            
+            if let peripheral = cbState.peripheral {
+                connectedPeripheral = Peripheral(bluejay: self, cbPeripheral: peripheral)
+                peripheral.delegate = connectedPeripheral
+            }
+        } else {
+            cbCentralManager = CBCentralManager(
+                delegate: self,
+                queue: .main,
+                options: options
+            )
+        }
+    }
+    
+    /**
+     Stops all operations and clears all states in Bluejay before returning a Core Bluetooth state that can then be used by another library or code outside of Bluejay.
+     
+     - Returns: Returns a CBCentralManager and possibly a CBPeripheral as well if there was one connected at the time of this call.
+     - Warning: Will crash if Bluejay has not been instantiated properly or if Bluejay is still connecting.
+    */
+    public func stopAndExtractBluetoothState() -> (manager: CBCentralManager, peripheral: CBPeripheral?) {
+        precondition(cbCentralManager != nil)
+        precondition(!isConnecting)
+        
+        defer {
+            connectedPeripheral?.cbPeripheral.delegate = nil
+            connectedPeripheral = nil
+            
+            cbCentralManager.delegate = nil
+            cbCentralManager = nil
+        }
+        
+        queue.cancelAll(BluejayError.stopped)
+        observers.removeAll()
+        
+        return (manager: cbCentralManager, peripheral: connectedPeripheral?.cbPeripheral)
     }
     
     /// Check to see whether the "Uses Bluetooth LE accessories" capability is turned on in the residing Xcode project.
