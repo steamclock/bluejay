@@ -54,6 +54,8 @@ public enum BluejayError {
     case listenCacheDecoding(Error)
     /// Bluejay has cancelled an expected end listen request.
     case endListenCancelled
+    /// Indefinite flush will not exit.
+    case indefiniteFlush
 }
 
 extension BluejayError: LocalizedError {
@@ -103,6 +105,8 @@ extension BluejayError: LocalizedError {
             return "Listen cache decoding failed with error: \(error.localizedDescription)"
         case .endListenCancelled:
             return "End listen cancelled."
+        case .indefiniteFlush:
+            return "Flush listen timeout cannot be none or zero."
         }
     }
 }
@@ -137,6 +141,7 @@ extension BluejayError: CustomNSError {
         case .listenCacheEncoding: return 20
         case .listenCacheDecoding: return 21
         case .endListenCancelled: return 22
+        case .indefiniteFlush: return 23
         }
     }
 
