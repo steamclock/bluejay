@@ -138,11 +138,7 @@ class Connection: Queueable {
         
         // There is no point trying to cancel the connection if the error is due to the manager being powered off, as trying to do so has no effect and will also cause CoreBluetooth to log an "API MISUSE" warning.
         if manager.state == .poweredOn {
-            // Don't cancel the existing connection if the error is caused by mistakingly adding another connection request while Bluejay is still connecting or connected.
-            if case BluejayError.multipleConnectNotSupported = error {
-                manager.cancelPeripheralConnection(peripheral)
-            }
-            else if case BluejayError.connectionTimedOut = error {
+            if case BluejayError.connectionTimedOut = error {
                 manager.cancelPeripheralConnection(peripheral)
             }
             else {
