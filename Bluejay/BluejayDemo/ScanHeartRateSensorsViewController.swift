@@ -159,7 +159,7 @@ extension ScanHeartRateSensorsViewController: ConnectionObserver {
         }
     }
     
-    func connected(_ peripheral: Peripheral) {
+    func connected(to peripheral: Peripheral) {
         debugPrint("Connected to \(peripheral)")
     }
     

@@ -14,7 +14,7 @@ import CoreBluetooth
  */
 protocol Queueable: class {
     
-    weak var queue: Queue? { get set }
+    var queue: Queue? { get set }
     
     /// The state of the operation in the queue.
     var state: QueueableState { get }

@@ -231,7 +231,7 @@ extension Queue: ConnectionObserver {
         }
     }
     
-    func connected(_ peripheral: Peripheral) {
+    func connected(to peripheral: Peripheral) {
         update()
     }
     
