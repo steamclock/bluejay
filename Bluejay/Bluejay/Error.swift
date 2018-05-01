@@ -56,6 +56,8 @@ public enum BluejayError {
     case endListenCancelled
     /// Indefinite flush will not exit.
     case indefiniteFlush
+    /// Bluejay has stopped.
+    case stopped
 }
 
 extension BluejayError: LocalizedError {
@@ -107,6 +109,8 @@ extension BluejayError: LocalizedError {
             return "End listen cancelled."
         case .indefiniteFlush:
             return "Flush listen timeout cannot be none or zero."
+        case .stopped:
+            return "Bluejay stopped."
         }
     }
 }
@@ -142,6 +146,7 @@ extension BluejayError: CustomNSError {
         case .listenCacheDecoding: return 21
         case .endListenCancelled: return 22
         case .indefiniteFlush: return 23
+        case .stopped: return 24
         }
     }
 
