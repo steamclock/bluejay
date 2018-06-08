@@ -588,6 +588,20 @@ public class Bluejay: NSObject {
         }
     }
     
+    /**
+     Check if a peripheral is listening to a specific characteristic.
+     
+     - Parameters:
+     - characteristicIdentifier: The characteristic we want to know check.
+     - Returns: a boolean value
+     */
+    public func isListening(to characteristicIdentifier: CharacteristicIdentifier) -> Bool? {
+        guard let periph = connectedPeripheral else {
+            return nil
+        }
+        return periph.isListening(to: characteristicIdentifier)
+    }
+    
     // MARK: - Background Task
     
     /**
