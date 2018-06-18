@@ -595,9 +595,9 @@ public class Bluejay: NSObject {
      - characteristicIdentifier: The characteristic we want to check.
      - Returns: a boolean value
      */
-    public func isListening(to characteristicIdentifier: CharacteristicIdentifier) -> Bool? {
+    public func isListening(to characteristicIdentifier: CharacteristicIdentifier) throws -> Bool {
         guard let periph = connectedPeripheral else {
-            return nil
+            throw BluejayError.notConnected
         }
         return periph.isListening(to: characteristicIdentifier)
     }
