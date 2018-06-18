@@ -592,7 +592,7 @@ public class Bluejay: NSObject {
      Check if a peripheral is listening to a specific characteristic.
      
      - Parameters:
-     - characteristicIdentifier: The characteristic we want to know check.
+     - characteristicIdentifier: The characteristic we want to check.
      - Returns: a boolean value
      */
     public func isListening(to characteristicIdentifier: CharacteristicIdentifier) -> Bool? {
