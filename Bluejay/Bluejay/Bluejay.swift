@@ -97,6 +97,11 @@ public class Bluejay: NSObject {
         return queue.isScanning
     }
     
+    /// Allows checking whether Bluejay has started and is available for use.
+    public var hasStarted: Bool {
+        return cbCentralManager != nil
+    }
+    
     // MARK: - Initialization
     
     /**
