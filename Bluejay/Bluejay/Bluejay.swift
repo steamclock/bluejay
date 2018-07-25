@@ -235,7 +235,11 @@ public class Bluejay: NSObject {
      
      - Parameter error: If nil, all tasks in the queue will be cancelled without any errors. If an error is provided, all tasks in the queue will be failed with the supplied error.
      */
-    public func cancelEverything(_ error: Error? = nil) {
+    public func cancelEverything(_ error: Error? = nil, autoReconnect: Bool? = nil) {
+        if let autoReconnect = autoReconnect {
+            shouldAutoReconnect = autoReconnect
+        }
+        
         queue.cancelAll(error)
         
         if isConnecting {
