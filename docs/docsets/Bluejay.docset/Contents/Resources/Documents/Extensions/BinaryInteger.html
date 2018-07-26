@@ -14,7 +14,7 @@
     <a title="BinaryInteger Extension Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="../index.html">Bluejay Docs</a> (95% documented)</p>
+        <p><a href="../index.html">Bluejay Docs</a> (94% documented)</p>
         <p class="header-right"><a href="https://github.com/steamclock/bluejay"><img src="../img/gh.png"/>View on GitHub</a></p>
       </div>
     </header>
@@ -55,9 +55,6 @@
                 <a href="../Enums/ConnectionResult.html">ConnectionResult</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Enums/ConnectionTimeout.html">ConnectionTimeout</a>
-              </li>
-              <li class="nav-group-task">
                 <a href="../Enums/DisconnectionResult.html">DisconnectionResult</a>
               </li>
               <li class="nav-group-task">
@@ -71,6 +68,9 @@
               </li>
               <li class="nav-group-task">
                 <a href="../Enums/ScanAction.html">ScanAction</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/Timeout.html">Timeout</a>
               </li>
               <li class="nav-group-task">
                 <a href="../Enums/WriteResult.html">WriteResult</a>
@@ -143,6 +143,14 @@
               </li>
             </ul>
           </li>
+          <li class="nav-group-name">
+            <a href="../Typealiases.html">Type Aliases</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:7Bluejay17RestoreIdentifiera">RestoreIdentifier</a>
+              </li>
+            </ul>
+          </li>
         </ul>
       </nav>
       <article class="main-content">
@@ -151,7 +159,7 @@
             <h1>BinaryInteger</h1>
               <div class="declaration">
                 <div class="language">
-                  <pre class="highlight swift"><code><span class="kd">protocol</span> <span class="kt">BinaryInteger</span> <span class="p">:</span> <span class="kt">Hashable</span><span class="p">,</span> <span class="kt">Numeric</span><span class="p">,</span> <span class="kt">CustomStringConvertible</span><span class="p">,</span> <span class="kt">Strideable</span></code></pre>
+                  <pre class="highlight swift"><code><span class="kd">protocol</span> <span class="kt">BinaryInteger</span> <span class="p">:</span> <span class="kt">CustomStringConvertible</span><span class="p">,</span> <span class="kt">Hashable</span><span class="p">,</span> <span class="kt">Numeric</span><span class="p">,</span> <span class="kt">Strideable</span> <span class="k">where</span> <span class="k">Self</span><span class="o">.</span><span class="kt">Magnitude</span> <span class="p">:</span> <span class="kt">BinaryInteger</span><span class="p">,</span> <span class="k">Self</span><span class="o">.</span><span class="kt">Magnitude</span> <span class="o">==</span> <span class="k">Self</span><span class="o">.</span><span class="kt">Magnitude</span><span class="o">.</span><span class="kt">Magnitude</span></code></pre>
 
                 </div>
               </div>

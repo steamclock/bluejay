@@ -14,7 +14,7 @@
     <a title="SynchronizedPeripheral Class Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="../index.html">Bluejay Docs</a> (95% documented)</p>
+        <p><a href="../index.html">Bluejay Docs</a> (94% documented)</p>
         <p class="header-right"><a href="https://github.com/steamclock/bluejay"><img src="../img/gh.png"/>View on GitHub</a></p>
       </div>
     </header>
@@ -55,9 +55,6 @@
                 <a href="../Enums/ConnectionResult.html">ConnectionResult</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Enums/ConnectionTimeout.html">ConnectionTimeout</a>
-              </li>
-              <li class="nav-group-task">
                 <a href="../Enums/DisconnectionResult.html">DisconnectionResult</a>
               </li>
               <li class="nav-group-task">
@@ -71,6 +68,9 @@
               </li>
               <li class="nav-group-task">
                 <a href="../Enums/ScanAction.html">ScanAction</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/Timeout.html">Timeout</a>
               </li>
               <li class="nav-group-task">
                 <a href="../Enums/WriteResult.html">WriteResult</a>
@@ -140,6 +140,14 @@
               </li>
               <li class="nav-group-task">
                 <a href="../Structs/ServiceIdentifier.html">ServiceIdentifier</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Typealiases.html">Type Aliases</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:7Bluejay17RestoreIdentifiera">RestoreIdentifier</a>
               </li>
             </ul>
           </li>
@@ -252,9 +260,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7Bluejay22SynchronizedPeripheralC6listenyAA24CharacteristicIdentifierV2to_AA12ListenActionOxc10completiontKAA10ReceivableRzlF"></a>
-                    <a name="//apple_ref/swift/Method/listen(to:completion:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7Bluejay22SynchronizedPeripheralC6listenyAA24CharacteristicIdentifierV2to_AA12ListenActionOxc10completiontKAA10ReceivableRzlF">listen(to:completion:)</a>
+                    <a name="/s:7Bluejay22SynchronizedPeripheralC6listenyAA24CharacteristicIdentifierV2to_AA7TimeoutO7timeoutAA12ListenActionOxc10completiontKAA10ReceivableRzlF"></a>
+                    <a name="//apple_ref/swift/Method/listen(to:timeout:completion:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Bluejay22SynchronizedPeripheralC6listenyAA24CharacteristicIdentifierV2to_AA7TimeoutO7timeoutAA12ListenActionOxc10completiontKAA10ReceivableRzlF">listen(to:timeout:completion:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -269,7 +277,10 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">listen</span><span class="o">&lt;</span><span class="kt">R</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Receivable.html">Receivable</a></span><span class="o">&gt;</span><span class="p">(</span><span class="n">to</span> <span class="nv">characteristicIdentifier</span><span class="p">:</span> <span class="kt"><a href="../Structs/CharacteristicIdentifier.html">CharacteristicIdentifier</a></span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">R</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Enums/ListenAction.html">ListenAction</a></span><span class="p">)</span> <span class="k">throws</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">listen</span><span class="o">&lt;</span><span class="kt">R</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Receivable.html">Receivable</a></span><span class="o">&gt;</span><span class="p">(</span>
+    <span class="n">to</span> <span class="nv">characteristicIdentifier</span><span class="p">:</span> <span class="kt"><a href="../Structs/CharacteristicIdentifier.html">CharacteristicIdentifier</a></span><span class="p">,</span>
+    <span class="nv">timeout</span><span class="p">:</span> <span class="kt"><a href="../Enums/Timeout.html">Timeout</a></span> <span class="o">=</span> <span class="o">.</span><span class="k">none</span><span class="p">,</span>
+    <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">R</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Enums/ListenAction.html">ListenAction</a></span><span class="p">)</span> <span class="k">throws</span></code></pre>
 
                         </div>
                       </div>
@@ -306,9 +317,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7Bluejay22SynchronizedPeripheralC11flushListenyAA24CharacteristicIdentifierV2to_Si10idleWindowyyc10completiontKF"></a>
-                    <a name="//apple_ref/swift/Method/flushListen(to:idleWindow:completion:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7Bluejay22SynchronizedPeripheralC11flushListenyAA24CharacteristicIdentifierV2to_Si10idleWindowyyc10completiontKF">flushListen(to:idleWindow:completion:)</a>
+                    <a name="/s:7Bluejay22SynchronizedPeripheralC11flushListenyAA24CharacteristicIdentifierV2to_AA7TimeoutO07nonZeroI0yyc10completiontKF"></a>
+                    <a name="//apple_ref/swift/Method/flushListen(to:nonZeroTimeout:completion:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Bluejay22SynchronizedPeripheralC11flushListenyAA24CharacteristicIdentifierV2to_AA7TimeoutO07nonZeroI0yyc10completiontKF">flushListen(to:nonZeroTimeout:completion:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -318,12 +329,14 @@
                       <div class="abstract">
                         <p>Flush a listen to a characteristic by receiving and discarding values for the specified duration.</p>
 
+<p><strong>Warning</strong> Timeout defaults to 3 seconds. Specifying no timeout or a timeout with zero second will result in a fatal error.</p>
+
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">flushListen</span><span class="p">(</span><span class="n">to</span> <span class="nv">characteristicIdentifier</span><span class="p">:</span> <span class="kt"><a href="../Structs/CharacteristicIdentifier.html">CharacteristicIdentifier</a></span><span class="p">,</span> <span class="nv">idleWindow</span><span class="p">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span> <span class="k">throws</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">flushListen</span><span class="p">(</span><span class="n">to</span> <span class="nv">characteristicIdentifier</span><span class="p">:</span> <span class="kt"><a href="../Structs/CharacteristicIdentifier.html">CharacteristicIdentifier</a></span><span class="p">,</span> <span class="nv">nonZeroTimeout</span><span class="p">:</span> <span class="kt"><a href="../Enums/Timeout.html">Timeout</a></span> <span class="o">=</span> <span class="o">.</span><span class="nf">seconds</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span> <span class="k">throws</span></code></pre>
 
                         </div>
                       </div>
@@ -346,12 +359,12 @@
                             <tr>
                               <td>
                                 <code>
-                                <em>idleWindow</em>
+                                <em>nonZeroTimeout</em>
                                 </code>
                               </td>
                               <td>
                                 <div>
-                                  <p>How long to flush for in seconds.</p>
+                                  <p>How long to wait for incoming data.</p>
                                 </div>
                               </td>
                             </tr>
@@ -435,6 +448,89 @@
     <span class="nv">expectedLength</span><span class="p">:</span> <span class="kt">Int</span><span class="p">,</span>
     <span class="nv">timeoutInSeconds</span><span class="p">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
     <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">R</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Enums/ListenAction.html">ListenAction</a></span><span class="p">)</span> <span class="k">throws</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7Bluejay22SynchronizedPeripheralC23maximumWriteValueLengthSiSC016CBCharacteristicE4TypeO3for_tF"></a>
+                    <a name="//apple_ref/swift/Method/maximumWriteValueLength(for:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Bluejay22SynchronizedPeripheralC23maximumWriteValueLengthSiSC016CBCharacteristicE4TypeO3for_tF">maximumWriteValueLength(for:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">maximumWriteValueLength</span><span class="p">(</span><span class="err">`</span><span class="k">for</span><span class="err">`</span> <span class="nv">writeType</span><span class="p">:</span> <span class="kt">CBCharacteristicWriteType</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Int</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7Bluejay18ConnectionObserverP18bluetoothAvailableySbF"></a>
+                    <a name="//apple_ref/swift/Method/bluetoothAvailable(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Bluejay18ConnectionObserverP18bluetoothAvailableySbF">bluetoothAvailable(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">bluetoothAvailable</span><span class="p">(</span><span class="n">_</span> <span class="nv">available</span><span class="p">:</span> <span class="kt">Bool</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7Bluejay18ConnectionObserverP12disconnectedyAA10PeripheralC4from_tF"></a>
+                    <a name="//apple_ref/swift/Method/disconnected(from:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Bluejay18ConnectionObserverP12disconnectedyAA10PeripheralC4from_tF">disconnected(from:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">disconnected</span><span class="p">(</span><span class="n">from</span> <span class="nv">peripheral</span><span class="p">:</span> <span class="kt"><a href="../Classes/Peripheral.html">Peripheral</a></span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>

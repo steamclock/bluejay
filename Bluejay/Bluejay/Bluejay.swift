@@ -238,7 +238,11 @@ public class Bluejay: NSObject {
     /**
      This will cancel the current and all pending operations in the Bluejay queue, as well as stop any ongoing scan, and disconnect any connected peripheral.
      
-     - Parameter error: If nil, all tasks in the queue will be cancelled without any errors. If an error is provided, all tasks in the queue will be failed with the supplied error.
+     - Warning: By default, Bluejay will still attempt to auto reconnect after calling this function. You can disable that behaviour by setting the `autoReconnect` parameter to false, or by setting `shouldAutoReconnect` to false before running this function.
+     
+     - Parameters:
+       - error: If nil, all tasks in the queue will be cancelled without any errors. If an error is provided, all tasks in the queue will be failed with the supplied error.
+       - autoReconnect: Explicitly tells Bluejay whether it should attempt to auto reconnect after everything is cancelled.
      */
     public func cancelEverything(_ error: Error? = nil, autoReconnect: Bool? = nil) {
         if let autoReconnect = autoReconnect {
@@ -280,7 +284,7 @@ public class Bluejay: NSObject {
     /**
      Register for notifications on Bluetooth connection events and state changes. Unregistering is not required, Bluejay will unregister for you if the observer is no longer in memory.
      
-     - Parameter observer:
+     - Parameter observer: object interested in receiving Bluejay's Bluetooth connection related events.
      */
     public func register(observer: ConnectionObserver) {
         observers = observers.filter { $0.weakReference != nil && $0.weakReference !== observer }
@@ -298,7 +302,7 @@ public class Bluejay: NSObject {
     /**
      Unregister for notifications on Bluetooth connection events and state changes. Unregistering is not required, Bluejay will unregister for you if the observer is no longer in memory.
      
-     - Parameter observer:
+     - Parameter observer: object no longer interested in receiving Bleujay's connection related events.
      */
     public func unregister(observer: ConnectionObserver) {
         observers = observers.filter { $0.weakReference != nil && $0.weakReference !== observer }
@@ -601,8 +605,7 @@ public class Bluejay: NSObject {
      Check if a peripheral is listening to a specific characteristic.
      
      - Parameters:
-     - characteristicIdentifier: The characteristic we want to check.
-     - Returns: a boolean value
+       - to: The characteristic we want to check.
      */
     public func isListening(to characteristicIdentifier: CharacteristicIdentifier) throws -> Bool {
         guard let periph = connectedPeripheral else {

@@ -14,7 +14,7 @@
     <a title="Bluejay Class Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="../index.html">Bluejay Docs</a> (95% documented)</p>
+        <p><a href="../index.html">Bluejay Docs</a> (94% documented)</p>
         <p class="header-right"><a href="https://github.com/steamclock/bluejay"><img src="../img/gh.png"/>View on GitHub</a></p>
       </div>
     </header>
@@ -55,9 +55,6 @@
                 <a href="../Enums/ConnectionResult.html">ConnectionResult</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Enums/ConnectionTimeout.html">ConnectionTimeout</a>
-              </li>
-              <li class="nav-group-task">
                 <a href="../Enums/DisconnectionResult.html">DisconnectionResult</a>
               </li>
               <li class="nav-group-task">
@@ -71,6 +68,9 @@
               </li>
               <li class="nav-group-task">
                 <a href="../Enums/ScanAction.html">ScanAction</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/Timeout.html">Timeout</a>
               </li>
               <li class="nav-group-task">
                 <a href="../Enums/WriteResult.html">WriteResult</a>
@@ -143,6 +143,14 @@
               </li>
             </ul>
           </li>
+          <li class="nav-group-name">
+            <a href="../Typealiases.html">Type Aliases</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:7Bluejay17RestoreIdentifiera">RestoreIdentifier</a>
+              </li>
+            </ul>
+          </li>
         </ul>
       </nav>
       <article class="main-content">
@@ -173,9 +181,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7BluejayAAC4uuid10Foundation4UUIDVv"></a>
+                    <a name="/s:7BluejayAAC4uuid10Foundation4UUIDVvp"></a>
                     <a name="//apple_ref/swift/Property/uuid" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7BluejayAAC4uuid10Foundation4UUIDVv">uuid</a>
+                    <a class="token" href="#/s:7BluejayAAC4uuid10Foundation4UUIDVvp">uuid</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -200,9 +208,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7BluejayAAC20isBluetoothAvailableSbv"></a>
+                    <a name="/s:7BluejayAAC20isBluetoothAvailableSbvp"></a>
                     <a name="//apple_ref/swift/Property/isBluetoothAvailable" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7BluejayAAC20isBluetoothAvailableSbv">isBluetoothAvailable</a>
+                    <a class="token" href="#/s:7BluejayAAC20isBluetoothAvailableSbvp">isBluetoothAvailable</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -227,9 +235,37 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7BluejayAAC12isConnectingSbv"></a>
+                    <a name="/s:7BluejayAAC30isBluetoothStateUpdateImminentSbvp"></a>
+                    <a name="//apple_ref/swift/Property/isBluetoothStateUpdateImminent" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7BluejayAAC30isBluetoothStateUpdateImminentSbvp">isBluetoothStateUpdateImminent</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Allows checking for if CoreBluetooth state is transitional (update is imminent)
+please re-evaluate the bluetooth state again as it may change momentarily after it has returned true</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">isBluetoothStateUpdateImminent</span><span class="p">:</span> <span class="kt">Bool</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7BluejayAAC12isConnectingSbvp"></a>
                     <a name="//apple_ref/swift/Property/isConnecting" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7BluejayAAC12isConnectingSbv">isConnecting</a>
+                    <a class="token" href="#/s:7BluejayAAC12isConnectingSbvp">isConnecting</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -254,9 +290,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7BluejayAAC11isConnectedSbv"></a>
+                    <a name="/s:7BluejayAAC11isConnectedSbvp"></a>
                     <a name="//apple_ref/swift/Property/isConnected" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7BluejayAAC11isConnectedSbv">isConnected</a>
+                    <a class="token" href="#/s:7BluejayAAC11isConnectedSbvp">isConnected</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -281,9 +317,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7BluejayAAC15isDisconnectingSbv"></a>
+                    <a name="/s:7BluejayAAC15isDisconnectingSbvp"></a>
                     <a name="//apple_ref/swift/Property/isDisconnecting" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7BluejayAAC15isDisconnectingSbv">isDisconnecting</a>
+                    <a class="token" href="#/s:7BluejayAAC15isDisconnectingSbvp">isDisconnecting</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -308,9 +344,36 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7BluejayAAC10isScanningSbv"></a>
+                    <a name="/s:7BluejayAAC19shouldAutoReconnectSbvp"></a>
+                    <a name="//apple_ref/swift/Property/shouldAutoReconnect" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7BluejayAAC19shouldAutoReconnectSbvp">shouldAutoReconnect</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Allowing or disallowing automatic reconnection attempts after an unexpected disconnection. Default is true, and Bluejay will also always set this to true on a successful connection to a peripheral.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">shouldAutoReconnect</span> <span class="o">=</span> <span class="kc">true</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7BluejayAAC10isScanningSbvp"></a>
                     <a name="//apple_ref/swift/Property/isScanning" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7BluejayAAC10isScanningSbv">isScanning</a>
+                    <a class="token" href="#/s:7BluejayAAC10isScanningSbvp">isScanning</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -326,6 +389,33 @@
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">isScanning</span><span class="p">:</span> <span class="kt">Bool</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7BluejayAAC10hasStartedSbvp"></a>
+                    <a name="//apple_ref/swift/Property/hasStarted" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7BluejayAAC10hasStartedSbvp">hasStarted</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Allows checking whether Bluejay has started and is available for use.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">hasStarted</span><span class="p">:</span> <span class="kt">Bool</span></code></pre>
 
                         </div>
                       </div>
@@ -373,9 +463,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7BluejayAAC5startyAA18ConnectionObserver_pSg010connectionD0_AA21BackgroundRestoreModeO010backgroundG0tF"></a>
-                    <a name="//apple_ref/swift/Method/start(connectionObserver:backgroundRestore:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7BluejayAAC5startyAA18ConnectionObserver_pSg010connectionD0_AA21BackgroundRestoreModeO010backgroundG0tF">start(connectionObserver:backgroundRestore:)</a>
+                    <a name="/s:7BluejayAAC5startyAA18ConnectionObserver_pSg010connectionD0_AA21BackgroundRestoreModeO010backgroundG0So16CBCentralManagerC7manager_So12CBPeripheralCSg10peripheraltSg18coreBluetoothStatetF"></a>
+                    <a name="//apple_ref/swift/Method/start(connectionObserver:backgroundRestore:coreBluetoothState:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7BluejayAAC5startyAA18ConnectionObserver_pSg010connectionD0_AA21BackgroundRestoreModeO010backgroundG0So16CBCentralManagerC7manager_So12CBPeripheralCSg10peripheraltSg18coreBluetoothStatetF">start(connectionObserver:backgroundRestore:coreBluetoothState:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -392,7 +482,8 @@
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">start</span><span class="p">(</span>
     <span class="n">connectionObserver</span> <span class="nv">observer</span><span class="p">:</span> <span class="kt"><a href="../Protocols/ConnectionObserver.html">ConnectionObserver</a></span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span>
-    <span class="n">backgroundRestore</span> <span class="nv">restoreMode</span><span class="p">:</span> <span class="kt"><a href="../Enums/BackgroundRestoreMode.html">BackgroundRestoreMode</a></span> <span class="o">=</span> <span class="o">.</span><span class="n">disable</span>
+    <span class="n">backgroundRestore</span> <span class="nv">restoreMode</span><span class="p">:</span> <span class="kt"><a href="../Enums/BackgroundRestoreMode.html">BackgroundRestoreMode</a></span> <span class="o">=</span> <span class="o">.</span><span class="n">disable</span><span class="p">,</span>
+    <span class="nv">coreBluetoothState</span><span class="p">:</span> <span class="p">(</span><span class="nv">manager</span><span class="p">:</span> <span class="kt">CBCentralManager</span><span class="p">,</span> <span class="nv">peripheral</span><span class="p">:</span> <span class="kt">CBPeripheral</span><span class="p">?)?</span> <span class="o">=</span> <span class="kc">nil</span>
     <span class="p">)</span></code></pre>
 
                         </div>
@@ -425,8 +516,56 @@
                                 </div>
                               </td>
                             </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>coreBluetoothState</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Allows starting Bluejay with an existing Core Bluetooth manager and peripheral.</p>
+                                </div>
+                              </td>
+                            </tr>
                           </tbody>
                         </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7BluejayAAC28stopAndExtractBluetoothStateSo16CBCentralManagerC7manager_So12CBPeripheralCSg10peripheraltyF"></a>
+                    <a name="//apple_ref/swift/Method/stopAndExtractBluetoothState()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7BluejayAAC28stopAndExtractBluetoothStateSo16CBCentralManagerC7manager_So12CBPeripheralCSg10peripheraltyF">stopAndExtractBluetoothState()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Stops all operations and clears all states in Bluejay before returning a Core Bluetooth state that can then be used by another library or code outside of Bluejay.</p>
+<div class="aside aside-warning">
+    <p class="aside-title">Warning</p>
+    Will crash if Bluejay has not been instantiated properly or if Bluejay is still connecting.
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">stopAndExtractBluetoothState</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="nv">manager</span><span class="p">:</span> <span class="kt">CBCentralManager</span><span class="p">,</span> <span class="nv">peripheral</span><span class="p">:</span> <span class="kt">CBPeripheral</span><span class="p">?)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>Returns a CBCentralManager and possibly a CBPeripheral as well if there was one connected at the time of this call.</p>
                       </div>
                     </section>
                   </div>
@@ -445,9 +584,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7BluejayAAC16cancelEverythingys5Error_pSgF"></a>
-                    <a name="//apple_ref/swift/Method/cancelEverything(_:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7BluejayAAC16cancelEverythingys5Error_pSgF">cancelEverything(_:)</a>
+                    <a name="/s:7BluejayAAC16cancelEverythingys5Error_pSg_SbSg13autoReconnecttF"></a>
+                    <a name="//apple_ref/swift/Method/cancelEverything(_:autoReconnect:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7BluejayAAC16cancelEverythingys5Error_pSg_SbSg13autoReconnecttF">cancelEverything(_:autoReconnect:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -456,13 +595,18 @@
                       <div class="pointer"></div>
                       <div class="abstract">
                         <p>This will cancel the current and all pending operations in the Bluejay queue, as well as stop any ongoing scan, and disconnect any connected peripheral.</p>
+<div class="aside aside-warning">
+    <p class="aside-title">Warning</p>
+    <p>By default, Bluejay will still attempt to auto reconnect after calling this function. You can disable that behaviour by setting the <code>autoReconnect</code> parameter to false, or by setting <code><a href="../Classes/Bluejay.html#/s:7BluejayAAC19shouldAutoReconnectSbvp">shouldAutoReconnect</a></code> to false before running this function.</p>
+
+</div>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">cancelEverything</span><span class="p">(</span><span class="n">_</span> <span class="nv">error</span><span class="p">:</span> <span class="kt">Error</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">cancelEverything</span><span class="p">(</span><span class="n">_</span> <span class="nv">error</span><span class="p">:</span> <span class="kt">Error</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">autoReconnect</span><span class="p">:</span> <span class="kt">Bool</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -479,6 +623,18 @@
                               <td>
                                 <div>
                                   <p>If nil, all tasks in the queue will be cancelled without any errors. If an error is provided, all tasks in the queue will be failed with the supplied error.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>autoReconnect</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Explicitly tells Bluejay whether it should attempt to auto reconnect after everything is cancelled.</p>
                                 </div>
                               </td>
                             </tr>
@@ -567,7 +723,7 @@
                               </td>
                               <td>
                                 <div>
-                                  <p></p>
+                                  <p>object interested in receiving Bluejay&rsquo;s Bluetooth connection related events.</p>
                                 </div>
                               </td>
                             </tr>
@@ -613,7 +769,7 @@
                               </td>
                               <td>
                                 <div>
-                                  <p></p>
+                                  <p>object no longer interested in receiving Bleujay&rsquo;s connection related events.</p>
                                 </div>
                               </td>
                             </tr>
@@ -788,9 +944,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7BluejayAAC7connectyAA20PeripheralIdentifierV_AA17ConnectionTimeoutO7timeoutyAA0E6ResultOc10completiontF"></a>
+                    <a name="/s:7BluejayAAC7connectyAA20PeripheralIdentifierV_AA7TimeoutO7timeoutyAA16ConnectionResultOc10completiontF"></a>
                     <a name="//apple_ref/swift/Method/connect(_:timeout:completion:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7BluejayAAC7connectyAA20PeripheralIdentifierV_AA17ConnectionTimeoutO7timeoutyAA0E6ResultOc10completiontF">connect(_:timeout:completion:)</a>
+                    <a class="token" href="#/s:7BluejayAAC7connectyAA20PeripheralIdentifierV_AA7TimeoutO7timeoutyAA16ConnectionResultOc10completiontF">connect(_:timeout:completion:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -805,7 +961,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">connect</span><span class="p">(</span><span class="n">_</span> <span class="nv">peripheralIdentifier</span><span class="p">:</span> <span class="kt"><a href="../Structs/PeripheralIdentifier.html">PeripheralIdentifier</a></span><span class="p">,</span> <span class="nv">timeout</span><span class="p">:</span> <span class="kt"><a href="../Enums/ConnectionTimeout.html">ConnectionTimeout</a></span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt"><a href="../Enums/ConnectionResult.html">ConnectionResult</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">connect</span><span class="p">(</span><span class="n">_</span> <span class="nv">peripheralIdentifier</span><span class="p">:</span> <span class="kt"><a href="../Structs/PeripheralIdentifier.html">PeripheralIdentifier</a></span><span class="p">,</span> <span class="nv">timeout</span><span class="p">:</span> <span class="kt"><a href="../Enums/Timeout.html">Timeout</a></span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt"><a href="../Enums/ConnectionResult.html">ConnectionResult</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -1214,6 +1370,52 @@
                     </section>
                   </div>
                 </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7BluejayAAC11isListeningSbAA24CharacteristicIdentifierV2to_tKF"></a>
+                    <a name="//apple_ref/swift/Method/isListening(to:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7BluejayAAC11isListeningSbAA24CharacteristicIdentifierV2to_tKF">isListening(to:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Check if a peripheral is listening to a specific characteristic.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">isListening</span><span class="p">(</span><span class="n">to</span> <span class="nv">characteristicIdentifier</span><span class="p">:</span> <span class="kt"><a href="../Structs/CharacteristicIdentifier.html">CharacteristicIdentifier</a></span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">Bool</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>to</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The characteristic we want to check.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
               </ul>
             </div>
             <div class="task-group">
@@ -1572,7 +1774,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>When connected, update Bluejay&rsquo;s states by updating the values for <code>connectingPeripheral</code>, <code>connectedPeripheral</code>, and <code>shouldAutoReconnect</code>. Also, make sure to broadcast the event to observers, and notify the queue so that the current operation in-flight can process this event and get a chance to finish.</p>
+                        <p>When connected, update Bluejay&rsquo;s states by updating the values for <code>connectingPeripheral</code>, <code>connectedPeripheral</code>, and <code><a href="../Classes/Bluejay.html#/s:7BluejayAAC19shouldAutoReconnectSbvp">shouldAutoReconnect</a></code>. Also, make sure to broadcast the event to observers, and notify the queue so that the current operation in-flight can process this event and get a chance to finish.</p>
 
                       </div>
                       <div class="declaration">

@@ -14,7 +14,7 @@
     <a title="Peripheral Class Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="../index.html">Bluejay Docs</a> (95% documented)</p>
+        <p><a href="../index.html">Bluejay Docs</a> (94% documented)</p>
         <p class="header-right"><a href="https://github.com/steamclock/bluejay"><img src="../img/gh.png"/>View on GitHub</a></p>
       </div>
     </header>
@@ -55,9 +55,6 @@
                 <a href="../Enums/ConnectionResult.html">ConnectionResult</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Enums/ConnectionTimeout.html">ConnectionTimeout</a>
-              </li>
-              <li class="nav-group-task">
                 <a href="../Enums/DisconnectionResult.html">DisconnectionResult</a>
               </li>
               <li class="nav-group-task">
@@ -71,6 +68,9 @@
               </li>
               <li class="nav-group-task">
                 <a href="../Enums/ScanAction.html">ScanAction</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/Timeout.html">Timeout</a>
               </li>
               <li class="nav-group-task">
                 <a href="../Enums/WriteResult.html">WriteResult</a>
@@ -143,6 +143,14 @@
               </li>
             </ul>
           </li>
+          <li class="nav-group-name">
+            <a href="../Typealiases.html">Type Aliases</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:7Bluejay17RestoreIdentifiera">RestoreIdentifier</a>
+              </li>
+            </ul>
+          </li>
         </ul>
       </nav>
       <article class="main-content">
@@ -171,9 +179,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7Bluejay10PeripheralC4uuidAA0B10IdentifierVv"></a>
+                    <a name="/s:7Bluejay10PeripheralC4uuidAA0B10IdentifierVvp"></a>
                     <a name="//apple_ref/swift/Property/uuid" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7Bluejay10PeripheralC4uuidAA0B10IdentifierVv">uuid</a>
+                    <a class="token" href="#/s:7Bluejay10PeripheralC4uuidAA0B10IdentifierVvp">uuid</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -198,9 +206,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7Bluejay10PeripheralC4nameSSSgv"></a>
+                    <a name="/s:7Bluejay10PeripheralC4nameSSSgvp"></a>
                     <a name="//apple_ref/swift/Property/name" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7Bluejay10PeripheralC4nameSSSgv">name</a>
+                    <a class="token" href="#/s:7Bluejay10PeripheralC4nameSSSgvp">name</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -489,6 +497,44 @@ Currently this can also cancel a regular in-progress read as well, but that beha
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">restoreListen</span><span class="o">&lt;</span><span class="kt">R</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Receivable.html">Receivable</a></span><span class="o">&gt;</span><span class="p">(</span><span class="n">to</span> <span class="nv">characteristicIdentifier</span><span class="p">:</span> <span class="kt"><a href="../Structs/CharacteristicIdentifier.html">CharacteristicIdentifier</a></span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt"><a href="../Enums/ReadResult.html">ReadResult</a></span><span class="o">&lt;</span><span class="kt">R</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Listen%20Caching"></a>
+                <a name="//apple_ref/swift/Section/Listen Caching" class="dashAnchor"></a>
+                <a href="#/Listen%20Caching">
+                  <h3 class="section-name">Listen Caching</h3>
+                </a>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7Bluejay10PeripheralC23maximumWriteValueLengthSiSC016CBCharacteristicD4TypeO3for_tF"></a>
+                    <a name="//apple_ref/swift/Method/maximumWriteValueLength(for:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Bluejay10PeripheralC23maximumWriteValueLengthSiSC016CBCharacteristicD4TypeO3for_tF">maximumWriteValueLength(for:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">maximumWriteValueLength</span><span class="p">(</span><span class="err">`</span><span class="k">for</span><span class="err">`</span> <span class="nv">writeType</span><span class="p">:</span> <span class="kt">CBCharacteristicWriteType</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Int</span></code></pre>
 
                         </div>
                       </div>
