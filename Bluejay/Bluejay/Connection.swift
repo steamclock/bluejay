@@ -16,7 +16,9 @@ var standardConnectOptions: [String : AnyObject] = [
 
 /// Types of connection time outs. Can specify a time out in seconds, or no time out.
 public enum Timeout {
+    /// Specify a timeout with a duration in seconds.
     case seconds(TimeInterval)
+    /// Specify there is no timeout.
     case none
 }
 

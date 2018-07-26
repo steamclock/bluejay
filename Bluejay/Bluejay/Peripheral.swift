@@ -357,6 +357,7 @@ public class Peripheral: NSObject {
         }
     }
     
+    /// Ask for the peripheral's maximum payload length in bytes for a single write request.
     public func maximumWriteValueLength(`for` writeType: CBCharacteristicWriteType) -> Int {
         return cbPeripheral.maximumWriteValueLength(for: writeType)
     }
@@ -366,18 +367,22 @@ public class Peripheral: NSObject {
 
 extension Peripheral: CBPeripheralDelegate {
     
+    /// Captures CoreBluetooth's did discover services event and pass it to Bluejay's queue for processing.
     public func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
         handleEvent(.didDiscoverServices, error: error as NSError?)
     }
     
+    /// Captures CoreBluetooth's did discover characteristics event and pass it to Bluejay's queue for processing.
     public func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
         handleEvent(.didDiscoverCharacteristics, error: error as NSError?)
     }
     
+    /// Captures CoreBluetooth's did write to charactersitic event and pass it to Bluejay's queue for processing.
     public func peripheral(_ peripheral: CBPeripheral, didWriteValueFor characteristic: CBCharacteristic, error: Error?) {
         handleEvent(.didWriteCharacteristic(characteristic), error: error as NSError?)
     }
     
+    /// Captures CoreBluetooth's did receive a notification/value from a characteristic event and pass it to Bluejay's queue for processing.
     public func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
         guard let bluejay = bluejay else {
             preconditionFailure("Cannot handle did update value for \(characteristic.uuid.uuidString): Bluejay is nil.")
@@ -408,10 +413,12 @@ extension Peripheral: CBPeripheralDelegate {
         }
     }
     
+    /// Captures CoreBluetooth's did turn on or off notification/listening on a characteristic event and pass it to Bluejay's queue for processing.
     public func peripheral(_ peripheral: CBPeripheral, didUpdateNotificationStateFor characteristic: CBCharacteristic, error: Error?) {
         handleEvent(.didUpdateCharacteristicNotificationState(characteristic), error: error as NSError?)
     }
     
+    /// Captures CoreBluetooth's did read RSSI event and pass it to Bluejay's queue for processing.
     public func peripheral(_ peripheral: CBPeripheral, didReadRSSI RSSI: NSNumber, error: Error?) {
         for observer in observers {
             observer.weakReference?.peripheral(peripheral, didReadRSSI: RSSI, error: error)

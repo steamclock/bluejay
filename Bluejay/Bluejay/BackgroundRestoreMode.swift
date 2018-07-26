@@ -26,4 +26,5 @@ public enum BackgroundRestoreMode {
     case enableWithListenRestorer(RestoreIdentifier, ListenRestorer)
 }
 
+/// An alias to make it clearer that the string should be some kind of identifier for restoration, and not just any arbitrary string.
 public typealias RestoreIdentifier = String

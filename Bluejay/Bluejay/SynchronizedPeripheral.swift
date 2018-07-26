@@ -484,6 +484,7 @@ public class SynchronizedPeripheral {
         }
     }
     
+    /// Ask for the peripheral's maximum payload length in bytes for a single write request.
     public func maximumWriteValueLength(`for` writeType: CBCharacteristicWriteType) -> Int {
         return parent.maximumWriteValueLength(for: writeType)
     }
