@@ -25,6 +25,10 @@ Bluejay's primary goals are:
   - [Services and Characteristics](#services-and-characteristics)
   - [Scanning](#scanning)
   - [Connecting](#connecting)
+    - [Disconnect](#disconnect)
+    - [Timeouts](#timeouts)
+    - [Connection States](#connection-states)
+    - [Auto Reconnect](#auto-reconnect)
 - [Deserialization and Serialization](#deserialization-and-serialization)
   - [Receivable](#receivable)
   - [Sendable](#sendable)
@@ -40,6 +44,7 @@ Bluejay's primary goals are:
   - [Connect by Serial Number](#connect-by-serial-number)
   - [Write and Assemble](#write-and-assemble)
   - [Flush Listen](#flush-listen)
+  - [CoreBluetooth Migration](#corebluetooth-migration)
 
 ## Features
 
@@ -61,7 +66,7 @@ Bluejay's primary goals are:
 
 Install using CocoaPods:
 
-`pod 'Bluejay', '~> 0.3'`
+`pod 'Bluejay', '~> 0.6'`
 
 Or to try the latest master:
 
@@ -69,7 +74,7 @@ Or to try the latest master:
 
 Cartfile:
 
-`github "steamclock/bluejay" ~> 0.3`
+`github "steamclock/bluejay" ~> 0.6`
 
 Import using:
 
@@ -79,7 +84,7 @@ import Bluejay
 
 ## Demo
 
-The iOS Simulator does not simulate Bluetooth. You may not have a Bluetooth LE peripheral handy, so we recommend trying Bluejay using a BLE peripheral simulator such as the [LightBlue Explorer App](https://itunes.apple.com/ca/app/lightblue-explorer-bluetooth/id557428110?mt=8).
+The iOS Simulator does not simulate Bluetooth. You may not have a debuggable Bluetooth LE peripheral handy, so we recommend trying Bluejay using a BLE peripheral simulator such as the [LightBlue Explorer App](https://itunes.apple.com/ca/app/lightblue-explorer-bluetooth/id557428110?mt=8).
 
 Bluejay has a demo app called **BluejayDemo** that works with LightBlue Explorer. To see it in action:
 
@@ -120,9 +125,11 @@ Bluejay needs to be started explicitly in order to support Core Bluetooth's Stat
 
 If you want to support [Background Mode](https://developer.apple.com/library/content/documentation/NetworkingInternetWeb/Conceptual/CoreBluetooth_concepts/CoreBluetoothBackgroundProcessingForIOSApps/PerformingTasksWhileYourAppIsInTheBackground.html#//apple_ref/doc/uid/TP40013257-CH7-SW1) and [State Restoration](https://developer.apple.com/library/content/documentation/NetworkingInternetWeb/Conceptual/CoreBluetooth_concepts/CoreBluetoothBackgroundProcessingForIOSApps/PerformingTasksWhileYourAppIsInTheBackground.html#//apple_ref/doc/uid/TP40013257-CH7-SW10) in your app, [it will take some extra work](#background-operation), which is necessary for Bluetooth apps that do work in the background.
 
+Bluejay also supports [CoreBluetooth Migration](#corebluetooth-migration) for working with other Bluetooth libraries or your own.
+
 ### Bluetooth Events
 
-The `ConnectionObserver` protocol allows a class to monitor and respond to major Bluetooth and connection-related events:
+The `ConnectionObserver` protocol allows a class to monitor and to respond to major Bluetooth and connection-related events:
 
 ```swift
 public protocol ConnectionObserver: class {
@@ -144,7 +151,7 @@ Or you can add additional observers later using:
 bluejay.register(observer: batteryLabel)
 ```
 
-Unregistering an observer is not necessary, because Bluejay only holds weak references to registered observers. But if you need to do so, you can:
+Unregistering an observer is not necessary, because Bluejay only holds weak references to registered observers, and Bluejay will clear nil observers from its list when they are found at the next event. But if you need to do so before that happens, you can use:
 
 ```swift
 bluejay.unregister(observer: rssiLabel)
@@ -199,7 +206,7 @@ bluejay.scan(
 
 A scan result `(ScanDiscovery, [ScanDiscovery])` contains the current discovery followed by an array of all the discoveries made so far.
 
-The stopped result contains all the discoveries made, and an error if there is one.
+The stopped result contains a final list of discoveries available just before stopping, and an error if there is one.
 
 #### Scan Action
 
@@ -224,6 +231,7 @@ Another useful way to use the scanning API is to monitor the RSSI changes of nea
 
 ```swift
 bluejay.scan(
+    duration: 5,
     allowDuplicates: true,
     serviceIdentifiers: nil,
     discovery: { [weak self] (discovery, discoveries) -> ScanAction in
@@ -263,7 +271,7 @@ Setting `allowDuplicates` to true will stop coalescing multiple discoveries of t
 
 The `expired` callback is only invoked when `allowDuplicates` is true. This is called when Bluejay estimates that a previously discovered peripheral is likely out of range or no longer broadcasting. Essentially, when `allowDuplicates` is set to true, every time a peripheral is discovered a long timer associated with that peripheral starts counting down. If that peripheral is within range, and even if it has a slow broadcasting interval, it is likely that peripheral will be picked up by Core Bluetooth again and cause the timer to refresh. If not, it may be gone. Be aware that this is an estimation.
 
-Finally, passing `nil` for the service identifiers will result in picking up all available Bluetooth peripherals in the vicinity. This consumes substantially more battery, and again, does not work in the background.
+**Warning**: Setting `serviceIdentifiers` to `nil` will result in picking up all available Bluetooth peripherals in the vicinity, **but is not recommended by Apple**. It may cause battery and cpu issues on prolonged scanning, and **it also doesn't work in the background**. It is not a private API call, but an available option for situations where you need a quick solution, such as when experimenting or testing. Specifying at least one specific service identifier is the most common way to scan for Bluetooth devices in iOS. If you need to scan for all Bluetooth devices, we recommend making use of the `duration` parameter to stop the scan after 5 ~ 10 seconds to avoid scanning indefinitely and overloading the hardware.
 
 ### Connecting
 
@@ -288,6 +296,8 @@ bluejay.connect(peripheralIdentifier) { [weak self] (result) in
 }
 ```
 
+#### Disconnect
+
 To disconnect:
 
 ```swift
@@ -309,6 +319,19 @@ bluejay.disconnect { (result) in
 }
 ```
 
+#### Timeouts
+
+You can also specify a timeout for a connection request, default is no timeout:
+
+```swift
+bluejay.connect(peripheralIdentifier, timeout: .seconds(15)) { ... }
+
+public enum Timeout {
+    case seconds(TimeInterval)
+    case none
+}
+```
+
 #### Connection States
 
 Your Bluejay instance has these properties to help you make connection-related decisions:
@@ -317,7 +340,21 @@ Your Bluejay instance has these properties to help you make connection-related d
 - `isConnecting`
 - `isConnected`
 - `isDisconnecting`
+- `shouldAutoReconnect`
 - `isScanning`
+
+#### Auto Reconnect
+
+By default, `shouldAutoReconnect` is `true` and Bluejay will always try to automatically reconnect after an unexpected disconnection.
+
+Bluejay will only set `shouldAutoReconnect` to `false` under these circumstances:
+
+1. If you manually call `disconnect` and the disconnection is successful.
+2. If you manually call `cancelEverything` and set the parameter `autoReconnect` to `false`.
+
+Bluejay will also **always** reset `shouldAutoReconnect` to `true` on a successful connection to a peripheral, as we usually want to reconnect to the same device as soon as possible if a connection is lost unexpectedly during normal usage.
+
+However, there are some cases where auto reconnect is not desired. Keeping the above default behaviors in mind, you can manually set the `shouldAutoReconnect` variable to control when and whether Bluejay should automatically attempt to reconnect.
 
 ## Deserialization and Serialization
 
@@ -810,6 +847,22 @@ try peripheral.flushListen(to: Characteristics.rigadoRX, idleWindow: 1, completi
 ```
 
 The `idleWindow` is in seconds, and basically specifies the duration of the absence of incoming data needed to predict that the flush is most likely completed. Note that this is still an estimation. Depending on your Bluetooth hardware and usage environments and conditions, a longer window might be necessary.
+
+### CoreBluetooth Migration
+
+If you want to start Bluejay with a pre-existing CoreBluetooth stack, you can do so using the `coreBluetoothState` parameter available in the `start` function.
+
+```swift
+coreBluetoothState: (manager: CBCentralManager, peripheral: CBPeripheral?)? = nil
+```
+
+You can also transfer Bluejay's CoreBluetooth stack to another Bluetooth library or your own using this function:
+
+```swift
+public func stopAndExtractBluetoothState() -> (manager: CBCentralManager, peripheral: CBPeripheral?)
+```
+
+Finally, you can check whether Bluejay has been started or stopped using the `hasStarted` property.
 
 ## API Documentation
 

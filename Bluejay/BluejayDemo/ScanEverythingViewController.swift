@@ -35,6 +35,7 @@ class ScanEverythingViewController: UITableViewController {
     
     private func startScanning() {
         bluejay.scan(
+            duration: 5,
             allowDuplicates: true,
             serviceIdentifiers: nil,
             discovery: { [weak self] (discovery, discoveries) -> ScanAction in
