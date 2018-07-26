@@ -30,9 +30,6 @@ public class Bluejay: NSObject {
     /// Reference to a peripheral that is connected. If this is nil, then the peripheral should either be disconnected or still connecting. This is used to help determine the state of the peripheral's connection.
     private var connectedPeripheral: Peripheral?
     
-    /// Allowing or disallowing reconnection attempts upon a disconnection. It should only be set to false after an explicit and expected disconnection.
-    private var shouldAutoReconnect = true
-    
     /// Reference to the background task used for supporting state restoration.
     private var startupBackgroundTask: UIBackgroundTaskIdentifier = UIBackgroundTaskInvalid
     
@@ -90,6 +87,9 @@ public class Bluejay: NSObject {
     
     /// Allows checking whether Bluejay is currently disconnecting from a peripheral.
     public var isDisconnecting: Bool = false
+    
+    /// Allowing or disallowing automatic reconnection attempts after an unexpected disconnection. Default is true, and Bluejay will also always set this to true on a successful connection to a peripheral.
+    public var shouldAutoReconnect = true
     
     /// Allows checking whether Bluejay is currently scanning.
     public var isScanning: Bool {
