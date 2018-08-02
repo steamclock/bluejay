@@ -312,6 +312,8 @@ public class Bluejay: NSObject {
     
     /**
      Scan for the peripheral(s) specified.
+
+     - Warning: Setting `serviceIdentifiers` to `nil` will result in picking up all available Bluetooth peripherals in the vicinity, **but is not recommended by Apple**. It may cause battery and cpu issues on prolonged scanning, and **it also doesn't work in the background**. If you need to scan for all Bluetooth devices, we recommend making use of the `duration` parameter to stop the scan after 5 ~ 10 seconds to avoid scanning indefinitely and overloading the hardware.
      
      - Parameters:
         - duration: Stops the scan when the duration in seconds is reached. Defaults to zero (indefinite).
