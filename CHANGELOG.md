@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.6.4] - 2018-08-02
+### Added
+- Added warnings against using `scan` with `serviceIdentifiers` set to `nil` or empty. 
+
 ## [0.6.3] - 2018-07-26
 ### Added
 - Add API to check whether a peripheral is listening to a characteristic
