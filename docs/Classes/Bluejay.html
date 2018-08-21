@@ -804,6 +804,11 @@ please re-evaluate the bluetooth state again as it may change momentarily after 
                       <div class="pointer"></div>
                       <div class="abstract">
                         <p>Scan for the peripheral(s) specified.</p>
+<div class="aside aside-warning">
+    <p class="aside-title">Warning</p>
+    <p>Setting <code>serviceIdentifiers</code> to <code>nil</code> will result in picking up all available Bluetooth peripherals in the vicinity, <strong>but is not recommended by Apple</strong>. It may cause battery and cpu issues on prolonged scanning, and <strong>it also doesn&rsquo;t work in the background</strong>. If you need to scan for all Bluetooth devices, we recommend making use of the <code>duration</code> parameter to stop the scan after 5 ~ 10 seconds to avoid scanning indefinitely and overloading the hardware.</p>
+
+</div>
 
                       </div>
                       <div class="declaration">

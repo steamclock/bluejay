@@ -424,6 +424,7 @@ struct WriteRequest: Sendable {
         let command = UInt8(0x02)
         let handleInBigEndian = handle.bigEndian
 
+        // The crc16CCITT function is a custom extension not available in either NSData nor Bluejay. It is included here just for demonstration purposes.
         let crc = (Bluejay.combine(sendables: [command, handleInBigEndian, data]) as NSData).crc16CCITT
 
         let request = Bluejay.combine(sendables: [

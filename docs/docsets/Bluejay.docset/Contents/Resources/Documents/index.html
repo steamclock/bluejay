@@ -564,6 +564,7 @@
         <span class="k">let</span> <span class="nv">command</span> <span class="o">=</span> <span class="kt">UInt8</span><span class="p">(</span><span class="mh">0x02</span><span class="p">)</span>
         <span class="k">let</span> <span class="nv">handleInBigEndian</span> <span class="o">=</span> <span class="n">handle</span><span class="o">.</span><span class="n">bigEndian</span>
 
+        <span class="c1">// The crc16CCITT function is a custom extension not available in either NSData nor Bluejay. It is included here just for demonstration purposes.</span>
         <span class="k">let</span> <span class="nv">crc</span> <span class="o">=</span> <span class="p">(</span><span class="kt">Bluejay</span><span class="o">.</span><span class="nf">combine</span><span class="p">(</span><span class="nv">sendables</span><span class="p">:</span> <span class="p">[</span><span class="n">command</span><span class="p">,</span> <span class="n">handleInBigEndian</span><span class="p">,</span> <span class="n">data</span><span class="p">])</span> <span class="k">as</span> <span class="kt">NSData</span><span class="p">)</span><span class="o">.</span><span class="n">crc16CCITT</span>
 
         <span class="k">let</span> <span class="nv">request</span> <span class="o">=</span> <span class="kt">Bluejay</span><span class="o">.</span><span class="nf">combine</span><span class="p">(</span><span class="nv">sendables</span><span class="p">:</span> <span class="p">[</span>
