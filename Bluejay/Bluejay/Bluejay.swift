@@ -232,7 +232,17 @@ public class Bluejay: NSObject {
             log("Warning: It appears your app has not enabled background support for Bluetooth properly. Please make sure the capability, Background Modes, is turned on, and the setting, Uses Bluetooth LE accessories, is checked in your Xcode project.")
         }
     }
-    
+
+    /**
+     This method can be used to set the standardConnectOptions used by the Connection to initialize a CBCentralManager
+
+     - Parameters:
+        - options: The options to use for the initialization
+     */
+    public func setCentralManagerStandardConnectOptions(options: [String : AnyObject]) {
+        standardConnectOptions = options
+    }
+
     // MARK: - Cancellation
     
     /**
