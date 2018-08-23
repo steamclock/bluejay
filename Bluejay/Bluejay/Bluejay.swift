@@ -43,7 +43,13 @@ public class Bluejay: NSObject {
     private var isRunningBackgroundTask = false
     
     private var disconnectCleanUp: (() -> Void)?
-    
+
+    /// The options used to initialize the CBCentralManager
+    private var connectionInitializationOptions: [ConnectionOption : AnyObject] = [
+        .notifyOnConnection: true as AnyObject,
+        .notifyOnDisconnection: true as AnyObject
+    ]
+
     // MARK: - Internal Properties
     
     /// Contains the operations to execute in FIFO order.
@@ -101,7 +107,11 @@ public class Bluejay: NSObject {
     public var hasStarted: Bool {
         return cbCentralManager != nil
     }
-    
+
+    public var connectionOptions: [ConnectionOption : AnyObject] {
+        return connectionInitializationOptions
+    }
+
     // MARK: - Initialization
     
     /**
@@ -234,13 +244,21 @@ public class Bluejay: NSObject {
     }
 
     /**
-     This method can be used to set the standardConnectOptions used by the Connection to initialize a CBCentralManager
+     This method can be used to set the connection options used by the Connection to initialize a CBCentralManager
+
+     - Warning:
+        - The keys need to be set either before the bluejay.connect(...) call is made or before bluejay.scan(...) if a connection is initialized there using the .connect(...) action
+        - The method just sets the options, there is no incremental adding of the new keys, so all old options will be lost
 
      - Parameters:
         - options: The options to use for the initialization
      */
-    public func setCentralManagerStandardConnectOptions(options: [String : AnyObject]) {
-        standardConnectOptions = options
+    public func setCentralManagerStandardConnectOptions(options: [ConnectionOption : AnyObject]) {
+        // Options can only be set before the connection request is made
+        // Also do not allow change after the connection process is started to prevent the getter to return values which are not used for the connection initialization
+        if !isConnected && !isConnecting {
+            connectionInitializationOptions = options
+        }
     }
 
     // MARK: - Cancellation
@@ -360,7 +378,8 @@ public class Bluejay: NSObject {
             discovery: discovery,
             expired: expired,
             stopped: stopped,
-            manager: cbCentralManager
+            manager: cbCentralManager,
+            connectionOptions: connectionOptions
         )
         
         queue.add(scanOperation)
@@ -414,7 +433,7 @@ public class Bluejay: NSObject {
         }
         
         if let cbPeripheral = cbCentralManager.retrievePeripherals(withIdentifiers: [peripheralIdentifier.uuid]).first {
-            queue.add(Connection(peripheral: cbPeripheral, manager: cbCentralManager, timeout: timeout, callback: completion))
+            queue.add(Connection(peripheral: cbPeripheral, manager: cbCentralManager, timeout: timeout, connectionOptions: connectionOptions, callback: completion))
         }
         else {
             completion(.failure(BluejayError.unexpectedPeripheral(peripheralIdentifier)))

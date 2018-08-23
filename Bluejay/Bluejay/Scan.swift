@@ -50,14 +50,18 @@ class Scan: Queueable {
     
     /// The timers used to estimate an expiry callback, indicating that the peripheral is potentially no longer accessible.
     private var timers = [(UUID, Timer)]()
-    
+
+    /// The options used to initialize the CBCentralManager for the connection (only used if a connection is created during scaning)
+    private var connectionOptions: [ConnectionOption : AnyObject] = [:]
+
     init(duration: TimeInterval,
          allowDuplicates: Bool,
          serviceIdentifiers: [ServiceIdentifier]?,
          discovery: @escaping (ScanDiscovery, [ScanDiscovery]) -> ScanAction,
          expired: ((ScanDiscovery, [ScanDiscovery]) -> ScanAction)?,
          stopped: @escaping ([ScanDiscovery], Error?) -> Void,
-         manager: CBCentralManager)
+         manager: CBCentralManager,
+         connectionOptions: [ConnectionOption : AnyObject])
     {
         self.state = .notStarted
         
@@ -68,6 +72,7 @@ class Scan: Queueable {
         self.expired = expired
         self.stopped = stopped
         self.manager = manager
+        self.connectionOptions = connectionOptions
 
         if serviceIdentifiers?.isEmpty != false {
             log("Warning: Setting `serviceIdentifiers` to `nil` is not recommended by Apple. It may cause battery and cpu issues on prolonged scanning, and **it also doesn't work in the background**. If you need to scan for all Bluetooth devices, we recommend making use of the `duration` parameter to stop the scan after 5 ~ 10 seconds to avoid scanning indefinitely and overloading the hardware.")
@@ -180,7 +185,7 @@ class Scan: Queueable {
                 
                 if let queue = queue {
                     if let cbPeripheral = manager.retrievePeripherals(withIdentifiers: [discovery.peripheralIdentifier.uuid]).first {
-                        queue.add(Connection(peripheral: cbPeripheral, manager: manager, timeout: timeout, callback: completion))
+                        queue.add(Connection(peripheral: cbPeripheral, manager: manager, timeout: timeout, connectionOptions: connectionOptions, callback: completion))
                     }
                     else {
                         completion(.failure(BluejayError.unexpectedPeripheral(discovery.peripheralIdentifier)))

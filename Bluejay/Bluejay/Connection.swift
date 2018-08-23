@@ -9,11 +9,6 @@
 import Foundation
 import CoreBluetooth
 
-var standardConnectOptions: [String : AnyObject] = [
-    CBConnectPeripheralOptionNotifyOnDisconnectionKey: true as AnyObject,
-    CBConnectPeripheralOptionNotifyOnConnectionKey: true as AnyObject
-]
-
 /// Types of connection time outs. Can specify a time out in seconds, or no time out.
 public enum Timeout {
     /// Specify a timeout with a duration in seconds.
@@ -39,11 +34,14 @@ class Connection: Queueable {
     
     /// Callback for the connection attempt.
     var callback: ((ConnectionResult) -> Void)?
-    
+
+    /// The options used to initialize the CBCentralManager for the connection
+    private var connectionOptions: [ConnectionOption : AnyObject] = [:]
+
     private var connectionTimer: Timer?
     private let timeout: Timeout?
     
-    init(peripheral: CBPeripheral, manager: CBCentralManager, timeout: Timeout, callback: @escaping (ConnectionResult) -> Void) {
+    init(peripheral: CBPeripheral, manager: CBCentralManager, timeout: Timeout, connectionOptions: [ConnectionOption : AnyObject], callback: @escaping (ConnectionResult) -> Void) {
         self.state = .notStarted
         
         self.peripheral = peripheral
@@ -52,11 +50,13 @@ class Connection: Queueable {
         self.timeout = timeout
         
         self.callback = callback
+
+        self.connectionOptions = connectionOptions
     }
     
     func start() {
         state = .running
-        manager.connect(peripheral, options: standardConnectOptions)
+        manager.connect(peripheral, options: connectionOptionsForCentralManager())
         
         cancelTimer()
         
@@ -166,5 +166,10 @@ class Connection: Queueable {
     @objc private func timedOut() {
         fail(BluejayError.connectionTimedOut)
     }
-    
+
+    private func connectionOptionsForCentralManager() -> [String : AnyObject] {
+        var options: [String : AnyObject] = [:]
+        connectionOptions.forEach { options[$0.key.coreBluetoothKey] = $0.value }
+        return options
+    }
 }

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2F74765D212E95F800D74B87 /* ConnectionOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F74765C212E95F800D74B87 /* ConnectionOptions.swift */; };
 		7677FF3A64A35BBC9125A87E /* Pods_Bluejay.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1460DB02323E612C0106BFE7 /* Pods_Bluejay.framework */; };
 		A771DD904B7377A554946587 /* Pods_BluejayDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8D160102397E85DC10B5ACF7 /* Pods_BluejayDemo.framework */; };
 		B8022D981E1EEED900EA360B /* WriteResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8022D971E1EEED900EA360B /* WriteResult.swift */; };
@@ -107,6 +108,7 @@
 
 /* Begin PBXFileReference section */
 		1460DB02323E612C0106BFE7 /* Pods_Bluejay.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Bluejay.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		2F74765C212E95F800D74B87 /* ConnectionOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionOptions.swift; sourceTree = "<group>"; };
 		4A0C82111DFB9F1235FECE79 /* Pods-BluejayDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BluejayDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BluejayDemo/Pods-BluejayDemo.debug.xcconfig"; sourceTree = "<group>"; };
 		6C7DA1388158BDFE6227706A /* Pods-BluejayDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BluejayDemo.release.xcconfig"; path = "Pods/Target Support Files/Pods-BluejayDemo/Pods-BluejayDemo.release.xcconfig"; sourceTree = "<group>"; };
 		8D160102397E85DC10B5ACF7 /* Pods_BluejayDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BluejayDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -244,6 +246,7 @@
 				B8F8C0EC1E4E7CA300A0D0F7 /* Disconnection.swift */,
 				B8C70FA21E1C65000006CF58 /* ConnectionResult.swift */,
 				B81E37721EDE238900E0655F /* DisconnectionResult.swift */,
+				2F74765C212E95F800D74B87 /* ConnectionOptions.swift */,
 			);
 			name = Connectivity;
 			sourceTree = "<group>";
@@ -721,6 +724,7 @@
 				B88A0DA31E1DD18B00A00FF8 /* ReadCharacteristic.swift in Sources */,
 				B8022D981E1EEED900EA360B /* WriteResult.swift in Sources */,
 				B89AA4881E30373D006BA376 /* Scan.swift in Sources */,
+				2F74765D212E95F800D74B87 /* ConnectionOptions.swift in Sources */,
 				B8FE9DF51E73597A00D361CE /* RSSIObserver.swift in Sources */,
 				B8B5708F1ED8AEAA00603C0B /* Data+Extractable.swift in Sources */,
 				B8C70FA91E1C69B60006CF58 /* Receivable.swift in Sources */,
