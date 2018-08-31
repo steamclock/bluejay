@@ -35,28 +35,25 @@ class Connection: Queueable {
     /// Callback for the connection attempt.
     var callback: ((ConnectionResult) -> Void)?
 
-    /// The options used to initialize the CBCentralManager for the connection
-    private var connectionOptions: [ConnectionOption : AnyObject] = [:]
+    /// The connection options to use for this particular connection.
+    let connectionOptions: [ConnectionOption]
 
     private var connectionTimer: Timer?
     private let timeout: Timeout?
     
-    init(peripheral: CBPeripheral, manager: CBCentralManager, timeout: Timeout, connectionOptions: [ConnectionOption : AnyObject], callback: @escaping (ConnectionResult) -> Void) {
+    init(peripheral: CBPeripheral, manager: CBCentralManager, timeout: Timeout, connectionOptions: [ConnectionOption], callback: @escaping (ConnectionResult) -> Void) {
         self.state = .notStarted
         
         self.peripheral = peripheral
         self.manager = manager
-        
         self.timeout = timeout
-        
-        self.callback = callback
-
         self.connectionOptions = connectionOptions
+        self.callback = callback
     }
     
     func start() {
         state = .running
-        manager.connect(peripheral, options: connectionOptionsForCentralManager())
+        manager.connect(peripheral, options: ConnectionOption.flatten(options: connectionOptions))
         
         cancelTimer()
         
@@ -166,10 +163,5 @@ class Connection: Queueable {
     @objc private func timedOut() {
         fail(BluejayError.connectionTimedOut)
     }
-
-    private func connectionOptionsForCentralManager() -> [String : AnyObject] {
-        var options: [String : AnyObject] = [:]
-        connectionOptions.forEach { options[$0.key.coreBluetoothKey] = $0.value }
-        return options
-    }
+    
 }

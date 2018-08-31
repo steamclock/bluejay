@@ -43,13 +43,7 @@ public class Bluejay: NSObject {
     private var isRunningBackgroundTask = false
     
     private var disconnectCleanUp: (() -> Void)?
-
-    /// The options used to initialize the CBCentralManager
-    private var connectionInitializationOptions: [ConnectionOption : AnyObject] = [
-        .notifyOnConnection: true as AnyObject,
-        .notifyOnDisconnection: true as AnyObject
-    ]
-
+    
     // MARK: - Internal Properties
     
     /// Contains the operations to execute in FIFO order.
@@ -107,10 +101,9 @@ public class Bluejay: NSObject {
     public var hasStarted: Bool {
         return cbCentralManager != nil
     }
-
-    public var connectionOptions: [ConnectionOption : AnyObject] {
-        return connectionInitializationOptions
-    }
+    
+    /// Connection options to use for each new connection if the options are not specified at the creation of those connections.
+    public var defaultConnectionOptions = ConnectionOption.defaultOptions
 
     // MARK: - Initialization
     
@@ -143,11 +136,13 @@ public class Bluejay: NSObject {
      
      - Parameters:
         - observer: An object interested in observing Bluetooth connection events and state changes. You can register more observers using the `register` function.
+        - showBluetoothAlert: Determines whether iOS will show a system alert when Bluetooth is turned off while the app using Bluejay is suspended. Defaults to false.
         - restoreMode: Determines whether Bluejay will opt-in to state restoration, and if so, can optionally provide a listen restorer as well for restoring listens.
         - coreBluetoothState: Allows starting Bluejay with an existing Core Bluetooth manager and peripheral.
     */
     public func start(
         connectionObserver observer: ConnectionObserver? = nil,
+        enableBluetoothAlert showBluetoothAlert: Bool = false,
         backgroundRestore restoreMode: BackgroundRestoreMode = .disable,
         coreBluetoothState: (manager: CBCentralManager, peripheral: CBPeripheral?)? = nil
         )
@@ -174,20 +169,20 @@ public class Bluejay: NSObject {
             register(observer: observer)
         }
         
-        var options: [String : Any] = [CBCentralManagerOptionShowPowerAlertKey : false]
-        
+        var centralManagerOptions: [String : Any] = [CBCentralManagerOptionShowPowerAlertKey : showBluetoothAlert]
+                
         switch restoreMode {
         case .disable:
             break
         case .enable(let restoreID):
             checkBackgroundSupportForBluetooth()
             restoreIdentifier = restoreID
-            options[CBCentralManagerOptionRestoreIdentifierKey] = restoreIdentifier
+            centralManagerOptions[CBCentralManagerOptionRestoreIdentifierKey] = restoreIdentifier
         case .enableWithListenRestorer(let restoreID, let restorer):
             checkBackgroundSupportForBluetooth()
             restoreIdentifier = restoreID
             listenRestorer = WeakListenRestorer(weakReference: restorer)
-            options[CBCentralManagerOptionRestoreIdentifierKey] = restoreIdentifier
+            centralManagerOptions[CBCentralManagerOptionRestoreIdentifierKey] = restoreIdentifier
         }
         
         if let cbState = coreBluetoothState {
@@ -201,7 +196,7 @@ public class Bluejay: NSObject {
             cbCentralManager = CBCentralManager(
                 delegate: self,
                 queue: .main,
-                options: options
+                options: centralManagerOptions
             )
         }
     }
@@ -240,24 +235,6 @@ public class Bluejay: NSObject {
 
         if !isSupported {
             log("Warning: It appears your app has not enabled background support for Bluetooth properly. Please make sure the capability, Background Modes, is turned on, and the setting, Uses Bluetooth LE accessories, is checked in your Xcode project.")
-        }
-    }
-
-    /**
-     This method can be used to set the connection options used by the Connection to initialize a CBCentralManager
-
-     - Warning:
-        - The keys need to be set either before the bluejay.connect(...) call is made or before bluejay.scan(...) if a connection is initialized there using the .connect(...) action
-        - The method just sets the options, there is no incremental adding of the new keys, so all old options will be lost
-
-     - Parameters:
-        - options: The options to use for the initialization
-     */
-    public func setCentralManagerStandardConnectOptions(options: [ConnectionOption : AnyObject]) {
-        // Options can only be set before the connection request is made
-        // Also do not allow change after the connection process is started to prevent the getter to return values which are not used for the connection initialization
-        if !isConnected && !isConnecting {
-            connectionInitializationOptions = options
         }
     }
 
@@ -378,8 +355,7 @@ public class Bluejay: NSObject {
             discovery: discovery,
             expired: expired,
             stopped: stopped,
-            manager: cbCentralManager,
-            connectionOptions: connectionOptions
+            manager: cbCentralManager
         )
         
         queue.add(scanOperation)
@@ -409,9 +385,15 @@ public class Bluejay: NSObject {
      - Parameters:
         - peripheralIdentifier: The peripheral to connect to.
         - timeout: Specify how long the connection time out should be.
+        - options: Optional connection options, if not specified, Bluejay's default will be used.
         - completion: Called when the connection request has fully finished and indicates whether it was successful, cancelled, or failed.
     */
-    public func connect(_ peripheralIdentifier: PeripheralIdentifier, timeout: Timeout, completion: @escaping (ConnectionResult) -> Void) {
+    public func connect(
+        _ peripheralIdentifier: PeripheralIdentifier,
+        timeout: Timeout,
+        options: [ConnectionOption]? = nil,
+        completion: @escaping (ConnectionResult) -> Void)
+    {
         previousConnectionTimeout = timeout
         
         if isRunningBackgroundTask {
@@ -433,7 +415,13 @@ public class Bluejay: NSObject {
         }
         
         if let cbPeripheral = cbCentralManager.retrievePeripherals(withIdentifiers: [peripheralIdentifier.uuid]).first {
-            queue.add(Connection(peripheral: cbPeripheral, manager: cbCentralManager, timeout: timeout, connectionOptions: connectionOptions, callback: completion))
+            queue.add(Connection(
+                peripheral: cbPeripheral,
+                manager: cbCentralManager,
+                timeout: timeout,
+                connectionOptions: options == nil ? defaultConnectionOptions : options!,
+                callback: completion)
+            )
         }
         else {
             completion(.failure(BluejayError.unexpectedPeripheral(peripheralIdentifier)))
