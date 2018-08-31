@@ -103,7 +103,7 @@ public class Bluejay: NSObject {
     }
     
     /// Connection options to use for each new connection if the options are not specified at the creation of those connections.
-    public var defaultConnectionOptions = ConnectionOption.defaultOptions
+    public var defaultConnectionOptions = ConnectionOptions.defaultOptions
 
     // MARK: - Initialization
     
@@ -391,7 +391,7 @@ public class Bluejay: NSObject {
     public func connect(
         _ peripheralIdentifier: PeripheralIdentifier,
         timeout: Timeout,
-        options: [ConnectionOption]? = nil,
+        options: ConnectionOptions? = nil,
         completion: @escaping (ConnectionResult) -> Void)
     {
         previousConnectionTimeout = timeout
