@@ -6,8 +6,39 @@
 //  Copyright © 2017 Steamclock Software. All rights reserved.
 //
 
-import Foundation
+import UIKit
 import CoreBluetooth
+
+/**
+ BluejayConfiguration is a structure to be used when starting an instance of Blujay.
+ It contains some variables to configure properly Blujay to make it manage some situations.
+ - connectionObserver: An object interested in observing Bluetooth connection events and state changes. You can register more observers using the `register` function. Default is `nil`
+ - backgroundRestoreMode: Determines whether Bluejay will opt-in to state restoration, and if so, can optionally provide a listen restorer as well for restoring listens. Default is `BackgroundRestoreMode.disable`
+ - shouldReconnectHandler: Allows or disallows automatic reconnection attempts after an unexpected disconnection. Default is `true`. By assigning a closure is possible to define a reconnection logic based on the error returned, if any
+ */
+public struct BluejayConfiguration {
+    
+    /// An object interested in observing Bluetooth connection events and state changes. You can register more observers using the `register` function.
+    let connectionObserver: ConnectionObserver?
+    
+    /// Determines whether Bluejay will opt-in to state restoration, and if so, can optionally provide a listen restorer as well for restoring listens.
+    let backgroundRestoreMode: BackgroundRestoreMode
+    
+    /// Allows or disallows automatic reconnection attempts after an unexpected disconnection. Default is true. By assigning a closure is possible to define a reconnection logic based on the error returned, if any
+    let shouldReconnectHandler: (Peripheral, Error?) -> Bool
+    
+    init(connectionObserver: ConnectionObserver? = nil,
+         backgroundRestoreMode: BackgroundRestoreMode = .disable,
+         shouldReconnectHandler: @escaping (Peripheral, Error?) -> Bool = { _, _ in return true}) {
+        self.connectionObserver = connectionObserver
+        self.backgroundRestoreMode = backgroundRestoreMode
+        self.shouldReconnectHandler = shouldReconnectHandler
+    }
+    
+    static func `default`() -> BluejayConfiguration {
+        return BluejayConfiguration()
+    }
+}
 
 /**
  Bluejay is a simple wrapper around CoreBluetooth that focuses on making a common usage case as straight forward as possible: a single connected peripheral that the user is interacting with regularly (think most personal electronics devices that have an associated iOS app: fitness trackers, guitar amps, etc).
@@ -43,6 +74,8 @@ public class Bluejay: NSObject {
     private var isRunningBackgroundTask = false
     
     private var disconnectCleanUp: (() -> Void)?
+    
+    private var configuration: BluejayConfiguration!
     
     // MARK: - Internal Properties
     
@@ -88,9 +121,6 @@ public class Bluejay: NSObject {
     /// Allows checking whether Bluejay is currently disconnecting from a peripheral.
     public var isDisconnecting: Bool = false
     
-    /// Allowing or disallowing automatic reconnection attempts after an unexpected disconnection. Default is true, and Bluejay will also always set this to true on a successful connection to a peripheral.
-    public var shouldAutoReconnect = true
-    
     /// Allows checking whether Bluejay is currently scanning.
     public var isScanning: Bool {
         // Cannot rely on the manager's state for isScanning as it is not usually updated immediately, and while that delay might be a more accurate representation of the current state, it is almost always more useful to evaluate whether Bluejay is running a scan request at the top of its queue.
@@ -132,21 +162,18 @@ public class Bluejay: NSObject {
      Starting Bluejay will initialize the CoreBluetooth stack. Initializing a Bluejay instance will not yet initialize the CoreBluetooth stack. An explicit call to start running a Bluejay instance after it is intialized is required because in cases where a state resotration is trying to restore a listen on a characteristic, a listen restorer must be available before the CoreBluetooth stack is re-initialized. This two-step startup allows you to insert and gaurantee the setup of your listen restorer in between the initialization of Bluejay and the initialization of the CoreBluetooth stack.
      
      - Parameters:
-        - observer: An object interested in observing Bluetooth connection events and state changes. You can register more observers using the `register` function.
-        - restoreMode: Determines whether Bluejay will opt-in to state restoration, and if so, can optionally provide a listen restorer as well for restoring listens.
-        - coreBluetoothState: Allows starting Bluejay with an existing Core Bluetooth manager and peripheral.
-    */
-    public func start(
-        connectionObserver observer: ConnectionObserver? = nil,
-        backgroundRestore restoreMode: BackgroundRestoreMode = .disable,
-        coreBluetoothState: (manager: CBCentralManager, peripheral: CBPeripheral?)? = nil
-        )
-    {
+     - configuration: An object that sets the Blujay internal configuration.
+     - coreBluetoothState: Allows starting Bluejay with an existing Core Bluetooth manager and peripheral.
+     */
+    
+    public func start(with bluejayConfiguration: BluejayConfiguration,
+                      coreBluetoothState: (manager: CBCentralManager, peripheral: CBPeripheral?)? = nil) {
         /**
          If a call to start is made while the app is still in the background (can happen if Bluejay is instantiated and started in the initialization of UIApplicationDelegate for example), Bluejay will mistake its unexpectedly early instantiation as an instantiation from background restoration.
          
          Therefore, an explicit call to start should assume that Bluejay is not initialized from background restoration, as the code flow for background restoration should not involve a call to start.
-        */
+         */
+        configuration = bluejayConfiguration
         shouldRestoreState = false
         if startupBackgroundTask != UIBackgroundTaskInvalid {
             debugPrint("Cancelling startup background task.")
@@ -160,13 +187,13 @@ public class Bluejay: NSObject {
         
         register(observer: queue)
         
-        if let observer = observer {
-            register(observer: observer)
+        if let conObserver = configuration.connectionObserver {
+            register(observer: conObserver)
         }
         
         var options: [String : Any] = [CBCentralManagerOptionShowPowerAlertKey : false]
         
-        switch restoreMode {
+        switch configuration.backgroundRestoreMode {
         case .disable:
             break
         case .enable(let restoreID):
@@ -194,6 +221,24 @@ public class Bluejay: NSObject {
                 options: options
             )
         }
+    }
+    
+    /**
+     Starting Bluejay will initialize the CoreBluetooth stack. Initializing a Bluejay instance will not yet initialize the CoreBluetooth stack. An explicit call to start running a Bluejay instance after it is intialized is required because in cases where a state resotration is trying to restore a listen on a characteristic, a listen restorer must be available before the CoreBluetooth stack is re-initialized. This two-step startup allows you to insert and gaurantee the setup of your listen restorer in between the initialization of Bluejay and the initialization of the CoreBluetooth stack.
+     
+     - Parameters:
+        - observer: An object interested in observing Bluetooth connection events and state changes. You can register more observers using the `register` function.
+        - restoreMode: Determines whether Bluejay will opt-in to state restoration, and if so, can optionally provide a listen restorer as well for restoring listens.
+        - coreBluetoothState: Allows starting Bluejay with an existing Core Bluetooth manager and peripheral.
+    */
+    public func start(
+        connectionObserver observer: ConnectionObserver? = nil,
+        backgroundRestore restoreMode: BackgroundRestoreMode = .disable,
+        coreBluetoothState: (manager: CBCentralManager, peripheral: CBPeripheral?)? = nil
+        )
+    {
+        let config = BluejayConfiguration(connectionObserver: observer, backgroundRestoreMode: restoreMode)
+        start(with: config, coreBluetoothState: coreBluetoothState)
     }
     
     /**
@@ -242,13 +287,8 @@ public class Bluejay: NSObject {
      
      - Parameters:
        - error: If nil, all tasks in the queue will be cancelled without any errors. If an error is provided, all tasks in the queue will be failed with the supplied error.
-       - autoReconnect: Explicitly tells Bluejay whether it should attempt to auto reconnect after everything is cancelled.
      */
-    public func cancelEverything(_ error: Error? = nil, autoReconnect: Bool? = nil) {
-        if let autoReconnect = autoReconnect {
-            shouldAutoReconnect = autoReconnect
-        }
-        
+    public func cancelEverything(_ error: Error? = nil) {
         queue.cancelAll(error)
         
         if isConnecting {
@@ -436,7 +476,6 @@ public class Bluejay: NSObject {
         
         if let peripheralToDisconnect = connectedPeripheral {
             isDisconnecting = true
-            shouldAutoReconnect = false
             
             queue.cancelAll()
             
@@ -978,9 +1017,6 @@ extension Bluejay: CBCentralManagerDelegate {
             observer.weakReference?.connected(to: connectedPeripheral!)
         }
         
-        shouldAutoReconnect = true
-        log("Should auto-reconnect: \(shouldAutoReconnect)")
-        
         queue.process(event: .didConnectPeripheral(peripheral), error: nil)
         
         UIApplication.shared.endBackgroundTask(backgroundTask)
@@ -1007,9 +1043,7 @@ extension Bluejay: CBCentralManagerDelegate {
             return
         }
         
-        for observer in observers {
-            observer.weakReference?.disconnected(from: disconnectedPeripheral, with: error)
-        }
+        
         
         if !queue.isEmpty {
             // If Bluejay is currently connecting or disconnecting, the queue needs to process this disconnection event. Otherwise, this is an unexpected disconnection.
@@ -1035,9 +1069,14 @@ extension Bluejay: CBCentralManagerDelegate {
             weakSelf.connectingPeripheral = nil
             weakSelf.connectedPeripheral = nil
             
-            log("Should auto-reconnect: \(weakSelf.shouldAutoReconnect)")
+            for observer in weakSelf.observers {
+                observer.weakReference?.disconnected(from: disconnectedPeripheral, with: error)
+            }
             
-            if weakSelf.shouldAutoReconnect {
+            let shouldReconnect = weakSelf.configuration.shouldReconnectHandler(disconnectedPeripheral, error)
+            log("Should auto-reconnect: \(shouldReconnect)")
+            
+            if shouldReconnect {
                 log("Issuing reconnect to: \(peripheral.name ?? peripheral.identifier.uuidString)")
                 weakSelf.connect(
                     PeripheralIdentifier(uuid: peripheral.identifier),
@@ -1054,6 +1093,8 @@ extension Bluejay: CBCentralManagerDelegate {
         } else {
             disconnectCleanUp?()
         }
+        
+     
     }
     
     /**
