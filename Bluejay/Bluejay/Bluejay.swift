@@ -419,7 +419,7 @@ public class Bluejay: NSObject {
                 peripheral: cbPeripheral,
                 manager: cbCentralManager,
                 timeout: timeout,
-                connectionOptions: options == nil ? defaultConnectionOptions : options!,
+                connectionOptions: options ?? defaultConnectionOptions,
                 callback: completion)
             )
         }
