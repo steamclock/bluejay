@@ -169,8 +169,8 @@ extension ScanHeartRateSensorsViewController: ConnectionObserver {
         debugPrint("Connected to \(peripheral)")
     }
     
-    func disconnected(from peripheral: Peripheral, with error: Error?) {
-        debugPrint("Disconnected \(peripheral) error \(error)")
+    func disconnected() {
+        debugPrint("Disconnected")
 
     }
     

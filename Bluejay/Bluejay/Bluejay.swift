@@ -1070,7 +1070,7 @@ extension Bluejay: CBCentralManagerDelegate {
             weakSelf.connectedPeripheral = nil
             
             for observer in weakSelf.observers {
-                observer.weakReference?.disconnected(from: disconnectedPeripheral, with: error)
+                observer.weakReference?.disconnected()
             }
             
             let shouldReconnect = weakSelf.configuration.shouldReconnectHandler(disconnectedPeripheral, error)
