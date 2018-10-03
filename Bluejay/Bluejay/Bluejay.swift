@@ -61,7 +61,7 @@ public class Bluejay: NSObject {
     var previousConnectionTimeout: Timeout?
     
     /// Allows or disallows automatic reconnection attempts after an unexpected disconnection. Default is true. By assigning a closure is possible to define a reconnection logic based on the error returned, if any
-    var shouldReconnectHandler: (Peripheral, Error?) -> Bool
+    var shouldReconnectHandler: ShouldReconnectHandler
     
     // MARK: - Public Properties
     
