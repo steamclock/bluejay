@@ -28,7 +28,13 @@ class ScanHeartRateSensorsViewController: UITableViewController {
         
         clearsSelectionOnViewWillAppear = true
         
-        bluejay.start(connectionObserver: self, backgroundRestore: .enableWithListenRestorer("com.steamclock.bluejay", self))
+        let conf = BluejayConfiguration(connectionObserver: self,
+                                        backgroundRestoreMode: .enableWithListenRestorer("com.steamclock.bluejay", self),
+                                        shouldReconnectHandler: { periph, err  -> Bool in
+                                            print(err as Any)
+                                            return true
+        })
+        bluejay.start(with: conf, coreBluetoothState: nil)
         
         scanHeartSensors()
     }
@@ -163,8 +169,9 @@ extension ScanHeartRateSensorsViewController: ConnectionObserver {
         debugPrint("Connected to \(peripheral)")
     }
     
-    func disconnected() {
-        debugPrint("Disconnected")
+    func disconnected(from peripheral: Peripheral, with error: Error?) {
+        debugPrint("Disconnected \(peripheral) error \(error)")
+
     }
     
 }

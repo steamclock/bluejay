@@ -27,7 +27,7 @@ public struct BluejayConfiguration {
     /// Allows or disallows automatic reconnection attempts after an unexpected disconnection. Default is true. By assigning a closure is possible to define a reconnection logic based on the error returned, if any
     let shouldReconnectHandler: (Peripheral, Error?) -> Bool
     
-    init(connectionObserver: ConnectionObserver? = nil,
+    public init(connectionObserver: ConnectionObserver? = nil,
          backgroundRestoreMode: BackgroundRestoreMode = .disable,
          shouldReconnectHandler: @escaping (Peripheral, Error?) -> Bool = { _, _ in return true}) {
         self.connectionObserver = connectionObserver
