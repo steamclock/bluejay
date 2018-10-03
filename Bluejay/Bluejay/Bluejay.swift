@@ -6,7 +6,7 @@
 //  Copyright © 2017 Steamclock Software. All rights reserved.
 //
 
-import UIKit
+import Foundation
 import CoreBluetooth
 
 public typealias ShouldReconnectHandler = (Peripheral, Error?) -> Bool
