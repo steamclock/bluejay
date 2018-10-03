@@ -28,13 +28,7 @@ class ScanHeartRateSensorsViewController: UITableViewController {
         
         clearsSelectionOnViewWillAppear = true
         
-        let conf = BluejayConfiguration(connectionObserver: self,
-                                        backgroundRestoreMode: .enableWithListenRestorer("com.steamclock.bluejay", self),
-                                        shouldReconnectHandler: { periph, err  -> Bool in
-                                            print(err as Any)
-                                            return true
-        })
-        bluejay.start(with: conf, coreBluetoothState: nil)
+        bluejay.start()
         
         scanHeartSensors()
     }
