@@ -1,7 +1,7 @@
 import Foundation
 import CoreBluetooth
 
-/// Allow configuring whether iOS can display a system alert when certain conditions are met while your app is suspended, usually an alert dialog outside of your app in the Home screen for example.
+/// A connection's configurations for system alerts.
 public struct WarningOptions {
     
     /// Determines whether iOS should show a system alert when your suspended app is connected to a peripheral.
