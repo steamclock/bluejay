@@ -102,8 +102,8 @@ public class Bluejay: NSObject {
         return cbCentralManager != nil
     }
     
-    /// Connection options to use for each new connection if the options are not specified at the creation of those connections.
-    public var defaultConnectionOptions = ConnectionOptions.defaultOptions
+    /// Warning options to use for each new connection if the options are not specified at the creation of those connections.
+    public var defaultWarningOptions = WarningOptions.default
 
     // MARK: - Initialization
     
@@ -384,7 +384,7 @@ public class Bluejay: NSObject {
     public func connect(
         _ peripheralIdentifier: PeripheralIdentifier,
         timeout: Timeout,
-        options: ConnectionOptions? = nil,
+        warningOptions: WarningOptions? = nil,
         completion: @escaping (ConnectionResult) -> Void)
     {
         previousConnectionTimeout = timeout
@@ -412,7 +412,7 @@ public class Bluejay: NSObject {
                 peripheral: cbPeripheral,
                 manager: cbCentralManager,
                 timeout: timeout,
-                connectionOptions: options ?? defaultConnectionOptions,
+                warningOptions: warningOptions ?? defaultWarningOptions,
                 callback: completion)
             )
         }

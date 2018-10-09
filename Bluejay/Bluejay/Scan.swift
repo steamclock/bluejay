@@ -171,7 +171,7 @@ class Scan: Queueable {
 
                 stopScan(with: discoveries, error: nil)
             }
-            else if case .connect(let discovery, let timeout, let options, let completion) = discovery(newDiscovery, discoveries) {
+            else if case .connect(let discovery, let timeout, let warningOptions, let completion) = discovery(newDiscovery, discoveries) {
                 state = .completed
                 
                 log("Finished scanning.")
@@ -184,7 +184,7 @@ class Scan: Queueable {
                             peripheral: cbPeripheral,
                             manager: manager,
                             timeout: timeout,
-                            connectionOptions: options,
+                            warningOptions: warningOptions,
                             callback: completion)
                         )
                     }

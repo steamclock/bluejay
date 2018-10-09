@@ -737,13 +737,16 @@ private func scan(services: [ServiceIdentifier], serialNumber: String) {
             }
 
             if weakSelf.blacklistedDiscoveries.contains(where: { (blacklistedDiscovery) -> Bool in
-                return blacklistedDiscovery.peripheral.identifier == discovery.peripheral.identifier
+                return blacklistedDiscovery.peripheralIdentifier == discovery.peripheralIdentifier
             })
             {
                 return .blacklist
             }
             else {
-                return .connect(discovery, { (connectionResult) in
+                return .connect(
+                    discovery,
+                    .none,
+                    WarningOptions(notifyOnConnection: false, notifyOnDisconnection: true, notifyOnNotification: false), { (connectionResult) in
                     switch connectionResult {
                     case .success(let peripheral):
                         debugPrint("Connection to \(peripheral.identifier) successful.")
@@ -766,9 +769,9 @@ private func scan(services: [ServiceIdentifier], serialNumber: String) {
                                         case .success:
                                             weakSelf.scan(services: [Services.deviceInfo], serialNumber: weakSelf.targetSerialNumber!)
                                         case .cancelled:
-                                            preconditionFailure("Disconnection cancelled unexpectedly.")
+                                            preconditionFailure("Disconnect cancelled unexpectedly.")
                                         case .failure(let error):
-                                            preconditionFailure("Disconnection failed with error: \(error.localizedDescription)")
+                                            preconditionFailure("Disconnect failed with error: \(error.localizedDescription)")
                                         }
                                     })
                                 }
@@ -783,11 +786,11 @@ private func scan(services: [ServiceIdentifier], serialNumber: String) {
                             }
                         })
                     case .cancelled:
-                        debugPrint("Connection to \(discovery.peripheral.identifier) cancelled.")
+                        debugPrint("Connection to \(discovery.peripheralIdentifier) cancelled.")
 
                         weakSelf.statusLabel.text = "Connection Cancelled"
                     case .failure(let error):
-                        debugPrint("Connection to \(discovery.peripheral.identifier) failed with error: \(error.localizedDescription)")
+                        debugPrint("Connection to \(discovery.peripheralIdentifier) failed with error: \(error.localizedDescription)")
 
                         weakSelf.statusLabel.text = "Connection Error: \(error.localizedDescription)"
                     }

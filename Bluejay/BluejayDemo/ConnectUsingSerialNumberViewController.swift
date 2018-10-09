@@ -96,7 +96,10 @@ class ConnectUsingSerialNumberViewController: UIViewController {
                     return .blacklist
                 }
                 else {
-                    return .connect(discovery, .none, ConnectionOptions(notifyOnConnection: false, notifyOnDisconnection: true), { (connectionResult) in
+                    return .connect(
+                        discovery,
+                        .none,
+                        WarningOptions(notifyOnConnection: false, notifyOnDisconnection: true, notifyOnNotification: false), { (connectionResult) in
                         switch connectionResult {
                         case .success(let peripheral):
                             debugPrint("Connection to \(peripheral.identifier) successful.")

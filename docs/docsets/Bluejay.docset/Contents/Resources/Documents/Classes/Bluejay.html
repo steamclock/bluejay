@@ -133,9 +133,6 @@
                 <a href="../Structs/CharacteristicIdentifier.html">CharacteristicIdentifier</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Structs/ConnectionOptions.html">ConnectionOptions</a>
-              </li>
-              <li class="nav-group-task">
                 <a href="../Structs/DataPadding.html">DataPadding</a>
               </li>
               <li class="nav-group-task">
@@ -149,6 +146,9 @@
               </li>
               <li class="nav-group-task">
                 <a href="../Structs/StartOptions.html">StartOptions</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/WarningOptions.html">WarningOptions</a>
               </li>
             </ul>
           </li>
@@ -434,9 +434,9 @@ please re-evaluate the bluetooth state again as it may change momentarily after 
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7BluejayAAC24defaultConnectionOptionsAA0cD0Vvp"></a>
-                    <a name="//apple_ref/swift/Property/defaultConnectionOptions" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7BluejayAAC24defaultConnectionOptionsAA0cD0Vvp">defaultConnectionOptions</a>
+                    <a name="/s:7BluejayAAC21defaultWarningOptionsAA0cD0Vvp"></a>
+                    <a name="//apple_ref/swift/Property/defaultWarningOptions" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7BluejayAAC21defaultWarningOptionsAA0cD0Vvp">defaultWarningOptions</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -444,14 +444,14 @@ please re-evaluate the bluetooth state again as it may change momentarily after 
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Connection options to use for each new connection if the options are not specified at the creation of those connections.</p>
+                        <p>Warning options to use for each new connection if the options are not specified at the creation of those connections.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">defaultConnectionOptions</span> <span class="o">=</span> <span class="kt"><a href="../Structs/ConnectionOptions.html">ConnectionOptions</a></span><span class="o">.</span><span class="n">defaultOptions</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">defaultWarningOptions</span> <span class="o">=</span> <span class="kt"><a href="../Structs/WarningOptions.html">WarningOptions</a></span><span class="o">.</span><span class="k">default</span></code></pre>
 
                         </div>
                       </div>
@@ -969,9 +969,9 @@ please re-evaluate the bluetooth state again as it may change momentarily after 
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7BluejayAAC7connect_7timeout7options10completionyAA20PeripheralIdentifierV_AA7TimeoutOAA17ConnectionOptionsVSgyAA0I6ResultOctF"></a>
-                    <a name="//apple_ref/swift/Method/connect(_:timeout:options:completion:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7BluejayAAC7connect_7timeout7options10completionyAA20PeripheralIdentifierV_AA7TimeoutOAA17ConnectionOptionsVSgyAA0I6ResultOctF">connect(_:timeout:options:completion:)</a>
+                    <a name="/s:7BluejayAAC7connect_7timeout14warningOptions10completionyAA20PeripheralIdentifierV_AA7TimeoutOAA07WarningE0VSgyAA16ConnectionResultOctF"></a>
+                    <a name="//apple_ref/swift/Method/connect(_:timeout:warningOptions:completion:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7BluejayAAC7connect_7timeout14warningOptions10completionyAA20PeripheralIdentifierV_AA7TimeoutOAA07WarningE0VSgyAA16ConnectionResultOctF">connect(_:timeout:warningOptions:completion:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -989,7 +989,7 @@ please re-evaluate the bluetooth state again as it may change momentarily after 
                           <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">connect</span><span class="p">(</span>
     <span class="n">_</span> <span class="nv">peripheralIdentifier</span><span class="p">:</span> <span class="kt"><a href="../Structs/PeripheralIdentifier.html">PeripheralIdentifier</a></span><span class="p">,</span>
     <span class="nv">timeout</span><span class="p">:</span> <span class="kt"><a href="../Enums/Timeout.html">Timeout</a></span><span class="p">,</span>
-    <span class="nv">options</span><span class="p">:</span> <span class="kt"><a href="../Structs/ConnectionOptions.html">ConnectionOptions</a></span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span>
+    <span class="nv">warningOptions</span><span class="p">:</span> <span class="kt"><a href="../Structs/WarningOptions.html">WarningOptions</a></span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span>
     <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt"><a href="../Enums/ConnectionResult.html">ConnectionResult</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
 
                         </div>

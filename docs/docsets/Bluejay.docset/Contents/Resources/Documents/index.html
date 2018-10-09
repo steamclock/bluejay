@@ -132,9 +132,6 @@
                 <a href="Structs/CharacteristicIdentifier.html">CharacteristicIdentifier</a>
               </li>
               <li class="nav-group-task">
-                <a href="Structs/ConnectionOptions.html">ConnectionOptions</a>
-              </li>
-              <li class="nav-group-task">
                 <a href="Structs/DataPadding.html">DataPadding</a>
               </li>
               <li class="nav-group-task">
@@ -148,6 +145,9 @@
               </li>
               <li class="nav-group-task">
                 <a href="Structs/StartOptions.html">StartOptions</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/WarningOptions.html">WarningOptions</a>
               </li>
             </ul>
           </li>
@@ -856,13 +856,16 @@
             <span class="p">}</span>
 
             <span class="k">if</span> <span class="n">weakSelf</span><span class="o">.</span><span class="n">blacklistedDiscoveries</span><span class="o">.</span><span class="nf">contains</span><span class="p">(</span><span class="nv">where</span><span class="p">:</span> <span class="p">{</span> <span class="p">(</span><span class="n">blacklistedDiscovery</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span> <span class="k">in</span>
-                <span class="k">return</span> <span class="n">blacklistedDiscovery</span><span class="o">.</span><span class="n">peripheral</span><span class="o">.</span><span class="n">identifier</span> <span class="o">==</span> <span class="n">discovery</span><span class="o">.</span><span class="n">peripheral</span><span class="o">.</span><span class="n">identifier</span>
+                <span class="k">return</span> <span class="n">blacklistedDiscovery</span><span class="o">.</span><span class="n">peripheralIdentifier</span> <span class="o">==</span> <span class="n">discovery</span><span class="o">.</span><span class="n">peripheralIdentifier</span>
             <span class="p">})</span>
             <span class="p">{</span>
                 <span class="k">return</span> <span class="o">.</span><span class="n">blacklist</span>
             <span class="p">}</span>
             <span class="k">else</span> <span class="p">{</span>
-                <span class="k">return</span> <span class="o">.</span><span class="nf">connect</span><span class="p">(</span><span class="n">discovery</span><span class="p">,</span> <span class="p">{</span> <span class="p">(</span><span class="n">connectionResult</span><span class="p">)</span> <span class="k">in</span>
+                <span class="k">return</span> <span class="o">.</span><span class="nf">connect</span><span class="p">(</span>
+                    <span class="n">discovery</span><span class="p">,</span>
+                    <span class="o">.</span><span class="k">none</span><span class="p">,</span>
+                    <span class="kt">WarningOptions</span><span class="p">(</span><span class="nv">notifyOnConnection</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span> <span class="nv">notifyOnDisconnection</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span> <span class="nv">notifyOnNotification</span><span class="p">:</span> <span class="kc">false</span><span class="p">),</span> <span class="p">{</span> <span class="p">(</span><span class="n">connectionResult</span><span class="p">)</span> <span class="k">in</span>
                     <span class="k">switch</span> <span class="n">connectionResult</span> <span class="p">{</span>
                     <span class="k">case</span> <span class="o">.</span><span class="nf">success</span><span class="p">(</span><span class="k">let</span> <span class="nv">peripheral</span><span class="p">):</span>
                         <span class="nf">debugPrint</span><span class="p">(</span><span class="s">"Connection to </span><span class="se">\(</span><span class="n">peripheral</span><span class="o">.</span><span class="n">identifier</span><span class="se">)</span><span class="s"> successful."</span><span class="p">)</span>
@@ -885,9 +888,9 @@
                                         <span class="k">case</span> <span class="o">.</span><span class="nv">success</span><span class="p">:</span>
                                             <span class="n">weakSelf</span><span class="o">.</span><span class="nf">scan</span><span class="p">(</span><span class="nv">services</span><span class="p">:</span> <span class="p">[</span><span class="kt">Services</span><span class="o">.</span><span class="n">deviceInfo</span><span class="p">],</span> <span class="nv">serialNumber</span><span class="p">:</span> <span class="n">weakSelf</span><span class="o">.</span><span class="n">targetSerialNumber</span><span class="o">!</span><span class="p">)</span>
                                         <span class="k">case</span> <span class="o">.</span><span class="nv">cancelled</span><span class="p">:</span>
-                                            <span class="nf">preconditionFailure</span><span class="p">(</span><span class="s">"Disconnection cancelled unexpectedly."</span><span class="p">)</span>
+                                            <span class="nf">preconditionFailure</span><span class="p">(</span><span class="s">"Disconnect cancelled unexpectedly."</span><span class="p">)</span>
                                         <span class="k">case</span> <span class="o">.</span><span class="nf">failure</span><span class="p">(</span><span class="k">let</span> <span class="nv">error</span><span class="p">):</span>
-                                            <span class="nf">preconditionFailure</span><span class="p">(</span><span class="s">"Disconnection failed with error: </span><span class="se">\(</span><span class="n">error</span><span class="o">.</span><span class="n">localizedDescription</span><span class="se">)</span><span class="s">"</span><span class="p">)</span>
+                                            <span class="nf">preconditionFailure</span><span class="p">(</span><span class="s">"Disconnect failed with error: </span><span class="se">\(</span><span class="n">error</span><span class="o">.</span><span class="n">localizedDescription</span><span class="se">)</span><span class="s">"</span><span class="p">)</span>
                                         <span class="p">}</span>
                                     <span class="p">})</span>
                                 <span class="p">}</span>
@@ -902,11 +905,11 @@
                             <span class="p">}</span>
                         <span class="p">})</span>
                     <span class="k">case</span> <span class="o">.</span><span class="nv">cancelled</span><span class="p">:</span>
-                        <span class="nf">debugPrint</span><span class="p">(</span><span class="s">"Connection to </span><span class="se">\(</span><span class="n">discovery</span><span class="o">.</span><span class="n">peripheral</span><span class="o">.</span><span class="n">identifier</span><span class="se">)</span><span class="s"> cancelled."</span><span class="p">)</span>
+                        <span class="nf">debugPrint</span><span class="p">(</span><span class="s">"Connection to </span><span class="se">\(</span><span class="n">discovery</span><span class="o">.</span><span class="n">peripheralIdentifier</span><span class="se">)</span><span class="s"> cancelled."</span><span class="p">)</span>
 
                         <span class="n">weakSelf</span><span class="o">.</span><span class="n">statusLabel</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="s">"Connection Cancelled"</span>
                     <span class="k">case</span> <span class="o">.</span><span class="nf">failure</span><span class="p">(</span><span class="k">let</span> <span class="nv">error</span><span class="p">):</span>
-                        <span class="nf">debugPrint</span><span class="p">(</span><span class="s">"Connection to </span><span class="se">\(</span><span class="n">discovery</span><span class="o">.</span><span class="n">peripheral</span><span class="o">.</span><span class="n">identifier</span><span class="se">)</span><span class="s"> failed with error: </span><span class="se">\(</span><span class="n">error</span><span class="o">.</span><span class="n">localizedDescription</span><span class="se">)</span><span class="s">"</span><span class="p">)</span>
+                        <span class="nf">debugPrint</span><span class="p">(</span><span class="s">"Connection to </span><span class="se">\(</span><span class="n">discovery</span><span class="o">.</span><span class="n">peripheralIdentifier</span><span class="se">)</span><span class="s"> failed with error: </span><span class="se">\(</span><span class="n">error</span><span class="o">.</span><span class="n">localizedDescription</span><span class="se">)</span><span class="s">"</span><span class="p">)</span>
 
                         <span class="n">weakSelf</span><span class="o">.</span><span class="n">statusLabel</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="s">"Connection Error: </span><span class="se">\(</span><span class="n">error</span><span class="o">.</span><span class="n">localizedDescription</span><span class="se">)</span><span class="s">"</span>
                     <span class="p">}</span>

@@ -35,25 +35,25 @@ class Connection: Queueable {
     /// Callback for the connection attempt.
     var callback: ((ConnectionResult) -> Void)?
 
-    /// The connection options to use for this particular connection.
-    let connectionOptions: ConnectionOptions
+    /// The warning options to use for this particular connection.
+    let warningOptions: WarningOptions
 
     private var connectionTimer: Timer?
     private let timeout: Timeout?
     
-    init(peripheral: CBPeripheral, manager: CBCentralManager, timeout: Timeout, connectionOptions: ConnectionOptions, callback: @escaping (ConnectionResult) -> Void) {
+    init(peripheral: CBPeripheral, manager: CBCentralManager, timeout: Timeout, warningOptions: WarningOptions, callback: @escaping (ConnectionResult) -> Void) {
         self.state = .notStarted
         
         self.peripheral = peripheral
         self.manager = manager
         self.timeout = timeout
-        self.connectionOptions = connectionOptions
+        self.warningOptions = warningOptions
         self.callback = callback
     }
     
     func start() {
         state = .running
-        manager.connect(peripheral, options: connectionOptions.dictionary)
+        manager.connect(peripheral, options: warningOptions.dictionary)
         
         cancelTimer()
         
