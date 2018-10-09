@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>ReadResult Enumeration Reference</title>
+    <title>StartMode Enumeration Reference</title>
     <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
     <meta charset='utf-8'>
@@ -10,8 +10,8 @@
     
   </head>
   <body>
-    <a name="//apple_ref/swift/Enum/ReadResult" class="dashAnchor"></a>
-    <a title="ReadResult Enumeration Reference"></a>
+    <a name="//apple_ref/swift/Enum/StartMode" class="dashAnchor"></a>
+    <a title="StartMode Enumeration Reference"></a>
     <header>
       <div class="content-wrapper">
         <p><a href="../index.html">Bluejay Docs</a> (100% documented)</p>
@@ -22,7 +22,7 @@
       <p id="breadcrumbs">
         <a href="../index.html">Bluejay Reference</a>
         <img id="carat" src="../img/carat.png" />
-        ReadResult Enumeration Reference
+        StartMode Enumeration Reference
       </p>
     </div>
     <div class="content-wrapper">
@@ -165,14 +165,14 @@
       <article class="main-content">
         <section>
           <section class="section">
-            <h1>ReadResult</h1>
+            <h1>StartMode</h1>
               <div class="declaration">
                 <div class="language">
-                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">enum</span> <span class="kt">ReadResult</span><span class="o">&lt;</span><span class="kt">R</span><span class="o">&gt;</span></code></pre>
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">enum</span> <span class="kt">StartMode</span></code></pre>
 
                 </div>
               </div>
-            <p>Indicates a successful, cancelled, or failed read attempt, where the success case contains the value read.</p>
+            <p>Specifies whether to start a new Bluejay instance from scratch, or from an existing CoreBluetooth session.</p>
 
           </section>
           <section class="section task-group-section">
@@ -181,9 +181,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7Bluejay10ReadResultO7successyACyxGxcAEmlF"></a>
-                    <a name="//apple_ref/swift/Element/success(_:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7Bluejay10ReadResultO7successyACyxGxcAEmlF">success(_:)</a>
+                    <a name="/s:7Bluejay9StartModeO3newyAcA0B7OptionsVcACmF"></a>
+                    <a name="//apple_ref/swift/Element/new(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Bluejay9StartModeO3newyAcA0B7OptionsVcACmF">new(_:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -191,14 +191,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>The read is successful and the value read is captured in the associated value.</p>
+                        <p>Start Bluejay using a new CBCentralManager.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">case</span> <span class="nf">success</span><span class="p">(</span><span class="kt">R</span><span class="p">)</span></code></pre>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="nf">new</span><span class="p">(</span><span class="kt"><a href="../Structs/StartOptions.html">StartOptions</a></span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -212,9 +212,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7Bluejay10ReadResultO9cancelledyACyxGAEmlF"></a>
-                    <a name="//apple_ref/swift/Element/cancelled" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7Bluejay10ReadResultO9cancelledyACyxGAEmlF">cancelled</a>
+                    <a name="/s:7Bluejay9StartModeO3useyACSo16CBCentralManagerC_So12CBPeripheralCSgtcACmF"></a>
+                    <a name="//apple_ref/swift/Element/use(manager:peripheral:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Bluejay9StartModeO3useyACSo16CBCentralManagerC_So12CBPeripheralCSgtcACmF">use(manager:peripheral:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -222,45 +222,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>The read is cancelled for a reason.</p>
+                        <p>Start Bluejay using an existing CBCentralManager.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">cancelled</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-              </ul>
-            </div>
-            <div class="task-group">
-              <ul>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:7Bluejay10ReadResultO7failureyACyxGs5Error_pcAEmlF"></a>
-                    <a name="//apple_ref/swift/Element/failure(_:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7Bluejay10ReadResultO7failureyACyxGs5Error_pcAEmlF">failure(_:)</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>The read has failed unexpectedly with an error.</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">case</span> <span class="nf">failure</span><span class="p">(</span><span class="kt">Error</span><span class="p">)</span></code></pre>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="nf">use</span><span class="p">(</span><span class="nv">manager</span><span class="p">:</span> <span class="kt">CBCentralManager</span><span class="p">,</span> <span class="nv">peripheral</span><span class="p">:</span> <span class="kt">CBPeripheral</span><span class="p">?)</span></code></pre>
 
                         </div>
                       </div>

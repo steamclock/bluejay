@@ -132,26 +132,18 @@ public class Bluejay: NSObject {
     }
     
     /**
-     Starting Bluejay will initialize the CoreBluetooth stack. Initializing a Bluejay instance will not yet initialize the CoreBluetooth stack. An explicit call to start running a Bluejay instance after it is intialized is required because in cases where a state resotration is trying to restore a listen on a characteristic, a listen restorer must be available before the CoreBluetooth stack is re-initialized. This two-step startup allows you to insert and gaurantee the setup of your listen restorer in between the initialization of Bluejay and the initialization of the CoreBluetooth stack.
+     Starting Bluejay will initialize the CoreBluetooth stack. Simply initializing a Bluejay instance without calling this function will not initialize the CoreBluetooth stack. An explicit start call is required because in cases where a state resotration is trying to restore a listen on a characteristic, a listen restorer must be available before the CoreBluetooth stack is re-initialized. This two-step startup (init then start) allows you to insert and gaurantee the setup of your listen restorer in between the initialization of Bluejay and the initialization of the CoreBluetooth stack.
      
      - Parameters:
+        - mode: CoreBluetooth initialization modes and options.
         - observer: An object interested in observing Bluetooth connection events and state changes. You can register more observers using the `register` function.
-        - showBluetoothAlert: Determines whether iOS will show a system alert when Bluetooth is turned off while the app using Bluejay is suspended. Defaults to false.
-        - restoreMode: Determines whether Bluejay will opt-in to state restoration, and if so, can optionally provide a listen restorer as well for restoring listens.
-        - coreBluetoothState: Allows starting Bluejay with an existing Core Bluetooth manager and peripheral.
     */
-    public func start(
-        connectionObserver observer: ConnectionObserver? = nil,
-        enableBluetoothAlert showBluetoothAlert: Bool = false,
-        backgroundRestore restoreMode: BackgroundRestoreMode = .disable,
-        coreBluetoothState: (manager: CBCentralManager, peripheral: CBPeripheral?)? = nil
-        )
-    {
+    public func start(mode: StartMode, connectionObserver observer: ConnectionObserver? = nil) {
         /**
          If a call to start is made while the app is still in the background (can happen if Bluejay is instantiated and started in the initialization of UIApplicationDelegate for example), Bluejay will mistake its unexpectedly early instantiation as an instantiation from background restoration.
          
          Therefore, an explicit call to start should assume that Bluejay is not initialized from background restoration, as the code flow for background restoration should not involve a call to start.
-        */
+         */
         shouldRestoreState = false
         if startupBackgroundTask != UIBackgroundTaskInvalid {
             debugPrint("Cancelling startup background task.")
@@ -163,41 +155,42 @@ public class Bluejay: NSObject {
             return
         }
         
-        register(observer: queue)
-        
-        if let observer = observer {
-            register(observer: observer)
-        }
-        
-        var centralManagerOptions: [String : Any] = [CBCentralManagerOptionShowPowerAlertKey : showBluetoothAlert]
-                
-        switch restoreMode {
-        case .disable:
-            break
-        case .enable(let restoreID):
-            checkBackgroundSupportForBluetooth()
-            restoreIdentifier = restoreID
-            centralManagerOptions[CBCentralManagerOptionRestoreIdentifierKey] = restoreIdentifier
-        case .enableWithListenRestorer(let restoreID, let restorer):
-            checkBackgroundSupportForBluetooth()
-            restoreIdentifier = restoreID
-            listenRestorer = WeakListenRestorer(weakReference: restorer)
-            centralManagerOptions[CBCentralManagerOptionRestoreIdentifierKey] = restoreIdentifier
-        }
-        
-        if let cbState = coreBluetoothState {
-            cbCentralManager = cbState.manager
+        switch mode {
+        case .new(let startOptions):
+            register(observer: queue)
             
-            if let peripheral = cbState.peripheral {
-                connectedPeripheral = Peripheral(bluejay: self, cbPeripheral: peripheral)
-                peripheral.delegate = connectedPeripheral
+            if let observer = observer {
+                register(observer: observer)
             }
-        } else {
+            
+            var centralManagerOptions: [String : Any] = [CBCentralManagerOptionShowPowerAlertKey : startOptions.enableBluetoothAlert]
+            
+            switch startOptions.backgroundRestore {
+            case .disable:
+                break
+            case .enable(let restoreID):
+                checkBackgroundSupportForBluetooth()
+                restoreIdentifier = restoreID
+                centralManagerOptions[CBCentralManagerOptionRestoreIdentifierKey] = restoreIdentifier
+            case .enableWithListenRestorer(let restoreID, let restorer):
+                checkBackgroundSupportForBluetooth()
+                restoreIdentifier = restoreID
+                listenRestorer = WeakListenRestorer(weakReference: restorer)
+                centralManagerOptions[CBCentralManagerOptionRestoreIdentifierKey] = restoreIdentifier
+            }
+            
             cbCentralManager = CBCentralManager(
                 delegate: self,
                 queue: .main,
                 options: centralManagerOptions
             )
+        case .use(let manager, let peripheral):
+            cbCentralManager = manager
+            
+            if let peripheral = peripheral {
+                connectedPeripheral = Peripheral(bluejay: self, cbPeripheral: peripheral)
+                peripheral.delegate = connectedPeripheral
+            }
         }
     }
     

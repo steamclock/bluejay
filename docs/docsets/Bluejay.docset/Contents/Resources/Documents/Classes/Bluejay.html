@@ -70,6 +70,9 @@
                 <a href="../Enums/ScanAction.html">ScanAction</a>
               </li>
               <li class="nav-group-task">
+                <a href="../Enums/StartMode.html">StartMode</a>
+              </li>
+              <li class="nav-group-task">
                 <a href="../Enums/Timeout.html">Timeout</a>
               </li>
               <li class="nav-group-task">
@@ -130,6 +133,9 @@
                 <a href="../Structs/CharacteristicIdentifier.html">CharacteristicIdentifier</a>
               </li>
               <li class="nav-group-task">
+                <a href="../Structs/ConnectionOptions.html">ConnectionOptions</a>
+              </li>
+              <li class="nav-group-task">
                 <a href="../Structs/DataPadding.html">DataPadding</a>
               </li>
               <li class="nav-group-task">
@@ -140,6 +146,9 @@
               </li>
               <li class="nav-group-task">
                 <a href="../Structs/ServiceIdentifier.html">ServiceIdentifier</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/StartOptions.html">StartOptions</a>
               </li>
             </ul>
           </li>
@@ -422,6 +431,33 @@ please re-evaluate the bluetooth state again as it may change momentarily after 
                     </section>
                   </div>
                 </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7BluejayAAC24defaultConnectionOptionsAA0cD0Vvp"></a>
+                    <a name="//apple_ref/swift/Property/defaultConnectionOptions" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7BluejayAAC24defaultConnectionOptionsAA0cD0Vvp">defaultConnectionOptions</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Connection options to use for each new connection if the options are not specified at the creation of those connections.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">defaultConnectionOptions</span> <span class="o">=</span> <span class="kt"><a href="../Structs/ConnectionOptions.html">ConnectionOptions</a></span><span class="o">.</span><span class="n">defaultOptions</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
               </ul>
             </div>
             <div class="task-group">
@@ -463,9 +499,9 @@ please re-evaluate the bluetooth state again as it may change momentarily after 
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7BluejayAAC5startyAA18ConnectionObserver_pSg010connectionD0_AA21BackgroundRestoreModeO010backgroundG0So16CBCentralManagerC7manager_So12CBPeripheralCSg10peripheraltSg18coreBluetoothStatetF"></a>
-                    <a name="//apple_ref/swift/Method/start(connectionObserver:backgroundRestore:coreBluetoothState:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7BluejayAAC5startyAA18ConnectionObserver_pSg010connectionD0_AA21BackgroundRestoreModeO010backgroundG0So16CBCentralManagerC7manager_So12CBPeripheralCSg10peripheraltSg18coreBluetoothStatetF">start(connectionObserver:backgroundRestore:coreBluetoothState:)</a>
+                    <a name="/s:7BluejayAAC5start4mode18connectionObserveryAA9StartModeO_AA010ConnectionE0_pSgtF"></a>
+                    <a name="//apple_ref/swift/Method/start(mode:connectionObserver:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7BluejayAAC5start4mode18connectionObserveryAA9StartModeO_AA010ConnectionE0_pSgtF">start(mode:connectionObserver:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -473,18 +509,14 @@ please re-evaluate the bluetooth state again as it may change momentarily after 
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Starting Bluejay will initialize the CoreBluetooth stack. Initializing a Bluejay instance will not yet initialize the CoreBluetooth stack. An explicit call to start running a Bluejay instance after it is intialized is required because in cases where a state resotration is trying to restore a listen on a characteristic, a listen restorer must be available before the CoreBluetooth stack is re-initialized. This two-step startup allows you to insert and gaurantee the setup of your listen restorer in between the initialization of Bluejay and the initialization of the CoreBluetooth stack.</p>
+                        <p>Starting Bluejay will initialize the CoreBluetooth stack. Simply initializing a Bluejay instance without calling this function will not initialize the CoreBluetooth stack. An explicit start call is required because in cases where a state resotration is trying to restore a listen on a characteristic, a listen restorer must be available before the CoreBluetooth stack is re-initialized. This two-step startup (init then start) allows you to insert and gaurantee the setup of your listen restorer in between the initialization of Bluejay and the initialization of the CoreBluetooth stack.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">start</span><span class="p">(</span>
-    <span class="n">connectionObserver</span> <span class="nv">observer</span><span class="p">:</span> <span class="kt"><a href="../Protocols/ConnectionObserver.html">ConnectionObserver</a></span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span>
-    <span class="n">backgroundRestore</span> <span class="nv">restoreMode</span><span class="p">:</span> <span class="kt"><a href="../Enums/BackgroundRestoreMode.html">BackgroundRestoreMode</a></span> <span class="o">=</span> <span class="o">.</span><span class="n">disable</span><span class="p">,</span>
-    <span class="nv">coreBluetoothState</span><span class="p">:</span> <span class="p">(</span><span class="nv">manager</span><span class="p">:</span> <span class="kt">CBCentralManager</span><span class="p">,</span> <span class="nv">peripheral</span><span class="p">:</span> <span class="kt">CBPeripheral</span><span class="p">?)?</span> <span class="o">=</span> <span class="kc">nil</span>
-    <span class="p">)</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">start</span><span class="p">(</span><span class="nv">mode</span><span class="p">:</span> <span class="kt"><a href="../Enums/StartMode.html">StartMode</a></span><span class="p">,</span> <span class="n">connectionObserver</span> <span class="nv">observer</span><span class="p">:</span> <span class="kt"><a href="../Protocols/ConnectionObserver.html">ConnectionObserver</a></span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -495,36 +527,24 @@ please re-evaluate the bluetooth state again as it may change momentarily after 
                             <tr>
                               <td>
                                 <code>
+                                <em>mode</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>CoreBluetooth initialization modes and options.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
                                 <em>observer</em>
                                 </code>
                               </td>
                               <td>
                                 <div>
                                   <p>An object interested in observing Bluetooth connection events and state changes. You can register more observers using the <code>register</code> function.</p>
-                                </div>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>restoreMode</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>Determines whether Bluejay will opt-in to state restoration, and if so, can optionally provide a listen restorer as well for restoring listens.</p>
-                                </div>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>coreBluetoothState</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>Allows starting Bluejay with an existing Core Bluetooth manager and peripheral.</p>
                                 </div>
                               </td>
                             </tr>
@@ -584,9 +604,9 @@ please re-evaluate the bluetooth state again as it may change momentarily after 
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7BluejayAAC16cancelEverythingys5Error_pSg_SbSg13autoReconnecttF"></a>
+                    <a name="/s:7BluejayAAC16cancelEverything_13autoReconnectys5Error_pSg_SbSgtF"></a>
                     <a name="//apple_ref/swift/Method/cancelEverything(_:autoReconnect:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7BluejayAAC16cancelEverythingys5Error_pSg_SbSg13autoReconnecttF">cancelEverything(_:autoReconnect:)</a>
+                    <a class="token" href="#/s:7BluejayAAC16cancelEverything_13autoReconnectys5Error_pSg_SbSgtF">cancelEverything(_:autoReconnect:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -690,9 +710,9 @@ please re-evaluate the bluetooth state again as it may change momentarily after 
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7BluejayAAC8registeryAA18ConnectionObserver_p8observer_tF"></a>
+                    <a name="/s:7BluejayAAC8register8observeryAA18ConnectionObserver_p_tF"></a>
                     <a name="//apple_ref/swift/Method/register(observer:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7BluejayAAC8registeryAA18ConnectionObserver_p8observer_tF">register(observer:)</a>
+                    <a class="token" href="#/s:7BluejayAAC8register8observeryAA18ConnectionObserver_p_tF">register(observer:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -736,9 +756,9 @@ please re-evaluate the bluetooth state again as it may change momentarily after 
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7BluejayAAC10unregisteryAA18ConnectionObserver_p8observer_tF"></a>
+                    <a name="/s:7BluejayAAC10unregister8observeryAA18ConnectionObserver_p_tF"></a>
                     <a name="//apple_ref/swift/Method/unregister(observer:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7BluejayAAC10unregisteryAA18ConnectionObserver_p8observer_tF">unregister(observer:)</a>
+                    <a class="token" href="#/s:7BluejayAAC10unregister8observeryAA18ConnectionObserver_p_tF">unregister(observer:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -793,9 +813,9 @@ please re-evaluate the bluetooth state again as it may change momentarily after 
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7BluejayAAC4scanySd8duration_Sb15allowDuplicatesSayAA17ServiceIdentifierVGSg18serviceIdentifiersAA10ScanActionOAA0J9DiscoveryV_SayANGtc9discoveryAlN_AOtcSg7expiredyAO_s5Error_pSgtc7stoppedtF"></a>
+                    <a name="/s:7BluejayAAC4scan8duration15allowDuplicates18serviceIdentifiers9discovery7expired7stoppedySd_SbSayAA17ServiceIdentifierVGSgAA10ScanActionOAA0M9DiscoveryV_SayAQGtcAoQ_ARtcSgyAR_s5Error_pSgtctF"></a>
                     <a name="//apple_ref/swift/Method/scan(duration:allowDuplicates:serviceIdentifiers:discovery:expired:stopped:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7BluejayAAC4scanySd8duration_Sb15allowDuplicatesSayAA17ServiceIdentifierVGSg18serviceIdentifiersAA10ScanActionOAA0J9DiscoveryV_SayANGtc9discoveryAlN_AOtcSg7expiredyAO_s5Error_pSgtc7stoppedtF">scan(duration:allowDuplicates:serviceIdentifiers:discovery:expired:stopped:)</a>
+                    <a class="token" href="#/s:7BluejayAAC4scan8duration15allowDuplicates18serviceIdentifiers9discovery7expired7stoppedySd_SbSayAA17ServiceIdentifierVGSgAA10ScanActionOAA0M9DiscoveryV_SayAQGtcAoQ_ARtcSgyAR_s5Error_pSgtctF">scan(duration:allowDuplicates:serviceIdentifiers:discovery:expired:stopped:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -949,9 +969,9 @@ please re-evaluate the bluetooth state again as it may change momentarily after 
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7BluejayAAC7connectyAA20PeripheralIdentifierV_AA7TimeoutO7timeoutyAA16ConnectionResultOc10completiontF"></a>
-                    <a name="//apple_ref/swift/Method/connect(_:timeout:completion:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7BluejayAAC7connectyAA20PeripheralIdentifierV_AA7TimeoutO7timeoutyAA16ConnectionResultOc10completiontF">connect(_:timeout:completion:)</a>
+                    <a name="/s:7BluejayAAC7connect_7timeout7options10completionyAA20PeripheralIdentifierV_AA7TimeoutOAA17ConnectionOptionsVSgyAA0I6ResultOctF"></a>
+                    <a name="//apple_ref/swift/Method/connect(_:timeout:options:completion:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7BluejayAAC7connect_7timeout7options10completionyAA20PeripheralIdentifierV_AA7TimeoutOAA17ConnectionOptionsVSgyAA0I6ResultOctF">connect(_:timeout:options:completion:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -966,7 +986,11 @@ please re-evaluate the bluetooth state again as it may change momentarily after 
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">connect</span><span class="p">(</span><span class="n">_</span> <span class="nv">peripheralIdentifier</span><span class="p">:</span> <span class="kt"><a href="../Structs/PeripheralIdentifier.html">PeripheralIdentifier</a></span><span class="p">,</span> <span class="nv">timeout</span><span class="p">:</span> <span class="kt"><a href="../Enums/Timeout.html">Timeout</a></span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt"><a href="../Enums/ConnectionResult.html">ConnectionResult</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">connect</span><span class="p">(</span>
+    <span class="n">_</span> <span class="nv">peripheralIdentifier</span><span class="p">:</span> <span class="kt"><a href="../Structs/PeripheralIdentifier.html">PeripheralIdentifier</a></span><span class="p">,</span>
+    <span class="nv">timeout</span><span class="p">:</span> <span class="kt"><a href="../Enums/Timeout.html">Timeout</a></span><span class="p">,</span>
+    <span class="nv">options</span><span class="p">:</span> <span class="kt"><a href="../Structs/ConnectionOptions.html">ConnectionOptions</a></span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span>
+    <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt"><a href="../Enums/ConnectionResult.html">ConnectionResult</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -1001,6 +1025,18 @@ please re-evaluate the bluetooth state again as it may change momentarily after 
                             <tr>
                               <td>
                                 <code>
+                                <em>options</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Optional connection options, if not specified, Bluejay&rsquo;s default will be used.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
                                 <em>completion</em>
                                 </code>
                               </td>
@@ -1019,9 +1055,9 @@ please re-evaluate the bluetooth state again as it may change momentarily after 
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7BluejayAAC10disconnectyyAA19DisconnectionResultOcSg10completion_tF"></a>
+                    <a name="/s:7BluejayAAC10disconnect10completionyyAA19DisconnectionResultOcSg_tF"></a>
                     <a name="//apple_ref/swift/Method/disconnect(completion:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7BluejayAAC10disconnectyyAA19DisconnectionResultOcSg10completion_tF">disconnect(completion:)</a>
+                    <a class="token" href="#/s:7BluejayAAC10disconnect10completionyyAA19DisconnectionResultOcSg_tF">disconnect(completion:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -1076,9 +1112,9 @@ please re-evaluate the bluetooth state again as it may change momentarily after 
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7BluejayAAC4readyAA24CharacteristicIdentifierV4from_yAA10ReadResultOyxGc10completiontAA10ReceivableRzlF"></a>
+                    <a name="/s:7BluejayAAC4read4from10completionyAA24CharacteristicIdentifierV_yAA10ReadResultOyxGctAA10ReceivableRzlF"></a>
                     <a name="//apple_ref/swift/Method/read(from:completion:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7BluejayAAC4readyAA24CharacteristicIdentifierV4from_yAA10ReadResultOyxGc10completiontAA10ReceivableRzlF">read(from:completion:)</a>
+                    <a class="token" href="#/s:7BluejayAAC4read4from10completionyAA24CharacteristicIdentifierV_yAA10ReadResultOyxGctAA10ReceivableRzlF">read(from:completion:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -1134,9 +1170,9 @@ please re-evaluate the bluetooth state again as it may change momentarily after 
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7BluejayAAC5writeyAA24CharacteristicIdentifierV2to_x5valueSC25CBCharacteristicWriteTypeO4typeyAA0H6ResultOc10completiontAA8SendableRzlF"></a>
+                    <a name="/s:7BluejayAAC5write2to5value4type10completionyAA24CharacteristicIdentifierV_xSo25CBCharacteristicWriteTypeVyAA0J6ResultOctAA8SendableRzlF"></a>
                     <a name="//apple_ref/swift/Method/write(to:value:type:completion:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7BluejayAAC5writeyAA24CharacteristicIdentifierV2to_x5valueSC25CBCharacteristicWriteTypeO4typeyAA0H6ResultOc10completiontAA8SendableRzlF">write(to:value:type:completion:)</a>
+                    <a class="token" href="#/s:7BluejayAAC5write2to5value4type10completionyAA24CharacteristicIdentifierV_xSo25CBCharacteristicWriteTypeVyAA0J6ResultOctAA8SendableRzlF">write(to:value:type:completion:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -1204,9 +1240,9 @@ please re-evaluate the bluetooth state again as it may change momentarily after 
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7BluejayAAC6listenyAA24CharacteristicIdentifierV2to_yAA10ReadResultOyxGc10completiontAA10ReceivableRzlF"></a>
+                    <a name="/s:7BluejayAAC6listen2to10completionyAA24CharacteristicIdentifierV_yAA10ReadResultOyxGctAA10ReceivableRzlF"></a>
                     <a name="//apple_ref/swift/Method/listen(to:completion:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7BluejayAAC6listenyAA24CharacteristicIdentifierV2to_yAA10ReadResultOyxGc10completiontAA10ReceivableRzlF">listen(to:completion:)</a>
+                    <a class="token" href="#/s:7BluejayAAC6listen2to10completionyAA24CharacteristicIdentifierV_yAA10ReadResultOyxGctAA10ReceivableRzlF">listen(to:completion:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -1262,9 +1298,9 @@ please re-evaluate the bluetooth state again as it may change momentarily after 
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7BluejayAAC9endListenyAA24CharacteristicIdentifierV2to_yAA11WriteResultOcSg10completiontF"></a>
+                    <a name="/s:7BluejayAAC9endListen2to10completionyAA24CharacteristicIdentifierV_yAA11WriteResultOcSgtF"></a>
                     <a name="//apple_ref/swift/Method/endListen(to:completion:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7BluejayAAC9endListenyAA24CharacteristicIdentifierV2to_yAA11WriteResultOcSg10completiontF">endListen(to:completion:)</a>
+                    <a class="token" href="#/s:7BluejayAAC9endListen2to10completionyAA24CharacteristicIdentifierV_yAA11WriteResultOcSgtF">endListen(to:completion:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -1320,9 +1356,9 @@ please re-evaluate the bluetooth state again as it may change momentarily after 
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7BluejayAAC13restoreListenyAA24CharacteristicIdentifierV2to_yAA10ReadResultOyxGc10completiontAA10ReceivableRzlF"></a>
+                    <a name="/s:7BluejayAAC13restoreListen2to10completionyAA24CharacteristicIdentifierV_yAA10ReadResultOyxGctAA10ReceivableRzlF"></a>
                     <a name="//apple_ref/swift/Method/restoreListen(to:completion:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7BluejayAAC13restoreListenyAA24CharacteristicIdentifierV2to_yAA10ReadResultOyxGc10completiontAA10ReceivableRzlF">restoreListen(to:completion:)</a>
+                    <a class="token" href="#/s:7BluejayAAC13restoreListen2to10completionyAA24CharacteristicIdentifierV_yAA10ReadResultOyxGctAA10ReceivableRzlF">restoreListen(to:completion:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -1378,9 +1414,9 @@ please re-evaluate the bluetooth state again as it may change momentarily after 
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7BluejayAAC11isListeningSbAA24CharacteristicIdentifierV2to_tKF"></a>
+                    <a name="/s:7BluejayAAC11isListening2toSbAA24CharacteristicIdentifierV_tKF"></a>
                     <a name="//apple_ref/swift/Method/isListening(to:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7BluejayAAC11isListeningSbAA24CharacteristicIdentifierV2to_tKF">isListening(to:)</a>
+                    <a class="token" href="#/s:7BluejayAAC11isListening2toSbAA24CharacteristicIdentifierV_tKF">isListening(to:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -1435,9 +1471,9 @@ please re-evaluate the bluetooth state again as it may change momentarily after 
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7BluejayAAC3runyyAA22SynchronizedPeripheralCKc14backgroundTask_yAA9RunResultOyytGc22completionOnMainThreadtF"></a>
+                    <a name="/s:7BluejayAAC3run14backgroundTask22completionOnMainThreadyyAA22SynchronizedPeripheralCKc_yAA9RunResultOyytGctF"></a>
                     <a name="//apple_ref/swift/Method/run(backgroundTask:completionOnMainThread:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7BluejayAAC3runyyAA22SynchronizedPeripheralCKc14backgroundTask_yAA9RunResultOyytGc22completionOnMainThreadtF">run(backgroundTask:completionOnMainThread:)</a>
+                    <a class="token" href="#/s:7BluejayAAC3run14backgroundTask22completionOnMainThreadyyAA22SynchronizedPeripheralCKc_yAA9RunResultOyytGctF">run(backgroundTask:completionOnMainThread:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -1500,9 +1536,9 @@ please re-evaluate the bluetooth state again as it may change momentarily after 
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7BluejayAAC3runyxAA22SynchronizedPeripheralCKc14backgroundTask_yAA9RunResultOyxGc22completionOnMainThreadtlF"></a>
+                    <a name="/s:7BluejayAAC3run14backgroundTask22completionOnMainThreadyxAA22SynchronizedPeripheralCKc_yAA9RunResultOyxGctlF"></a>
                     <a name="//apple_ref/swift/Method/run(backgroundTask:completionOnMainThread:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7BluejayAAC3runyxAA22SynchronizedPeripheralCKc14backgroundTask_yAA9RunResultOyxGc22completionOnMainThreadtlF">run(backgroundTask:completionOnMainThread:)</a>
+                    <a class="token" href="#/s:7BluejayAAC3run14backgroundTask22completionOnMainThreadyxAA22SynchronizedPeripheralCKc_yAA9RunResultOyxGctlF">run(backgroundTask:completionOnMainThread:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -1565,9 +1601,9 @@ please re-evaluate the bluetooth state again as it may change momentarily after 
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7BluejayAAC3runyx8userData_q_AA22SynchronizedPeripheralC_xtKc14backgroundTaskyAA9RunResultOyq_Gc22completionOnMainThreadtr0_lF"></a>
+                    <a name="/s:7BluejayAAC3run8userData14backgroundTask22completionOnMainThreadyx_q_AA22SynchronizedPeripheralC_xtKcyAA9RunResultOyq_Gctr0_lF"></a>
                     <a name="//apple_ref/swift/Method/run(userData:backgroundTask:completionOnMainThread:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7BluejayAAC3runyx8userData_q_AA22SynchronizedPeripheralC_xtKc14backgroundTaskyAA9RunResultOyq_Gc22completionOnMainThreadtr0_lF">run(userData:backgroundTask:completionOnMainThread:)</a>
+                    <a class="token" href="#/s:7BluejayAAC3run8userData14backgroundTask22completionOnMainThreadyx_q_AA22SynchronizedPeripheralC_xtKcyAA9RunResultOyq_Gctr0_lF">run(userData:backgroundTask:completionOnMainThread:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -1654,9 +1690,9 @@ please re-evaluate the bluetooth state again as it may change momentarily after 
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7BluejayAAC7combine10Foundation4DataVSayAA8Sendable_pG9sendables_tFZ"></a>
+                    <a name="/s:7BluejayAAC7combine9sendables10Foundation4DataVSayAA8Sendable_pG_tFZ"></a>
                     <a name="//apple_ref/swift/Method/combine(sendables:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7BluejayAAC7combine10Foundation4DataVSayAA8Sendable_pG9sendables_tFZ">combine(sendables:)</a>
+                    <a class="token" href="#/s:7BluejayAAC7combine9sendables10Foundation4DataVSayAA8Sendable_pG_tFZ">combine(sendables:)</a>
                     </code>
                   </div>
                   <div class="height-container">

@@ -32,7 +32,7 @@ class ConnectUsingSerialNumberViewController: UIViewController {
         
         statusLabel.text = "Waiting"
         
-        bluejay.start()
+        bluejay.start(mode: .new(StartOptions.default))
         
         askForSerialNumber()
     }

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>ReadResult Enumeration Reference</title>
+    <title>ConnectionOptions Structure Reference</title>
     <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
     <meta charset='utf-8'>
@@ -10,8 +10,8 @@
     
   </head>
   <body>
-    <a name="//apple_ref/swift/Enum/ReadResult" class="dashAnchor"></a>
-    <a title="ReadResult Enumeration Reference"></a>
+    <a name="//apple_ref/swift/Struct/ConnectionOptions" class="dashAnchor"></a>
+    <a title="ConnectionOptions Structure Reference"></a>
     <header>
       <div class="content-wrapper">
         <p><a href="../index.html">Bluejay Docs</a> (100% documented)</p>
@@ -22,7 +22,7 @@
       <p id="breadcrumbs">
         <a href="../index.html">Bluejay Reference</a>
         <img id="carat" src="../img/carat.png" />
-        ReadResult Enumeration Reference
+        ConnectionOptions Structure Reference
       </p>
     </div>
     <div class="content-wrapper">
@@ -165,14 +165,14 @@
       <article class="main-content">
         <section>
           <section class="section">
-            <h1>ReadResult</h1>
+            <h1>ConnectionOptions</h1>
               <div class="declaration">
                 <div class="language">
-                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">enum</span> <span class="kt">ReadResult</span><span class="o">&lt;</span><span class="kt">R</span><span class="o">&gt;</span></code></pre>
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">ConnectionOptions</span></code></pre>
 
                 </div>
               </div>
-            <p>Indicates a successful, cancelled, or failed read attempt, where the success case contains the value read.</p>
+            <p>Allow configuring whether iOS can display a system alert when certain conditions are met while your app is suspended, usually an alert dialog outside of your app in the Home screen for example.</p>
 
           </section>
           <section class="section task-group-section">
@@ -181,9 +181,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7Bluejay10ReadResultO7successyACyxGxcAEmlF"></a>
-                    <a name="//apple_ref/swift/Element/success(_:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7Bluejay10ReadResultO7successyACyxGxcAEmlF">success(_:)</a>
+                    <a name="/s:7Bluejay17ConnectionOptionsV07defaultC0ACvpZ"></a>
+                    <a name="//apple_ref/swift/Variable/defaultOptions" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Bluejay17ConnectionOptionsV07defaultC0ACvpZ">defaultOptions</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -191,30 +191,26 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>The read is successful and the value read is captured in the associated value.</p>
+                        <p>Default connection options.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">case</span> <span class="nf">success</span><span class="p">(</span><span class="kt">R</span><span class="p">)</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">defaultOptions</span> <span class="o">=</span> <span class="kt">ConnectionOptions</span><span class="p">(</span><span class="nv">notifyOnConnection</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span> <span class="nv">notifyOnDisconnection</span><span class="p">:</span> <span class="kc">true</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
                     </section>
                   </div>
                 </li>
-              </ul>
-            </div>
-            <div class="task-group">
-              <ul>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7Bluejay10ReadResultO9cancelledyACyxGAEmlF"></a>
-                    <a name="//apple_ref/swift/Element/cancelled" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7Bluejay10ReadResultO9cancelledyACyxGAEmlF">cancelled</a>
+                    <a name="/s:7Bluejay17ConnectionOptionsV08notifyOnB00dE13DisconnectionACSb_Sbtcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(notifyOnConnection:notifyOnDisconnection:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Bluejay17ConnectionOptionsV08notifyOnB00dE13DisconnectionACSb_Sbtcfc">init(notifyOnConnection:notifyOnDisconnection:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -222,47 +218,47 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>The read is cancelled for a reason.</p>
+                        <p>Creates a connection options that can specify whether iOS can display a system alert when certain conditions are met while your app is suspended, usually an alert dialog outside of your app in the Home screen for example.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">cancelled</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">notifyOnConnection</span><span class="p">:</span> <span class="kt">Bool</span><span class="p">,</span> <span class="nv">notifyOnDisconnection</span><span class="p">:</span> <span class="kt">Bool</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
-                    </section>
-                  </div>
-                </li>
-              </ul>
-            </div>
-            <div class="task-group">
-              <ul>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:7Bluejay10ReadResultO7failureyACyxGs5Error_pcAEmlF"></a>
-                    <a name="//apple_ref/swift/Element/failure(_:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7Bluejay10ReadResultO7failureyACyxGs5Error_pcAEmlF">failure(_:)</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>The read has failed unexpectedly with an error.</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">case</span> <span class="nf">failure</span><span class="p">(</span><span class="kt">Error</span><span class="p">)</span></code></pre>
-
-                        </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>notifyOnConnection</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Determines whether iOS should show a system alert when your suspended app is connected to a peripheral.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>notifyOnDisconnection</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Determines whether iOS should show a system alert when your suspended app is disconnected from a peripheral.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </section>
                   </div>

@@ -118,7 +118,7 @@ While you may want to create one Bluejay instance and use it everywhere, you can
 Once you've created an instance, you can start the [Core Bluetooth](https://developer.apple.com/documentation/corebluetooth) session. You can do this during initialization of your app or view controller, as appropriate. For example, in the demo app Bluejay is started inside `viewDidLoad` of the root view controller.
 
 ```swift
-bluejay.start()
+bluejay.start(mode: .new(StartOptions.bluejayDefault))
 ```
 
 Bluejay needs to be started explicitly in order to support Core Bluetooth's State Restoration. State Restoration restores the Bluetooth stack and state when your app is restored from the background.
@@ -142,7 +142,7 @@ public protocol ConnectionObserver: class {
 You can register a `ConnectionObserver` when starting Bluejay:
 
 ```swift
-bluejay.start(connectionObserver: self)
+bluejay.start(mode: .new(StartOptions.bluejayDefault), connectionObserver: self)
 ```
 
 Or you can add additional observers later using:
@@ -625,13 +625,21 @@ Enabling background mode doesn't enable state restoration. State restoration is 
 Once your project has BLE accessories background mode enabled, you can choose to opt in to State Restoration when you start your Bluejay session.
 
 ```swift
-bluejay.start(backgroundRestore: .enable(yourRestoreIdentifier))
+let startOptions = StartOptions(
+  enableBluetoothAlert: true,
+  backgroundRestore: .enable("com.steamclock.bluejay")
+)
+bluejay.start(mode: .new(startOptions), connectionObserver: self)
 ```
 
 Additionally, Bluejay allows you to restore listen callbacks on subscribed characteristics that did not end when the app has stopped running.
 
 ```swift
-bluejay.start(backgroundRestore: .enable(yourRestoreIdentifier, yourListenRestorer))
+let startOptions = StartOptions(
+  enableBluetoothAlert: true,
+  backgroundRestore: .enableWithListenRestorer("com.steamclock.bluejay", self)
+)
+bluejay.start(mode: .new(startOptions), connectionObserver: self)
 ```
 
 ### Listen Restoration
@@ -851,10 +859,10 @@ The `idleWindow` is in seconds, and basically specifies the duration of the abse
 
 ### CoreBluetooth Migration
 
-If you want to start Bluejay with a pre-existing CoreBluetooth stack, you can do so using the `coreBluetoothState` parameter available in the `start` function.
+If you want to start Bluejay with a pre-existing CoreBluetooth stack, you can do so using the `.use` start mode instead of `.new` when calling the `start` function.
 
 ```swift
-coreBluetoothState: (manager: CBCentralManager, peripheral: CBPeripheral?)? = nil
+bluejay.start(mode: .use(manager: anotherManager, peripheral: alreadyConnectedPeripheral))
 ```
 
 You can also transfer Bluejay's CoreBluetooth stack to another Bluetooth library or your own using this function:

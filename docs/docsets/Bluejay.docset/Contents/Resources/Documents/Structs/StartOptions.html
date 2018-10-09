@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>ReadResult Enumeration Reference</title>
+    <title>StartOptions Structure Reference</title>
     <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
     <meta charset='utf-8'>
@@ -10,8 +10,8 @@
     
   </head>
   <body>
-    <a name="//apple_ref/swift/Enum/ReadResult" class="dashAnchor"></a>
-    <a title="ReadResult Enumeration Reference"></a>
+    <a name="//apple_ref/swift/Struct/StartOptions" class="dashAnchor"></a>
+    <a title="StartOptions Structure Reference"></a>
     <header>
       <div class="content-wrapper">
         <p><a href="../index.html">Bluejay Docs</a> (100% documented)</p>
@@ -22,7 +22,7 @@
       <p id="breadcrumbs">
         <a href="../index.html">Bluejay Reference</a>
         <img id="carat" src="../img/carat.png" />
-        ReadResult Enumeration Reference
+        StartOptions Structure Reference
       </p>
     </div>
     <div class="content-wrapper">
@@ -165,14 +165,14 @@
       <article class="main-content">
         <section>
           <section class="section">
-            <h1>ReadResult</h1>
+            <h1>StartOptions</h1>
               <div class="declaration">
                 <div class="language">
-                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">enum</span> <span class="kt">ReadResult</span><span class="o">&lt;</span><span class="kt">R</span><span class="o">&gt;</span></code></pre>
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">StartOptions</span></code></pre>
 
                 </div>
               </div>
-            <p>Indicates a successful, cancelled, or failed read attempt, where the success case contains the value read.</p>
+            <p>Wrapper for CBCentralManager initialization configurations when starting a new Bluejay instance.</p>
 
           </section>
           <section class="section task-group-section">
@@ -181,9 +181,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7Bluejay10ReadResultO7successyACyxGxcAEmlF"></a>
-                    <a name="//apple_ref/swift/Element/success(_:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7Bluejay10ReadResultO7successyACyxGxcAEmlF">success(_:)</a>
+                    <a name="/s:7Bluejay12StartOptionsV20enableBluetoothAlert17backgroundRestoreACSb_AA010BackgroundH4ModeOtcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(enableBluetoothAlert:backgroundRestore:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Bluejay12StartOptionsV20enableBluetoothAlert17backgroundRestoreACSb_AA010BackgroundH4ModeOtcfc">init(enableBluetoothAlert:backgroundRestore:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -191,30 +191,26 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>The read is successful and the value read is captured in the associated value.</p>
+                        <p>Public initializer.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">case</span> <span class="nf">success</span><span class="p">(</span><span class="kt">R</span><span class="p">)</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">enableBluetoothAlert</span><span class="p">:</span> <span class="kt">Bool</span><span class="p">,</span> <span class="nv">backgroundRestore</span><span class="p">:</span> <span class="kt"><a href="../Enums/BackgroundRestoreMode.html">BackgroundRestoreMode</a></span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
                     </section>
                   </div>
                 </li>
-              </ul>
-            </div>
-            <div class="task-group">
-              <ul>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7Bluejay10ReadResultO9cancelledyACyxGAEmlF"></a>
-                    <a name="//apple_ref/swift/Element/cancelled" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7Bluejay10ReadResultO9cancelledyACyxGAEmlF">cancelled</a>
+                    <a name="/s:7Bluejay12StartOptionsV7defaultACvpZ"></a>
+                    <a name="//apple_ref/swift/Variable/default" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Bluejay12StartOptionsV7defaultACvpZ">default</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -222,45 +218,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>The read is cancelled for a reason.</p>
+                        <p>Convenience factory method to avoid having to use the public initializer.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">cancelled</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-              </ul>
-            </div>
-            <div class="task-group">
-              <ul>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:7Bluejay10ReadResultO7failureyACyxGs5Error_pcAEmlF"></a>
-                    <a name="//apple_ref/swift/Element/failure(_:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7Bluejay10ReadResultO7failureyACyxGs5Error_pcAEmlF">failure(_:)</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>The read has failed unexpectedly with an error.</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">case</span> <span class="nf">failure</span><span class="p">(</span><span class="kt">Error</span><span class="p">)</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kd">var</span> <span class="err">`</span><span class="k">default</span><span class="err">`</span><span class="p">:</span> <span class="kt">StartOptions</span></code></pre>
 
                         </div>
                       </div>
