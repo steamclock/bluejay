@@ -24,6 +24,8 @@ public class Bluejay: NSObject {
     /// List of weak references to objects interested in receiving notifications on Bluetooth connection events and state changes.
     private var observers = [WeakConnectionObserver]()
     
+    private var disconnectHandler: WeakDisconnectHandler?
+    
     /// Reference to a peripheral that is still connecting. If this is nil, then the peripheral should either be disconnected or connected. This is used to help determine the state of the peripheral's connection.
     private var connectingPeripheral: Peripheral?
     
@@ -138,7 +140,7 @@ public class Bluejay: NSObject {
         - mode: CoreBluetooth initialization modes and options.
         - observer: An object interested in observing Bluetooth connection events and state changes. You can register more observers using the `register` function.
     */
-    public func start(mode: StartMode, connectionObserver observer: ConnectionObserver? = nil) {
+    public func start(mode: StartMode, connectionObserver observer: ConnectionObserver? = nil, disconnectHandler handler: DisconnectHandler? = nil) {
         /**
          If a call to start is made while the app is still in the background (can happen if Bluejay is instantiated and started in the initialization of UIApplicationDelegate for example), Bluejay will mistake its unexpectedly early instantiation as an instantiation from background restoration.
          
@@ -161,6 +163,10 @@ public class Bluejay: NSObject {
             
             if let observer = observer {
                 register(observer: observer)
+            }
+            
+            if let handler = handler {
+                registerDisconnectHandler(handler: handler)
             }
             
             var centralManagerOptions: [String : Any] = [CBCentralManagerOptionShowPowerAlertKey : startOptions.enableBluetoothAlert]
@@ -213,7 +219,9 @@ public class Bluejay: NSObject {
         }
         
         queue.cancelAll(BluejayError.stopped)
+        
         observers.removeAll()
+        disconnectHandler = nil
         
         return (manager: cbCentralManager, peripheral: connectedPeripheral?.cbPeripheral)
     }
@@ -304,6 +312,14 @@ public class Bluejay: NSObject {
      */
     public func unregister(observer: ConnectionObserver) {
         observers = observers.filter { $0.weakReference != nil && $0.weakReference !== observer }
+    }
+    
+    public func registerDisconnectHandler(handler: DisconnectHandler) {
+        disconnectHandler = WeakDisconnectHandler(weakReference: handler)
+    }
+    
+    public func unregisterDisconnectHandler() {
+        disconnectHandler = nil
     }
     
     // MARK: - Scanning
@@ -1046,6 +1062,16 @@ extension Bluejay: CBCentralManagerDelegate {
             weakSelf.connectedPeripheral = nil
             
             log("Should auto-reconnect: \(weakSelf.shouldAutoReconnect)")
+            
+            if let disconnectHandler = weakSelf.disconnectHandler?.weakReference {
+                switch disconnectHandler.didDisconnect(from: disconnectedPeripheral, with: error, willReconnect: weakSelf.shouldAutoReconnect) {
+                case .noChange:
+                    log("Disconnect handler will not change auto-reconnect.")
+                case .change(let autoReconnect):
+                    weakSelf.shouldAutoReconnect = autoReconnect
+                    log("Disconnect handler changing auto-reconnect to: \(weakSelf.shouldAutoReconnect)")
+                }
+            }
             
             if weakSelf.shouldAutoReconnect {
                 log("Issuing reconnect to: \(peripheral.name ?? peripheral.identifier.uuidString)")

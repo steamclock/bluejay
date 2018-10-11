@@ -14,6 +14,7 @@
 		B8022D9A1E1F041D00EA360B /* SynchronizedPeripheral.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8022D991E1F041D00EA360B /* SynchronizedPeripheral.swift */; };
 		B8022D9C1E1F052F00EA360B /* ListenAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8022D9B1E1F052F00EA360B /* ListenAction.swift */; };
 		B80535741ECA239D002E5493 /* ScanHeartRateSensorsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B80535731ECA239D002E5493 /* ScanHeartRateSensorsViewController.swift */; };
+		B80D299B2170062D001C3C9B /* DisconnectHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B80D299A2170062D001C3C9B /* DisconnectHandler.swift */; };
 		B81E37731EDE238900E0655F /* DisconnectionResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = B81E37721EDE238900E0655F /* DisconnectionResult.swift */; };
 		B83271A91E313CA300D68581 /* Queueable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B83271A81E313CA300D68581 /* Queueable.swift */; };
 		B842AAF81E4CF74300BB32EE /* String+Transferable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B842AAF71E4CF74300BB32EE /* String+Transferable.swift */; };
@@ -119,6 +120,7 @@
 		B8022D991E1F041D00EA360B /* SynchronizedPeripheral.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SynchronizedPeripheral.swift; sourceTree = "<group>"; };
 		B8022D9B1E1F052F00EA360B /* ListenAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListenAction.swift; sourceTree = "<group>"; };
 		B80535731ECA239D002E5493 /* ScanHeartRateSensorsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScanHeartRateSensorsViewController.swift; sourceTree = "<group>"; };
+		B80D299A2170062D001C3C9B /* DisconnectHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisconnectHandler.swift; sourceTree = "<group>"; };
 		B81E37721EDE238900E0655F /* DisconnectionResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DisconnectionResult.swift; sourceTree = "<group>"; };
 		B83271A81E313CA300D68581 /* Queueable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Queueable.swift; sourceTree = "<group>"; };
 		B842AAF71E4CF74300BB32EE /* String+Transferable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Transferable.swift"; sourceTree = "<group>"; };
@@ -394,6 +396,7 @@
 				B8C70FA81E1C69B60006CF58 /* Receivable.swift */,
 				B8C70FAA1E1C69C50006CF58 /* Sendable.swift */,
 				B8C70FB81E1C725C0006CF58 /* ConnectionObserver.swift */,
+				B80D299A2170062D001C3C9B /* DisconnectHandler.swift */,
 				B8FE9DF41E73597A00D361CE /* RSSIObserver.swift */,
 			);
 			name = Protocols;
@@ -728,6 +731,7 @@
 				B8C5E7131E64D6860094A708 /* ScanAction.swift in Sources */,
 				B8C70FA31E1C65000006CF58 /* ConnectionResult.swift in Sources */,
 				B88A0DA11E1DD15600A00FF8 /* DiscoverCharacteristic.swift in Sources */,
+				B80D299B2170062D001C3C9B /* DisconnectHandler.swift in Sources */,
 				B842AAF81E4CF74300BB32EE /* String+Transferable.swift in Sources */,
 				B83271A91E313CA300D68581 /* Queueable.swift in Sources */,
 				B8F8C0ED1E4E7CA300A0D0F7 /* Disconnection.swift in Sources */,
