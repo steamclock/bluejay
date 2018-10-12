@@ -16,7 +16,3 @@ public enum AutoReconnectMode {
     case noChange
     case change(shouldAutoReconnect: Bool)
 }
-
-struct WeakDisconnectHandler {
-    weak var weakReference: DisconnectHandler?
-}

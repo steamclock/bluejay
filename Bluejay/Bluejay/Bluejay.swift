@@ -24,7 +24,7 @@ public class Bluejay: NSObject {
     /// List of weak references to objects interested in receiving notifications on Bluetooth connection events and state changes.
     private var observers = [WeakConnectionObserver]()
     
-    private var disconnectHandler: WeakDisconnectHandler?
+    private weak var disconnectHandler: DisconnectHandler?
     
     /// Reference to a peripheral that is still connecting. If this is nil, then the peripheral should either be disconnected or connected. This is used to help determine the state of the peripheral's connection.
     private var connectingPeripheral: Peripheral?
@@ -315,7 +315,7 @@ public class Bluejay: NSObject {
     }
     
     public func registerDisconnectHandler(handler: DisconnectHandler) {
-        disconnectHandler = WeakDisconnectHandler(weakReference: handler)
+        disconnectHandler = handler
     }
     
     public func unregisterDisconnectHandler() {
@@ -1063,7 +1063,7 @@ extension Bluejay: CBCentralManagerDelegate {
             
             log("Should auto-reconnect: \(weakSelf.shouldAutoReconnect)")
             
-            if let disconnectHandler = weakSelf.disconnectHandler?.weakReference {
+            if let disconnectHandler = weakSelf.disconnectHandler {
                 switch disconnectHandler.didDisconnect(from: disconnectedPeripheral, with: error, willReconnect: weakSelf.shouldAutoReconnect) {
                 case .noChange:
                     log("Disconnect handler will not change auto-reconnect.")
