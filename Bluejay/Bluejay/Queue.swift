@@ -111,6 +111,8 @@ class Queue {
     // MARK: - Cancellation
     
     @objc func cancelAll(_ error: Error? = nil) {
+        log("Cancel all called with error: \(error?.localizedDescription ?? "no error.")")
+        
         stopScanning(error)
         
         for queueable in queue where !queueable.state.isFinished {
@@ -126,6 +128,8 @@ class Queue {
     }
     
     func stopScanning(_ error: Error? = nil) {
+        log("Stop scanning called with error: \(error?.localizedDescription ?? "no error.")")
+        
         if let error = error {
             scan?.fail(error)
         }
