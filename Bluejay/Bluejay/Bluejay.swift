@@ -460,14 +460,16 @@ public class Bluejay: NSObject {
             return
         }
         
-        if let peripheralToDisconnect = connectedPeripheral {
+        if let connectedPeripheral = connectedPeripheral {
+            log("Will begin disconnecting a connected peripheral...")
+            
             isDisconnecting = true
             shouldAutoReconnect = false
             
             queue.cancelAll()
             
             queue.add(Disconnection(
-                peripheral: peripheralToDisconnect.cbPeripheral,
+                peripheral: connectedPeripheral.cbPeripheral,
                 manager: cbCentralManager,
                 callback: { (result) in
                     switch result {
@@ -482,9 +484,15 @@ public class Bluejay: NSObject {
                         completion?(.failure(error))
                     }
             }))
-        }
-        else {
-            log("Cannot disconnect: there is no connected peripheral.")
+        } else if connectingPeripheral != nil {
+            log("Will begin disconnecting a connecting peripheral...")
+            
+            isDisconnecting = true
+            shouldAutoReconnect = false
+            
+            queue.cancelAll()
+        } else {
+            log("Cannot disconnect: there is no connected nor connecting peripheral.")
             isDisconnecting = false
             completion?(.failure(BluejayError.notConnected))
         }
