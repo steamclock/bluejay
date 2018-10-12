@@ -128,6 +128,10 @@ class Queue {
     }
     
     func stopScanning(_ error: Error? = nil) {
+        guard isScanning else {
+            return
+        }
+        
         log("Stop scanning called with error: \(error?.localizedDescription ?? "no error.")")
         
         if let error = error {
