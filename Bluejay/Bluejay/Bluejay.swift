@@ -1033,10 +1033,6 @@ extension Bluejay: CBCentralManagerDelegate {
             return
         }
         
-        for observer in observers {
-            observer.weakReference?.disconnected(from: disconnectedPeripheral)
-        }
-        
         if !queue.isEmpty {
             // If Bluejay is currently connecting or disconnecting, the queue needs to process this disconnection event. Otherwise, this is an unexpected disconnection.
             if isConnecting || isDisconnecting {
@@ -1060,6 +1056,10 @@ extension Bluejay: CBCentralManagerDelegate {
             
             weakSelf.connectingPeripheral = nil
             weakSelf.connectedPeripheral = nil
+            
+            for observer in weakSelf.observers {
+                observer.weakReference?.disconnected(from: disconnectedPeripheral)
+            }
             
             log("Should auto-reconnect: \(weakSelf.shouldAutoReconnect)")
             
