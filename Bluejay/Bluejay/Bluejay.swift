@@ -46,6 +46,8 @@ public class Bluejay: NSObject {
     
     private var disconnectCleanUp: (() -> Void)?
     
+    private var disconnectCallback: ((DisconnectionResult) -> Void)?
+    
     // MARK: - Internal Properties
     
     /// Contains the operations to execute in FIFO order.
@@ -218,7 +220,7 @@ public class Bluejay: NSObject {
             cbCentralManager = nil
         }
         
-        queue.cancelAll(BluejayError.stopped)
+        cancelEverything(error: BluejayError.stopped, shouldDisconnect: false)
         
         observers.removeAll()
         disconnectHandler = nil
@@ -242,24 +244,30 @@ public class Bluejay: NSObject {
     // MARK: - Cancellation
     
     /**
-     This will cancel the current and all pending operations in the Bluejay queue, as well as stop any ongoing scan, and disconnect any connected peripheral.
-     
-     - Warning: By default, Bluejay will still attempt to auto reconnect after calling this function. You can disable that behaviour by setting the `autoReconnect` parameter to false, or by setting `shouldAutoReconnect` to false before running this function.
+     This will cancel the current and all pending operations in the Bluejay queue and disconnect a peripheral if connected.
      
      - Parameters:
-       - error: If nil, all tasks in the queue will be cancelled without any errors. If an error is provided, all tasks in the queue will be failed with the supplied error.
-       - autoReconnect: Explicitly tells Bluejay whether it should attempt to auto reconnect after everything is cancelled.
+       - error: Defaults to a generic `cancelled` error.
+       - shouldDisconnect: Only matters if connected.
      */
-    public func cancelEverything(_ error: Error? = nil, autoReconnect: Bool? = nil) {
-        if let autoReconnect = autoReconnect {
-            shouldAutoReconnect = autoReconnect
-        }
-        
-        queue.cancelAll(error)
+    public func cancelEverything(error: Error = BluejayError.cancelled, shouldDisconnect: Bool = true) {
+        log("Cancel everything called with error: \(error.localizedDescription), shouldDisconnect: \(shouldDisconnect)")
         
         if isConnecting {
-            cbCentralManager.cancelPeripheralConnection(connectingPeripheral!.cbPeripheral)
-        } else if isConnected {
+            log("Cancel everything called while still connecting...")
+            
+            isDisconnecting = true
+            shouldAutoReconnect = false
+        }
+        
+        queue.cancelAll(error: error)
+        
+        if isConnected && shouldDisconnect {
+            log("Cancel everything will now disconnect a connected peripheral...")
+            
+            isDisconnecting = true
+            shouldAutoReconnect = false
+            
             cbCentralManager.cancelPeripheralConnection(connectedPeripheral!.cbPeripheral)
         }
     }
@@ -460,37 +468,15 @@ public class Bluejay: NSObject {
             return
         }
         
-        if let connectedPeripheral = connectedPeripheral {
-            log("Will begin disconnecting a connected peripheral...")
+        if isConnecting || isConnected {
+            log("Explicit disconnect called.")
+            
+            disconnectCallback = completion
             
             isDisconnecting = true
             shouldAutoReconnect = false
             
-            queue.cancelAll()
-            
-            queue.add(Disconnection(
-                peripheral: connectedPeripheral.cbPeripheral,
-                manager: cbCentralManager,
-                callback: { (result) in
-                    switch result {
-                    case .success(let peripheral):
-                        self.isDisconnecting = false
-                        completion?(.success(peripheral))
-                    case .cancelled:
-                        self.isDisconnecting = false
-                        completion?(.cancelled)
-                    case .failure(let error):
-                        self.isDisconnecting = false
-                        completion?(.failure(error))
-                    }
-            }))
-        } else if connectingPeripheral != nil {
-            log("Will begin disconnecting a connecting peripheral...")
-            
-            isDisconnecting = true
-            shouldAutoReconnect = false
-            
-            queue.cancelAll()
+            cancelEverything(error: BluejayError.explicitDisconnect)
         } else {
             log("Cannot disconnect: there is no connected nor connecting peripheral.")
             isDisconnecting = false
@@ -885,7 +871,7 @@ extension Bluejay: CBCentralManagerDelegate {
         }
         
         if central.state == .poweredOff {
-            cancelEverything(BluejayError.bluetoothUnavailable)
+            cancelEverything(error: BluejayError.bluetoothUnavailable)
             
             connectingPeripheral = nil
             connectedPeripheral = nil
@@ -1030,29 +1016,34 @@ extension Bluejay: CBCentralManagerDelegate {
         let errorString = error?.localizedDescription
         
         if let errorMessage = errorString {
-            log("Did disconnect from \(peripheralString) with error: \(errorMessage)")
+            log("Central manager did disconnect from \(peripheralString) with error: \(errorMessage)")
         }
         else {
-            log("Did disconnect from \(peripheralString) without errors.")
+            log("Central manager did disconnect from \(peripheralString) without errors.")
         }
         
         guard let disconnectedPeripheral = connectingPeripheral ?? connectedPeripheral else {
-            log("Disconnected from an unexpected peripheral.")
+            log("Central manager disconnected from an unexpected peripheral.")
             return
         }
         
-        if !queue.isEmpty {
-            // If Bluejay is currently connecting or disconnecting, the queue needs to process this disconnection event. Otherwise, this is an unexpected disconnection.
-            if isConnecting || isDisconnecting {
-                // Make sure the connecting and connected references are cleared before either the connection or disconnection completion block.
-                connectingPeripheral = nil
-                connectedPeripheral = nil
+        let wasConnecting = isConnecting
+        let wasConnected = isConnected
                 
-                queue.process(event: .didDisconnectPeripheral(peripheral), error: error as NSError?)
-            }
-            else {
-                queue.cancelAll(BluejayError.notConnected)
-            }
+        if wasConnecting {
+            log("Peripheral was still connecting before disconnect.")
+        } else if wasConnected {
+            log("Peripheral was connected before disconnect.")
+        }
+        
+        connectingPeripheral = nil
+        connectedPeripheral = nil
+        
+        if !isDisconnecting {
+            log("The disconnect is unexpected.")
+            cancelEverything(error: BluejayError.notConnected)
+        } else {
+            log("The disconnect is expected.")
         }
         
         disconnectCleanUp = { [weak self] in
@@ -1060,35 +1051,67 @@ extension Bluejay: CBCentralManagerDelegate {
                 return
             }
             
-            log("Disconnect clean up.")
+            log("Starting disconnect clean up...")
             
-            weakSelf.connectingPeripheral = nil
-            weakSelf.connectedPeripheral = nil
-            
-            for observer in weakSelf.observers {
-                observer.weakReference?.disconnected(from: disconnectedPeripheral)
+            if weakSelf.isDisconnecting && !weakSelf.queue.isEmpty {
+                precondition(!weakSelf.queue.isEmpty, "Queue should not be emptied at the beginning of disconnect clean up when Bluejay was still connecting.")
+                log("Disconnect clean up: delivering expected disconnected event back to the pending connection in the queue...")
+                // Allow the Connection operation to finish its cancellation, trigger its callback, and continue cancelling any remaining operations in the queue.
+                weakSelf.queue.process(event: .didDisconnectPeripheral(disconnectedPeripheral.cbPeripheral), error: nil)
             }
             
-            log("Should auto-reconnect: \(weakSelf.shouldAutoReconnect)")
-            
-            if let disconnectHandler = weakSelf.disconnectHandler {
-                switch disconnectHandler.didDisconnect(from: disconnectedPeripheral, with: error, willReconnect: weakSelf.shouldAutoReconnect) {
-                case .noChange:
-                    log("Disconnect handler will not change auto-reconnect.")
-                case .change(let autoReconnect):
-                    weakSelf.shouldAutoReconnect = autoReconnect
-                    log("Disconnect handler changing auto-reconnect to: \(weakSelf.shouldAutoReconnect)")
+            if wasConnecting {
+                precondition(weakSelf.shouldAutoReconnect == false, "Should auto reconnect should never be true when disconnected while still connecting.")
+                log("Disconnect clean up: should auto-reconnect: \(weakSelf.shouldAutoReconnect)")
+                
+                if weakSelf.isDisconnecting {
+                    log("Disconnect clean up: calling the explicit disconnect callback if it is provided.")
+                    weakSelf.disconnectCallback?(.disconnected(disconnectedPeripheral.cbPeripheral))
+                    weakSelf.disconnectCallback = nil
+                }
+                
+                weakSelf.isDisconnecting = false
+            }
+            else if wasConnected {
+                precondition(weakSelf.queue.isEmpty, "Queue should be emptied before notifying and invoking all disconnect observers and callbacks.")
+                
+                log("Disconnect clean up: notifying all connection observers.")
+                for observer in weakSelf.observers {
+                    observer.weakReference?.disconnected(from: disconnectedPeripheral)
+                }
+                
+                log("Disconnect clean up: should auto-reconnect: \(weakSelf.shouldAutoReconnect)")
+                
+                log("Disconnect clean up: calling the global disconnect callback.")
+                if let disconnectHandler = weakSelf.disconnectHandler {
+                    switch disconnectHandler.didDisconnect(from: disconnectedPeripheral, with: error, willReconnect: weakSelf.shouldAutoReconnect) {
+                    case .noChange:
+                        log("Disconnect handler will not change auto-reconnect.")
+                    case .change(let autoReconnect):
+                        weakSelf.shouldAutoReconnect = autoReconnect
+                        log("Disconnect handler changing auto-reconnect to: \(weakSelf.shouldAutoReconnect)")
+                    }
+                }
+                
+                if weakSelf.isDisconnecting {
+                    log("Disconnect clean up: calling the explicit disconnect callback if it is provided.")
+                    weakSelf.disconnectCallback?(.disconnected(disconnectedPeripheral.cbPeripheral))
+                    weakSelf.disconnectCallback = nil
+                }
+                
+                weakSelf.isDisconnecting = false
+                
+                if weakSelf.shouldAutoReconnect {
+                    log("Disconnect clean up: issuing reconnect to: \(peripheral.name ?? peripheral.identifier.uuidString)")
+                    weakSelf.connect(
+                        PeripheralIdentifier(uuid: peripheral.identifier),
+                        timeout: weakSelf.previousConnectionTimeout ?? .none,
+                        completion: {_ in }
+                    )
                 }
             }
             
-            if weakSelf.shouldAutoReconnect {
-                log("Issuing reconnect to: \(peripheral.name ?? peripheral.identifier.uuidString)")
-                weakSelf.connect(
-                    PeripheralIdentifier(uuid: peripheral.identifier),
-                    timeout: weakSelf.previousConnectionTimeout ?? .none,
-                    completion: {_ in }
-                )
-            }
+            log("End of disconnect clean up.")
             
             UIApplication.shared.endBackgroundTask(backgroundTask)
         }

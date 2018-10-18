@@ -73,6 +73,10 @@ class Scan: Queueable {
             log("Warning: Setting `serviceIdentifiers` to `nil` is not recommended by Apple. It may cause battery and cpu issues on prolonged scanning, and **it also doesn't work in the background**. If you need to scan for all Bluetooth devices, we recommend making use of the `duration` parameter to stop the scan after 5 ~ 10 seconds to avoid scanning indefinitely and overloading the hardware.")
         }
     }
+    
+    deinit {
+        log("Scan deinitialized")
+    }
         
     func start() {        
         state = .running
@@ -113,7 +117,7 @@ class Scan: Queueable {
             )
         }
         
-        log("Started scanning.")
+        log("Scanning started.")
     }
     
     func process(event: Event) {
@@ -166,16 +170,10 @@ class Scan: Queueable {
             
             if case .stop = discovery(newDiscovery, discoveries) {
                 state = .completed
-
-                log("Finished scanning.")
-
                 stopScan(with: discoveries, error: nil)
             }
             else if case .connect(let discovery, let timeout, let warningOptions, let completion) = discovery(newDiscovery, discoveries) {
                 state = .completed
-                
-                log("Finished scanning.")
-
                 stopScan(with: discoveries, error: nil)
                 
                 if let queue = queue {
@@ -202,23 +200,13 @@ class Scan: Queueable {
         }
     }
     
-    func cancel() {
-        cancelled()
-    }
-    
-    func cancelled() {
-        state = .cancelled
-        
-        log("Cancelled scanning.")
-
+    func stop() {
+        state = .completed
         stopScan(with: discoveries, error: nil)
     }
     
-    func fail(_ error : Error) {
+    func fail(_ error: Error) {
         state = .failed(error)
-        
-        log("Failed scanning with error: \(error.localizedDescription)")
-        
         stopScan(with: discoveries, error: error)
     }
     
@@ -233,9 +221,15 @@ class Scan: Queueable {
     private func stopScan(with discoveries: [ScanDiscovery], error: Error?) {
         clearTimers()
         
-        // There is no point trying to stop the scan if the error is due to the manager being powered off, as trying to do so has no effect and will also cause CoreBluetooth to log an "API MISUSE" warning.
+        // There is no point trying to stop the scan if Bluetooth off, as trying to do so has no effect and will also cause CoreBluetooth to log an "API MISUSE" warning.
         if manager.state == .poweredOn {
             manager.stopScan()
+        }
+        
+        if let error = error {
+            log("Scanning stopped with error: \(error.localizedDescription)")
+        } else {
+            log("Scanning stopped.")
         }
         
         stopped(discoveries, error)
@@ -321,10 +315,8 @@ class Scan: Queueable {
         self.timeoutTimer = nil
 
         switch state {
-        case .cancelled, .cancelling, .completed, .failed:
-            break
-        case .notStarted:
-            assertionFailure()
+        case .notStarted, .stopping, .failed, .completed:
+            preconditionFailure("Scan timer expired when state was: \(state.description)")
         case .running:
             state = .completed
 
