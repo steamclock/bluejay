@@ -13,8 +13,6 @@ import CoreBluetooth
 public enum ConnectionResult {
     /// The connection is successful, and the peripheral connected is captured in the associated value.
     case success(CBPeripheral)
-    /// The connection is cancelled for a reason.
-    case cancelled
     /// The connection has failed unexpectedly with an error.
     case failure(Error)
 }
