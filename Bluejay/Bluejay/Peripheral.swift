@@ -59,7 +59,7 @@ public class Peripheral: NSObject {
         }
         
         if cbPeripheral.state == .disconnected {
-            bluejay.queue.cancelAll(BluejayError.notConnected)
+            bluejay.cancelEverything(error: BluejayError.notConnected)
             return
         }
         
@@ -88,14 +88,10 @@ public class Peripheral: NSObject {
                         switch result {
                         case .success:
                             callback(true)
-                        case .cancelled:
-                            callback(false)
                         case .failure(_):
                             callback(false)
                         }
                 }))
-            case .cancelled:
-                callback(false)
             case .failure(_):
                 callback(false)
             }
@@ -212,8 +208,6 @@ public class Peripheral: NSObject {
                                 log("Failed to cache listen on characteristic: \(characteristicIdentifier.uuid) of service: \(characteristicIdentifier.service.uuid) for restore id: \(restoreIdentifier) with error: \(error.localizedDescription)")
                             }
                         }
-                    case .cancelled:
-                        completion(.cancelled)
                     case .failure(let error):
                         completion(.failure(error))
                     }
