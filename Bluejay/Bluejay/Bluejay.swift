@@ -138,7 +138,7 @@ public class Bluejay: NSObject {
         - mode: CoreBluetooth initialization modes and options.
         - observer: An object interested in observing Bluetooth connection events and state changes. You can register more observers using the `register` function.
     */
-    public func start(mode: StartMode, connectionObserver observer: ConnectionObserver? = nil) {
+    public func start(mode: StartMode = .new(StartOptions.default), connectionObserver observer: ConnectionObserver? = nil) {
         /**
          If a call to start is made while the app is still in the background (can happen if Bluejay is instantiated and started in the initialization of UIApplicationDelegate for example), Bluejay will mistake its unexpectedly early instantiation as an instantiation from background restoration.
          
