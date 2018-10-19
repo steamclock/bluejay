@@ -1064,11 +1064,11 @@ extension Bluejay: CBCentralManagerDelegate {
             }
             else if wasConnected {
                 precondition(weakSelf.queue.isEmpty, "Queue should be emptied before notifying and invoking all disconnect observers and callbacks.")
-                
-                log("Disconnect clean up: notifying all connection observers.")
-                for observer in weakSelf.observers {
-                    observer.weakReference?.disconnected(from: disconnectedPeripheral)
-                }
+            }
+            
+            log("Disconnect clean up: notifying all connection observers.")
+            for observer in weakSelf.observers {
+                observer.weakReference?.disconnected(from: disconnectedPeripheral)
             }
             
             log("Disconnect clean up: should auto-reconnect: \(weakSelf.shouldAutoReconnect)")
