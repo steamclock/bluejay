@@ -255,6 +255,11 @@ class Queue {
             return false
         }
     }
+    
+    var first: Queueable? {
+        return queue.first
+    }
+    
 }
 
 extension Queue: ConnectionObserver {

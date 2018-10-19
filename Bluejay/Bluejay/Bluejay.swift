@@ -48,6 +48,8 @@ public class Bluejay: NSObject {
     
     private var disconnectCallback: ((DisconnectionResult) -> Void)?
     
+    private var connectingCallback: ((ConnectionResult) -> Void)?
+    
     // MARK: - Internal Properties
     
     /// Contains the operations to execute in FIFO order.
@@ -432,6 +434,8 @@ public class Bluejay: NSObject {
         }
         
         if let cbPeripheral = cbCentralManager.retrievePeripherals(withIdentifiers: [peripheralIdentifier.uuid]).first {
+            connectingCallback = completion
+            
             queue.add(Connection(
                 peripheral: cbPeripheral,
                 manager: cbCentralManager,
@@ -1016,6 +1020,8 @@ extension Bluejay: CBCentralManagerDelegate {
         
         log("Did connect to: \(peripheral.name ?? peripheral.identifier.uuidString)")
 
+        connectingCallback = nil
+        
         connectedPeripheral = connectingPeripheral
         connectingPeripheral = nil
         
@@ -1087,6 +1093,8 @@ extension Bluejay: CBCentralManagerDelegate {
             
             log("Starting disconnect clean up...")
             
+            var connectingError: Error?
+            
             if wasConnecting || weakSelf.queue.isRunningQueuedDisconnection {
                 precondition(
                     !weakSelf.queue.isEmpty,
@@ -1095,6 +1103,13 @@ extension Bluejay: CBCentralManagerDelegate {
                 
                 if wasConnecting {
                     log("Disconnect clean up: delivering expected disconnected event back to the pending connection in the queue...")
+                    
+                    if let connection = weakSelf.queue.first as? Connection {
+                        if case let .stopping(error) = connection.state {
+                            connectingError = error
+                        }
+                    }
+                    
                 } else if weakSelf.queue.isRunningQueuedDisconnection {
                     log("Disconnect clean up: delivering expected disconnected event back to the queued disconnection in the queue...")
                 }
@@ -1128,6 +1143,16 @@ extension Bluejay: CBCentralManagerDelegate {
                 log("Disconnect clean up: calling the explicit disconnect callback if it is provided.")
                 weakSelf.disconnectCallback?(.disconnected(disconnectedPeripheral.cbPeripheral))
                 weakSelf.disconnectCallback = nil
+            }
+            
+            if wasConnecting {
+                guard let connectingError = connectingError else {
+                    preconditionFailure("Missing connecting error at the end of a disconnect clean up after cancelling a pending connection.")
+                }
+                
+                log("Disconnect clean up: calling the connecting callback if it is provided.")
+                weakSelf.connectingCallback?(.failure(connectingError))
+                weakSelf.connectingCallback = nil
             }
             
             weakSelf.isDisconnecting = false

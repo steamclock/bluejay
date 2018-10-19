@@ -146,12 +146,9 @@ class Connection: Queueable {
         if wasStopping {
             log("Pending connection cancelled with error: \(error.localizedDescription)")
             
-            log("Cancelled pending connection will now resume cancelling all operations in the queue...")
-            updateQueue(cancel: true, cancelError: error)
+            // Let Bluejay invoke the callback at the end of its disconnect clean up for more consistent ordering of callback invocation.
             
-            log("Cancelled pending connection will now invoke its callback.")
-            callback?(.failure(error))
-            callback = nil
+            updateQueue(cancel: true, cancelError: error)
         } else {
             log("Failed connecting to: \(peripheral.name ?? peripheral.identifier.uuidString) with error: \(error.localizedDescription)")
 
