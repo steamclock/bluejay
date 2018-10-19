@@ -1056,24 +1056,11 @@ extension Bluejay: CBCentralManagerDelegate {
             
             log("Starting disconnect clean up...")
             
-            if weakSelf.isDisconnecting && !weakSelf.queue.isEmpty {
+            if wasConnecting {
                 precondition(!weakSelf.queue.isEmpty, "Queue should not be emptied at the beginning of disconnect clean up when Bluejay was still connecting.")
                 log("Disconnect clean up: delivering expected disconnected event back to the pending connection in the queue...")
                 // Allow the Connection operation to finish its cancellation, trigger its callback, and continue cancelling any remaining operations in the queue.
                 weakSelf.queue.process(event: .didDisconnectPeripheral(disconnectedPeripheral.cbPeripheral), error: nil)
-            }
-            
-            if wasConnecting {
-                precondition(weakSelf.shouldAutoReconnect == false, "Should auto reconnect should never be true when disconnected while still connecting.")
-                log("Disconnect clean up: should auto-reconnect: \(weakSelf.shouldAutoReconnect)")
-                
-                if weakSelf.isDisconnecting {
-                    log("Disconnect clean up: calling the explicit disconnect callback if it is provided.")
-                    weakSelf.disconnectCallback?(.disconnected(disconnectedPeripheral.cbPeripheral))
-                    weakSelf.disconnectCallback = nil
-                }
-                
-                weakSelf.isDisconnecting = false
             }
             else if wasConnected {
                 precondition(weakSelf.queue.isEmpty, "Queue should be emptied before notifying and invoking all disconnect observers and callbacks.")
@@ -1082,36 +1069,36 @@ extension Bluejay: CBCentralManagerDelegate {
                 for observer in weakSelf.observers {
                     observer.weakReference?.disconnected(from: disconnectedPeripheral)
                 }
-                
-                log("Disconnect clean up: should auto-reconnect: \(weakSelf.shouldAutoReconnect)")
-                
-                log("Disconnect clean up: calling the global disconnect callback.")
-                if let disconnectHandler = weakSelf.disconnectHandler {
-                    switch disconnectHandler.didDisconnect(from: disconnectedPeripheral, with: error, willReconnect: weakSelf.shouldAutoReconnect) {
-                    case .noChange:
-                        log("Disconnect handler will not change auto-reconnect.")
-                    case .change(let autoReconnect):
-                        weakSelf.shouldAutoReconnect = autoReconnect
-                        log("Disconnect handler changing auto-reconnect to: \(weakSelf.shouldAutoReconnect)")
-                    }
+            }
+            
+            log("Disconnect clean up: should auto-reconnect: \(weakSelf.shouldAutoReconnect)")
+            
+            if let disconnectHandler = weakSelf.disconnectHandler {
+                log("Disconnect clean up: calling the disconnect handler.")
+                switch disconnectHandler.didDisconnect(from: disconnectedPeripheral, with: error, willReconnect: weakSelf.shouldAutoReconnect) {
+                case .noChange:
+                    log("Disconnect handler will not change auto-reconnect.")
+                case .change(let autoReconnect):
+                    weakSelf.shouldAutoReconnect = autoReconnect
+                    log("Disconnect handler changing auto-reconnect to: \(weakSelf.shouldAutoReconnect)")
                 }
-                
-                if weakSelf.isDisconnecting {
-                    log("Disconnect clean up: calling the explicit disconnect callback if it is provided.")
-                    weakSelf.disconnectCallback?(.disconnected(disconnectedPeripheral.cbPeripheral))
-                    weakSelf.disconnectCallback = nil
-                }
-                
-                weakSelf.isDisconnecting = false
-                
-                if weakSelf.shouldAutoReconnect {
-                    log("Disconnect clean up: issuing reconnect to: \(peripheral.name ?? peripheral.identifier.uuidString)")
-                    weakSelf.connect(
-                        PeripheralIdentifier(uuid: peripheral.identifier),
-                        timeout: weakSelf.previousConnectionTimeout ?? .none,
-                        completion: {_ in }
-                    )
-                }
+            }
+            
+            if weakSelf.isDisconnecting {
+                log("Disconnect clean up: calling the explicit disconnect callback if it is provided.")
+                weakSelf.disconnectCallback?(.disconnected(disconnectedPeripheral.cbPeripheral))
+                weakSelf.disconnectCallback = nil
+            }
+            
+            weakSelf.isDisconnecting = false
+            
+            if weakSelf.shouldAutoReconnect {
+                log("Disconnect clean up: issuing reconnect to: \(peripheral.name ?? peripheral.identifier.uuidString)")
+                weakSelf.connect(
+                    PeripheralIdentifier(uuid: peripheral.identifier),
+                    timeout: weakSelf.previousConnectionTimeout ?? .none,
+                    completion: {_ in }
+                )
             }
             
             log("End of disconnect clean up.")
