@@ -5,10 +5,13 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Changed
+- New StartMode enum and StartOptions struct for the start function
+- New WarningOptions for the connect function
 
 ## [0.6.4] - 2018-08-02
 ### Added
-- Added warnings against using `scan` with `serviceIdentifiers` set to `nil` or empty. 
+- Added warnings against using `scan` with `serviceIdentifiers` set to `nil` or empty.
 
 ## [0.6.3] - 2018-07-26
 ### Added

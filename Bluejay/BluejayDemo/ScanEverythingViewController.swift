@@ -26,8 +26,8 @@ class ScanEverythingViewController: UITableViewController {
         
         debugPrint("Bluejay started: \(bluejay.hasStarted)")
         
-        bluejay.start(connectionObserver: self)
-        
+        bluejay.start()
+                
         debugPrint("Bluejay started: \(bluejay.hasStarted)")
         
         startScanning()

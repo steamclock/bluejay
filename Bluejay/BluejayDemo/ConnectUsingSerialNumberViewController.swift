@@ -32,7 +32,7 @@ class ConnectUsingSerialNumberViewController: UIViewController {
         
         statusLabel.text = "Waiting"
         
-        bluejay.start()
+        bluejay.start(mode: .new(StartOptions.default))
         
         askForSerialNumber()
     }
@@ -96,7 +96,10 @@ class ConnectUsingSerialNumberViewController: UIViewController {
                     return .blacklist
                 }
                 else {
-                    return .connect(discovery, .none, { (connectionResult) in
+                    return .connect(
+                        discovery,
+                        .none,
+                        WarningOptions(notifyOnConnection: false, notifyOnDisconnection: true, notifyOnNotification: false), { (connectionResult) in
                         switch connectionResult {
                         case .success(let peripheral):
                             debugPrint("Connection to \(peripheral.identifier) successful.")

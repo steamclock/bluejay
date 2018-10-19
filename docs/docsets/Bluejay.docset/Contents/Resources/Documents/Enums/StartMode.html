@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>ListenAction Enumeration Reference</title>
+    <title>StartMode Enumeration Reference</title>
     <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
     <meta charset='utf-8'>
@@ -10,8 +10,8 @@
     
   </head>
   <body>
-    <a name="//apple_ref/swift/Enum/ListenAction" class="dashAnchor"></a>
-    <a title="ListenAction Enumeration Reference"></a>
+    <a name="//apple_ref/swift/Enum/StartMode" class="dashAnchor"></a>
+    <a title="StartMode Enumeration Reference"></a>
     <header>
       <div class="content-wrapper">
         <p><a href="../index.html">Bluejay Docs</a> (100% documented)</p>
@@ -22,7 +22,7 @@
       <p id="breadcrumbs">
         <a href="../index.html">Bluejay Reference</a>
         <img id="carat" src="../img/carat.png" />
-        ListenAction Enumeration Reference
+        StartMode Enumeration Reference
       </p>
     </div>
     <div class="content-wrapper">
@@ -165,14 +165,14 @@
       <article class="main-content">
         <section>
           <section class="section">
-            <h1>ListenAction</h1>
+            <h1>StartMode</h1>
               <div class="declaration">
                 <div class="language">
-                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">enum</span> <span class="kt">ListenAction</span></code></pre>
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">enum</span> <span class="kt">StartMode</span></code></pre>
 
                 </div>
               </div>
-            <p>Indicates whether the current listen on a characteristic should continue or end.</p>
+            <p>Specifies whether to start a new Bluejay instance from scratch, or from an existing CoreBluetooth session.</p>
 
           </section>
           <section class="section task-group-section">
@@ -181,9 +181,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7Bluejay12ListenActionO13keepListeningyA2CmF"></a>
-                    <a name="//apple_ref/swift/Element/keepListening" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7Bluejay12ListenActionO13keepListeningyA2CmF">keepListening</a>
+                    <a name="/s:7Bluejay9StartModeO3newyAcA0B7OptionsVcACmF"></a>
+                    <a name="//apple_ref/swift/Element/new(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Bluejay9StartModeO3newyAcA0B7OptionsVcACmF">new(_:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -191,14 +191,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Keep listening to the characteristic.</p>
+                        <p>Start Bluejay using a new CBCentralManager.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">keepListening</span></code></pre>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="nf">new</span><span class="p">(</span><span class="kt"><a href="../Structs/StartOptions.html">StartOptions</a></span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -212,9 +212,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7Bluejay12ListenActionO4doneyA2CmF"></a>
-                    <a name="//apple_ref/swift/Element/done" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7Bluejay12ListenActionO4doneyA2CmF">done</a>
+                    <a name="/s:7Bluejay9StartModeO3useyACSo16CBCentralManagerC_So12CBPeripheralCSgtcACmF"></a>
+                    <a name="//apple_ref/swift/Element/use(manager:peripheral:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Bluejay9StartModeO3useyACSo16CBCentralManagerC_So12CBPeripheralCSgtcACmF">use(manager:peripheral:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -222,14 +222,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Stop listening to the characteristic.</p>
+                        <p>Start Bluejay using an existing CBCentralManager.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">done</span></code></pre>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="nf">use</span><span class="p">(</span><span class="nv">manager</span><span class="p">:</span> <span class="kt">CBCentralManager</span><span class="p">,</span> <span class="nv">peripheral</span><span class="p">:</span> <span class="kt">CBPeripheral</span><span class="p">?)</span></code></pre>
 
                         </div>
                       </div>
