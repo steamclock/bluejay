@@ -1041,7 +1041,10 @@ extension Bluejay: CBCentralManagerDelegate {
         
         if !isDisconnecting {
             log("The disconnect is unexpected.")
-            cancelEverything(error: BluejayError.notConnected)
+            
+            if wasConnected {
+                cancelEverything(error: BluejayError.notConnected)
+            }
         } else {
             log("The disconnect is expected.")
         }
