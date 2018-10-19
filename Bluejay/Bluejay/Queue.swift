@@ -55,6 +55,11 @@ class Queue {
             preconditionFailure("Cannot enqueue: Bluejay instance is nil.")
         }
         
+        if isDisconnectionQueued {
+            queueable.fail(BluejayError.disconnectQueued)
+            return
+        }
+        
         queueable.queue = self
         queue.append(queueable)
         
@@ -233,6 +238,23 @@ class Queue {
         return scan != nil
     }
     
+    var isDisconnectionQueued: Bool {
+        return queue.contains(where: { (queueable) -> Bool in
+            return queueable is Disconnection
+        })
+    }
+        
+    var isRunningQueuedDisconnection: Bool {
+        guard let disconnection = queue.first as? Disconnection else {
+            return false
+        }
+        
+        if case .running = disconnection.state {
+            return true
+        } else {
+            return false
+        }
+    }
 }
 
 extension Queue: ConnectionObserver {

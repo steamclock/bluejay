@@ -24,10 +24,10 @@ class Disconnection: Queueable {
     /// The manager responsible for this operation.
     let manager: CBCentralManager
     
-    /// Callback fro the disconnection attempt.
+    /// Callback for the disconnection attempt.
     var callback: ((DisconnectionResult) -> Void)?
     
-    init(peripheral: CBPeripheral, manager: CBCentralManager, callback: @escaping (DisconnectionResult) -> Void) {
+    init(peripheral: CBPeripheral, manager: CBCentralManager, callback: ((DisconnectionResult) -> Void)?) {
         self.state = .notStarted
         
         self.peripheral = peripheral
@@ -43,6 +43,10 @@ class Disconnection: Queueable {
         log("Started disconnecting from \(peripheral.name ?? peripheral.identifier.uuidString).")
     }
     
+    deinit {
+        log("Disconnection deinitialized.")
+    }
+    
     func process(event: Event) {
         if case .didDisconnectPeripheral(let peripheral) = event {
             success(peripheral)
@@ -54,26 +58,10 @@ class Disconnection: Queueable {
     
     func success(_ peripheral: CBPeripheral) {
         state = .completed
-                
-        callback?(.success(peripheral))
-        callback = nil
         
-        updateQueue()
-    }
-
-    func cancel() {
-        cancelled()
-    }
-    
-    func cancelled() {
-        state = .cancelled
+        // Let Bluejay invoke the callback at the end of its disconnect clean up for more consistent ordering of callback invocation.
         
-        log("Cancelled disconnection from: \(peripheral.name ?? peripheral.identifier.uuidString).")
-        
-        callback?(.cancelled)
-        callback = nil
-        
-        updateQueue()
+        updateQueue(cancel: true, cancelError: BluejayError.explicitDisconnect)
     }
     
     func fail(_ error: Error) {

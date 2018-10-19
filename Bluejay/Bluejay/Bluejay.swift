@@ -446,11 +446,13 @@ public class Bluejay: NSObject {
     }
     
     /**
-     Disconnect the currently connected peripheral. Providing a completion block is not necessary, but useful in most cases.
+     Disconnect the currently connected peripheral.
      
-     - parameter completion: Called when the disconnection request has fully finished and indicates whether it was successful, cancelled, or failed.
+     - Parameters:
+        - immediate: If true, the disconnect will not be enqueued and will cancel everything in the queue immediately.
+        - completion: Called when the disconnection request has fully finished and indicates whether it was successful, cancelled, or failed.
     */
-    public func disconnect(completion: ((DisconnectionResult) -> Void)? = nil) {
+    public func disconnect(immediate: Bool = false, completion: ((DisconnectionResult) -> Void)? = nil) {
         if isRunningBackgroundTask {
             // Terminate the app if this is called from the same thread as the running background task.
             if #available(iOS 10.0, *) {
@@ -463,20 +465,28 @@ public class Bluejay: NSObject {
             return
         }
         
-        if isDisconnecting {
+        if isDisconnecting || (immediate == false && queue.isDisconnectionQueued) {
             completion?(.failure(BluejayError.multipleDisconnectNotSupported))
             return
         }
         
         if isConnecting || isConnected {
             log("Explicit disconnect called.")
-            
+
             disconnectCallback = completion
-            
-            isDisconnecting = true
             shouldAutoReconnect = false
             
-            cancelEverything(error: BluejayError.explicitDisconnect)
+            if immediate {
+                isDisconnecting = true
+                cancelEverything(error: BluejayError.explicitDisconnect)
+            } else {
+                if let peripheral = connectingPeripheral?.cbPeripheral ?? connectedPeripheral?.cbPeripheral {
+                    queue.add(Disconnection(peripheral: peripheral, manager: cbCentralManager, callback: completion))
+                } else {
+                    log("Cannot disconnect: there is no connected nor connecting peripheral.")
+                    completion?(.failure(BluejayError.notConnected))
+                }
+            }
         } else {
             log("Cannot disconnect: there is no connected nor connecting peripheral.")
             isDisconnecting = false
@@ -656,6 +666,11 @@ public class Bluejay: NSObject {
             return
         }
         
+        if queue.isDisconnectionQueued {
+            completionOnMainThread(.failure(BluejayError.disconnectQueued))
+            return
+        }
+        
         isRunningBackgroundTask = true
         
         if let peripheral = connectedPeripheral {
@@ -711,6 +726,11 @@ public class Bluejay: NSObject {
     {
         if isRunningBackgroundTask {
             completionOnMainThread(.failure(BluejayError.multipleBackgroundTaskNotSupported))
+            return
+        }
+        
+        if queue.isDisconnectionQueued {
+            completionOnMainThread(.failure(BluejayError.disconnectQueued))
             return
         }
         
@@ -771,6 +791,11 @@ public class Bluejay: NSObject {
     {
         if isRunningBackgroundTask {
             completionOnMainThread(.failure(BluejayError.multipleBackgroundTaskNotSupported))
+            return
+        }
+        
+        if queue.isDisconnectionQueued {
+            completionOnMainThread(.failure(BluejayError.disconnectQueued))
             return
         }
         
@@ -1039,14 +1064,20 @@ extension Bluejay: CBCentralManagerDelegate {
         connectingPeripheral = nil
         connectedPeripheral = nil
         
-        if !isDisconnecting {
+        var isExpectedDisconnect = false
+        
+        if !isDisconnecting && !queue.isRunningQueuedDisconnection {
             log("The disconnect is unexpected.")
+            isExpectedDisconnect = false
             
             if wasConnected {
                 cancelEverything(error: BluejayError.notConnected)
             }
         } else {
             log("The disconnect is expected.")
+            isExpectedDisconnect = true
+            
+            shouldAutoReconnect = false
         }
         
         disconnectCleanUp = { [weak self] in
@@ -1056,10 +1087,19 @@ extension Bluejay: CBCentralManagerDelegate {
             
             log("Starting disconnect clean up...")
             
-            if wasConnecting {
-                precondition(!weakSelf.queue.isEmpty, "Queue should not be emptied at the beginning of disconnect clean up when Bluejay was still connecting.")
-                log("Disconnect clean up: delivering expected disconnected event back to the pending connection in the queue...")
-                // Allow the Connection operation to finish its cancellation, trigger its callback, and continue cancelling any remaining operations in the queue.
+            if wasConnecting || weakSelf.queue.isRunningQueuedDisconnection {
+                precondition(
+                    !weakSelf.queue.isEmpty,
+                    "Queue should not be emptied at the beginning of disconnect clean up when Bluejay was still connecting or has started a queued disconnection."
+                )
+                
+                if wasConnecting {
+                    log("Disconnect clean up: delivering expected disconnected event back to the pending connection in the queue...")
+                } else if weakSelf.queue.isRunningQueuedDisconnection {
+                    log("Disconnect clean up: delivering expected disconnected event back to the queued disconnection in the queue...")
+                }
+                
+                // Allow the Connection or Disconnection operation to finish its cancellation, trigger its callback, and continue cancelling any remaining operations in the queue.
                 weakSelf.queue.process(event: .didDisconnectPeripheral(disconnectedPeripheral.cbPeripheral), error: nil)
             }
             else if wasConnected {
@@ -1084,7 +1124,7 @@ extension Bluejay: CBCentralManagerDelegate {
                 }
             }
             
-            if weakSelf.isDisconnecting {
+            if isExpectedDisconnect {
                 log("Disconnect clean up: calling the explicit disconnect callback if it is provided.")
                 weakSelf.disconnectCallback?(.disconnected(disconnectedPeripheral.cbPeripheral))
                 weakSelf.disconnectCallback = nil

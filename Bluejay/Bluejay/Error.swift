@@ -30,6 +30,8 @@ public enum BluejayError {
     case cancelled
     /// Bluejay disconnect is called.
     case explicitDisconnect
+    /// A disconnection operation is queued.
+    case disconnectQueued
     /// An attempt to listen on a characteristic has timed out.
     case listenTimedOut
     /// An attempt to read a characteristic has failed.
@@ -83,6 +85,8 @@ extension BluejayError: LocalizedError {
             return "Cancelled"
         case .explicitDisconnect:
             return "Explicit disconnect"
+        case .disconnectQueued:
+            return "Disconnection is queued"
         case .listenTimedOut:
             return "Listen timed out."
         case .readFailed:
@@ -133,20 +137,21 @@ extension BluejayError: CustomNSError {
         case .missingCharacteristic: return 8
         case .cancelled: return 9
         case .explicitDisconnect: return 10
-        case .listenTimedOut: return 11
-        case .readFailed: return 12
-        case .writeFailed: return 13
-        case .missingData: return 14
-        case .dataOutOfBounds: return 15
-        case .unexpectedPeripheral: return 16
-        case .scanningWithAllowDuplicatesInBackgroundNotSupported: return 17
-        case .missingServiceIdentifiersInBackground: return 18
-        case .backgroundTaskRunning: return 19
-        case .multipleBackgroundTaskNotSupported: return 20
-        case .listenCacheEncoding: return 21
-        case .listenCacheDecoding: return 22
-        case .indefiniteFlush: return 23
-        case .stopped: return 24
+        case .disconnectQueued: return 11
+        case .listenTimedOut: return 12
+        case .readFailed: return 13
+        case .writeFailed: return 14
+        case .missingData: return 15
+        case .dataOutOfBounds: return 16
+        case .unexpectedPeripheral: return 17
+        case .scanningWithAllowDuplicatesInBackgroundNotSupported: return 18
+        case .missingServiceIdentifiersInBackground: return 19
+        case .backgroundTaskRunning: return 20
+        case .multipleBackgroundTaskNotSupported: return 21
+        case .listenCacheEncoding: return 22
+        case .listenCacheDecoding: return 23
+        case .indefiniteFlush: return 24
+        case .stopped: return 25
         }
     }
 
