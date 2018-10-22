@@ -318,6 +318,7 @@ public class Bluejay: NSObject {
      - Parameters:
         - duration: Stops the scan when the duration in seconds is reached. Defaults to zero (indefinite).
         - allowDuplicates: Determines whether a previously scanned peripheral is allowed to be discovered again.
+        - throttleRSSIDelta: Throttles discoveries by ignoring insignificant changes to RSSI.
         - serviceIdentifiers: Specifies what visible services the peripherals must have in order to be discovered.
         - discovery: Called whenever a specified peripheral has been discovered.
         - expired: Called whenever a previously discovered peripheral has not been seen again for a while, and Bluejay is predicting that it may no longer be in range. (Only for a scan with allowDuplicates enabled)
@@ -326,6 +327,7 @@ public class Bluejay: NSObject {
     public func scan(
         duration: TimeInterval = 0,
         allowDuplicates: Bool = false,
+        throttleRSSIDelta: Int = 5,
         serviceIdentifiers: [ServiceIdentifier]?,
         discovery: @escaping (ScanDiscovery, [ScanDiscovery]) -> ScanAction,
         expired: ((ScanDiscovery, [ScanDiscovery]) -> ScanAction)? = nil,
@@ -346,6 +348,7 @@ public class Bluejay: NSObject {
         let scanOperation = Scan(
             duration: duration,
             allowDuplicates: allowDuplicates,
+            throttleRSSIDelta: throttleRSSIDelta,
             serviceIdentifiers: serviceIdentifiers,
             discovery: discovery,
             expired: expired,
