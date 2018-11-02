@@ -49,7 +49,7 @@ class Scan: Queueable {
     private var blacklist = [ScanDiscovery]()
     
     /// The timers used to estimate an expiry callback, indicating that the peripheral is potentially no longer accessible.
-    private var timers = [(UUID, Timer)]()
+    private var timers = [(UUID, Timer?)]()
     
     init(duration: TimeInterval,
          allowDuplicates: Bool,
@@ -244,7 +244,8 @@ class Scan: Queueable {
             return uuid == identifier
         })
         {
-            timers[indexOfExistingTimer].1.invalidate()
+            timers[indexOfExistingTimer].1?.invalidate()
+            timers[indexOfExistingTimer].1 = nil
             timers.remove(at: indexOfExistingTimer)
         }
         
@@ -304,11 +305,15 @@ class Scan: Queueable {
     }
     
     private func clearTimers() {
-        for timer in timers {
-            timer.1.invalidate()
+        for timerIndex in 0..<timers.count {
+            timers[timerIndex].1?.invalidate()
+            timers[timerIndex].1 = nil
         }
         
         timers = []
+        
+        timeoutTimer?.invalidate()
+        timeoutTimer = nil
     }
 
     @objc func timeoutTimerAction(_ timer: Timer) {
