@@ -415,7 +415,7 @@ extension Peripheral: CBPeripheralDelegate {
     /// Captures CoreBluetooth's did read RSSI event and pass it to Bluejay's queue for processing.
     public func peripheral(_ peripheral: CBPeripheral, didReadRSSI RSSI: NSNumber, error: Error?) {
         for observer in observers {
-            observer.weakReference?.peripheral(peripheral, didReadRSSI: RSSI, error: error)
+            observer.weakReference?.peripheral(self, didReadRSSI: RSSI, error: error)
         }
     }
     
