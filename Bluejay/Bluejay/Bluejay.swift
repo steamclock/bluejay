@@ -121,7 +121,7 @@ public class Bluejay: NSObject {
     // MARK: - Initialization
     
     /**
-     Initializing a Bluejay instance will not yet initialize the CoreBluetooth stack. An explicit call to start running a Bluejay instance after it is intialized is required because in cases where a state resotration is trying to restore a listen on a characteristic, a listen restorer must be available before the CoreBluetooth stack is re-initialized. This two-step startup allows you to insert and gaurantee the setup of your listen restorer in between the initialization of Bluejay and the initialization of the CoreBluetooth stack.
+     Initializing a Bluejay instance will not yet initialize the CoreBluetooth stack. An explicit `start` call after Bluejay is intialized will then initialize the CoreBluetooth stack and is required because in cases where a state resotration is trying to restore a listen on a characteristic, a listen restorer must be available before the CoreBluetooth stack is re-initialized. This two-step startup allows you to prepare and gaurantee the setup of your listen restorer in between the initialization of Bluejay and the initialization of the CoreBluetooth stack.
      */
     public override init() {
         super.init()
@@ -145,11 +145,12 @@ public class Bluejay: NSObject {
     }
     
     /**
-     Starting Bluejay will initialize the CoreBluetooth stack. Simply initializing a Bluejay instance without calling this function will not initialize the CoreBluetooth stack. An explicit start call is required because in cases where a state resotration is trying to restore a listen on a characteristic, a listen restorer must be available before the CoreBluetooth stack is re-initialized. This two-step startup (init then start) allows you to insert and gaurantee the setup of your listen restorer in between the initialization of Bluejay and the initialization of the CoreBluetooth stack.
+     Starting Bluejay will initialize the CoreBluetooth stack. Simply initializing a Bluejay instance without calling this function will not initialize the CoreBluetooth stack. An explicit start call is required because in cases where a state resotration is trying to restore a listen on a characteristic, a listen restorer must be available before the CoreBluetooth stack is re-initialized. This two-step startup (init then start) allows you to prepare and gaurantee the setup of your listen restorer in between the initialization of Bluejay and the initialization of the CoreBluetooth stack.
      
      - Parameters:
         - mode: CoreBluetooth initialization modes and options.
-        - observer: An object interested in observing Bluetooth connection events and state changes. You can register more observers using the `register` function.
+        - observer: A delegate interested in observing Bluetooth connection events and state changes.
+        - handler: A single delegate with the final say on what to do at the end of a disconnection and control auto-reconnect behaviour
     */
     public func start(mode: StartMode = .new(StartOptions.default), connectionObserver observer: ConnectionObserver? = nil, disconnectHandler handler: DisconnectHandler? = nil) {
         /**
@@ -253,11 +254,11 @@ public class Bluejay: NSObject {
     // MARK: - Cancellation
     
     /**
-     This will cancel the current and all pending operations in the Bluejay queue and disconnect a peripheral if connected.
+     This will cancel the current and all pending operations in the Bluejay queue. It will also disconnect by default after the queue is emptied, but you can cancel everything without disconnecting.
      
      - Parameters:
-       - error: Defaults to a generic `cancelled` error.
-       - shouldDisconnect: Only matters if connected.
+       - error: Defaults to a generic `cancelled` error. Pass in a specific error if you want to deliver a specific error to all of your running and queued tasks.
+       - shouldDisconnect: Defaults to true, will not disconnect if set to false, but only matters if Bluejay is actually connected.
      */
     public func cancelEverything(error: Error = BluejayError.cancelled, shouldDisconnect: Bool = true) {
         log("Cancel everything called with error: \(error.localizedDescription), shouldDisconnect: \(shouldDisconnect)")
@@ -331,10 +332,18 @@ public class Bluejay: NSObject {
         observers = observers.filter { $0.weakReference != nil && $0.weakReference !== observer }
     }
     
+    /**
+     Register a single disconnection handler for giving it a final say on what to do at the end of a disconnection, as well as evaluate and control Bluejay's auto-reconnect behaviour.
+     
+     - Parameter handler: object interested in becoming Bluejay's optional but most featureful disconnection handler.
+    */
     public func registerDisconnectHandler(handler: DisconnectHandler) {
         disconnectHandler = handler
     }
     
+    /**
+     Remove any registered disconnection handler.
+    */
     public func unregisterDisconnectHandler() {
         disconnectHandler = nil
     }
@@ -411,8 +420,8 @@ public class Bluejay: NSObject {
      - Parameters:
         - peripheralIdentifier: The peripheral to connect to.
         - timeout: Specify how long the connection time out should be.
-        - options: Optional connection options, if not specified, Bluejay's default will be used.
-        - completion: Called when the connection request has fully finished and indicates whether it was successful, cancelled, or failed.
+        - warningOptions: Optional connection warning options, if not specified, Bluejay's default will be used.
+        - completion: Called when the connection request has ended.
     */
     public func connect(
         _ peripheralIdentifier: PeripheralIdentifier,
@@ -457,11 +466,13 @@ public class Bluejay: NSObject {
     }
     
     /**
-     Disconnect the currently connected peripheral.
+     Disconnect a connected peripheral or cancel a connecting peripheral.
+     
+     - Attention: If you are going to use the completion block, be careful on how you orchestrate and organize multiple disconnection callbacks if you are also using a `DisconnectHandler`.
      
      - Parameters:
-        - immediate: If true, the disconnect will not be enqueued and will cancel everything in the queue immediately.
-        - completion: Called when the disconnection request has fully finished and indicates whether it was successful, cancelled, or failed.
+        - immediate: If true, the disconnect will not be enqueued and will cancel everything in the queue immediately then disconnect. If false, the disconnect will wait until everything in the queue is finished.
+        - completion: Called when the disconnect request is fully completed.
     */
     public func disconnect(immediate: Bool = false, completion: ((DisconnectionResult) -> Void)? = nil) {
         if isRunningBackgroundTask {
