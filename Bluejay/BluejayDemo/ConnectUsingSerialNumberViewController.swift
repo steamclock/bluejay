@@ -102,7 +102,7 @@ class ConnectUsingSerialNumberViewController: UIViewController {
                         WarningOptions(notifyOnConnection: false, notifyOnDisconnection: true, notifyOnNotification: false), { (connectionResult) in
                         switch connectionResult {
                         case .success(let peripheral):
-                            debugPrint("Connection to \(peripheral.identifier) successful.")
+                            debugPrint("Connection to \(peripheral.name) successful.")
                             
                             weakSelf.bluejay.read(from: Charactersitics.serialNumber, completion: { (readResult: ReadResult<String>) in
                                 switch readResult {

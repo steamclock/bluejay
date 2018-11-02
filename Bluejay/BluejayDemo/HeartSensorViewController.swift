@@ -8,7 +8,6 @@
 
 import UIKit
 import Bluejay
-import CoreBluetooth
 
 class HeartSensorViewController: UITableViewController {
     
@@ -182,7 +181,7 @@ class HeartSensorViewController: UITableViewController {
         bluejay.connect(peripheralIdentifier, timeout: .none) { (result) in
             switch result {
             case .success(let peripheral):
-                debugPrint("Connection to \(peripheral.identifier) successful.")
+                debugPrint("Connection to \(peripheral.name) successful.")
             case .failure(let error):
                 debugPrint("Connection to \(peripheralIdentifier.uuid.uuidString) failed with error: \(error.localizedDescription)")
             }

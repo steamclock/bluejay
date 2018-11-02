@@ -1043,6 +1043,8 @@ extension Bluejay: CBCentralManagerDelegate {
         connectedPeripheral = connectingPeripheral
         connectingPeripheral = nil
         
+        precondition(connectedPeripheral != nil, "Connected peripheral is assigned a nil value despite Bluejay has successfully finished a connection.")
+        
         for observer in observers {
             observer.weakReference?.connected(to: connectedPeripheral!)
         }
@@ -1050,7 +1052,7 @@ extension Bluejay: CBCentralManagerDelegate {
         shouldAutoReconnect = true
         log("Should auto-reconnect: \(shouldAutoReconnect)")
         
-        queue.process(event: .didConnectPeripheral(peripheral), error: nil)
+        queue.process(event: .didConnectPeripheral(connectedPeripheral!), error: nil)
         
         UIApplication.shared.endBackgroundTask(backgroundTask)
     }

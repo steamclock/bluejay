@@ -13,7 +13,12 @@ public struct PeripheralIdentifier {
     
     /// The UUID of the peripheral.
     public let uuid: UUID
-        
+    
+    /// The UUID string of the peripheral.
+    public var string: String {
+        return uuid.uuidString
+    }
+    
     /// Create a PeripheralIdentifier using a UUID.
     public init(uuid: UUID) {
         self.uuid = uuid

@@ -101,12 +101,12 @@ class Connection: Queueable {
         }
     }
     
-    func success(_ peripheral: CBPeripheral) {
+    func success(_ peripheral: Peripheral) {
         cancelTimer()
         
         state = .completed
         
-        log("Connected to: \(peripheral.name ?? peripheral.identifier.uuidString).")
+        log("Connected to: \(peripheral.name).")
         
         callback?(.success(peripheral))
         callback = nil

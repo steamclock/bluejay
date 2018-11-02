@@ -46,9 +46,9 @@ public class Peripheral: NSObject {
         return PeripheralIdentifier(uuid: cbPeripheral.identifier)
     }
     
-    /// The name of the peripheral.
-    public var name: String? {
-        return cbPeripheral.name
+    /// Returns the name of the peripheral. If name is not available, return the uuid string.
+    public var name: String {
+        return cbPeripheral.name ?? uuid.string
     }
     
     // MARK: - Operations
