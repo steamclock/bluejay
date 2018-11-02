@@ -816,16 +816,7 @@ private func scan(services: [ServiceIdentifier], serialNumber: String) {
                     }
                 })
             }
-        },
-        expired: { [weak self] (lostDiscovery, discoveries) -> ScanAction in
-            if self == nil {
-                return .stop
-            }
-
-            debugPrint("Lost discovery: \(lostDiscovery)")
-
-            return .continue
-    }) { [weak self] (discoveries, error) in
+        }) { [weak self] (discoveries, error) in
         guard let weakSelf = self else {
             return
         }

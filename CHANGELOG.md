@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - New StartMode enum and StartOptions struct for the start function
 - New WarningOptions for the connect function
 
+## [0.6.5] - 2018-10-22
+### Added
+- Added an option to `scan` to change the threshold for ignoring discoveries based on insignificant changes to RSSI
+
 ## [0.6.4] - 2018-08-02
 ### Added
 - Added warnings against using `scan` with `serviceIdentifiers` set to `nil` or empty.
