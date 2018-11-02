@@ -93,26 +93,7 @@ class ListenCharacteristic: Operation {
             )
         }
     }
-    
-    func cancel() {
-        cancelled()
-    }
-    
-    func cancelled() {
-        state = .cancelled
         
-        if let characteristic = characteristic {
-            peripheral.setNotifyValue(false, for: characteristic)
-        }
-        
-        log("Cancelled listen to \(characteristicIdentifier.uuid) on \(peripheral.name ?? peripheral.identifier.uuidString).")
-        
-        callback?(.cancelled)
-        callback = nil
-        
-        updateQueue()
-    }
-    
     func fail(_ error: Error) {
         state = .failed(error)
         

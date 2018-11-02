@@ -15,17 +15,31 @@ enum QueueableState {
     
     case notStarted
     case running
-    case cancelling
-    case cancelled
+    case stopping(Error)
     case failed(Error)
     case completed
     
     var isFinished: Bool {
         switch self {
-        case .completed, .cancelled, .failed:
+        case .failed, .completed:
             return true
         default:
             return false
+        }
+    }
+    
+    var description: String {
+        switch self {
+        case .notStarted:
+            return "Not started"
+        case .running:
+            return "Running"
+        case .stopping(let error):
+            return "Stopping with error: \(error.localizedDescription)"
+        case .failed(let error):
+            return "Failed with error: \(error.localizedDescription)"
+        case .completed:
+            return "Completed"
         }
     }
     

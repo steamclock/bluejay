@@ -55,6 +55,11 @@ class Queue {
             preconditionFailure("Cannot enqueue: Bluejay instance is nil.")
         }
         
+        if isDisconnectionQueued {
+            queueable.fail(BluejayError.disconnectQueued)
+            return
+        }
+        
         queueable.queue = self
         queue.append(queueable)
         
@@ -86,8 +91,7 @@ class Queue {
             }
         }
         else if queueable is Connection {
-            // Fail the connection request immediately if there is no disconnection queued and Bluejay is still connecting or connected.
-            if !isDisconnectionQueued() && (bluejay.isConnecting || bluejay.isConnected) {
+            if (bluejay.isConnecting || bluejay.isConnected) {
                 queueable.fail(BluejayError.multipleConnectNotSupported)
                 return
             }
@@ -102,46 +106,58 @@ class Queue {
         update()
     }
     
-    private func isDisconnectionQueued() -> Bool {
-        return queue.contains(where: { (queueable) -> Bool in
-            return queueable is Disconnection
-        })
-    }
-    
     // MARK: - Cancellation
     
-    @objc func cancelAll(_ error: Error? = nil) {
-        stopScanning(error)
+    @objc func cancelAll(error: Error = BluejayError.cancelled) {
+        if queue.isEmpty {
+            log("Queue is empty, nothing to cancel.")
+            return
+        }
+        
+        log("Queue will now cancel all operations with error: \(error.localizedDescription)")
+        
+        if isScanning {
+            stopScanning(error: error)
+        }
         
         for queueable in queue where !queueable.state.isFinished {
-            if let error = error {
-                queueable.fail(error)
+            queueable.fail(error)
+            
+            if let connection = queueable as? Connection {
+                if !connection.state.isFinished {
+                    log("Interrupting cancel all to terminate a pending connection...")
+                    return
+                }
             }
-            else {
-                queueable.cancel()
-            }            
         }
         
-        queue = []
+        if !queue.isEmpty {
+            preconditionFailure("Queue is not emptied at the end of cancel all.")
+        }
     }
     
-    func stopScanning(_ error: Error? = nil) {
-        if let error = error {
-            scan?.fail(error)
-        }
-        else {
-            scan?.cancel()
+    func stopScanning(error: Error? = nil) {
+        guard isScanning, let scan = scan else {
+            log("Stop scanning requested but Bluejay is not scanning.")
+            return
         }
         
-        scan = nil
+        if let error = error {
+            log("Stop scan requested with error: \(error.localizedDescription)")
+            scan.fail(error)
+        } else {
+            log("Stop scan requested.")
+            scan.stop()
+        }
+        
+        self.scan = nil
     }
     
     // MARK: - Queue
     
-    func update() {
+    func update(cancel: Bool = false, cancelError: Error? = nil) {
         if queue.isEmpty {
-            // TODO: Minimize redundant calls to update, especially when queue is empty.
-            // log("Queue is empty, nothing to run.")
+            log("Queue is empty, nothing to update.")
             return
         }
         
@@ -158,7 +174,13 @@ class Queue {
                 }
                 
                 queue.removeFirst()
-                update()
+                
+                if cancel {
+                    log("Queue update will clear remaining operations in the queue.")
+                    cancelAll(error: cancelError ?? BluejayError.cancelled)
+                } else {
+                    update()
+                }
                 
                 return
             }
@@ -216,6 +238,28 @@ class Queue {
         return scan != nil
     }
     
+    var isDisconnectionQueued: Bool {
+        return queue.contains(where: { (queueable) -> Bool in
+            return queueable is Disconnection
+        })
+    }
+        
+    var isRunningQueuedDisconnection: Bool {
+        guard let disconnection = queue.first as? Disconnection else {
+            return false
+        }
+        
+        if case .running = disconnection.state {
+            return true
+        } else {
+            return false
+        }
+    }
+    
+    var first: Queueable? {
+        return queue.first
+    }
+    
 }
 
 extension Queue: ConnectionObserver {
@@ -226,13 +270,15 @@ extension Queue: ConnectionObserver {
         }
         else {
             if !isEmpty {
-                cancelAll(BluejayError.bluetoothUnavailable)
+                cancelAll(error: BluejayError.bluetoothUnavailable)
             }
         }
     }
     
     func connected(to peripheral: Peripheral) {
-        update()
+        if !isEmpty {
+            update()
+        }
     }
     
 }

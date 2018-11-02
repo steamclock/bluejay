@@ -20,7 +20,7 @@ public enum BluejayError {
     case multipleDisconnectNotSupported
     /// A connection request in Bluejay has timed out.
     case connectionTimedOut
-    /// A Bluetooth operation such as, reading or writing, is attempted when Bluejay is not connected to a peripheral.
+    /// Bluejay is not connected to a peripheral.
     case notConnected
     /// A Bluetooth service is not found.
     case missingService(ServiceIdentifier)
@@ -28,6 +28,10 @@ public enum BluejayError {
     case missingCharacteristic(CharacteristicIdentifier)
     /// A Bluetooth operation is cancelled.
     case cancelled
+    /// Bluejay disconnect is called.
+    case explicitDisconnect
+    /// A disconnection operation is queued.
+    case disconnectQueued
     /// An attempt to listen on a characteristic has timed out.
     case listenTimedOut
     /// An attempt to read a characteristic has failed.
@@ -52,8 +56,6 @@ public enum BluejayError {
     case listenCacheEncoding(Error)
     /// Bluejay has failed to decode a listen cache.
     case listenCacheDecoding(Error)
-    /// Bluejay has cancelled an expected end listen request.
-    case endListenCancelled
     /// Indefinite flush will not exit.
     case indefiniteFlush
     /// Bluejay has stopped.
@@ -81,6 +83,10 @@ extension BluejayError: LocalizedError {
             return "Characteristic not found: \(characteristic.uuid)."
         case .cancelled:
             return "Cancelled"
+        case .explicitDisconnect:
+            return "Explicit disconnect"
+        case .disconnectQueued:
+            return "Disconnection is queued"
         case .listenTimedOut:
             return "Listen timed out."
         case .readFailed:
@@ -105,8 +111,6 @@ extension BluejayError: LocalizedError {
             return "Listen cache encoding failed with error: \(error.localizedDescription)"
         case let .listenCacheDecoding(error):
             return "Listen cache decoding failed with error: \(error.localizedDescription)"
-        case .endListenCancelled:
-            return "End listen cancelled."
         case .indefiniteFlush:
             return "Flush listen timeout cannot be none or zero."
         case .stopped:
@@ -132,21 +136,22 @@ extension BluejayError: CustomNSError {
         case .missingService: return 7
         case .missingCharacteristic: return 8
         case .cancelled: return 9
-        case .listenTimedOut: return 10
-        case .readFailed: return 11
-        case .writeFailed: return 12
-        case .missingData: return 13
-        case .dataOutOfBounds: return 14
-        case .unexpectedPeripheral: return 15
-        case .scanningWithAllowDuplicatesInBackgroundNotSupported: return 16
-        case .missingServiceIdentifiersInBackground: return 17
-        case .backgroundTaskRunning: return 18
-        case .multipleBackgroundTaskNotSupported: return 19
-        case .listenCacheEncoding: return 20
-        case .listenCacheDecoding: return 21
-        case .endListenCancelled: return 22
-        case .indefiniteFlush: return 23
-        case .stopped: return 24
+        case .explicitDisconnect: return 10
+        case .disconnectQueued: return 11
+        case .listenTimedOut: return 12
+        case .readFailed: return 13
+        case .writeFailed: return 14
+        case .missingData: return 15
+        case .dataOutOfBounds: return 16
+        case .unexpectedPeripheral: return 17
+        case .scanningWithAllowDuplicatesInBackgroundNotSupported: return 18
+        case .missingServiceIdentifiersInBackground: return 19
+        case .backgroundTaskRunning: return 20
+        case .multipleBackgroundTaskNotSupported: return 21
+        case .listenCacheEncoding: return 22
+        case .listenCacheDecoding: return 23
+        case .indefiniteFlush: return 24
+        case .stopped: return 25
         }
     }
 

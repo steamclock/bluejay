@@ -51,6 +51,10 @@ class Connection: Queueable {
         self.callback = callback
     }
     
+    deinit {
+        log("Connection deinitialized.")
+    }
+    
     func start() {
         state = .running
         manager.connect(peripheral, options: warningOptions.dictionary)
@@ -82,11 +86,14 @@ class Connection: Queueable {
             success(peripheral)
         }
         else if case .didDisconnectPeripheral = event {
-            if case .failed(let error) = state {
+            if case .stopping(let error) = state {
+                failed(error)
+            }
+            else if case .failed(let error) = state {
                 failed(error)
             }
             else {
-                cancelled()
+                preconditionFailure("Connection received a disconnected event but state was: \(state.description)")
             }
         }
         else {
@@ -107,52 +114,49 @@ class Connection: Queueable {
         updateQueue()
     }
     
-    func cancel() {
-        cancelTimer()
-        
-        if case .running = state {
-            state = .cancelling
-            manager.cancelPeripheralConnection(peripheral)
-        }
-        else {
-            cancelled()
-        }
-    }
-    
-    func cancelled() {
-        state = .cancelled
-        
-        log("Cancelled connection to: \(peripheral.name ?? peripheral.identifier.uuidString).")
-        
-        callback?(.cancelled)
-        callback = nil
-        
-        updateQueue()
-    }
-    
     func fail(_ error: Error) {
         cancelTimer()
         
-        state = .failed(error)
-        
         // There is no point trying to cancel the connection if the error is due to the manager being powered off, as trying to do so has no effect and will also cause CoreBluetooth to log an "API MISUSE" warning.
         if manager.state == .poweredOn {
-            if case BluejayError.connectionTimedOut = error {
+            if case .running = state {
+                log("Cancelling a pending connection to \(peripheral.name ?? peripheral.identifier.uuidString)")
+                state = .stopping(error)
                 manager.cancelPeripheralConnection(peripheral)
             }
             else {
                 failed(error)
             }
         }
+        else {
+            failed(error)
+        }
     }
     
     func failed(_ error: Error) {
-        log("Failed connecting to: \(peripheral.name ?? peripheral.identifier.uuidString) with error: \(error.localizedDescription)")
+        cancelTimer()
         
-        callback?(.failure(error))
-        callback = nil
+        var wasStopping = false
+        if case .stopping(_) = state {
+            wasStopping = true
+        }
         
-        updateQueue()
+        state = .failed(error)
+        
+        if wasStopping {
+            log("Pending connection cancelled with error: \(error.localizedDescription)")
+            
+            // Let Bluejay invoke the callback at the end of its disconnect clean up for more consistent ordering of callback invocation.
+            
+            updateQueue(cancel: true, cancelError: error)
+        } else {
+            log("Failed connecting to: \(peripheral.name ?? peripheral.identifier.uuidString) with error: \(error.localizedDescription)")
+
+            callback?(.failure(error))
+            callback = nil
+            
+            updateQueue()
+        }
     }
     
     private func cancelTimer() {

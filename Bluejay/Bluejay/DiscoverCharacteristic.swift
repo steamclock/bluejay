@@ -71,19 +71,6 @@ class DiscoverCharacteristic: Operation {
         updateQueue()
     }
     
-    func cancel() {
-        cancelled()
-    }
-    
-    func cancelled() {
-        state = .cancelled
-        
-        callback?(.cancelled)
-        callback = nil
-        
-        updateQueue()
-    }
-    
     func fail(_ error: Error) {
         state = .failed(error)
 

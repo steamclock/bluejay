@@ -70,22 +70,7 @@ class ReadCharacteristic<T: Receivable>: Operation {
             preconditionFailure("Expecting write to characteristic: \(characteristicIdentifier.uuid), but received event: \(event)")
         }
     }
-    
-    func cancel() {
-        cancelled()
-    }
-    
-    func cancelled() {
-        state = .cancelled
-        
-        log("Cancelled read for \(characteristicIdentifier.uuid) on \(peripheral.identifier).")
-        
-        callback?(.cancelled)
-        callback = nil
-        
-        updateQueue()
-    }
-    
+
     func fail(_ error: Error) {
         state = .failed(error)
         

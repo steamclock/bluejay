@@ -52,8 +52,6 @@ public class SynchronizedPeripheral {
         switch finalResult {
         case .success(let r):
             return r
-        case .cancelled:
-            throw BluejayError.cancelled
         case .failure(let error):
             throw error
         }
@@ -75,10 +73,7 @@ public class SynchronizedPeripheral {
         
         _ = sem.wait(timeout: DispatchTime.distantFuture)
         
-        if case .cancelled = finalResult {
-            throw BluejayError.cancelled
-        }
-        else if case .failure(let error) = finalResult {
+        if case .failure(let error) = finalResult {
             throw error
         }
     }
@@ -113,8 +108,6 @@ public class SynchronizedPeripheral {
                 switch result {
                 case .success(let r):
                     action = completion(r)
-                case .cancelled:
-                    error = BluejayError.cancelled
                 case .failure(let e):
                     error = e
                 }
@@ -125,11 +118,6 @@ public class SynchronizedPeripheral {
                             switch result {
                             case .success:
                                 break
-                            case .cancelled:
-                                // Don't overwrite the more important error from the original listen call.
-                                if error == nil {
-                                    error = BluejayError.endListenCancelled
-                                }
                             case .failure(let e):
                                 // Don't overwrite the more important error from the original listen call.
                                 if error == nil {
@@ -178,8 +166,6 @@ public class SynchronizedPeripheral {
                     switch result {
                     case .success:
                         break
-                    case .cancelled:
-                        errorToThrow = BluejayError.endListenCancelled
                     case .failure(let endListenError):
                         errorToThrow = endListenError
                     }
@@ -231,11 +217,6 @@ public class SynchronizedPeripheral {
                     log("Flushed some data.")
                     
                     shouldListenAgain = true
-                case .cancelled:
-                    log("Flush cancelled.")
-                    
-                    shouldListenAgain = false
-                    error = BluejayError.cancelled
                 case .failure(let e):
                     log("Flush failed with error: \(e.localizedDescription)")
                     
@@ -258,8 +239,6 @@ public class SynchronizedPeripheral {
                 self.parent.endListen(to: characteristicIdentifier, error: nil, completion: { (result) in
                     switch result {
                     case .success:
-                        break
-                    case .cancelled:
                         break
                     case .failure(let e):
                         error = e
@@ -312,8 +291,6 @@ public class SynchronizedPeripheral {
                 switch result {
                 case .success(let r):
                     action = completion(r)
-                case .cancelled:
-                    error = BluejayError.cancelled
                 case .failure(let e):
                     error = e
                 }
@@ -324,11 +301,6 @@ public class SynchronizedPeripheral {
                             switch result {
                             case .success:
                                 break
-                            case .cancelled:
-                                // Don't overwrite the more important error from the original listen call.
-                                if error == nil {
-                                    error = BluejayError.endListenCancelled
-                                }
                             case .failure(let e):
                                 // Don't overwrite the more important error from the original listen call.
                                 if error == nil {
@@ -348,9 +320,6 @@ public class SynchronizedPeripheral {
                 switch result {
                 case .success:
                     return
-                case .cancelled:
-                    error = BluejayError.cancelled
-                    sem.signal()
                 case .failure(let e):
                     error = e
                     sem.signal()
@@ -421,8 +390,6 @@ public class SynchronizedPeripheral {
                     else {
                         log("Need to continue to assemble data.")
                     }
-                case .cancelled:
-                    writeAndAssembleError = BluejayError.cancelled
                 case .failure(let e):
                     writeAndAssembleError = e
                 }
@@ -433,11 +400,6 @@ public class SynchronizedPeripheral {
                             switch result {
                             case .success:
                                 break
-                            case .cancelled:
-                                // Don't overwrite the more important error from the original listen call.
-                                if writeAndAssembleError == nil {
-                                    writeAndAssembleError = BluejayError.endListenCancelled
-                                }
                             case .failure(let e):
                                 // Don't overwrite the more important error from the original listen call.
                                 if writeAndAssembleError == nil {
@@ -457,9 +419,6 @@ public class SynchronizedPeripheral {
                 switch result {
                 case .success:
                     return
-                case .cancelled:
-                    writeAndAssembleError = BluejayError.cancelled
-                    sem.signal()
                 case .failure(let e):
                     writeAndAssembleError = e
                     sem.signal()
