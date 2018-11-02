@@ -45,6 +45,9 @@
             <a href="Enums.html">Enumerations</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
+                <a href="Enums/AutoReconnectMode.html">AutoReconnectMode</a>
+              </li>
+              <li class="nav-group-task">
                 <a href="Enums/BackgroundRestoreMode.html">BackgroundRestoreMode</a>
               </li>
               <li class="nav-group-task">
@@ -110,6 +113,9 @@
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a href="Protocols/ConnectionObserver.html">ConnectionObserver</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Protocols/DisconnectHandler.html">DisconnectHandler</a>
               </li>
               <li class="nav-group-task">
                 <a href="Protocols/ListenRestorer.html">ListenRestorer</a>
@@ -195,6 +201,43 @@
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">ListenRestorer</span><span class="p">:</span> <span class="kd">class</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7Bluejay17DisconnectHandlerP"></a>
+                    <a name="//apple_ref/swift/Protocol/DisconnectHandler" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Bluejay17DisconnectHandlerP">DisconnectHandler</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>A protocol allowing a single delegate registered to Bluejay to have a final say at the end of a disconnection, as well as evaluate and control the auto-reconnect behaviour.</p>
+<div class="aside aside-attention">
+    <p class="aside-title">Attention</p>
+    Be careful with how you organize app and Bluejay logic inside your connect, explicit disconnect, the disconnect handler callbacks. It may be easy to create redundant or conflicting code. As a rule of thumb, we recommend putting light weight and repeatable logic, such as UI updates, inside your connect and disconnect callbacks. And for more major operations such as restarting any Bluetooth tasks, use the disconnect handler.
+
+</div>
+
+                        <a href="Protocols/DisconnectHandler.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">DisconnectHandler</span><span class="p">:</span> <span class="kd">class</span></code></pre>
 
                         </div>
                       </div>

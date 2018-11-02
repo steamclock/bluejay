@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Data Extension Reference</title>
+    <title>DisconnectHandler Protocol Reference</title>
     <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
     <meta charset='utf-8'>
@@ -10,8 +10,8 @@
     
   </head>
   <body>
-    <a name="//apple_ref/swift/Extension/Data" class="dashAnchor"></a>
-    <a title="Data Extension Reference"></a>
+    <a name="//apple_ref/swift/Protocol/DisconnectHandler" class="dashAnchor"></a>
+    <a title="DisconnectHandler Protocol Reference"></a>
     <header>
       <div class="content-wrapper">
         <p><a href="../index.html">Bluejay Docs</a> (100% documented)</p>
@@ -22,7 +22,7 @@
       <p id="breadcrumbs">
         <a href="../index.html">Bluejay Reference</a>
         <img id="carat" src="../img/carat.png" />
-        Data Extension Reference
+        DisconnectHandler Protocol Reference
       </p>
     </div>
     <div class="content-wrapper">
@@ -171,8 +171,20 @@
       <article class="main-content">
         <section>
           <section class="section">
-            <h1>Data</h1>
-            
+            <h1>DisconnectHandler</h1>
+              <div class="declaration">
+                <div class="language">
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">DisconnectHandler</span><span class="p">:</span> <span class="kd">class</span></code></pre>
+
+                </div>
+              </div>
+            <p>A protocol allowing a single delegate registered to Bluejay to have a final say at the end of a disconnection, as well as evaluate and control the auto-reconnect behaviour.</p>
+<div class="aside aside-attention">
+    <p class="aside-title">Attention</p>
+    Be careful with how you organize app and Bluejay logic inside your connect, explicit disconnect, the disconnect handler callbacks. It may be easy to create redundant or conflicting code. As a rule of thumb, we recommend putting light weight and repeatable logic, such as UI updates, inside your connect and disconnect callbacks. And for more major operations such as restarting any Bluetooth tasks, use the disconnect handler.
+
+</div>
+
           </section>
           <section class="section task-group-section">
             <div class="task-group">
@@ -180,9 +192,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:10Foundation4DataV7BluejayE7extract5start6lengthxSi_SitKlF"></a>
-                    <a name="//apple_ref/swift/Method/extract(start:length:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:10Foundation4DataV7BluejayE7extract5start6lengthxSi_SitKlF">extract(start:length:)</a>
+                    <a name="/s:7Bluejay17DisconnectHandlerP03didB04from4with13willReconnectAA04AutoH4ModeOAA10PeripheralC_s5Error_pSgSbtF"></a>
+                    <a name="//apple_ref/swift/Method/didDisconnect(from:with:willReconnect:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Bluejay17DisconnectHandlerP03didB04from4with13willReconnectAA04AutoH4ModeOAA10PeripheralC_s5Error_pSgSbtF">didDisconnect(from:with:willReconnect:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -190,14 +202,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Convenience function to read a range of Data and deserialize it into the specified type.</p>
+                        <p>Notifies the delegate that the peripheral is fully disconnected.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">extract</span><span class="o">&lt;</span><span class="kt">T</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">start</span><span class="p">:</span> <span class="kt">Int</span><span class="p">,</span> <span class="nv">length</span><span class="p">:</span> <span class="kt">Int</span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">T</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">didDisconnect</span><span class="p">(</span><span class="n">from</span> <span class="nv">peripheral</span><span class="p">:</span> <span class="kt"><a href="../Classes/Peripheral.html">Peripheral</a></span><span class="p">,</span> <span class="n">with</span> <span class="nv">error</span><span class="p">:</span> <span class="kt">Error</span><span class="p">?,</span> <span class="n">willReconnect</span> <span class="nv">autoReconnect</span><span class="p">:</span> <span class="kt">Bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Enums/AutoReconnectMode.html">AutoReconnectMode</a></span></code></pre>
 
                         </div>
                       </div>
@@ -208,91 +220,41 @@
                             <tr>
                               <td>
                                 <code>
-                                <em>start</em>
+                                <em>peripheral</em>
                                 </code>
                               </td>
                               <td>
                                 <div>
-                                  <p>The starting position of the range to read.</p>
+                                  <p>the peripheral disconnected</p>
                                 </div>
                               </td>
                             </tr>
                             <tr>
                               <td>
                                 <code>
-                                <em>length</em>
+                                <em>error</em>
                                 </code>
                               </td>
                               <td>
                                 <div>
-                                  <p>The number of bytes to read from <code>start</code>.</p>
+                                  <p>the reason of the disconnection from CoreBluetooth, not Bluejay</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>autoReconnect</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>whether Bluejay will auto-reconnect if no change is given</p>
                                 </div>
                               </td>
                             </tr>
                           </tbody>
                         </table>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-              </ul>
-            </div>
-            <div class="task-group">
-              <ul>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:10Foundation4DataV7BluejayE011toBluetoothB0ACyF"></a>
-                    <a name="//apple_ref/swift/Method/toBluetoothData()" class="dashAnchor"></a>
-                    <a class="token" href="#/s:10Foundation4DataV7BluejayE011toBluetoothB0ACyF">toBluetoothData()</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Allows using Data as is when using Bluejay and working with write-related operations.</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">toBluetoothData</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">Data</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-              </ul>
-            </div>
-            <div class="task-group">
-              <ul>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:10Foundation4DataV7BluejayE09bluetoothB0A2C_tcfc"></a>
-                    <a name="//apple_ref/swift/Method/init(bluetoothData:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:10Foundation4DataV7BluejayE09bluetoothB0A2C_tcfc">init(bluetoothData:)</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Allows using Data as is when using Bluejay and working with read-related operations.</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">bluetoothData</span><span class="p">:</span> <span class="kt">Data</span><span class="p">)</span></code></pre>
-
-                        </div>
                       </div>
                     </section>
                   </div>
