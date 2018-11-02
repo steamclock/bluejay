@@ -81,14 +81,12 @@ class ScanHeartRateSensorsViewController: UITableViewController {
                 }
                 
                 switch result {
-                case .success:
+                case .disconnected:
                     if !weakSelf.bluejay.isScanning {
                         DispatchQueue.main.async {
                             weakSelf.scanHeartSensors()
                         }
                     }
-                case .cancelled:
-                    preconditionFailure("Disconnect cancelled unexpectedly.")
                 case .failure(let error):
                     preconditionFailure("Disconnect failed with error: \(error.localizedDescription)")
                 }
@@ -133,8 +131,6 @@ class ScanHeartRateSensorsViewController: UITableViewController {
                 weakSelf.selectedPeripheralIdentifier = peripheralIdentifier
                 
                 weakSelf.performSegue(withIdentifier: "showHeartSensor", sender: self)
-            case .cancelled:
-                debugPrint("Connection to \(peripheral.peripheralIdentifier) cancelled.")
             case .failure(let error):
                 debugPrint("Connection to \(peripheral.peripheralIdentifier) failed with error: \(error.localizedDescription)")
             }

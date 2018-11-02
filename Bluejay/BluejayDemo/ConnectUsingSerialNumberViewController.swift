@@ -119,29 +119,19 @@ class ConnectUsingSerialNumberViewController: UIViewController {
                                         
                                         weakSelf.bluejay.disconnect(completion: { (result) in
                                             switch result {
-                                            case .success:
+                                            case .disconnected:
                                                 weakSelf.scan(services: [Services.deviceInfo], serialNumber: weakSelf.targetSerialNumber!)
-                                            case .cancelled:
-                                                preconditionFailure("Disconnect cancelled unexpectedly.")
                                             case .failure(let error):
                                                 preconditionFailure("Disconnect failed with error: \(error.localizedDescription)")
                                             }
                                         })
                                     }
-                                case .cancelled:
-                                    debugPrint("Read serial number cancelled.")
-                                    
-                                    weakSelf.statusLabel.text = "Read Cancelled"
                                 case .failure(let error):
                                     debugPrint("Read serial number failed with error: \(error.localizedDescription).")
                                     
                                     weakSelf.statusLabel.text = "Read Error: \(error.localizedDescription)"
                                 }
                             })
-                        case .cancelled:
-                            debugPrint("Connection to \(discovery.peripheralIdentifier) cancelled.")
-                            
-                            weakSelf.statusLabel.text = "Connection Cancelled"
                         case .failure(let error):
                             debugPrint("Connection to \(discovery.peripheralIdentifier) failed with error: \(error.localizedDescription)")
                             

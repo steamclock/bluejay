@@ -48,8 +48,6 @@ class SensorLocationViewController: UITableViewController {
                 cell.accessoryType = .checkmark
                                 
                 weakSelf.navigationController?.popViewController(animated: true)
-            case .cancelled:
-                debugPrint("Write to sensor location cancelled.")
             case .failure(let error):
                 debugPrint("Failed write to sensor location with error: \(error.localizedDescription)")
             }

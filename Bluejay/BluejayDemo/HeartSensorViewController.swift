@@ -80,8 +80,6 @@ class HeartSensorViewController: UITableViewController {
             case .success(let location):
                 debugPrint("Sensor location read: \(location)")
                 weakSelf.updateSensorLocationLabel(value: location)
-            case .cancelled:
-                debugPrint("Cancelled read sensor location.")
             case .failure(let error):
                 debugPrint("Failed to read sensor location with error: \(error.localizedDescription)")
             }
@@ -151,9 +149,6 @@ class HeartSensorViewController: UITableViewController {
                         }
                     })
                 }
-            case .cancelled:
-                debugPrint("Cancelled listen to heart rate measurement.")
-                weakSelf.isMonitoringHeartRate = false
             case .failure(let error):
                 debugPrint("Failed to listen to heart rate measurement with error: \(error.localizedDescription)")
                 weakSelf.isMonitoringHeartRate = false
@@ -188,8 +183,6 @@ class HeartSensorViewController: UITableViewController {
             switch result {
             case .success(let peripheral):
                 debugPrint("Connection to \(peripheral.identifier) successful.")
-            case .cancelled:
-                debugPrint("Connection to \(peripheralIdentifier.uuid.uuidString) cancelled.")
             case .failure(let error):
                 debugPrint("Connection to \(peripheralIdentifier.uuid.uuidString) failed with error: \(error.localizedDescription)")
             }
@@ -209,10 +202,8 @@ class HeartSensorViewController: UITableViewController {
         
         bluejay.disconnect { (result) in
             switch result {
-            case .success(let peripheral):
+            case .disconnected(let peripheral):
                 debugPrint("Disconnect from \(peripheral.identifier) successful.")
-            case .cancelled:
-                debugPrint("Disconnect from \(peripheralIdentifier.uuid.uuidString) cancelled.")
             case .failure(let error):
                 debugPrint("Disconnect from \(peripheralIdentifier.uuid.uuidString) failed with error: \(error.localizedDescription)")
             }
@@ -261,8 +252,6 @@ class HeartSensorViewController: UITableViewController {
                 
                 // Resume monitoring. Now we can use the non-blocking listen from Bluejay, not from the SynchronizedPeripheral.
                 weakSelf.startMonitoringHeartRate()
-            case .cancelled:
-                debugPrint("Cancelled reset background task.")
             case .failure(let error):
                 debugPrint("Failed to complete reset background task with error: \(error.localizedDescription)")
             }
