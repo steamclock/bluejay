@@ -10,6 +10,7 @@
     
   </head>
   <body>
+    <a name="//apple_ref/swift/Section/Protocols" class="dashAnchor"></a>
     <a title="Protocols  Reference"></a>
     <header>
       <div class="content-wrapper">
@@ -180,9 +181,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7Bluejay14ListenRestorerP"></a>
-                    <a name="//apple_ref/swift/Protocol/ListenRestorer" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7Bluejay14ListenRestorerP">ListenRestorer</a>
+                    <a name="/s:7Bluejay18ConnectionObserverP"></a>
+                    <a name="//apple_ref/swift/Protocol/ConnectionObserver" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Bluejay18ConnectionObserverP">ConnectionObserver</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -190,17 +191,30 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>A class protocol allowing notification of a characteristic being listened on, and provides an opportunity to restore its listen callback during Bluetooth state restoration.</p>
+                        <p>A protocol allowing conforming objects registered to Bluejay to optionally respond to Bluetooth connection events.</p>
+<div class="aside aside-attention">
+    <p class="aside-title">Attention</p>
+    <p>Attention
+On initial subscription to Bluetooth events, <code>bluetoothAvailable(_ available: Bool)</code> will always be called immediately with whatever the current state is, and <code>connected(to peripheral: Peripheral)</code> will also be called immediately if a device is already connected.</p>
 
-<p>Bluetooth state restoration occurs when the background mode capability is turned on, and if the app is backgrounded or even terminated while a Bluetooth operation is still ongoing, iOS may keep the Bluetooth state alive, and attempt to restore it on resuming the app, so that the connection and operation between the app and the Bluetooth accessory is not interrupted and severed.</p>
+</div>
+<div class="aside aside-note">
+    <p class="aside-title">Note</p>
+    <p>Note
+Available callbacks:</p>
 
-                        <a href="Protocols/ListenRestorer.html" class="slightly-smaller">See more</a>
+</div>
+<li><p><code>func bluetoothAvailable(_ available: Bool)</code></p></li>
+<li><p><code>func connected(to peripheral: Peripheral)</code></p></li>
+<li><p><code>func disconnected(from peripheral: Peripheral)</code></p></li>
+
+                        <a href="Protocols/ConnectionObserver.html" class="slightly-smaller">See more</a>
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">ListenRestorer</span><span class="p">:</span> <span class="kd">class</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">ConnectionObserver</span> <span class="p">:</span> <span class="kt">AnyObject</span></code></pre>
 
                         </div>
                       </div>
@@ -237,7 +251,41 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">DisconnectHandler</span><span class="p">:</span> <span class="kd">class</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">DisconnectHandler</span> <span class="p">:</span> <span class="kt">AnyObject</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7Bluejay14ListenRestorerP"></a>
+                    <a name="//apple_ref/swift/Protocol/ListenRestorer" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Bluejay14ListenRestorerP">ListenRestorer</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>A class protocol allowing notification of a characteristic being listened on, and provides an opportunity to restore its listen callback during Bluetooth state restoration.</p>
+
+<p>Bluetooth state restoration occurs when the background mode capability is turned on, and if the app is backgrounded or even terminated while a Bluetooth operation is still ongoing, iOS may keep the Bluetooth state alive, and attempt to restore it on resuming the app, so that the connection and operation between the app and the Bluetooth accessory is not interrupted and severed.</p>
+
+                        <a href="Protocols/ListenRestorer.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">ListenRestorer</span> <span class="p">:</span> <span class="kt">AnyObject</span></code></pre>
 
                         </div>
                       </div>
@@ -269,7 +317,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">RSSIObserver</span><span class="p">:</span> <span class="kd">class</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">RSSIObserver</span> <span class="p">:</span> <span class="kt">AnyObject</span></code></pre>
 
                         </div>
                       </div>
@@ -342,58 +390,11 @@
                 </li>
               </ul>
             </div>
-            <div class="task-group">
-              <ul>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:7Bluejay18ConnectionObserverP"></a>
-                    <a name="//apple_ref/swift/Protocol/ConnectionObserver" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7Bluejay18ConnectionObserverP">ConnectionObserver</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>A protocol allowing conforming objects registered to Bluejay to optionally respond to Bluetooth connection events.</p>
-<div class="aside aside-attention">
-    <p class="aside-title">Attention</p>
-    <p>Attention
-On initial subscription to Bluetooth events, <code>bluetoothAvailable(_ available: Bool)</code> will always be called immediately with whatever the current state is, and <code>connected(to peripheral: Peripheral)</code> will also be called immediately if a device is already connected.</p>
-
-</div>
-<div class="aside aside-note">
-    <p class="aside-title">Note</p>
-    <p>Note
-Available callbacks:</p>
-
-</div>
-<li><p><code>func bluetoothAvailable(_ available: Bool)</code></p></li>
-<li><p><code>func connected(to peripheral: Peripheral)</code></p></li>
-<li><p><code>func disconnected(from peripheral: Peripheral)</code></p></li>
-
-                        <a href="Protocols/ConnectionObserver.html" class="slightly-smaller">See more</a>
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">ConnectionObserver</span><span class="p">:</span> <span class="kd">class</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-              </ul>
-            </div>
           </section>
         </section>
         <section id="footer">
           <p>Copyright © 2017 Steamclock Software. All rights reserved.</p>
-          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.1</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.4</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>
     </div>
