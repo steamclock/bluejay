@@ -202,7 +202,7 @@ class HeartSensorViewController: UITableViewController {
         bluejay.disconnect { (result) in
             switch result {
             case .disconnected(let peripheral):
-                debugPrint("Disconnect from \(peripheral.identifier) successful.")
+                debugPrint("Disconnect from \(peripheral.name) successful.")
             case .failure(let error):
                 debugPrint("Disconnect from \(peripheralIdentifier.uuid.uuidString) failed with error: \(error.localizedDescription)")
             }

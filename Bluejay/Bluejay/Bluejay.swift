@@ -1135,7 +1135,7 @@ extension Bluejay: CBCentralManagerDelegate {
                 }
                 
                 // Allow the Connection or Disconnection operation to finish its cancellation, trigger its callback, and continue cancelling any remaining operations in the queue.
-                weakSelf.queue.process(event: .didDisconnectPeripheral(disconnectedPeripheral.cbPeripheral), error: nil)
+                weakSelf.queue.process(event: .didDisconnectPeripheral(disconnectedPeripheral), error: nil)
             }
             else if wasConnected {
                 precondition(weakSelf.queue.isEmpty, "Queue should be emptied before notifying and invoking all disconnect observers and callbacks.")
@@ -1161,7 +1161,7 @@ extension Bluejay: CBCentralManagerDelegate {
             
             if isExpectedDisconnect {
                 log("Disconnect clean up: calling the explicit disconnect callback if it is provided.")
-                weakSelf.disconnectCallback?(.disconnected(disconnectedPeripheral.cbPeripheral))
+                weakSelf.disconnectCallback?(.disconnected(disconnectedPeripheral))
                 weakSelf.disconnectCallback = nil
             }
             

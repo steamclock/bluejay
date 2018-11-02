@@ -15,7 +15,7 @@ enum Event {
     case didDiscoverCharacteristics
     case didDiscoverPeripheral(CBPeripheral, [String : Any], NSNumber)
     case didConnectPeripheral(Peripheral)
-    case didDisconnectPeripheral(CBPeripheral)
+    case didDisconnectPeripheral(Peripheral)
     case didReadCharacteristic(CBCharacteristic, Data)
     case didWriteCharacteristic(CBCharacteristic)
     case didUpdateCharacteristicNotificationState(CBCharacteristic)

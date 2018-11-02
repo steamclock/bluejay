@@ -56,7 +56,7 @@ class Disconnection: Queueable {
         }
     }
     
-    func success(_ peripheral: CBPeripheral) {
+    func success(_ peripheral: Peripheral) {
         state = .completed
         
         // Let Bluejay invoke the callback at the end of its disconnect clean up for more consistent ordering of callback invocation.
