@@ -44,10 +44,13 @@ public class Bluejay: NSObject {
     /// True when background task is running, and helps prevent calling regular read/write/listen.
     private var isRunningBackgroundTask = false
     
+    /// Allows caching and defering disconnect notifications and final clean ups when there is a disconnection while running a Bluejay background task.
     private var disconnectCleanUp: (() -> Void)?
     
+    /// Cache for an explicit disconnect callback if provided.
     private var disconnectCallback: ((DisconnectionResult) -> Void)?
     
+    /// Cache for a connection callback and used if the connection fails to complete.
     private var connectingCallback: ((ConnectionResult) -> Void)?
     
     // MARK: - Internal Properties
@@ -67,9 +70,9 @@ public class Bluejay: NSObject {
     // MARK: - Public Properties
     
     /// Helps distinguish one Bluejay instance from another.
-    public var uuid = UUID()
+    public let uuid = UUID()
     
-    /// Allows checking whether Bluetooth is powered on.
+    /// Allows checking whether Bluetooth is powered on. Also returns false if Bluejay is not started yet.
     public var isBluetoothAvailable: Bool {
         if cbCentralManager == nil {
             return false
@@ -96,10 +99,10 @@ public class Bluejay: NSObject {
     }
     
     /// Allows checking whether Bluejay is currently disconnecting from a peripheral.
-    public var isDisconnecting: Bool = false
+    private(set) public var isDisconnecting: Bool = false
     
-    /// Allowing or disallowing automatic reconnection attempts after an unexpected disconnection. Default is true, and Bluejay will also always set this to true on a successful connection to a peripheral.
-    public var shouldAutoReconnect = true
+    /// Allowing checking whether Bluejay will automatic reconnect after an unexpected disconnection. Default is true, and Bluejay will also always set this to true on a successful connection to a peripheral. Conversely, Bluejay will always set this to false after an explicit disconnection request.
+    private(set) public var shouldAutoReconnect = true
     
     /// Allows checking whether Bluejay is currently scanning.
     public var isScanning: Bool {
@@ -113,7 +116,7 @@ public class Bluejay: NSObject {
     }
     
     /// Warning options to use for each new connection if the options are not specified at the creation of those connections.
-    public var defaultWarningOptions = WarningOptions.default
+    private(set) public var defaultWarningOptions = WarningOptions.default
 
     // MARK: - Initialization
     
