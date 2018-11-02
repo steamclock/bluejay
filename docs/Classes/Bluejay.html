@@ -899,9 +899,9 @@ please re-evaluate the bluetooth state again as it may change momentarily after 
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7BluejayAAC4scan8duration15allowDuplicates18serviceIdentifiers9discovery7expired7stoppedySd_SbSayAA17ServiceIdentifierVGSgAA10ScanActionOAA0M9DiscoveryV_SayAQGtcAoQ_ARtcSgyAR_s5Error_pSgtctF"></a>
-                    <a name="//apple_ref/swift/Method/scan(duration:allowDuplicates:serviceIdentifiers:discovery:expired:stopped:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7BluejayAAC4scan8duration15allowDuplicates18serviceIdentifiers9discovery7expired7stoppedySd_SbSayAA17ServiceIdentifierVGSgAA10ScanActionOAA0M9DiscoveryV_SayAQGtcAoQ_ARtcSgyAR_s5Error_pSgtctF">scan(duration:allowDuplicates:serviceIdentifiers:discovery:expired:stopped:)</a>
+                    <a name="/s:7BluejayAAC4scan8duration15allowDuplicates17throttleRSSIDelta18serviceIdentifiers9discovery7expired7stoppedySd_SbSiSayAA17ServiceIdentifierVGSgAA10ScanActionOAA0O9DiscoveryV_SayARGtcApR_AStcSgyAS_s5Error_pSgtctF"></a>
+                    <a name="//apple_ref/swift/Method/scan(duration:allowDuplicates:throttleRSSIDelta:serviceIdentifiers:discovery:expired:stopped:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7BluejayAAC4scan8duration15allowDuplicates17throttleRSSIDelta18serviceIdentifiers9discovery7expired7stoppedySd_SbSiSayAA17ServiceIdentifierVGSgAA10ScanActionOAA0O9DiscoveryV_SayARGtcApR_AStcSgyAS_s5Error_pSgtctF">scan(duration:allowDuplicates:throttleRSSIDelta:serviceIdentifiers:discovery:expired:stopped:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -924,6 +924,7 @@ please re-evaluate the bluetooth state again as it may change momentarily after 
                           <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">scan</span><span class="p">(</span>
     <span class="nv">duration</span><span class="p">:</span> <span class="kt">TimeInterval</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
     <span class="nv">allowDuplicates</span><span class="p">:</span> <span class="kt">Bool</span> <span class="o">=</span> <span class="kc">false</span><span class="p">,</span>
+    <span class="nv">throttleRSSIDelta</span><span class="p">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span>
     <span class="nv">serviceIdentifiers</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Structs/ServiceIdentifier.html">ServiceIdentifier</a></span><span class="p">]?,</span>
     <span class="nv">discovery</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt"><a href="../Structs/ScanDiscovery.html">ScanDiscovery</a></span><span class="p">,</span> <span class="p">[</span><span class="kt"><a href="../Structs/ScanDiscovery.html">ScanDiscovery</a></span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Enums/ScanAction.html">ScanAction</a></span><span class="p">,</span>
     <span class="nv">expired</span><span class="p">:</span> <span class="p">((</span><span class="kt"><a href="../Structs/ScanDiscovery.html">ScanDiscovery</a></span><span class="p">,</span> <span class="p">[</span><span class="kt"><a href="../Structs/ScanDiscovery.html">ScanDiscovery</a></span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Enums/ScanAction.html">ScanAction</a></span><span class="p">)?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span>
@@ -957,6 +958,18 @@ please re-evaluate the bluetooth state again as it may change momentarily after 
                               <td>
                                 <div>
                                   <p>Determines whether a previously scanned peripheral is allowed to be discovered again.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>throttleRSSIDelta</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Throttles discoveries by ignoring insignificant changes to RSSI.</p>
                                 </div>
                               </td>
                             </tr>

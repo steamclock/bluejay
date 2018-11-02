@@ -363,22 +363,22 @@
 <pre class="highlight swift"><code><span class="n">bluejay</span><span class="o">.</span><span class="nf">scan</span><span class="p">(</span>
     <span class="nv">serviceIdentifiers</span><span class="p">:</span> <span class="p">[</span><span class="n">heartRateService</span><span class="p">],</span>
     <span class="nv">discovery</span><span class="p">:</span> <span class="p">{</span> <span class="p">[</span><span class="k">weak</span> <span class="k">self</span><span class="p">]</span> <span class="p">(</span><span class="n">discovery</span><span class="p">,</span> <span class="n">discoveries</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">ScanAction</span> <span class="k">in</span>
-    <span class="k">guard</span> <span class="k">let</span> <span class="nv">weakSelf</span> <span class="o">=</span> <span class="k">self</span> <span class="k">else</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="o">.</span><span class="n">stop</span>
-    <span class="p">}</span>
+        <span class="k">guard</span> <span class="k">let</span> <span class="nv">weakSelf</span> <span class="o">=</span> <span class="k">self</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="o">.</span><span class="n">stop</span>
+        <span class="p">}</span>
 
-    <span class="n">weakSelf</span><span class="o">.</span><span class="n">peripherals</span> <span class="o">=</span> <span class="n">discoveries</span>
-    <span class="n">weakSelf</span><span class="o">.</span><span class="n">tableView</span><span class="o">.</span><span class="nf">reloadData</span><span class="p">()</span>
+        <span class="n">weakSelf</span><span class="o">.</span><span class="n">peripherals</span> <span class="o">=</span> <span class="n">discoveries</span>
+        <span class="n">weakSelf</span><span class="o">.</span><span class="n">tableView</span><span class="o">.</span><span class="nf">reloadData</span><span class="p">()</span>
 
-    <span class="k">return</span> <span class="o">.</span><span class="k">continue</span>
+        <span class="k">return</span> <span class="o">.</span><span class="k">continue</span>
     <span class="p">},</span>
     <span class="nv">stopped</span><span class="p">:</span> <span class="p">{</span> <span class="p">(</span><span class="n">discoveries</span><span class="p">,</span> <span class="n">error</span><span class="p">)</span> <span class="k">in</span>
-    <span class="k">if</span> <span class="k">let</span> <span class="nv">error</span> <span class="o">=</span> <span class="n">error</span> <span class="p">{</span>
-        <span class="nf">debugPrint</span><span class="p">(</span><span class="s">"Scan stopped with error: </span><span class="se">\(</span><span class="n">error</span><span class="o">.</span><span class="n">localizedDescription</span><span class="se">)</span><span class="s">"</span><span class="p">)</span>
-    <span class="p">}</span>
-    <span class="k">else</span> <span class="p">{</span>
-        <span class="nf">debugPrint</span><span class="p">(</span><span class="s">"Scan stopped without error."</span><span class="p">)</span>
-    <span class="p">}</span>
+        <span class="k">if</span> <span class="k">let</span> <span class="nv">error</span> <span class="o">=</span> <span class="n">error</span> <span class="p">{</span>
+            <span class="nf">debugPrint</span><span class="p">(</span><span class="s">"Scan stopped with error: </span><span class="se">\(</span><span class="n">error</span><span class="o">.</span><span class="n">localizedDescription</span><span class="se">)</span><span class="s">"</span><span class="p">)</span>
+        <span class="p">}</span>
+        <span class="k">else</span> <span class="p">{</span>
+            <span class="nf">debugPrint</span><span class="p">(</span><span class="s">"Scan stopped without error."</span><span class="p">)</span>
+        <span class="p">}</span>
 <span class="p">})</span>
 </code></pre>
 
@@ -407,33 +407,33 @@
     <span class="nv">allowDuplicates</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
     <span class="nv">serviceIdentifiers</span><span class="p">:</span> <span class="kc">nil</span><span class="p">,</span>
     <span class="nv">discovery</span><span class="p">:</span> <span class="p">{</span> <span class="p">[</span><span class="k">weak</span> <span class="k">self</span><span class="p">]</span> <span class="p">(</span><span class="n">discovery</span><span class="p">,</span> <span class="n">discoveries</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">ScanAction</span> <span class="k">in</span>
-    <span class="k">guard</span> <span class="k">let</span> <span class="nv">weakSelf</span> <span class="o">=</span> <span class="k">self</span> <span class="k">else</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="o">.</span><span class="n">stop</span>
-    <span class="p">}</span>
+        <span class="k">guard</span> <span class="k">let</span> <span class="nv">weakSelf</span> <span class="o">=</span> <span class="k">self</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="o">.</span><span class="n">stop</span>
+        <span class="p">}</span>
 
-    <span class="n">weakSelf</span><span class="o">.</span><span class="n">peripherals</span> <span class="o">=</span> <span class="n">discoveries</span>
-    <span class="n">weakSelf</span><span class="o">.</span><span class="n">tableView</span><span class="o">.</span><span class="nf">reloadData</span><span class="p">()</span>
+        <span class="n">weakSelf</span><span class="o">.</span><span class="n">peripherals</span> <span class="o">=</span> <span class="n">discoveries</span>
+        <span class="n">weakSelf</span><span class="o">.</span><span class="n">tableView</span><span class="o">.</span><span class="nf">reloadData</span><span class="p">()</span>
 
-    <span class="k">return</span> <span class="o">.</span><span class="k">continue</span>
+        <span class="k">return</span> <span class="o">.</span><span class="k">continue</span>
     <span class="p">},</span>
     <span class="nv">expired</span><span class="p">:</span> <span class="p">{</span> <span class="p">[</span><span class="k">weak</span> <span class="k">self</span><span class="p">]</span> <span class="p">(</span><span class="n">lostDiscovery</span><span class="p">,</span> <span class="n">discoveries</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">ScanAction</span> <span class="k">in</span>
-    <span class="k">guard</span> <span class="k">let</span> <span class="nv">weakSelf</span> <span class="o">=</span> <span class="k">self</span> <span class="k">else</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="o">.</span><span class="n">stop</span>
-    <span class="p">}</span>
+        <span class="k">guard</span> <span class="k">let</span> <span class="nv">weakSelf</span> <span class="o">=</span> <span class="k">self</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="o">.</span><span class="n">stop</span>
+        <span class="p">}</span>
 
-    <span class="nf">debugPrint</span><span class="p">(</span><span class="s">"Lost discovery: </span><span class="se">\(</span><span class="n">lostDiscovery</span><span class="se">)</span><span class="s">"</span><span class="p">)</span>
+        <span class="nf">debugPrint</span><span class="p">(</span><span class="s">"Lost discovery: </span><span class="se">\(</span><span class="n">lostDiscovery</span><span class="se">)</span><span class="s">"</span><span class="p">)</span>
 
-    <span class="n">weakSelf</span><span class="o">.</span><span class="n">peripherals</span> <span class="o">=</span> <span class="n">discoveries</span>
-    <span class="n">weakSelf</span><span class="o">.</span><span class="n">tableView</span><span class="o">.</span><span class="nf">reloadData</span><span class="p">()</span>
+        <span class="n">weakSelf</span><span class="o">.</span><span class="n">peripherals</span> <span class="o">=</span> <span class="n">discoveries</span>
+        <span class="n">weakSelf</span><span class="o">.</span><span class="n">tableView</span><span class="o">.</span><span class="nf">reloadData</span><span class="p">()</span>
 
-    <span class="k">return</span> <span class="o">.</span><span class="k">continue</span>
+        <span class="k">return</span> <span class="o">.</span><span class="k">continue</span>
 <span class="p">})</span> <span class="p">{</span> <span class="p">(</span><span class="n">discoveries</span><span class="p">,</span> <span class="n">error</span><span class="p">)</span> <span class="k">in</span>
-    <span class="k">if</span> <span class="k">let</span> <span class="nv">error</span> <span class="o">=</span> <span class="n">error</span> <span class="p">{</span>
-    <span class="nf">debugPrint</span><span class="p">(</span><span class="s">"Scan stopped with error: </span><span class="se">\(</span><span class="n">error</span><span class="o">.</span><span class="n">localizedDescription</span><span class="se">)</span><span class="s">"</span><span class="p">)</span>
-    <span class="p">}</span>
-    <span class="k">else</span> <span class="p">{</span>
-    <span class="nf">debugPrint</span><span class="p">(</span><span class="s">"Scan stopped without error."</span><span class="p">)</span>
-    <span class="p">}</span>
+        <span class="k">if</span> <span class="k">let</span> <span class="nv">error</span> <span class="o">=</span> <span class="n">error</span> <span class="p">{</span>
+            <span class="nf">debugPrint</span><span class="p">(</span><span class="s">"Scan stopped with error: </span><span class="se">\(</span><span class="n">error</span><span class="o">.</span><span class="n">localizedDescription</span><span class="se">)</span><span class="s">"</span><span class="p">)</span>
+        <span class="p">}</span>
+        <span class="k">else</span> <span class="p">{</span>
+            <span class="nf">debugPrint</span><span class="p">(</span><span class="s">"Scan stopped without error."</span><span class="p">)</span>
+        <span class="p">}</span>
 <span class="p">}</span>
 </code></pre>
 
@@ -450,15 +450,15 @@
 <pre class="highlight swift"><code><span class="n">bluejay</span><span class="o">.</span><span class="nf">connect</span><span class="p">(</span><span class="n">peripheralIdentifier</span><span class="p">)</span> <span class="p">{</span> <span class="p">[</span><span class="k">weak</span> <span class="k">self</span><span class="p">]</span> <span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="k">in</span>
     <span class="k">switch</span> <span class="n">result</span> <span class="p">{</span>
     <span class="k">case</span> <span class="o">.</span><span class="nf">success</span><span class="p">(</span><span class="k">let</span> <span class="nv">peripheral</span><span class="p">):</span>
-    <span class="nf">debugPrint</span><span class="p">(</span><span class="s">"Connection to </span><span class="se">\(</span><span class="n">peripheral</span><span class="o">.</span><span class="n">identifier</span><span class="se">)</span><span class="s"> successful."</span><span class="p">)</span>
+        <span class="nf">debugPrint</span><span class="p">(</span><span class="s">"Connection to </span><span class="se">\(</span><span class="n">peripheral</span><span class="o">.</span><span class="n">name</span><span class="se">)</span><span class="s"> successful."</span><span class="p">)</span>
 
-    <span class="k">guard</span> <span class="k">let</span> <span class="nv">weakSelf</span> <span class="o">=</span> <span class="k">self</span> <span class="k">else</span> <span class="p">{</span>
-        <span class="k">return</span>
-    <span class="p">}</span>
+          <span class="k">guard</span> <span class="k">let</span> <span class="nv">weakSelf</span> <span class="o">=</span> <span class="k">self</span> <span class="k">else</span> <span class="p">{</span>
+              <span class="k">return</span>
+          <span class="p">}</span>
 
-    <span class="n">weakSelf</span><span class="o">.</span><span class="nf">performSegue</span><span class="p">(</span><span class="nv">withIdentifier</span><span class="p">:</span> <span class="s">"showHeartSensor"</span><span class="p">,</span> <span class="nv">sender</span><span class="p">:</span> <span class="k">self</span><span class="p">)</span>
+          <span class="n">weakSelf</span><span class="o">.</span><span class="nf">performSegue</span><span class="p">(</span><span class="nv">withIdentifier</span><span class="p">:</span> <span class="s">"showHeartSensor"</span><span class="p">,</span> <span class="nv">sender</span><span class="p">:</span> <span class="k">self</span><span class="p">)</span>
     <span class="k">case</span> <span class="o">.</span><span class="nf">failure</span><span class="p">(</span><span class="k">let</span> <span class="nv">error</span><span class="p">):</span>
-    <span class="nf">debugPrint</span><span class="p">(</span><span class="s">"Connection to </span><span class="se">\(</span><span class="n">peripheral</span><span class="o">.</span><span class="n">identifier</span><span class="se">)</span><span class="s"> failed with error: </span><span class="se">\(</span><span class="n">error</span><span class="o">.</span><span class="n">localizedDescription</span><span class="se">)</span><span class="s">"</span><span class="p">)</span>
+        <span class="nf">debugPrint</span><span class="p">(</span><span class="s">"Connection to </span><span class="se">\(</span><span class="n">peripheral</span><span class="o">.</span><span class="n">name</span><span class="se">)</span><span class="s"> failed with error: </span><span class="se">\(</span><span class="n">error</span><span class="o">.</span><span class="n">localizedDescription</span><span class="se">)</span><span class="s">"</span><span class="p">)</span>
     <span class="p">}</span>
 <span class="p">}</span>
 </code></pre>
@@ -640,38 +640,38 @@
 
 <span class="n">bluejay</span><span class="o">.</span><span class="nf">read</span><span class="p">(</span><span class="nv">from</span><span class="p">:</span> <span class="n">sensorLocation</span><span class="p">)</span> <span class="p">{</span> <span class="p">[</span><span class="k">weak</span> <span class="k">self</span><span class="p">]</span> <span class="p">(</span><span class="nv">result</span><span class="p">:</span> <span class="kt">ReadResult</span><span class="o">&lt;</span><span class="kt">UInt8</span><span class="o">&gt;</span><span class="p">)</span> <span class="k">in</span>
     <span class="k">guard</span> <span class="k">let</span> <span class="nv">weakSelf</span> <span class="o">=</span> <span class="k">self</span> <span class="k">else</span> <span class="p">{</span>
-    <span class="k">return</span>
+         <span class="k">return</span>
     <span class="p">}</span>
 
     <span class="k">switch</span> <span class="n">result</span> <span class="p">{</span>
     <span class="k">case</span> <span class="o">.</span><span class="nf">success</span><span class="p">(</span><span class="k">let</span> <span class="nv">location</span><span class="p">):</span>
-    <span class="nf">debugPrint</span><span class="p">(</span><span class="s">"Read from sensor location is successful: </span><span class="se">\(</span><span class="n">location</span><span class="se">)</span><span class="s">"</span><span class="p">)</span>
+        <span class="nf">debugPrint</span><span class="p">(</span><span class="s">"Read from sensor location is successful: </span><span class="se">\(</span><span class="n">location</span><span class="se">)</span><span class="s">"</span><span class="p">)</span>
 
-    <span class="k">var</span> <span class="nv">locationString</span> <span class="o">=</span> <span class="s">"Unknown"</span>
+        <span class="k">var</span> <span class="nv">locationString</span> <span class="o">=</span> <span class="s">"Unknown"</span>
 
-    <span class="k">switch</span> <span class="n">location</span> <span class="p">{</span>
-    <span class="k">case</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="n">locationString</span> <span class="o">=</span> <span class="s">"Other"</span>
-    <span class="k">case</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="n">locationString</span> <span class="o">=</span> <span class="s">"Chest"</span>
-    <span class="k">case</span> <span class="mi">2</span><span class="p">:</span>
-        <span class="n">locationString</span> <span class="o">=</span> <span class="s">"Wrist"</span>
-    <span class="k">case</span> <span class="mi">3</span><span class="p">:</span>
-        <span class="n">locationString</span> <span class="o">=</span> <span class="s">"Finger"</span>
-    <span class="k">case</span> <span class="mi">4</span><span class="p">:</span>
-        <span class="n">locationString</span> <span class="o">=</span> <span class="s">"Hand"</span>
-    <span class="k">case</span> <span class="mi">5</span><span class="p">:</span>
-        <span class="n">locationString</span> <span class="o">=</span> <span class="s">"Ear Lobe"</span>
-    <span class="k">case</span> <span class="mi">6</span><span class="p">:</span>
-        <span class="n">locationString</span> <span class="o">=</span> <span class="s">"Foot"</span>
-    <span class="k">default</span><span class="p">:</span>
-        <span class="n">locationString</span> <span class="o">=</span> <span class="s">"Unknown"</span>
-    <span class="p">}</span>
+        <span class="k">switch</span> <span class="n">location</span> <span class="p">{</span>
+        <span class="k">case</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">locationString</span> <span class="o">=</span> <span class="s">"Other"</span>
+        <span class="k">case</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">locationString</span> <span class="o">=</span> <span class="s">"Chest"</span>
+        <span class="k">case</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">locationString</span> <span class="o">=</span> <span class="s">"Wrist"</span>
+        <span class="k">case</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="n">locationString</span> <span class="o">=</span> <span class="s">"Finger"</span>
+        <span class="k">case</span> <span class="mi">4</span><span class="p">:</span>
+            <span class="n">locationString</span> <span class="o">=</span> <span class="s">"Hand"</span>
+        <span class="k">case</span> <span class="mi">5</span><span class="p">:</span>
+            <span class="n">locationString</span> <span class="o">=</span> <span class="s">"Ear Lobe"</span>
+        <span class="k">case</span> <span class="mi">6</span><span class="p">:</span>
+            <span class="n">locationString</span> <span class="o">=</span> <span class="s">"Foot"</span>
+        <span class="k">default</span><span class="p">:</span>
+            <span class="n">locationString</span> <span class="o">=</span> <span class="s">"Unknown"</span>
+        <span class="p">}</span>
 
-    <span class="n">weakSelf</span><span class="o">.</span><span class="n">sensorLocationCell</span><span class="o">.</span><span class="n">detailTextLabel</span><span class="p">?</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">locationString</span>
-    <span class="n">weakSelf</span><span class="o">.</span><span class="n">sensorLocation</span> <span class="o">=</span> <span class="n">location</span>
+        <span class="n">weakSelf</span><span class="o">.</span><span class="n">sensorLocationCell</span><span class="o">.</span><span class="n">detailTextLabel</span><span class="p">?</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">locationString</span>
+        <span class="n">weakSelf</span><span class="o">.</span><span class="n">sensorLocation</span> <span class="o">=</span> <span class="n">location</span>
     <span class="k">case</span> <span class="o">.</span><span class="nf">failure</span><span class="p">(</span><span class="k">let</span> <span class="nv">error</span><span class="p">):</span>
-    <span class="nf">debugPrint</span><span class="p">(</span><span class="s">"Failed to read from sensor location with error: </span><span class="se">\(</span><span class="n">error</span><span class="o">.</span><span class="n">localizedDescription</span><span class="se">)</span><span class="s">"</span><span class="p">)</span>
+        <span class="nf">debugPrint</span><span class="p">(</span><span class="s">"Failed to read from sensor location with error: </span><span class="se">\(</span><span class="n">error</span><span class="o">.</span><span class="n">localizedDescription</span><span class="se">)</span><span class="s">"</span><span class="p">)</span>
     <span class="p">}</span>
 <span class="p">}</span>
 </code></pre>
@@ -680,21 +680,21 @@
 <p>Note that LightBlue Explorer&rsquo;s virtual heart sensor does not have write enabled for its sensor body location characteristic. See <a href="#demo">Demo</a> to find out how to enable it. However, if write is not allowed, the error object in the failure block will inform you.</p>
 <pre class="highlight swift"><code><span class="n">bluejay</span><span class="o">.</span><span class="nf">write</span><span class="p">(</span><span class="nv">to</span><span class="p">:</span> <span class="n">sensorLocation</span><span class="p">,</span> <span class="nv">value</span><span class="p">:</span> <span class="kt">UInt8</span><span class="p">(</span><span class="n">indexPath</span><span class="o">.</span><span class="n">row</span><span class="p">),</span> <span class="nv">completion</span><span class="p">:</span> <span class="p">{</span> <span class="p">[</span><span class="k">weak</span> <span class="k">self</span><span class="p">]</span> <span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="k">in</span>
     <span class="k">guard</span> <span class="k">let</span> <span class="nv">weakSelf</span> <span class="o">=</span> <span class="k">self</span> <span class="k">else</span> <span class="p">{</span>
-    <span class="k">return</span>
+        <span class="k">return</span>
     <span class="p">}</span>
 
     <span class="k">switch</span> <span class="n">result</span> <span class="p">{</span>
     <span class="k">case</span> <span class="o">.</span><span class="nv">success</span><span class="p">:</span>
-    <span class="nf">debugPrint</span><span class="p">(</span><span class="s">"Write to sensor location is successful."</span><span class="p">)</span>
+        <span class="nf">debugPrint</span><span class="p">(</span><span class="s">"Write to sensor location is successful."</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="k">let</span> <span class="nv">selectedCell</span> <span class="o">=</span> <span class="n">weakSelf</span><span class="o">.</span><span class="n">selectedCell</span> <span class="p">{</span>
-        <span class="n">selectedCell</span><span class="o">.</span><span class="n">accessoryType</span> <span class="o">=</span> <span class="o">.</span><span class="k">none</span>
-    <span class="p">}</span>
-    <span class="n">cell</span><span class="o">.</span><span class="n">accessoryType</span> <span class="o">=</span> <span class="o">.</span><span class="n">checkmark</span>
+        <span class="k">if</span> <span class="k">let</span> <span class="nv">selectedCell</span> <span class="o">=</span> <span class="n">weakSelf</span><span class="o">.</span><span class="n">selectedCell</span> <span class="p">{</span>
+            <span class="n">selectedCell</span><span class="o">.</span><span class="n">accessoryType</span> <span class="o">=</span> <span class="o">.</span><span class="k">none</span>
+        <span class="p">}</span>
+        <span class="n">cell</span><span class="o">.</span><span class="n">accessoryType</span> <span class="o">=</span> <span class="o">.</span><span class="n">checkmark</span>
 
-    <span class="n">weakSelf</span><span class="o">.</span><span class="n">navigationController</span><span class="p">?</span><span class="o">.</span><span class="nf">popViewController</span><span class="p">(</span><span class="nv">animated</span><span class="p">:</span> <span class="kc">true</span><span class="p">)</span>
+        <span class="n">weakSelf</span><span class="o">.</span><span class="n">navigationController</span><span class="p">?</span><span class="o">.</span><span class="nf">popViewController</span><span class="p">(</span><span class="nv">animated</span><span class="p">:</span> <span class="kc">true</span><span class="p">)</span>
     <span class="k">case</span> <span class="o">.</span><span class="nf">failure</span><span class="p">(</span><span class="k">let</span> <span class="nv">error</span><span class="p">):</span>
-    <span class="nf">debugPrint</span><span class="p">(</span><span class="s">"Failed to write to sensor location with error: </span><span class="se">\(</span><span class="n">error</span><span class="o">.</span><span class="n">localizedDescription</span><span class="se">)</span><span class="s">"</span><span class="p">)</span>
+        <span class="nf">debugPrint</span><span class="p">(</span><span class="s">"Failed to write to sensor location with error: </span><span class="se">\(</span><span class="n">error</span><span class="o">.</span><span class="n">localizedDescription</span><span class="se">)</span><span class="s">"</span><span class="p">)</span>
     <span class="p">}</span>
 <span class="p">})</span>
 </code></pre>
@@ -709,14 +709,14 @@
 <p>Not all characteristics support listening, it is a feature that must be enabled for a characteristic on the Bluetooth device itself.</p>
 <pre class="highlight swift"><code><span class="n">bluejay</span><span class="o">.</span><span class="nf">listen</span><span class="p">(</span><span class="nv">to</span><span class="p">:</span> <span class="n">heartRateMeasurement</span><span class="p">)</span> <span class="p">{</span> <span class="p">[</span><span class="k">weak</span> <span class="k">self</span><span class="p">]</span> <span class="p">(</span><span class="nv">result</span><span class="p">:</span> <span class="kt">ReadResult</span><span class="o">&lt;</span><span class="kt">HeartRateMeasurement</span><span class="o">&gt;</span><span class="p">)</span> <span class="k">in</span>
     <span class="k">guard</span> <span class="k">let</span> <span class="nv">weakSelf</span> <span class="o">=</span> <span class="k">self</span> <span class="k">else</span> <span class="p">{</span>
-    <span class="k">return</span>
+        <span class="k">return</span>
     <span class="p">}</span>
 
     <span class="k">switch</span> <span class="n">result</span> <span class="p">{</span>
     <span class="k">case</span> <span class="o">.</span><span class="nf">success</span><span class="p">(</span><span class="k">let</span> <span class="nv">heartRateMeasurement</span><span class="p">):</span>
-    <span class="nf">debugPrint</span><span class="p">(</span><span class="n">heartRateMeasurement</span><span class="o">.</span><span class="n">measurement</span><span class="p">)</span>
+        <span class="nf">debugPrint</span><span class="p">(</span><span class="n">heartRateMeasurement</span><span class="o">.</span><span class="n">measurement</span><span class="p">)</span>
     <span class="k">case</span> <span class="o">.</span><span class="nf">failure</span><span class="p">(</span><span class="k">let</span> <span class="nv">error</span><span class="p">):</span>
-    <span class="nf">debugPrint</span><span class="p">(</span><span class="s">"Failed to listen to heart rate measurement with error: </span><span class="se">\(</span><span class="n">error</span><span class="o">.</span><span class="n">localizedDescription</span><span class="se">)</span><span class="s">"</span><span class="p">)</span>
+        <span class="nf">debugPrint</span><span class="p">(</span><span class="s">"Failed to listen to heart rate measurement with error: </span><span class="se">\(</span><span class="n">error</span><span class="o">.</span><span class="n">localizedDescription</span><span class="se">)</span><span class="s">"</span><span class="p">)</span>
     <span class="p">}</span>
 <span class="p">}</span>
 </code></pre>
@@ -890,7 +890,7 @@
                     <span class="kt">WarningOptions</span><span class="p">(</span><span class="nv">notifyOnConnection</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span> <span class="nv">notifyOnDisconnection</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span> <span class="nv">notifyOnNotification</span><span class="p">:</span> <span class="kc">false</span><span class="p">),</span> <span class="p">{</span> <span class="p">(</span><span class="n">connectionResult</span><span class="p">)</span> <span class="k">in</span>
                     <span class="k">switch</span> <span class="n">connectionResult</span> <span class="p">{</span>
                     <span class="k">case</span> <span class="o">.</span><span class="nf">success</span><span class="p">(</span><span class="k">let</span> <span class="nv">peripheral</span><span class="p">):</span>
-                        <span class="nf">debugPrint</span><span class="p">(</span><span class="s">"Connection to </span><span class="se">\(</span><span class="n">peripheral</span><span class="o">.</span><span class="n">identifier</span><span class="se">)</span><span class="s"> successful."</span><span class="p">)</span>
+                        <span class="nf">debugPrint</span><span class="p">(</span><span class="s">"Connection to </span><span class="se">\(</span><span class="n">peripheral</span><span class="o">.</span><span class="n">name</span><span class="se">)</span><span class="s"> successful."</span><span class="p">)</span>
 
                         <span class="n">weakSelf</span><span class="o">.</span><span class="n">bluejay</span><span class="o">.</span><span class="nf">read</span><span class="p">(</span><span class="nv">from</span><span class="p">:</span> <span class="kt">Charactersitics</span><span class="o">.</span><span class="n">serialNumber</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="p">{</span> <span class="p">(</span><span class="nv">readResult</span><span class="p">:</span> <span class="kt">ReadResult</span><span class="o">&lt;</span><span class="kt">String</span><span class="o">&gt;</span><span class="p">)</span> <span class="k">in</span>
                             <span class="k">switch</span> <span class="n">readResult</span> <span class="p">{</span>

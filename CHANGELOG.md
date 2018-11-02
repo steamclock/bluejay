@@ -6,8 +6,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 ### Changed
-- New StartMode enum and StartOptions struct for the start function
-- New WarningOptions for the connect function
+
+## [0.7.0] - 2018-11-02
+- Add StartMode to better encapsulate CBCentralManager initialization options
+- Add WarningOptions to better encapsulate connect warning options
+- Fix handling of expected and unexpected disconnections
+- Add disconnect handler to handle auto-reconnect
+- Remove all cancellation callbacks; use existing failure blocks and look for BluejayError.cancelled instead if you need to differentiate between a failure caused by cancellation versus a failure caused by other errors
+- Return Bluejay Peripheral instead of CBPeripheral for connect, disconnect, and RSSI observer callbacks; so that you don't have to import CoreBluetooth in many of your files anymore, and you can also get a "better/more suitable" peripheral object to work with
+- Fix a scan crash caused by not clearing the scan request's global timer
+- Remove set privileges on all public Bluejay instance variables; they are all supposed to be read only from the get go, but a few were settable and that was dangerous
 
 ## [0.6.5] - 2018-10-22
 ### Added

@@ -186,22 +186,22 @@ This simple call will just notify you when there is a new discovery, and when th
 bluejay.scan(
     serviceIdentifiers: [heartRateService],
     discovery: { [weak self] (discovery, discoveries) -> ScanAction in
-	guard let weakSelf = self else {
-	    return .stop
-	}
+        guard let weakSelf = self else {
+            return .stop
+        }
 
-	weakSelf.peripherals = discoveries
-	weakSelf.tableView.reloadData()
+        weakSelf.peripherals = discoveries
+        weakSelf.tableView.reloadData()
 
-	return .continue
+        return .continue
     },
     stopped: { (discoveries, error) in
-	if let error = error {
-	    debugPrint("Scan stopped with error: \(error.localizedDescription)")
-	}
-	else {
-	    debugPrint("Scan stopped without error.")
-	}
+        if let error = error {
+            debugPrint("Scan stopped with error: \(error.localizedDescription)")
+        }
+        else {
+            debugPrint("Scan stopped without error.")
+        }
 })
 ```
 
@@ -236,33 +236,33 @@ bluejay.scan(
     allowDuplicates: true,
     serviceIdentifiers: nil,
     discovery: { [weak self] (discovery, discoveries) -> ScanAction in
-	guard let weakSelf = self else {
-	    return .stop
-	}
+        guard let weakSelf = self else {
+            return .stop
+        }
 
-	weakSelf.peripherals = discoveries
-	weakSelf.tableView.reloadData()
+        weakSelf.peripherals = discoveries
+        weakSelf.tableView.reloadData()
 
-	return .continue
+        return .continue
     },
     expired: { [weak self] (lostDiscovery, discoveries) -> ScanAction in
-	guard let weakSelf = self else {
-	    return .stop
-	}
+        guard let weakSelf = self else {
+            return .stop
+        }
 
-	debugPrint("Lost discovery: \(lostDiscovery)")
+        debugPrint("Lost discovery: \(lostDiscovery)")
 
-	weakSelf.peripherals = discoveries
-	weakSelf.tableView.reloadData()
+        weakSelf.peripherals = discoveries
+        weakSelf.tableView.reloadData()
 
-	return .continue
+        return .continue
 }) { (discoveries, error) in
-    if let error = error {
-	debugPrint("Scan stopped with error: \(error.localizedDescription)")
-    }
-    else {
-	debugPrint("Scan stopped without error.")
-    }
+        if let error = error {
+            debugPrint("Scan stopped with error: \(error.localizedDescription)")
+        }
+        else {
+            debugPrint("Scan stopped without error.")
+        }
 }
 ```
 
@@ -282,15 +282,15 @@ It is important to keep in mind that Bluejay is designed to work with a single B
 bluejay.connect(peripheralIdentifier) { [weak self] (result) in
     switch result {
     case .success(let peripheral):
-	debugPrint("Connection to \(peripheral.identifier) successful.")
+        debugPrint("Connection to \(peripheral.name) successful.")
 
-	guard let weakSelf = self else {
-	    return
-	}
+	      guard let weakSelf = self else {
+	          return
+	      }
 
-	weakSelf.performSegue(withIdentifier: "showHeartSensor", sender: self)
+	      weakSelf.performSegue(withIdentifier: "showHeartSensor", sender: self)
     case .failure(let error):
-	debugPrint("Connection to \(peripheral.identifier) failed with error: \(error.localizedDescription)")
+        debugPrint("Connection to \(peripheral.name) failed with error: \(error.localizedDescription)")
     }
 }
 ```
@@ -504,38 +504,38 @@ let sensorLocation = CharacteristicIdentifier(uuid: "2A38", service: heartRateSe
 
 bluejay.read(from: sensorLocation) { [weak self] (result: ReadResult<UInt8>) in
     guard let weakSelf = self else {
-	return
+	     return
     }
 
     switch result {
     case .success(let location):
-	debugPrint("Read from sensor location is successful: \(location)")
+        debugPrint("Read from sensor location is successful: \(location)")
 
-	var locationString = "Unknown"
+        var locationString = "Unknown"
 
-	switch location {
-	case 0:
-	    locationString = "Other"
-	case 1:
-	    locationString = "Chest"
-	case 2:
-	    locationString = "Wrist"
-	case 3:
-	    locationString = "Finger"
-	case 4:
-	    locationString = "Hand"
-	case 5:
-	    locationString = "Ear Lobe"
-	case 6:
-	    locationString = "Foot"
-	default:
-	    locationString = "Unknown"
-	}
+        switch location {
+        case 0:
+            locationString = "Other"
+        case 1:
+            locationString = "Chest"
+        case 2:
+            locationString = "Wrist"
+        case 3:
+            locationString = "Finger"
+        case 4:
+            locationString = "Hand"
+        case 5:
+            locationString = "Ear Lobe"
+        case 6:
+            locationString = "Foot"
+        default:
+            locationString = "Unknown"
+        }
 
-	weakSelf.sensorLocationCell.detailTextLabel?.text = locationString
-	weakSelf.sensorLocation = location
+        weakSelf.sensorLocationCell.detailTextLabel?.text = locationString
+        weakSelf.sensorLocation = location
     case .failure(let error):
-	debugPrint("Failed to read from sensor location with error: \(error.localizedDescription)")
+        debugPrint("Failed to read from sensor location with error: \(error.localizedDescription)")
     }
 }
 ```
@@ -547,21 +547,21 @@ Note that LightBlue Explorer's virtual heart sensor does not have write enabled 
 ```swift
 bluejay.write(to: sensorLocation, value: UInt8(indexPath.row), completion: { [weak self] (result) in
     guard let weakSelf = self else {
-	return
+        return
     }
 
     switch result {
     case .success:
-	debugPrint("Write to sensor location is successful.")
+        debugPrint("Write to sensor location is successful.")
 
-	if let selectedCell = weakSelf.selectedCell {
-	    selectedCell.accessoryType = .none
-	}
-	cell.accessoryType = .checkmark
+        if let selectedCell = weakSelf.selectedCell {
+            selectedCell.accessoryType = .none
+        }
+        cell.accessoryType = .checkmark
 
-	weakSelf.navigationController?.popViewController(animated: true)
+        weakSelf.navigationController?.popViewController(animated: true)
     case .failure(let error):
-	debugPrint("Failed to write to sensor location with error: \(error.localizedDescription)")
+        debugPrint("Failed to write to sensor location with error: \(error.localizedDescription)")
     }
 })
 ```
@@ -579,14 +579,14 @@ Not all characteristics support listening, it is a feature that must be enabled 
 ```swift
 bluejay.listen(to: heartRateMeasurement) { [weak self] (result: ReadResult<HeartRateMeasurement>) in
     guard let weakSelf = self else {
-	return
+        return
     }
 
     switch result {
     case .success(let heartRateMeasurement):
-	debugPrint(heartRateMeasurement.measurement)
+        debugPrint(heartRateMeasurement.measurement)
     case .failure(let error):
-	debugPrint("Failed to listen to heart rate measurement with error: \(error.localizedDescription)")
+        debugPrint("Failed to listen to heart rate measurement with error: \(error.localizedDescription)")
     }
 }
 ```
@@ -779,7 +779,7 @@ private func scan(services: [ServiceIdentifier], serialNumber: String) {
                     WarningOptions(notifyOnConnection: false, notifyOnDisconnection: true, notifyOnNotification: false), { (connectionResult) in
                     switch connectionResult {
                     case .success(let peripheral):
-                        debugPrint("Connection to \(peripheral.identifier) successful.")
+                        debugPrint("Connection to \(peripheral.name) successful.")
 
                         weakSelf.bluejay.read(from: Charactersitics.serialNumber, completion: { (readResult: ReadResult<String>) in
                             switch readResult {
