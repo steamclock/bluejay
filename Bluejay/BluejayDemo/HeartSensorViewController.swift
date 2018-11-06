@@ -239,7 +239,7 @@ class HeartSensorViewController: UITableViewController {
             // 4. Return the data of interest and process it in the completion block on the main thread.
             debugPrint("Reset step 4: return sensor location.")
             return sensorLocation
-        }) { [weak self] (result: RunResult<UInt8>) in
+        }, completionOnMainThread: { [weak self] (result: RunResult<UInt8>) in
             guard let weakSelf = self else {
                 return
             }
@@ -254,7 +254,7 @@ class HeartSensorViewController: UITableViewController {
             case .failure(let error):
                 debugPrint("Failed to complete reset background task with error: \(error.localizedDescription)")
             }
-        }
+        })
     }
 
     private func cancelEverything() {

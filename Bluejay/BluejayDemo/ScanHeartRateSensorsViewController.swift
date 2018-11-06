@@ -15,8 +15,8 @@ class ScanHeartRateSensorsViewController: UITableViewController {
 
     private var peripherals = [ScanDiscovery]() {
         didSet {
-            peripherals.sort { (a, b) -> Bool in
-                return a.rssi < b.rssi
+            peripherals.sort { (periphA, periphB) -> Bool in
+                return periphA.rssi < periphB.rssi
             }
         }
     }
@@ -61,13 +61,14 @@ class ScanHeartRateSensorsViewController: UITableViewController {
                 weakSelf.tableView.reloadData()
 
                 return .continue
-        }) { (_, error) in
-            if let error = error {
-                debugPrint("Scan stopped with error: \(error.localizedDescription)")
-            } else {
-                debugPrint("Scan stopped without error.")
-            }
-        }
+            },
+            stopped: { (_, error) in
+                if let error = error {
+                    debugPrint("Scan stopped with error: \(error.localizedDescription)")
+                } else {
+                    debugPrint("Scan stopped without error.")
+                }
+            })
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -136,8 +137,7 @@ class ScanHeartRateSensorsViewController: UITableViewController {
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "showHeartSensor" {
-            let destination = segue.destination as! HeartSensorViewController
+        if segue.identifier == "showHeartSensor", let destination = segue.destination as? HeartSensorViewController {
             destination.bluejay = bluejay
             destination.peripheralIdentifier = selectedPeripheralIdentifier
         }

@@ -50,8 +50,8 @@ public class SynchronizedPeripheral {
         _ = sem.wait(timeout: DispatchTime.distantFuture)
 
         switch finalResult {
-        case .success(let r):
-            return r
+        case .success(let value):
+            return value
         case .failure(let error):
             throw error
         }
@@ -79,13 +79,16 @@ public class SynchronizedPeripheral {
     }
 
     /// Write to one characterestic then reading a value from another.
-    public func writeAndRead<R: Receivable, S: Sendable> (writeTo: CharacteristicIdentifier, value: S, type: CBCharacteristicWriteType = .withResponse, readFrom: CharacteristicIdentifier) throws -> R {
+    public func writeAndRead<R: Receivable, S: Sendable> (
+        writeTo: CharacteristicIdentifier,
+        value: S, type: CBCharacteristicWriteType = .withResponse,
+        readFrom: CharacteristicIdentifier) throws -> R {
         try write(to: writeTo, value: value, type: type)
         return try read(from: readFrom)
     }
 
     /// Listen for changes on a specified characterstic synchronously.
-    public func listen<R: Receivable>(
+    public func listen<R: Receivable>( // swiftlint:disable:this cyclomatic_complexity
         to characteristicIdentifier: CharacteristicIdentifier,
         timeout: Timeout = .none,
         completion: @escaping (R) -> ListenAction) throws {
@@ -105,10 +108,10 @@ public class SynchronizedPeripheral {
                 var action = ListenAction.done
 
                 switch result {
-                case .success(let r):
-                    action = completion(r)
-                case .failure(let e):
-                    error = e
+                case .success(let value):
+                    action = completion(value)
+                case .failure(let failureError):
+                    error = failureError
                 }
 
                 if error != nil || action == .done {
@@ -117,10 +120,10 @@ public class SynchronizedPeripheral {
                             switch result {
                             case .success:
                                 break
-                            case .failure(let e):
+                            case .failure(let failureError):
                                 // Don't overwrite the more important error from the original listen call.
                                 if error == nil {
-                                    error = e
+                                    error = failureError
                                 }
                             }
 
@@ -214,11 +217,11 @@ public class SynchronizedPeripheral {
                     log("Flushed some data.")
 
                     shouldListenAgain = true
-                case .failure(let e):
-                    log("Flush failed with error: \(e.localizedDescription)")
+                case .failure(let failureError):
+                    log("Flush failed with error: \(failureError.localizedDescription)")
 
                     shouldListenAgain = false
-                    error = e
+                    error = failureError
                 }
 
                 listenSem.signal()
@@ -237,8 +240,8 @@ public class SynchronizedPeripheral {
                     switch result {
                     case .success:
                         break
-                    case .failure(let e):
-                        error = e
+                    case .failure(let failureError):
+                        error = failureError
                     }
 
                     endListenSem.signal()
@@ -262,7 +265,7 @@ public class SynchronizedPeripheral {
      
      Conceptually very similar to just calling write, then listen, except that the listen is set up before the write is issued, so that there should be no risks of data loss due to missed notifications, which there would be with calling them seperatly.
      */
-    public func writeAndListen<S: Sendable, R: Receivable>(
+    public func writeAndListen<S: Sendable, R: Receivable>( // swiftlint:disable:this cyclomatic_complexity
         writeTo charToWriteTo: CharacteristicIdentifier,
         value: S,
         type: CBCharacteristicWriteType = .withResponse,
@@ -285,10 +288,10 @@ public class SynchronizedPeripheral {
                 var action: ListenAction = .done
 
                 switch result {
-                case .success(let r):
-                    action = completion(r)
-                case .failure(let e):
-                    error = e
+                case .success(let value):
+                    action = completion(value)
+                case .failure(let failureError):
+                    error = failureError
                 }
 
                 if error != nil || action == .done {
@@ -297,10 +300,10 @@ public class SynchronizedPeripheral {
                             switch result {
                             case .success:
                                 break
-                            case .failure(let e):
+                            case .failure(let failureError):
                                 // Don't overwrite the more important error from the original listen call.
                                 if error == nil {
-                                    error = e
+                                    error = failureError
                                 }
                             }
 
@@ -316,8 +319,8 @@ public class SynchronizedPeripheral {
                 switch result {
                 case .success:
                     return
-                case .failure(let e):
-                    error = e
+                case .failure(let failureError):
+                    error = failureError
                     sem.signal()
                 }
             })
@@ -343,7 +346,7 @@ public class SynchronizedPeripheral {
     /**
      Similar to `writeAndListen`, but use this if you don't know or don't have control over how many packets will be sent to you. You still need to know the total size of the data you're receiving.
      */
-    public func writeAndAssemble<S: Sendable, R: Receivable>(
+    public func writeAndAssemble<S: Sendable, R: Receivable>( // swiftlint:disable:this cyclomatic_complexity
         writeTo charToWriteTo: CharacteristicIdentifier,
         value: S,
         listenTo charToListenTo: CharacteristicIdentifier,
@@ -382,8 +385,8 @@ public class SynchronizedPeripheral {
                     } else {
                         log("Need to continue to assemble data.")
                     }
-                case .failure(let e):
-                    writeAndAssembleError = e
+                case .failure(let error):
+                    writeAndAssembleError = error
                 }
 
                 if writeAndAssembleError != nil || action == .done {
@@ -392,10 +395,10 @@ public class SynchronizedPeripheral {
                             switch result {
                             case .success:
                                 break
-                            case .failure(let e):
+                            case .failure(let error):
                                 // Don't overwrite the more important error from the original listen call.
                                 if writeAndAssembleError == nil {
-                                    writeAndAssembleError = e
+                                    writeAndAssembleError = error
                                 }
                             }
 
@@ -411,8 +414,8 @@ public class SynchronizedPeripheral {
                 switch result {
                 case .success:
                     return
-                case .failure(let e):
-                    writeAndAssembleError = e
+                case .failure(let error):
+                    writeAndAssembleError = error
                     sem.signal()
                 }
             })

@@ -75,6 +75,7 @@ class ConnectUsingSerialNumberViewController: UIViewController {
         navigationController?.present(alert, animated: true, completion: nil)
     }
 
+    // swiftlint:disable:next cyclomatic_complexity
     private func scan(services: [ServiceIdentifier], serialNumber: String) {
         debugPrint("Looking for peripheral with serial number \(serialNumber) to connect to.")
 
@@ -83,7 +84,7 @@ class ConnectUsingSerialNumberViewController: UIViewController {
         bluejay.scan(
             allowDuplicates: false,
             serviceIdentifiers: services,
-            discovery: { [weak self] (discovery, discoveries) -> ScanAction in
+            discovery: { [weak self] (discovery, _) -> ScanAction in
                 guard let weakSelf = self else {
                     return .stop
                 }
@@ -135,19 +136,19 @@ class ConnectUsingSerialNumberViewController: UIViewController {
                         }
                     })
                 }
-            }) { [weak self] (_, error) in
-            guard let weakSelf = self else {
-                return
-            }
+            },
+            stopped: { [weak self] (_, error) in
+                guard let weakSelf = self else {
+                    return
+                }
 
-            if let error = error {
-                debugPrint("Scan stopped with error: \(error.localizedDescription)")
-
-                weakSelf.statusLabel.text = "Scan Error: \(error.localizedDescription)"
-            } else {
-                debugPrint("Scan stopped without error.")
-            }
-        }
+                if let error = error {
+                    debugPrint("Scan stopped with error: \(error.localizedDescription)")
+                    weakSelf.statusLabel.text = "Scan Error: \(error.localizedDescription)"
+                } else {
+                    debugPrint("Scan stopped without error.")
+                }
+            })
     }
 
 }

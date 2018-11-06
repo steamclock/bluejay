@@ -15,8 +15,8 @@ class ScanEverythingViewController: UITableViewController {
 
     private var peripherals = [ScanDiscovery]() {
         didSet {
-            peripherals.sort { (a, b) -> Bool in
-                return a.rssi < b.rssi
+            peripherals.sort { (periphA, periphB) -> Bool in
+                return periphA.rssi < periphB.rssi
             }
         }
     }
@@ -59,13 +59,14 @@ class ScanEverythingViewController: UITableViewController {
                 weakSelf.tableView.reloadData()
 
                 return .continue
-        }) { (_, error) in
-            if let error = error {
-                debugPrint("Scan stopped with error: \(error.localizedDescription)")
-            } else {
-                debugPrint("Scan stopped without error.")
-            }
-        }
+            },
+            completed: { (_, error) in
+                if let error = error {
+                    debugPrint("Scan stopped with error: \(error.localizedDescription)")
+                } else {
+                    debugPrint("Scan stopped without error.")
+                }
+            })
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {

@@ -69,9 +69,7 @@ class Queue {
          */
         if !(queueable is DiscoverService) && !(queueable is DiscoverCharacteristic) {
             // Log more readable details for enqueued ListenCharacteristic queueable.
-            if queueable is ListenCharacteristic {
-                let listen = (queueable as! ListenCharacteristic)
-
+            if let listen = queueable as? ListenCharacteristic {
                 let name = listen.value ? "Listen" : "End Listen"
                 let char = listen.characteristicIdentifier.uuid.uuidString
 
@@ -88,7 +86,7 @@ class Queue {
                 queueable.fail(BluejayError.multipleScanNotSupported)
             }
         } else if queueable is Connection {
-            if (bluejay.isConnecting || bluejay.isConnected) {
+            if bluejay.isConnecting || bluejay.isConnected {
                 queueable.fail(BluejayError.multipleConnectNotSupported)
                 return
             }
@@ -152,6 +150,7 @@ class Queue {
 
     // MARK: - Queue
 
+    // swiftlint:disable:next cyclomatic_complexity
     func update(cancel: Bool = false, cancelError: Error? = nil) {
         if queue.isEmpty {
             log("Queue is empty, nothing to update.")

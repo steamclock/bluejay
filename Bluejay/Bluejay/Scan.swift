@@ -74,7 +74,12 @@ class Scan: Queueable {
         self.manager = manager
 
         if serviceIdentifiers?.isEmpty != false {
-            log("Warning: Setting `serviceIdentifiers` to `nil` is not recommended by Apple. It may cause battery and cpu issues on prolonged scanning, and **it also doesn't work in the background**. If you need to scan for all Bluetooth devices, we recommend making use of the `duration` parameter to stop the scan after 5 ~ 10 seconds to avoid scanning indefinitely and overloading the hardware.")
+            log("""
+                Warning: Setting `serviceIdentifiers` to `nil` is not recommended by Apple. \
+                It may cause battery and cpu issues on prolonged scanning, and **it also doesn't work in the background**. \
+                If you need to scan for all Bluetooth devices, we recommend making use of the `duration` parameter to stop the scan \
+                after 5 ~ 10 seconds to avoid scanning indefinitely and overloading the hardware.
+                """)
         }
     }
 
@@ -208,7 +213,7 @@ class Scan: Queueable {
     }
 
     @objc func didEnterBackgroundWithAllowDuplicates() {
-        fail(BluejayError.scanningWithAllowDuplicatesInBackgroundNotSupported)
+        fail(BluejayError.allowDuplicatesInBackgroundNotSupported)
     }
 
     @objc func didEnterBackgroundWithoutServiceIdentifiers() {
@@ -231,6 +236,7 @@ class Scan: Queueable {
 
         stopped(discoveries, error)
 
+        // swiftlint:disable:next notification_center_detachment
         NotificationCenter.default.removeObserver(self)
 
         updateQueue()
@@ -295,8 +301,9 @@ class Scan: Queueable {
     }
 
     @objc func refresh(timer: Timer) {
-        let identifier = timer.userInfo as! UUID
-        refresh(identifier: identifier)
+        if let identifier = timer.userInfo as? UUID {
+            refresh(identifier: identifier)
+        }
     }
 
     private func clearTimers() {

@@ -14,7 +14,7 @@ import CoreBluetooth
  
  It also supports a few other niceties for simplifying usage, including automatic discovery of services and characteristics as they are used, as well as supporting a background task mode where the interaction with the device can be written as synchronous calls running on a background thread to avoid callback pyramids of death, or heavily chained promises.
  */
-public class Bluejay: NSObject {
+public class Bluejay: NSObject { //swiftlint:disable:this type_body_length
 
     // MARK: - Private Properties
 
@@ -247,7 +247,11 @@ public class Bluejay: NSObject {
         }
 
         if !isSupported {
-            log("Warning: It appears your app has not enabled background support for Bluetooth properly. Please make sure the capability, Background Modes, is turned on, and the setting, Uses Bluetooth LE accessories, is checked in your Xcode project.")
+            log("""
+                Warning: It appears your app has not enabled background support for Bluetooth properly. \
+                Please make sure the capability, "Background Modes", is turned on, and the setting, "Uses Bluetooth LE accessories", \
+                is checked in your Xcode project.
+                """)
         }
     }
 
@@ -444,7 +448,7 @@ public class Bluejay: NSObject {
         }
 
         // Block a connect request when restoring, restore should result in the peripheral being automatically connected.
-        if (shouldRestoreState) {
+        if shouldRestoreState {
             // Cache requested connect, in case restore messes up unexpectedly.
             peripheralIdentifierToRestore = peripheralIdentifier
             return
@@ -1044,6 +1048,7 @@ extension Bluejay: CBCentralManagerDelegate {
      Handle a disconnection event from Core Bluetooth by figuring out what kind of disconnection it is (planned or unplanned), and updating Bluejay's internal state and sending notifications as appropriate.
     */
     public func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
+        // swiftlint:disable:previous cyclomatic_complexity
         let backgroundTask =  UIApplication.shared.beginBackgroundTask(expirationHandler: nil)
 
         let peripheralString = peripheral.name ?? peripheral.identifier.uuidString
@@ -1213,3 +1218,4 @@ extension Bluejay: QueueObserver {
 func log(_ string: String) {
     debugPrint("[Bluejay-Debug] \(string)")
 }
+//swiftlint:disable:this file_length
