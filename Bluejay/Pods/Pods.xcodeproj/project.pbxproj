@@ -7,52 +7,62 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		4184C121DB112A57E423CB8E456B3231 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBB3DE36805AF21409EC968A9691732F /* Foundation.framework */; };
-		57FD3B20C435FF546CCDF686441919E7 /* Pods-BluejayDemo-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EA571AE206A67F78393CE2DA76A1D0D /* Pods-BluejayDemo-dummy.m */; };
-		62A1F9806C5C01FE2F07C29B10F43CCB /* Pods-Bluejay-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = AEE1B02235340346E5ECC801CAF1E8E0 /* Pods-Bluejay-dummy.m */; };
-		67F0E9CC11D5BE21D2C1A09A5E431F12 /* Pods-Bluejay-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 9D4EC62A72D604DD7CBB2ABDC9596C91 /* Pods-Bluejay-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		6AA75AA84E80C6182BB90DBAEA8E9018 /* Pods-BluejayTests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E57F28B529666BC0B5ED638FF3B2D6D /* Pods-BluejayTests-dummy.m */; };
-		787F9828082FFD344D39D9C8B6AFFB00 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBB3DE36805AF21409EC968A9691732F /* Foundation.framework */; };
-		9AAA242BE24210C183A30B40023ED72D /* Pods-BluejayTests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 6F2A71DD6A680CD4CAA83B1DE66DE839 /* Pods-BluejayTests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		B2E583568FB89E4C2E71281AFD76A988 /* Pods-BluejayDemo-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 4007F0819AA9B8D1DC91D6AD25B63B11 /* Pods-BluejayDemo-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FCEABCA93600962D8C1156C8E9580510 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBB3DE36805AF21409EC968A9691732F /* Foundation.framework */; };
+		018F3593462C1F0BAFF403498D49025A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A16F4CFC63FAC439D7A04994F579A03 /* Foundation.framework */; };
+		15FA0E57F3D5D2509C70D77C3597B661 /* Pods-BluejayTests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 23DA813ECDA5F5370A0547AED3FE3E9D /* Pods-BluejayTests-dummy.m */; };
+		3D09A18DE80AB3B08127DD7BE86E7B7C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A16F4CFC63FAC439D7A04994F579A03 /* Foundation.framework */; };
+		52B5DC2AF1DAD6ADD795DF245B42ABA5 /* Pods-BluejayTests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = D7AC67FF91A4673D9566E0D6DFE55A40 /* Pods-BluejayTests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		57FD3B20C435FF546CCDF686441919E7 /* Pods-BluejayDemo-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 1F0342D4267583542A2DE6B6D9F4A691 /* Pods-BluejayDemo-dummy.m */; };
+		62A1F9806C5C01FE2F07C29B10F43CCB /* Pods-Bluejay-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 6893CF67A5ED470E8823A5CB91A4B956 /* Pods-Bluejay-dummy.m */; };
+		67F0E9CC11D5BE21D2C1A09A5E431F12 /* Pods-Bluejay-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = F7A1FDDB56C71818E7F4AEEB45A353E6 /* Pods-Bluejay-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		92D132703F9AD85BC68AB001CBE023F1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A16F4CFC63FAC439D7A04994F579A03 /* Foundation.framework */; };
+		B2E583568FB89E4C2E71281AFD76A988 /* Pods-BluejayDemo-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 767CCB14FCA01C798C39F6FCB5A732C6 /* Pods-BluejayDemo-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		B44453CAEC07F4D2E3C60AEF484A0D25 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 43BD5471FEA63DFC53CCA74C5622923F;
+			remoteInfo = "Pods-Bluejay";
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
-		0392BF5ACCD6E3C896848E913E0ECFF5 /* Pods-BluejayTests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-BluejayTests-acknowledgements.plist"; sourceTree = "<group>"; };
-		03F91F215B9E35F4E672EC35F323F1E8 /* Pods-Bluejay-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-Bluejay-acknowledgements.markdown"; sourceTree = "<group>"; };
-		136D3804823E339E3BE20B62CC70A6DD /* Pods-Bluejay-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-Bluejay-acknowledgements.plist"; sourceTree = "<group>"; };
-		13B0B8783775226CC5AAC55FB262AA17 /* Pods-BluejayDemo-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-BluejayDemo-acknowledgements.markdown"; sourceTree = "<group>"; };
-		1BF71D1EC28BF858D281FA1F18EA8DF6 /* Pods-BluejayDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-BluejayDemo.release.xcconfig"; sourceTree = "<group>"; };
-		1DDBE844480717A12679DA5AF01CE404 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		27926CF5568D76460F12849898C54FC7 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		2A73B86643BFED12592A8D31C6DCF847 /* Pods_Bluejay.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Bluejay.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		4007F0819AA9B8D1DC91D6AD25B63B11 /* Pods-BluejayDemo-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-BluejayDemo-umbrella.h"; sourceTree = "<group>"; };
-		5C74BA9CB6B49B8B954C09743C2E2542 /* Pods-Bluejay.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Bluejay.release.xcconfig"; sourceTree = "<group>"; };
-		5E57F28B529666BC0B5ED638FF3B2D6D /* Pods-BluejayTests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-BluejayTests-dummy.m"; sourceTree = "<group>"; };
-		5EF8F2F84A39EC89F6447081484FE5E0 /* Pods-Bluejay.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Bluejay.debug.xcconfig"; sourceTree = "<group>"; };
-		691F45B8279510D3CCCE3BF3BAEE0A70 /* Pods-BluejayTests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-BluejayTests-acknowledgements.markdown"; sourceTree = "<group>"; };
-		6DE738BDB6DEF353136B65245834BD75 /* Pods_BluejayDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BluejayDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		6F2A71DD6A680CD4CAA83B1DE66DE839 /* Pods-BluejayTests-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-BluejayTests-umbrella.h"; sourceTree = "<group>"; };
-		7A15FEEC244C47ED07CB011B6A2A6FFD /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		7EA571AE206A67F78393CE2DA76A1D0D /* Pods-BluejayDemo-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-BluejayDemo-dummy.m"; sourceTree = "<group>"; };
-		81A9654EE67EA6FA4936FE864E21C5F1 /* Pods-BluejayTests-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-BluejayTests-resources.sh"; sourceTree = "<group>"; };
-		889B1643E32EFAE76E3858139BE0A32E /* Pods-Bluejay.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = "Pods-Bluejay.modulemap"; sourceTree = "<group>"; };
-		8F884B509C2CF4D49CC594F9298E1CB5 /* Pods-BluejayTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-BluejayTests.release.xcconfig"; sourceTree = "<group>"; };
-		91877DB5C1A91D76820F80CC853CC037 /* Pods-BluejayTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-BluejayTests.debug.xcconfig"; sourceTree = "<group>"; };
-		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		9D4EC62A72D604DD7CBB2ABDC9596C91 /* Pods-Bluejay-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-Bluejay-umbrella.h"; sourceTree = "<group>"; };
-		A53E5800DBE7BAEE434B1E6F12ED35C5 /* Pods-BluejayTests-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-BluejayTests-frameworks.sh"; sourceTree = "<group>"; };
-		A5BCFDC62E94590E2E4C39641AF5E6E7 /* Pods-BluejayDemo.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = "Pods-BluejayDemo.modulemap"; sourceTree = "<group>"; };
-		AAC81449B34EAD25788A7741FF0C3720 /* Pods-BluejayDemo-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-BluejayDemo-frameworks.sh"; sourceTree = "<group>"; };
-		AEE1B02235340346E5ECC801CAF1E8E0 /* Pods-Bluejay-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-Bluejay-dummy.m"; sourceTree = "<group>"; };
-		BB80C8D6F8146F43DA4F6F54538692C2 /* Pods-Bluejay-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-Bluejay-resources.sh"; sourceTree = "<group>"; };
-		BC65483ECC97B166754F39CF2DC06997 /* Pods-BluejayTests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = "Pods-BluejayTests.modulemap"; sourceTree = "<group>"; };
-		C3B4E09E9D14F32E9308B0CD849EAD86 /* Pods-BluejayDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-BluejayDemo.debug.xcconfig"; sourceTree = "<group>"; };
-		CBB3DE36805AF21409EC968A9691732F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
-		D4E98FADA2216B6DC43A01FF2399D59F /* Pods-BluejayDemo-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-BluejayDemo-acknowledgements.plist"; sourceTree = "<group>"; };
-		F77B67DE051E68E5849BBD9D9AE4610F /* Pods-BluejayDemo-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-BluejayDemo-resources.sh"; sourceTree = "<group>"; };
-		FCFD7E7B2704AF25F8D26879BB4CBF83 /* Pods_BluejayTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BluejayTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		03FAE2FA03A96F8E58681630BCA7C6BB /* Pods-Bluejay-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-Bluejay-acknowledgements.markdown"; sourceTree = "<group>"; };
+		164DA271EA9A5E178072138FCED31B04 /* Pods-BluejayDemo-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-BluejayDemo-acknowledgements.markdown"; sourceTree = "<group>"; };
+		1B1A136CD85D11B6C7FF28CEB41A1A32 /* Pods-BluejayTests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-BluejayTests.modulemap"; sourceTree = "<group>"; };
+		1B5CB339C645345E147987CCE2509C75 /* Pods-Bluejay.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-Bluejay.modulemap"; sourceTree = "<group>"; };
+		1BBE833F138B8F122D007F4AA986F7C5 /* Pods-BluejayDemo-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-BluejayDemo-acknowledgements.plist"; sourceTree = "<group>"; };
+		1F0342D4267583542A2DE6B6D9F4A691 /* Pods-BluejayDemo-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-BluejayDemo-dummy.m"; sourceTree = "<group>"; };
+		201C7A29AB505598CE03CF0E8DE5CFD7 /* Pods-BluejayDemo-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-BluejayDemo-resources.sh"; sourceTree = "<group>"; };
+		2031F193F785311CD99010915987A980 /* Pods-BluejayTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-BluejayTests.debug.xcconfig"; sourceTree = "<group>"; };
+		227B175BD2F60F86B71063FD09CD33AC /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		23DA813ECDA5F5370A0547AED3FE3E9D /* Pods-BluejayTests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-BluejayTests-dummy.m"; sourceTree = "<group>"; };
+		24AE309FB70389ABF471C73ED5E07CE6 /* Pods-Bluejay.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Bluejay.release.xcconfig"; sourceTree = "<group>"; };
+		2A73B86643BFED12592A8D31C6DCF847 /* Pods_Bluejay.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_Bluejay.framework; path = "Pods-Bluejay.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		45D058716518A9C149FF05B639B9C0C2 /* Pods-BluejayDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-BluejayDemo.debug.xcconfig"; sourceTree = "<group>"; };
+		48EC88141B4DAC1F3FFD733F4750480E /* Pods-BluejayTests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-BluejayTests-acknowledgements.plist"; sourceTree = "<group>"; };
+		4B645227F14C4DED6699CC4F615DAF2F /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5678569BA1B8C8AF3D46131680F0B444 /* Pods-BluejayTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-BluejayTests.release.xcconfig"; sourceTree = "<group>"; };
+		5A16F4CFC63FAC439D7A04994F579A03 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.3.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		63B7FEC70E021B45870EF0EF5BA57296 /* Pods-BluejayDemo.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-BluejayDemo.modulemap"; sourceTree = "<group>"; };
+		6893CF67A5ED470E8823A5CB91A4B956 /* Pods-Bluejay-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-Bluejay-dummy.m"; sourceTree = "<group>"; };
+		6AEB27591CC83C581222B16D9DE4BF99 /* Pods-Bluejay-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-Bluejay-resources.sh"; sourceTree = "<group>"; };
+		6DE738BDB6DEF353136B65245834BD75 /* Pods_BluejayDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_BluejayDemo.framework; path = "Pods-BluejayDemo.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		71B173BF29D34F81307F7FA56B4381ED /* Pods-BluejayTests-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-BluejayTests-resources.sh"; sourceTree = "<group>"; };
+		767CCB14FCA01C798C39F6FCB5A732C6 /* Pods-BluejayDemo-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-BluejayDemo-umbrella.h"; sourceTree = "<group>"; };
+		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		9C65297B6826BCB98D4701E0FC4CA7E8 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B22803695B5EADAC05D265B3E7EC0A1E /* Pods-Bluejay.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Bluejay.debug.xcconfig"; sourceTree = "<group>"; };
+		B40F2E9FFCDE8134D3A9CC5644AE2F72 /* Pods-BluejayTests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-BluejayTests-acknowledgements.markdown"; sourceTree = "<group>"; };
+		B748F1B74DE558DB4E8E4EDEB8E33978 /* Pods-BluejayDemo-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-BluejayDemo-frameworks.sh"; sourceTree = "<group>"; };
+		D7AC67FF91A4673D9566E0D6DFE55A40 /* Pods-BluejayTests-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-BluejayTests-umbrella.h"; sourceTree = "<group>"; };
+		E9C0F779B325D09F10A484A66F5A8EA7 /* Pods-BluejayTests-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-BluejayTests-frameworks.sh"; sourceTree = "<group>"; };
+		EA12E35C9A00C70352B6652466F5EF69 /* Pods-BluejayDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-BluejayDemo.release.xcconfig"; sourceTree = "<group>"; };
+		EC8BA83E2ADFDB8668F87217071B113D /* Pods-Bluejay-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-Bluejay-acknowledgements.plist"; sourceTree = "<group>"; };
+		F7A1FDDB56C71818E7F4AEEB45A353E6 /* Pods-Bluejay-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-Bluejay-umbrella.h"; sourceTree = "<group>"; };
+		FCFD7E7B2704AF25F8D26879BB4CBF83 /* Pods_BluejayTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_BluejayTests.framework; path = "Pods-BluejayTests.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,7 +70,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				787F9828082FFD344D39D9C8B6AFFB00 /* Foundation.framework in Frameworks */,
+				3D09A18DE80AB3B08127DD7BE86E7B7C /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -68,15 +78,15 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FCEABCA93600962D8C1156C8E9580510 /* Foundation.framework in Frameworks */,
+				018F3593462C1F0BAFF403498D49025A /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		FAFDEA24AC2F9C87C39321ED617DBF63 /* Frameworks */ = {
+		D1FA946AD56F7D0932044A3E5F7E7147 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4184C121DB112A57E423CB8E456B3231 /* Foundation.framework in Frameworks */,
+				92D132703F9AD85BC68AB001CBE023F1 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -86,52 +96,60 @@
 		0A4DAB560987B98FBF0E8E8E2EC8CE42 /* Targets Support Files */ = {
 			isa = PBXGroup;
 			children = (
-				238A6A0C0664085417599E2190B45FD4 /* Pods-Bluejay */,
-				AA6179C7B255B4B911B689A8A1BD7E6C /* Pods-BluejayDemo */,
-				0B9B9D0CF890110A11814A1E59C1C56F /* Pods-BluejayTests */,
+				13836E17273A9621D2DB7DE35D4E0AF3 /* Pods-Bluejay */,
+				19BBC51FB8CBB052ACD31FC5452AA549 /* Pods-BluejayDemo */,
+				A46DF3741A4210C25EF6F66789B5C508 /* Pods-BluejayTests */,
 			);
 			name = "Targets Support Files";
 			sourceTree = "<group>";
 		};
-		0B9B9D0CF890110A11814A1E59C1C56F /* Pods-BluejayTests */ = {
+		13836E17273A9621D2DB7DE35D4E0AF3 /* Pods-Bluejay */ = {
 			isa = PBXGroup;
 			children = (
-				27926CF5568D76460F12849898C54FC7 /* Info.plist */,
-				BC65483ECC97B166754F39CF2DC06997 /* Pods-BluejayTests.modulemap */,
-				691F45B8279510D3CCCE3BF3BAEE0A70 /* Pods-BluejayTests-acknowledgements.markdown */,
-				0392BF5ACCD6E3C896848E913E0ECFF5 /* Pods-BluejayTests-acknowledgements.plist */,
-				5E57F28B529666BC0B5ED638FF3B2D6D /* Pods-BluejayTests-dummy.m */,
-				A53E5800DBE7BAEE434B1E6F12ED35C5 /* Pods-BluejayTests-frameworks.sh */,
-				81A9654EE67EA6FA4936FE864E21C5F1 /* Pods-BluejayTests-resources.sh */,
-				6F2A71DD6A680CD4CAA83B1DE66DE839 /* Pods-BluejayTests-umbrella.h */,
-				91877DB5C1A91D76820F80CC853CC037 /* Pods-BluejayTests.debug.xcconfig */,
-				8F884B509C2CF4D49CC594F9298E1CB5 /* Pods-BluejayTests.release.xcconfig */,
-			);
-			name = "Pods-BluejayTests";
-			path = "Target Support Files/Pods-BluejayTests";
-			sourceTree = "<group>";
-		};
-		238A6A0C0664085417599E2190B45FD4 /* Pods-Bluejay */ = {
-			isa = PBXGroup;
-			children = (
-				7A15FEEC244C47ED07CB011B6A2A6FFD /* Info.plist */,
-				889B1643E32EFAE76E3858139BE0A32E /* Pods-Bluejay.modulemap */,
-				03F91F215B9E35F4E672EC35F323F1E8 /* Pods-Bluejay-acknowledgements.markdown */,
-				136D3804823E339E3BE20B62CC70A6DD /* Pods-Bluejay-acknowledgements.plist */,
-				AEE1B02235340346E5ECC801CAF1E8E0 /* Pods-Bluejay-dummy.m */,
-				BB80C8D6F8146F43DA4F6F54538692C2 /* Pods-Bluejay-resources.sh */,
-				9D4EC62A72D604DD7CBB2ABDC9596C91 /* Pods-Bluejay-umbrella.h */,
-				5EF8F2F84A39EC89F6447081484FE5E0 /* Pods-Bluejay.debug.xcconfig */,
-				5C74BA9CB6B49B8B954C09743C2E2542 /* Pods-Bluejay.release.xcconfig */,
+				4B645227F14C4DED6699CC4F615DAF2F /* Info.plist */,
+				1B5CB339C645345E147987CCE2509C75 /* Pods-Bluejay.modulemap */,
+				03FAE2FA03A96F8E58681630BCA7C6BB /* Pods-Bluejay-acknowledgements.markdown */,
+				EC8BA83E2ADFDB8668F87217071B113D /* Pods-Bluejay-acknowledgements.plist */,
+				6893CF67A5ED470E8823A5CB91A4B956 /* Pods-Bluejay-dummy.m */,
+				6AEB27591CC83C581222B16D9DE4BF99 /* Pods-Bluejay-resources.sh */,
+				F7A1FDDB56C71818E7F4AEEB45A353E6 /* Pods-Bluejay-umbrella.h */,
+				B22803695B5EADAC05D265B3E7EC0A1E /* Pods-Bluejay.debug.xcconfig */,
+				24AE309FB70389ABF471C73ED5E07CE6 /* Pods-Bluejay.release.xcconfig */,
 			);
 			name = "Pods-Bluejay";
 			path = "Target Support Files/Pods-Bluejay";
 			sourceTree = "<group>";
 		};
-		7531C8F8DE19F1AA3C8A7AC97A91DC29 /* iOS */ = {
+		19BBC51FB8CBB052ACD31FC5452AA549 /* Pods-BluejayDemo */ = {
 			isa = PBXGroup;
 			children = (
-				CBB3DE36805AF21409EC968A9691732F /* Foundation.framework */,
+				227B175BD2F60F86B71063FD09CD33AC /* Info.plist */,
+				63B7FEC70E021B45870EF0EF5BA57296 /* Pods-BluejayDemo.modulemap */,
+				164DA271EA9A5E178072138FCED31B04 /* Pods-BluejayDemo-acknowledgements.markdown */,
+				1BBE833F138B8F122D007F4AA986F7C5 /* Pods-BluejayDemo-acknowledgements.plist */,
+				1F0342D4267583542A2DE6B6D9F4A691 /* Pods-BluejayDemo-dummy.m */,
+				B748F1B74DE558DB4E8E4EDEB8E33978 /* Pods-BluejayDemo-frameworks.sh */,
+				201C7A29AB505598CE03CF0E8DE5CFD7 /* Pods-BluejayDemo-resources.sh */,
+				767CCB14FCA01C798C39F6FCB5A732C6 /* Pods-BluejayDemo-umbrella.h */,
+				45D058716518A9C149FF05B639B9C0C2 /* Pods-BluejayDemo.debug.xcconfig */,
+				EA12E35C9A00C70352B6652466F5EF69 /* Pods-BluejayDemo.release.xcconfig */,
+			);
+			name = "Pods-BluejayDemo";
+			path = "Target Support Files/Pods-BluejayDemo";
+			sourceTree = "<group>";
+		};
+		32A23E08346748F1793F899C5FF672C1 /* SwiftLint */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = SwiftLint;
+			path = SwiftLint;
+			sourceTree = "<group>";
+		};
+		5E0D919E635D23B70123790B8308F8EF /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				5A16F4CFC63FAC439D7A04994F579A03 /* Foundation.framework */,
 			);
 			name = iOS;
 			sourceTree = "<group>";
@@ -141,33 +159,42 @@
 			children = (
 				93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */,
 				BC3CA7F9E30CC8F7E2DD044DD34432FC /* Frameworks */,
+				9758CC519AE2C57A9659FFC01AAD26F9 /* Pods */,
 				C01D148FD18FF82D44102002CEEDD076 /* Products */,
 				0A4DAB560987B98FBF0E8E8E2EC8CE42 /* Targets Support Files */,
 			);
 			sourceTree = "<group>";
 		};
-		AA6179C7B255B4B911B689A8A1BD7E6C /* Pods-BluejayDemo */ = {
+		9758CC519AE2C57A9659FFC01AAD26F9 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				1DDBE844480717A12679DA5AF01CE404 /* Info.plist */,
-				A5BCFDC62E94590E2E4C39641AF5E6E7 /* Pods-BluejayDemo.modulemap */,
-				13B0B8783775226CC5AAC55FB262AA17 /* Pods-BluejayDemo-acknowledgements.markdown */,
-				D4E98FADA2216B6DC43A01FF2399D59F /* Pods-BluejayDemo-acknowledgements.plist */,
-				7EA571AE206A67F78393CE2DA76A1D0D /* Pods-BluejayDemo-dummy.m */,
-				AAC81449B34EAD25788A7741FF0C3720 /* Pods-BluejayDemo-frameworks.sh */,
-				F77B67DE051E68E5849BBD9D9AE4610F /* Pods-BluejayDemo-resources.sh */,
-				4007F0819AA9B8D1DC91D6AD25B63B11 /* Pods-BluejayDemo-umbrella.h */,
-				C3B4E09E9D14F32E9308B0CD849EAD86 /* Pods-BluejayDemo.debug.xcconfig */,
-				1BF71D1EC28BF858D281FA1F18EA8DF6 /* Pods-BluejayDemo.release.xcconfig */,
+				32A23E08346748F1793F899C5FF672C1 /* SwiftLint */,
 			);
-			name = "Pods-BluejayDemo";
-			path = "Target Support Files/Pods-BluejayDemo";
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		A46DF3741A4210C25EF6F66789B5C508 /* Pods-BluejayTests */ = {
+			isa = PBXGroup;
+			children = (
+				9C65297B6826BCB98D4701E0FC4CA7E8 /* Info.plist */,
+				1B1A136CD85D11B6C7FF28CEB41A1A32 /* Pods-BluejayTests.modulemap */,
+				B40F2E9FFCDE8134D3A9CC5644AE2F72 /* Pods-BluejayTests-acknowledgements.markdown */,
+				48EC88141B4DAC1F3FFD733F4750480E /* Pods-BluejayTests-acknowledgements.plist */,
+				23DA813ECDA5F5370A0547AED3FE3E9D /* Pods-BluejayTests-dummy.m */,
+				E9C0F779B325D09F10A484A66F5A8EA7 /* Pods-BluejayTests-frameworks.sh */,
+				71B173BF29D34F81307F7FA56B4381ED /* Pods-BluejayTests-resources.sh */,
+				D7AC67FF91A4673D9566E0D6DFE55A40 /* Pods-BluejayTests-umbrella.h */,
+				2031F193F785311CD99010915987A980 /* Pods-BluejayTests.debug.xcconfig */,
+				5678569BA1B8C8AF3D46131680F0B444 /* Pods-BluejayTests.release.xcconfig */,
+			);
+			name = "Pods-BluejayTests";
+			path = "Target Support Files/Pods-BluejayTests";
 			sourceTree = "<group>";
 		};
 		BC3CA7F9E30CC8F7E2DD044DD34432FC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				7531C8F8DE19F1AA3C8A7AC97A91DC29 /* iOS */,
+				5E0D919E635D23B70123790B8308F8EF /* iOS */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -201,34 +228,17 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		910A6772E171947D0B321A81EEB817F6 /* Headers */ = {
+		79B9EB1E70620A17AA42B14F6EE6657C /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9AAA242BE24210C183A30B40023ED72D /* Pods-BluejayTests-umbrella.h in Headers */,
+				52B5DC2AF1DAD6ADD795DF245B42ABA5 /* Pods-BluejayTests-umbrella.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		3BF78A91DA2D4B470DD1112C28A8DC2F /* Pods-BluejayTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = AAE2C3DB021EA4F7DC32EAACD5DD4854 /* Build configuration list for PBXNativeTarget "Pods-BluejayTests" */;
-			buildPhases = (
-				D4DFB1EDC029B32AEF00B37BEFF499F3 /* Sources */,
-				FAFDEA24AC2F9C87C39321ED617DBF63 /* Frameworks */,
-				910A6772E171947D0B321A81EEB817F6 /* Headers */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = "Pods-BluejayTests";
-			productName = "Pods-BluejayTests";
-			productReference = FCFD7E7B2704AF25F8D26879BB4CBF83 /* Pods_BluejayTests.framework */;
-			productType = "com.apple.product-type.framework";
-		};
 		43BD5471FEA63DFC53CCA74C5622923F /* Pods-Bluejay */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1B4392F5D2511AC3F4DD2189945193DF /* Build configuration list for PBXNativeTarget "Pods-Bluejay" */;
@@ -263,13 +273,31 @@
 			productReference = 6DE738BDB6DEF353136B65245834BD75 /* Pods_BluejayDemo.framework */;
 			productType = "com.apple.product-type.framework";
 		};
+		A03AC53F5F7EDB15D3C2145447D7609C /* Pods-BluejayTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5B43BD77CD1A5DBB027C3EA40CE8B11D /* Build configuration list for PBXNativeTarget "Pods-BluejayTests" */;
+			buildPhases = (
+				F2B92334A23F89DBD5B4E493963488A9 /* Sources */,
+				D1FA946AD56F7D0932044A3E5F7E7147 /* Frameworks */,
+				79B9EB1E70620A17AA42B14F6EE6657C /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				CAB89C60FDF4D9531145BA8156455FEF /* PBXTargetDependency */,
+			);
+			name = "Pods-BluejayTests";
+			productName = "Pods-BluejayTests";
+			productReference = FCFD7E7B2704AF25F8D26879BB4CBF83 /* Pods_BluejayTests.framework */;
+			productType = "com.apple.product-type.framework";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		D41D8CD98F00B204E9800998ECF8427E /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0730;
+				LastSwiftUpdateCheck = 0930;
 				LastUpgradeCheck = 0930;
 			};
 			buildConfigurationList = 2D8E8EC45A3A1A1D94AE762CB5028504 /* Build configuration list for PBXProject "Pods" */;
@@ -286,7 +314,7 @@
 			targets = (
 				43BD5471FEA63DFC53CCA74C5622923F /* Pods-Bluejay */,
 				84ABC66CF044E8CDBB29B2E016619F9E /* Pods-BluejayDemo */,
-				3BF78A91DA2D4B470DD1112C28A8DC2F /* Pods-BluejayTests */,
+				A03AC53F5F7EDB15D3C2145447D7609C /* Pods-BluejayTests */,
 			);
 		};
 /* End PBXProject section */
@@ -300,11 +328,11 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		D4DFB1EDC029B32AEF00B37BEFF499F3 /* Sources */ = {
+		F2B92334A23F89DBD5B4E493963488A9 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6AA75AA84E80C6182BB90DBAEA8E9018 /* Pods-BluejayTests-dummy.m in Sources */,
+				15FA0E57F3D5D2509C70D77C3597B661 /* Pods-BluejayTests-dummy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -318,57 +346,67 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		CAB89C60FDF4D9531145BA8156455FEF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Pods-Bluejay";
+			target = 43BD5471FEA63DFC53CCA74C5622923F /* Pods-Bluejay */;
+			targetProxy = B44453CAEC07F4D2E3C60AEF484A0D25 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
-		584C6ADD6EAEC37A8EE63F9FEF4813FA /* Release */ = {
+		37ADAA093D6DBBAA30F0D6354FB955B7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8F884B509C2CF4D49CC594F9298E1CB5 /* Pods-BluejayTests.release.xcconfig */;
+			baseConfigurationReference = B22803695B5EADAC05D265B3E7EC0A1E /* Pods-Bluejay.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
 				CURRENT_PROJECT_VERSION = 1;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_NO_COMMON_BLOCKS = YES;
-				INFOPLIST_FILE = "Target Support Files/Pods-BluejayTests/Info.plist";
+				INFOPLIST_FILE = "Target Support Files/Pods-Bluejay/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MACH_O_TYPE = staticlib;
-				MODULEMAP_FILE = "Target Support Files/Pods-BluejayTests/Pods-BluejayTests.modulemap";
-				MTL_ENABLE_DEBUG_INFO = NO;
+				MODULEMAP_FILE = "Target Support Files/Pods-Bluejay/Pods-Bluejay.modulemap";
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
 				PODS_ROOT = "$(SRCROOT)";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = Pods_BluejayTests;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
-			name = Release;
+			name = Debug;
 		};
-		59B042A655B7C20CBAB90E385BF4E4C7 /* Debug */ = {
+		8B33C5230DE4A9DFA6D8F46505DD7AF7 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
@@ -376,17 +414,20 @@
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_ALLOWED = NO;
 				CODE_SIGNING_REQUIRED = NO;
 				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -395,141 +436,74 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				PROVISIONING_PROFILE_SPECIFIER = NO_SIGNING/;
+				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRIP_INSTALLED_PRODUCT = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SYMROOT = "${SRCROOT}/../build";
 			};
 			name = Debug;
 		};
-		7177430F8EAB33908CEB74B40F1917F6 /* Debug */ = {
+		91EEB5B87B53CB60AB96FF95B487BAC1 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C3B4E09E9D14F32E9308B0CD849EAD86 /* Pods-BluejayDemo.debug.xcconfig */;
+			baseConfigurationReference = 24AE309FB70389ABF471C73ED5E07CE6 /* Pods-Bluejay.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
 				CURRENT_PROJECT_VERSION = 1;
-				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_NO_COMMON_BLOCKS = YES;
-				INFOPLIST_FILE = "Target Support Files/Pods-BluejayDemo/Info.plist";
+				INFOPLIST_FILE = "Target Support Files/Pods-Bluejay/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MACH_O_TYPE = staticlib;
-				MODULEMAP_FILE = "Target Support Files/Pods-BluejayDemo/Pods-BluejayDemo.modulemap";
-				MTL_ENABLE_DEBUG_INFO = YES;
+				MODULEMAP_FILE = "Target Support Files/Pods-Bluejay/Pods-Bluejay.modulemap";
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
 				PODS_ROOT = "$(SRCROOT)";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = Pods_BluejayDemo;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Debug;
-		};
-		7478A4A737AA8A19D258AC42B915BC22 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1BF71D1EC28BF858D281FA1F18EA8DF6 /* Pods-BluejayDemo.release.xcconfig */;
-			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_NO_COMMON_BLOCKS = YES;
-				INFOPLIST_FILE = "Target Support Files/Pods-BluejayDemo/Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MACH_O_TYPE = staticlib;
-				MODULEMAP_FILE = "Target Support Files/Pods-BluejayDemo/Pods-BluejayDemo.modulemap";
-				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = Pods_BluejayDemo;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
 			name = Release;
 		};
-		AFA04B1CA32A7738B91DCD3AAC70D97A /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5EF8F2F84A39EC89F6447081484FE5E0 /* Pods-Bluejay.debug.xcconfig */;
-			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_NO_COMMON_BLOCKS = YES;
-				INFOPLIST_FILE = "Target Support Files/Pods-Bluejay/Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MACH_O_TYPE = staticlib;
-				MODULEMAP_FILE = "Target Support Files/Pods-Bluejay/Pods-Bluejay.modulemap";
-				MTL_ENABLE_DEBUG_INFO = YES;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = Pods_Bluejay;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Debug;
-		};
-		B7324857C38B065FEB1EEE3105C2367A /* Release */ = {
+		B42B54097A876E8A982CBF5DAA91B1AB /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
@@ -537,63 +511,98 @@
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_ALLOWED = NO;
 				CODE_SIGNING_REQUIRED = NO;
-				COPY_PHASE_STRIP = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"POD_CONFIGURATION_RELEASE=1",
 					"$(inherited)",
 				);
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				PROVISIONING_PROFILE_SPECIFIER = NO_SIGNING/;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRIP_INSTALLED_PRODUCT = NO;
 				SYMROOT = "${SRCROOT}/../build";
-				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
 		};
-		D750551A82A4030AA735D04BFB113522 /* Debug */ = {
+		CA7EA5321D66B24190B983ED59A8FBBF /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 91877DB5C1A91D76820F80CC853CC037 /* Pods-BluejayTests.debug.xcconfig */;
+			baseConfigurationReference = 5678569BA1B8C8AF3D46131680F0B444 /* Pods-BluejayTests.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
 				CURRENT_PROJECT_VERSION = 1;
-				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = "Target Support Files/Pods-BluejayTests/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MACH_O_TYPE = staticlib;
 				MODULEMAP_FILE = "Target Support Files/Pods-BluejayTests/Pods-BluejayTests.modulemap";
-				MTL_ENABLE_DEBUG_INFO = YES;
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
 				PODS_ROOT = "$(SRCROOT)";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = Pods_BluejayTests;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		D7FA4E7C20E357247B70C295D4EC8431 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2031F193F785311CD99010915987A980 /* Pods-BluejayTests.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "Target Support Files/Pods-BluejayTests/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-BluejayTests/Pods-BluejayTests.modulemap";
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -602,36 +611,68 @@
 			};
 			name = Debug;
 		};
-		F06A9A4FBC8048BC270F100FE8D48C1D /* Release */ = {
+		DE85841F646EF86CEF0D6E23F7D95171 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5C74BA9CB6B49B8B954C09743C2E2542 /* Pods-Bluejay.release.xcconfig */;
+			baseConfigurationReference = 45D058716518A9C149FF05B639B9C0C2 /* Pods-BluejayDemo.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
 				CURRENT_PROJECT_VERSION = 1;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_NO_COMMON_BLOCKS = YES;
-				INFOPLIST_FILE = "Target Support Files/Pods-Bluejay/Info.plist";
+				INFOPLIST_FILE = "Target Support Files/Pods-BluejayDemo/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MACH_O_TYPE = staticlib;
-				MODULEMAP_FILE = "Target Support Files/Pods-Bluejay/Pods-Bluejay.modulemap";
-				MTL_ENABLE_DEBUG_INFO = NO;
+				MODULEMAP_FILE = "Target Support Files/Pods-BluejayDemo/Pods-BluejayDemo.modulemap";
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
 				PODS_ROOT = "$(SRCROOT)";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = Pods_Bluejay;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		FB8854E856A95992E2C7EFB405B4E279 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = EA12E35C9A00C70352B6652466F5EF69 /* Pods-BluejayDemo.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "Target Support Files/Pods-BluejayDemo/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-BluejayDemo/Pods-BluejayDemo.modulemap";
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -643,8 +684,8 @@
 		1B4392F5D2511AC3F4DD2189945193DF /* Build configuration list for PBXNativeTarget "Pods-Bluejay" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				AFA04B1CA32A7738B91DCD3AAC70D97A /* Debug */,
-				F06A9A4FBC8048BC270F100FE8D48C1D /* Release */,
+				37ADAA093D6DBBAA30F0D6354FB955B7 /* Debug */,
+				91EEB5B87B53CB60AB96FF95B487BAC1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -652,8 +693,8 @@
 		2D8E8EC45A3A1A1D94AE762CB5028504 /* Build configuration list for PBXProject "Pods" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				59B042A655B7C20CBAB90E385BF4E4C7 /* Debug */,
-				B7324857C38B065FEB1EEE3105C2367A /* Release */,
+				8B33C5230DE4A9DFA6D8F46505DD7AF7 /* Debug */,
+				B42B54097A876E8A982CBF5DAA91B1AB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -661,17 +702,17 @@
 		426577985B8158C87A0475EB994A15AF /* Build configuration list for PBXNativeTarget "Pods-BluejayDemo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				7177430F8EAB33908CEB74B40F1917F6 /* Debug */,
-				7478A4A737AA8A19D258AC42B915BC22 /* Release */,
+				DE85841F646EF86CEF0D6E23F7D95171 /* Debug */,
+				FB8854E856A95992E2C7EFB405B4E279 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		AAE2C3DB021EA4F7DC32EAACD5DD4854 /* Build configuration list for PBXNativeTarget "Pods-BluejayTests" */ = {
+		5B43BD77CD1A5DBB027C3EA40CE8B11D /* Build configuration list for PBXNativeTarget "Pods-BluejayTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				D750551A82A4030AA735D04BFB113522 /* Debug */,
-				584C6ADD6EAEC37A8EE63F9FEF4813FA /* Release */,
+				D7FA4E7C20E357247B70C295D4EC8431 /* Debug */,
+				CA7EA5321D66B24190B983ED59A8FBBF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
