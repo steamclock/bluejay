@@ -12,13 +12,13 @@ import Foundation
  Defines the possible states of a Queueable.
  */
 enum QueueableState {
-    
+
     case notStarted
     case running
     case stopping(Error)
     case failed(Error)
     case completed
-    
+
     var isFinished: Bool {
         switch self {
         case .failed, .completed:
@@ -27,7 +27,7 @@ enum QueueableState {
             return false
         }
     }
-    
+
     var description: String {
         switch self {
         case .notStarted:
@@ -42,5 +42,5 @@ enum QueueableState {
             return "Completed"
         }
     }
-    
+
 }

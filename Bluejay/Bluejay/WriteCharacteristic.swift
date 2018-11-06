@@ -11,38 +11,38 @@ import CoreBluetooth
 
 /// A write operation.
 class WriteCharacteristic<T: Sendable>: Operation {
-    
+
     /// The queue this operation belongs to.
     var queue: Queue?
-    
+
     /// The state of this operation.
     var state: QueueableState
-    
+
     /// The peripheral this operation is for.
     var peripheral: CBPeripheral
-    
+
     /// The characteristic to write to.
     var characteristicIdentifier: CharacteristicIdentifier
-    
+
     /// The value to write.
     var value: T
-    
+
     // Type of write
     var type: CBCharacteristicWriteType
-    
+
     /// Callback for the write attempt.
     private var callback: ((WriteResult) -> Void)?
-    
+
     init(characteristicIdentifier: CharacteristicIdentifier, peripheral: CBPeripheral, value: T, type: CBCharacteristicWriteType = .withResponse, callback: @escaping (WriteResult) -> Void) {
         self.state = .notStarted
-        
+
         self.characteristicIdentifier = characteristicIdentifier
         self.peripheral = peripheral
         self.value = value
         self.type = type
         self.callback = callback
     }
-    
+
     func start() {
         guard
             let service = peripheral.service(with: characteristicIdentifier.service.uuid),
@@ -51,47 +51,46 @@ class WriteCharacteristic<T: Sendable>: Operation {
             fail(BluejayError.missingCharacteristic(characteristicIdentifier))
             return
         }
-        
+
         state = .running
-        
+
         peripheral.writeValue(value.toBluetoothData(), for: characteristic, type: type)
-        
+
         log("Started write to \(characteristicIdentifier.uuid) on \(peripheral.identifier).")
-        
+
         if type == .withoutResponse {
             process(event: .didWriteCharacteristic(characteristic))
         }
     }
-    
+
     func process(event: Event) {
         if case .didWriteCharacteristic(let wroteTo) = event {
             if wroteTo.uuid != characteristicIdentifier.uuid {
                 preconditionFailure("Expecting write to charactersitic: \(characteristicIdentifier.uuid), but actually wrote to: \(wroteTo.uuid)")
             }
-            
+
             state = .completed
-            
+
             log("Write to \(characteristicIdentifier.uuid) on \(peripheral.identifier) is successful.")
-            
+
             callback?(.success)
             callback = nil
-            
+
             updateQueue()
-        }
-        else {
+        } else {
             preconditionFailure("Expecting write to characteristic: \(characteristicIdentifier.uuid), but received event: \(event)")
         }
     }
-            
+
     func fail(_ error: Error) {
         state = .failed(error)
-        
+
         log("Failed writing to \(characteristicIdentifier.uuid) on \(peripheral.identifier) with error: \(error.localizedDescription)")
 
         callback?(.failure(error))
         callback = nil
-        
+
         updateQueue()
     }
-    
+
 }

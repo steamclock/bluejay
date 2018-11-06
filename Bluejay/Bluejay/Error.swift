@@ -120,7 +120,7 @@ extension BluejayError: LocalizedError {
 }
 
 extension BluejayError: CustomNSError {
-    
+
     public static var errorDomain: String {
         return "Bluejay"
     }
@@ -155,7 +155,7 @@ extension BluejayError: CustomNSError {
         }
     }
 
-    public var errorUserInfo: [String : Any] {
+    public var errorUserInfo: [String: Any] {
         guard let errorDescription = errorDescription else {
             return [:]
         }

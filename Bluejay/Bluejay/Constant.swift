@@ -9,7 +9,7 @@
 import Foundation
 
 struct Constant {
-    
+
     static let listenCaches = "com.steamclock.bluejay.listenCaches"
-    
+
 }

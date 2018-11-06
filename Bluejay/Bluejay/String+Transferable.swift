@@ -10,15 +10,15 @@ import Foundation
 
 /// Make String Sendable and Receivable.
 extension String {
-    
+
     public init(bluetoothData: Data) {
         self = String(data: bluetoothData, encoding: .utf8)!
     }
-    
+
     public func toBluetoothData() -> Data {
         return self.data(using: .utf8)!
     }
-    
+
 }
 
 extension String: Sendable, Receivable {}

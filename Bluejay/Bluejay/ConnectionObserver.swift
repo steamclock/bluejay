@@ -21,13 +21,13 @@ import Foundation
     * `func disconnected(from peripheral: Peripheral)`
 */
 public protocol ConnectionObserver: class {
-    
+
     /// Called whenever Bluetooth availability changes, as well as when an object first subscribes to become a ConnectionObserver.
     func bluetoothAvailable(_ available: Bool)
-    
+
     /// Called whenever a peripheral is connected, as well as when an object first subscribes to become a ConnectionObserver and the peripheral is already connected.
     func connected(to peripheral: Peripheral)
-    
+
     /// Called whenever a peripheral is disconnected.
     func disconnected(from peripheral: Peripheral)
 }

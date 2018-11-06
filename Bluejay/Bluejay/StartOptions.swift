@@ -15,13 +15,13 @@ public struct StartOptions {
     var enableBluetoothAlert: Bool
     /// Enable or disable state restoration.
     var backgroundRestore: BackgroundRestoreMode
-    
+
     /// Public initializer.
     public init(enableBluetoothAlert: Bool, backgroundRestore: BackgroundRestoreMode) {
         self.enableBluetoothAlert = enableBluetoothAlert
         self.backgroundRestore = backgroundRestore
     }
-    
+
     /// Convenience factory method to avoid having to use the public initializer.
     public static var `default`: StartOptions {
         return StartOptions(enableBluetoothAlert: false, backgroundRestore: .disable)

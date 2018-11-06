@@ -11,19 +11,19 @@ import CoreBluetooth
 
 /// A wrapper for CBUUID specific to a characteristic to help distinguish it from a CBUUID of a service.
 public struct CharacteristicIdentifier {
-    
+
     /// The service this characteristic belongs to.
     public let service: ServiceIdentifier
-    
+
     /// The `CBUUID` of this characteristic.
     public let uuid: CBUUID
-    
+
     /// Create a `CharacteristicIdentifier` using a `CBCharacterstic`.
     public init(_ cbCharacteristic: CBCharacteristic) {
         self.service = ServiceIdentifier(uuid: cbCharacteristic.service.uuid)
         self.uuid = cbCharacteristic.uuid
     }
-    
+
     /**
      * Create a `CharacteristicIdentifier` using a string and a `ServiceIdentifier`. Please supply a valid 128-bit UUID, or a valid 16 or 32-bit commonly used UUID.
      *
@@ -33,13 +33,13 @@ public struct CharacteristicIdentifier {
         self.uuid = CBUUID(string: uuid)
         self.service = service
     }
-    
+
     /// Create a `CharacteristicIdentifier` using a `CBUUID` and a `ServiceIdentifier`.
     public init(uuid: CBUUID, service: ServiceIdentifier) {
         self.uuid = uuid
         self.service = service
     }
-    
+
     /// Check equality between a `CharacteristicIdentifier` and a `CBCharacterstic`.
     public static func == (lhs: CharacteristicIdentifier, rhs: CBCharacteristic) -> Bool {
         return (lhs.uuid == rhs.uuid) && (lhs.service.uuid == rhs.service.uuid)

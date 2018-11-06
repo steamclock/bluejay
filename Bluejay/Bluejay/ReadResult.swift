@@ -17,7 +17,7 @@ public enum ReadResult<R> {
 }
 
 extension ReadResult where R: Receivable {
-    
+
     /// Create a typed read result from raw data.
     init(dataResult: ReadResult<Data?>) {
         switch dataResult {
@@ -25,17 +25,15 @@ extension ReadResult where R: Receivable {
             if let data = data {
                 do {
                     self = .success(try R(bluetoothData: data))
-                }
-                catch {
+                } catch {
                     self = .failure(error)
                 }
-            }
-            else {
+            } else {
                 self = .failure(BluejayError.missingData)
             }
         case .failure(let error):
             self = .failure(error)
         }
     }
-    
+
 }

@@ -11,7 +11,7 @@ import CoreBluetooth
 
 @available(iOS 10.0, *)
 extension CBManagerState {
-    
+
     /// Returns the name of a `CBManagerState` as a string.
     public func string() -> String {
         switch self {
@@ -23,5 +23,5 @@ extension CBManagerState {
         case .unsupported: return "Unsupported"
         }
     }
-    
+
 }
