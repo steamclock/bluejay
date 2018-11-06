@@ -88,9 +88,7 @@ class ListenCharacteristic: Operation {
             updateQueue()
         }
         else {
-            preconditionFailure(
-                "Expecting notification state update to charactersitic: \(characteristicIdentifier.uuid), but received event: \(event)"
-            )
+            log("Expecting notification state update to charactersitic: \(characteristicIdentifier.uuid), but received event: \(event)")
         }
     }
     
