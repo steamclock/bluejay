@@ -60,7 +60,7 @@ class ScanEverythingViewController: UITableViewController {
 
                 return .continue
             },
-            completed: { (_, error) in
+            stopped: { (_, error) in
                 if let error = error {
                     debugPrint("Scan stopped with error: \(error.localizedDescription)")
                 } else {
