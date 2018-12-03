@@ -60,6 +60,7 @@ public class Bluejay: NSObject { //swiftlint:disable:this type_body_length
     /// The value for CBCentralManagerOptionRestoreIdentifierKey.
     var restoreIdentifier: RestoreIdentifier?
 
+    /// The delegate responsible for handling background restoration results.
     weak var backgroundRestorer: BackgroundRestorer?
 
     /// Reference to the object capable of restoring listens during state restoration.

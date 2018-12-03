@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>CBPeripheral Extension Reference</title>
+    <title>BackgroundRestorer Protocol Reference</title>
     <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
     <meta charset='utf-8'>
@@ -10,8 +10,8 @@
     
   </head>
   <body>
-    <a name="//apple_ref/swift/Extension/CBPeripheral" class="dashAnchor"></a>
-    <a title="CBPeripheral Extension Reference"></a>
+    <a name="//apple_ref/swift/Protocol/BackgroundRestorer" class="dashAnchor"></a>
+    <a title="BackgroundRestorer Protocol Reference"></a>
     <header>
       <div class="content-wrapper">
         <p><a href="../index.html">Bluejay Docs</a> (100% documented)</p>
@@ -22,7 +22,7 @@
       <p id="breadcrumbs">
         <a href="../index.html">Bluejay Reference</a>
         <img id="carat" src="../img/carat.png" />
-        CBPeripheral Extension Reference
+        BackgroundRestorer Protocol Reference
       </p>
     </div>
     <div class="content-wrapper">
@@ -177,14 +177,15 @@
       <article class="main-content">
         <section>
           <section class="section">
-            <h1>CBPeripheral</h1>
+            <h1>BackgroundRestorer</h1>
               <div class="declaration">
                 <div class="language">
-                  <pre class="highlight swift"><code><span class="kd">class</span> <span class="kt">CBPeripheral</span> <span class="p">:</span> <span class="kt">CBPeer</span></code></pre>
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">BackgroundRestorer</span> <span class="p">:</span> <span class="kt">AnyObject</span></code></pre>
 
                 </div>
               </div>
-            
+            <p>Protocols for handling the results of a background restoration.</p>
+
           </section>
           <section class="section task-group-section">
             <div class="task-group">
@@ -192,9 +193,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:So12CBPeripheralC7BluejayE7service4withSo9CBServiceCSgSo6CBUUIDC_tF"></a>
-                    <a name="//apple_ref/swift/Method/service(with:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:So12CBPeripheralC7BluejayE7service4withSo9CBServiceCSgSo6CBUUIDC_tF">service(with:)</a>
+                    <a name="/s:7Bluejay18BackgroundRestorerP20didRestoreConnection2toyycAA10PeripheralC_tF"></a>
+                    <a name="//apple_ref/swift/Method/didRestoreConnection(to:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Bluejay18BackgroundRestorerP20didRestoreConnection2toyycAA10PeripheralC_tF">didRestoreConnection(to:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -202,14 +203,41 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Find a service on a peripheral by CBUUID.</p>
+                        <p>Bluejay was able to restore a connection.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">service</span><span class="p">(</span><span class="n">with</span> <span class="nv">uuid</span><span class="p">:</span> <span class="kt">CBUUID</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">CBService</span><span class="p">?</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">didRestoreConnection</span><span class="p">(</span><span class="n">to</span> <span class="nv">peripheral</span><span class="p">:</span> <span class="kt"><a href="../Classes/Peripheral.html">Peripheral</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Typealiases.html#/s:7Bluejay27BackgroundRestoreCompletiona">BackgroundRestoreCompletion</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7Bluejay18BackgroundRestorerP26didFailToRestoreConnection2to5erroryycAA10PeripheralC_s5Error_ptF"></a>
+                    <a name="//apple_ref/swift/Method/didFailToRestoreConnection(to:error:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Bluejay18BackgroundRestorerP26didFailToRestoreConnection2to5erroryycAA10PeripheralC_s5Error_ptF">didFailToRestoreConnection(to:error:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Bluejay failed to restore a connection.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">didFailToRestoreConnection</span><span class="p">(</span><span class="n">to</span> <span class="nv">peripheral</span><span class="p">:</span> <span class="kt"><a href="../Classes/Peripheral.html">Peripheral</a></span><span class="p">,</span> <span class="nv">error</span><span class="p">:</span> <span class="kt">Error</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Typealiases.html#/s:7Bluejay27BackgroundRestoreCompletiona">BackgroundRestoreCompletion</a></span></code></pre>
 
                         </div>
                       </div>

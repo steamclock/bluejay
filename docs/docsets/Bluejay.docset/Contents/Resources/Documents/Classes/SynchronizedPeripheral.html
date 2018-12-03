@@ -113,6 +113,9 @@
             <a href="../Protocols.html">Protocols</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
+                <a href="../Protocols/BackgroundRestorer.html">BackgroundRestorer</a>
+              </li>
+              <li class="nav-group-task">
                 <a href="../Protocols/ConnectionObserver.html">ConnectionObserver</a>
               </li>
               <li class="nav-group-task">
@@ -161,6 +164,9 @@
           <li class="nav-group-name">
             <a href="../Typealiases.html">Type Aliases</a>
             <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:7Bluejay27BackgroundRestoreCompletiona">BackgroundRestoreCompletion</a>
+              </li>
               <li class="nav-group-task">
                 <a href="../Typealiases.html#/s:7Bluejay17RestoreIdentifiera">RestoreIdentifier</a>
               </li>
@@ -265,7 +271,10 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">writeAndRead</span><span class="o">&lt;</span><span class="kt">R</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Receivable.html">Receivable</a></span><span class="p">,</span> <span class="kt">S</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Sendable.html">Sendable</a></span><span class="o">&gt;</span> <span class="p">(</span><span class="nv">writeTo</span><span class="p">:</span> <span class="kt"><a href="../Structs/CharacteristicIdentifier.html">CharacteristicIdentifier</a></span><span class="p">,</span> <span class="nv">value</span><span class="p">:</span> <span class="kt">S</span><span class="p">,</span> <span class="nv">type</span><span class="p">:</span> <span class="kt">CBCharacteristicWriteType</span> <span class="o">=</span> <span class="o">.</span><span class="n">withResponse</span><span class="p">,</span> <span class="nv">readFrom</span><span class="p">:</span> <span class="kt"><a href="../Structs/CharacteristicIdentifier.html">CharacteristicIdentifier</a></span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">R</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">writeAndRead</span><span class="o">&lt;</span><span class="kt">R</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Receivable.html">Receivable</a></span><span class="p">,</span> <span class="kt">S</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Sendable.html">Sendable</a></span><span class="o">&gt;</span> <span class="p">(</span>
+    <span class="nv">writeTo</span><span class="p">:</span> <span class="kt"><a href="../Structs/CharacteristicIdentifier.html">CharacteristicIdentifier</a></span><span class="p">,</span>
+    <span class="nv">value</span><span class="p">:</span> <span class="kt">S</span><span class="p">,</span> <span class="nv">type</span><span class="p">:</span> <span class="kt">CBCharacteristicWriteType</span> <span class="o">=</span> <span class="o">.</span><span class="n">withResponse</span><span class="p">,</span>
+    <span class="nv">readFrom</span><span class="p">:</span> <span class="kt"><a href="../Structs/CharacteristicIdentifier.html">CharacteristicIdentifier</a></span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">R</span></code></pre>
 
                         </div>
                       </div>
@@ -292,7 +301,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">listen</span><span class="o">&lt;</span><span class="kt">R</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Receivable.html">Receivable</a></span><span class="o">&gt;</span><span class="p">(</span>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">listen</span><span class="o">&lt;</span><span class="kt">R</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Receivable.html">Receivable</a></span><span class="o">&gt;</span><span class="p">(</span> <span class="c1">// swiftlint:disable:this cyclomatic_complexity</span>
     <span class="n">to</span> <span class="nv">characteristicIdentifier</span><span class="p">:</span> <span class="kt"><a href="../Structs/CharacteristicIdentifier.html">CharacteristicIdentifier</a></span><span class="p">,</span>
     <span class="nv">timeout</span><span class="p">:</span> <span class="kt"><a href="../Enums/Timeout.html">Timeout</a></span> <span class="o">=</span> <span class="o">.</span><span class="k">none</span><span class="p">,</span>
     <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">R</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Enums/ListenAction.html">ListenAction</a></span><span class="p">)</span> <span class="k">throws</span></code></pre>
@@ -423,7 +432,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">writeAndListen</span><span class="o">&lt;</span><span class="kt">S</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Sendable.html">Sendable</a></span><span class="p">,</span> <span class="kt">R</span><span class="p">:</span><span class="kt"><a href="../Protocols/Receivable.html">Receivable</a></span><span class="o">&gt;</span><span class="p">(</span>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">writeAndListen</span><span class="o">&lt;</span><span class="kt">S</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Sendable.html">Sendable</a></span><span class="p">,</span> <span class="kt">R</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Receivable.html">Receivable</a></span><span class="o">&gt;</span><span class="p">(</span> <span class="c1">// swiftlint:disable:this cyclomatic_complexity</span>
     <span class="n">writeTo</span> <span class="nv">charToWriteTo</span><span class="p">:</span> <span class="kt"><a href="../Structs/CharacteristicIdentifier.html">CharacteristicIdentifier</a></span><span class="p">,</span>
     <span class="nv">value</span><span class="p">:</span> <span class="kt">S</span><span class="p">,</span>
     <span class="nv">type</span><span class="p">:</span> <span class="kt">CBCharacteristicWriteType</span> <span class="o">=</span> <span class="o">.</span><span class="n">withResponse</span><span class="p">,</span>
@@ -456,7 +465,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">writeAndAssemble</span><span class="o">&lt;</span><span class="kt">S</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Sendable.html">Sendable</a></span><span class="p">,</span> <span class="kt">R</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Receivable.html">Receivable</a></span><span class="o">&gt;</span><span class="p">(</span>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">writeAndAssemble</span><span class="o">&lt;</span><span class="kt">S</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Sendable.html">Sendable</a></span><span class="p">,</span> <span class="kt">R</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Receivable.html">Receivable</a></span><span class="o">&gt;</span><span class="p">(</span> <span class="c1">// swiftlint:disable:this cyclomatic_complexity</span>
     <span class="n">writeTo</span> <span class="nv">charToWriteTo</span><span class="p">:</span> <span class="kt"><a href="../Structs/CharacteristicIdentifier.html">CharacteristicIdentifier</a></span><span class="p">,</span>
     <span class="nv">value</span><span class="p">:</span> <span class="kt">S</span><span class="p">,</span>
     <span class="n">listenTo</span> <span class="nv">charToListenTo</span><span class="p">:</span> <span class="kt"><a href="../Structs/CharacteristicIdentifier.html">CharacteristicIdentifier</a></span><span class="p">,</span>
