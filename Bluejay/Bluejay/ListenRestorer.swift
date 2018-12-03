@@ -24,8 +24,3 @@ public protocol ListenRestorer: class {
     */
     func willRestoreListen(on characteristic: CharacteristicIdentifier) -> Bool
 }
-
-/// Allows creating a weak reference to a ListenRestorable object, so that the Bluejay instance does not prevent the deallocation of the delegate.
-struct WeakListenRestorer {
-    weak var weakReference: ListenRestorer?
-}

@@ -17,13 +17,13 @@ public enum BackgroundRestoreMode {
      
      - Note: Please provide a unique restore identifier for CoreBluetooth. See [Apple documentation](https://developer.apple.com/reference/corebluetooth/cbcentralmanageroptionrestoreidentifierkey) for more details.
     */
-    case enable(RestoreIdentifier)
+    case enable(RestoreIdentifier, BackgroundRestorer)
     /**
      Bluejay will receive state restoration callbacks from CoreBluetooth **and** attempt to restore listens when necessary using the provided listen restorer.
      
      - Note: Please provide a unique restore identifier for CoreBluetooth. See [Apple documentation](https://developer.apple.com/reference/corebluetooth/cbcentralmanageroptionrestoreidentifierkey) for more details.
      */
-    case enableWithListenRestorer(RestoreIdentifier, ListenRestorer)
+    case enableWithListenRestorer(RestoreIdentifier, BackgroundRestorer, ListenRestorer)
 }
 
 /// An alias to make it clearer that the string should be some kind of identifier for restoration, and not just any arbitrary string.

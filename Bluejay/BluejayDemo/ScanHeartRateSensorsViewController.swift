@@ -28,7 +28,10 @@ class ScanHeartRateSensorsViewController: UITableViewController {
 
         clearsSelectionOnViewWillAppear = true
 
-        let startOptions = StartOptions(enableBluetoothAlert: true, backgroundRestore: .enableWithListenRestorer("com.steamclock.bluejay", self))
+        let startOptions = StartOptions(
+            enableBluetoothAlert: true,
+            backgroundRestore: .enableWithListenRestorer("com.steamclock.bluejay", self, self)
+        )
         bluejay.start(mode: .new(startOptions), connectionObserver: self)
 
         scanHeartSensors()
@@ -117,6 +120,7 @@ class ScanHeartRateSensorsViewController: UITableViewController {
         let peripheral = peripherals[indexPath.row]
 
         let peripheralIdentifier = peripherals[indexPath.row].peripheralIdentifier
+        selectedPeripheralIdentifier = peripheralIdentifier
 
         bluejay.connect(peripheralIdentifier, timeout: .none) { [weak self] (result) in
             switch result {
@@ -126,8 +130,6 @@ class ScanHeartRateSensorsViewController: UITableViewController {
                 guard let weakSelf = self else {
                     return
                 }
-
-                weakSelf.selectedPeripheralIdentifier = peripheralIdentifier
 
                 weakSelf.performSegue(withIdentifier: "showHeartSensor", sender: self)
             case .failure(let error):
@@ -149,7 +151,7 @@ extension ScanHeartRateSensorsViewController: ConnectionObserver {
     func bluetoothAvailable(_ available: Bool) {
         debugPrint("Bluetooth available: \(available)")
 
-        if available && !bluejay.isScanning {
+        if available && !bluejay.isScanning && navigationController?.topViewController == self {
             scanHeartSensors()
         }
     }
@@ -168,6 +170,30 @@ extension ScanHeartRateSensorsViewController: ListenRestorer {
 
     func willRestoreListen(on characteristic: CharacteristicIdentifier) -> Bool {
         return false
+    }
+
+}
+
+extension ScanHeartRateSensorsViewController: BackgroundRestorer {
+    func didRestoreConnection(to peripheral: Peripheral) -> BackgroundRestoreCompletion {
+        return { [weak self] in
+            guard let weakSelf = self else {
+                return
+            }
+
+            weakSelf.selectedPeripheralIdentifier = peripheral.uuid
+            weakSelf.performSegue(withIdentifier: "showHeartSensor", sender: self)
+        }
+    }
+
+    func didFailToRestoreConnection(to peripheral: Peripheral, error: Error) -> BackgroundRestoreCompletion {
+        return { [weak self] in
+            guard let weakSelf = self else {
+                return
+            }
+
+            weakSelf.scanHeartSensors()
+        }
     }
 
 }

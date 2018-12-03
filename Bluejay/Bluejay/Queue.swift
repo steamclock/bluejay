@@ -86,7 +86,7 @@ class Queue {
                 queueable.fail(BluejayError.multipleScanNotSupported)
             }
         } else if queueable is Connection {
-            if bluejay.isConnecting || bluejay.isConnected {
+            if bluejay.isConnecting || bluejay.isConnected || multipleConnectionsQueued {
                 queueable.fail(BluejayError.multipleConnectNotSupported)
                 return
             }
@@ -126,14 +126,18 @@ class Queue {
             }
         }
 
-        if !queue.isEmpty {
-            preconditionFailure("Queue is not emptied at the end of cancel all.")
+        if isCBCentralManagerReady {
+            precondition(queue.isEmpty, "Queue is active and is not emptied at the end of cancel all.")
+        } else {
+            precondition(!queue.contains(where: { (queueable) -> Bool in
+                return !queueable.state.isFinished
+            }), "Queue is inactive but still contains unfinished queueable(s) at the end of cancel all.")
         }
     }
 
     func stopScanning(error: Error? = nil) {
-        guard isScanning, let scan = scan else {
-            log("Stop scanning requested but Bluejay is not scanning.")
+        guard let scan = scan else {
+            log("Stop scanning requested but no scan is found in the queue.")
             return
         }
 
@@ -170,6 +174,7 @@ class Queue {
                 }
 
                 queue.removeFirst()
+                log("Queue has removed \(queueable) because it has finished.")
 
                 if cancel {
                     log("Queue update will clear remaining operations in the queue.")
@@ -196,6 +201,7 @@ class Queue {
                         bluejay.willConnect(to: connection.peripheral)
                     }
 
+                    log("Queue will start \(queueable)...")
                     queueable.start()
                 }
             } else {
@@ -227,6 +233,27 @@ class Queue {
 
     var isScanning: Bool {
         return scan != nil
+    }
+
+    var isReading: Bool = false
+
+    func willEndListen(on characteristic: CharacteristicIdentifier) -> Bool {
+        return queue.contains(where: { (queueable) -> Bool in
+            if let
+                endListen = queueable as? ListenCharacteristic,
+                endListen.characteristicIdentifier == characteristic,
+                endListen.value == false {
+                return true
+            } else {
+                return false
+            }
+        })
+    }
+
+    var multipleConnectionsQueued: Bool {
+        return queue.filter({ (queueable) -> Bool in
+            return queueable is Connection
+        }).count > 1
     }
 
     var isDisconnectionQueued: Bool {

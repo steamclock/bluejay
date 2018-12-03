@@ -26,6 +26,8 @@ public class Bluejay: NSObject { //swiftlint:disable:this type_body_length
 
     private weak var disconnectHandler: DisconnectHandler?
 
+    private var connectingPeripheralAtRestoration: Peripheral?
+
     /// Reference to a peripheral that is still connecting. If this is nil, then the peripheral should either be disconnected or connected. This is used to help determine the state of the peripheral's connection.
     private var connectingPeripheral: Peripheral?
 
@@ -34,9 +36,6 @@ public class Bluejay: NSObject { //swiftlint:disable:this type_body_length
 
     /// Reference to the background task used for supporting state restoration.
     private var startupBackgroundTask: UIBackgroundTaskIdentifier = UIBackgroundTaskInvalid
-
-    /// Reference to the peripheral identifier used for supporting state restoration.
-    private var peripheralIdentifierToRestore: PeripheralIdentifier?
 
     /// Determines whether state restoration is allowed.
     private var shouldRestoreState = false
@@ -61,8 +60,10 @@ public class Bluejay: NSObject { //swiftlint:disable:this type_body_length
     /// The value for CBCentralManagerOptionRestoreIdentifierKey.
     var restoreIdentifier: RestoreIdentifier?
 
+    weak var backgroundRestorer: BackgroundRestorer?
+
     /// Reference to the object capable of restoring listens during state restoration.
-    var listenRestorer: WeakListenRestorer?
+    weak var listenRestorer: ListenRestorer?
 
     /// The previous connection timeout used.
     var previousConnectionTimeout: Timeout?
@@ -181,26 +182,28 @@ public class Bluejay: NSObject { //swiftlint:disable:this type_body_length
                 registerDisconnectHandler(handler: handler)
             }
 
-            var centralManagerOptions: [String: Any] = [CBCentralManagerOptionShowPowerAlertKey: startOptions.enableBluetoothAlert]
+            var managerOptions: [String: Any] = [CBCentralManagerOptionShowPowerAlertKey: startOptions.enableBluetoothAlert]
 
             switch startOptions.backgroundRestore {
             case .disable:
                 break
-            case .enable(let restoreID):
+            case .enable(let restoreID, let bgRestorer):
                 checkBackgroundSupportForBluetooth()
                 restoreIdentifier = restoreID
-                centralManagerOptions[CBCentralManagerOptionRestoreIdentifierKey] = restoreIdentifier
-            case .enableWithListenRestorer(let restoreID, let restorer):
+                backgroundRestorer = bgRestorer
+                managerOptions[CBCentralManagerOptionRestoreIdentifierKey] = restoreIdentifier
+            case .enableWithListenRestorer(let restoreID, let bgRestorer, let liRestorer):
                 checkBackgroundSupportForBluetooth()
                 restoreIdentifier = restoreID
-                listenRestorer = WeakListenRestorer(weakReference: restorer)
-                centralManagerOptions[CBCentralManagerOptionRestoreIdentifierKey] = restoreIdentifier
+                backgroundRestorer = bgRestorer
+                listenRestorer = liRestorer
+                managerOptions[CBCentralManagerOptionRestoreIdentifierKey] = restoreIdentifier
             }
 
             cbCentralManager = CBCentralManager(
                 delegate: self,
                 queue: .main,
-                options: centralManagerOptions
+                options: managerOptions
             )
         case .use(let manager, let peripheral):
             cbCentralManager = manager
@@ -272,6 +275,8 @@ public class Bluejay: NSObject { //swiftlint:disable:this type_body_length
 
             isDisconnecting = true
             shouldAutoReconnect = false
+
+            log("Should auto-reconnect: \(shouldAutoReconnect)")
         }
 
         queue.cancelAll(error: error)
@@ -281,6 +286,8 @@ public class Bluejay: NSObject { //swiftlint:disable:this type_body_length
 
             isDisconnecting = true
             shouldAutoReconnect = false
+
+            log("Should auto-reconnect: \(shouldAutoReconnect)")
 
             cbCentralManager.cancelPeripheralConnection(connectedPeripheral!.cbPeripheral)
         }
@@ -402,7 +409,7 @@ public class Bluejay: NSObject { //swiftlint:disable:this type_body_length
         queue.add(scanOperation)
     }
 
-    /// Stops an ongoing scan if there is one, otherwise it does nothing.
+    /// Stops current or queued scan.
     public func stopScanning() {
         if isRunningBackgroundTask {
             // Terminate the app if this is called from the same thread as the running background task.
@@ -444,13 +451,6 @@ public class Bluejay: NSObject { //swiftlint:disable:this type_body_length
                 // Fallback on earlier versions
             }
             completion(.failure(BluejayError.backgroundTaskRunning))
-            return
-        }
-
-        // Block a connect request when restoring, restore should result in the peripheral being automatically connected.
-        if shouldRestoreState {
-            // Cache requested connect, in case restore messes up unexpectedly.
-            peripheralIdentifierToRestore = peripheralIdentifier
             return
         }
 
@@ -894,36 +894,105 @@ extension Bluejay: CBCentralManagerDelegate {
             log("CBCentralManager state updated: \(central.state)")
         }
 
-        if central.state == .poweredOn {
-            queue.start()
-        }
+        let updateStateCompletion = {
+            switch central.state {
+            case .poweredOn:
+                if let connectingPeripheralAtRestoration = self.connectingPeripheralAtRestoration {
+                    guard let backgroundRestorer = self.backgroundRestorer else {
+                        fatalError("No background restorer found during state restoration.")
+                    }
 
-        if central.state == .poweredOn && connectedPeripheral != nil {
-            do {
-                try requestListenRestoration()
-            } catch {
-                log("Failed to complete listen restoration with error: \(error)")
+                    self.connect(connectingPeripheralAtRestoration.uuid, timeout: .seconds(15), completion: { (result) in
+                        switch result {
+                        case .success(let peripheral):
+                            log("Did restore connection to peripheral: \(peripheral.name)")
+
+                            let completion = backgroundRestorer.didRestoreConnection(to: peripheral)
+                            completion()
+                        case .failure(let error):
+                            log("Did fail to to restore connection with error: \(error.localizedDescription)")
+
+                            let completion = backgroundRestorer.didFailToRestoreConnection(
+                                to: connectingPeripheralAtRestoration,
+                                error: error
+                            )
+                            completion()
+                        }
+                    })
+
+                    // We don't broadcast the Bluetooth available event here because it is important to distinguish the difference between Bluetooth becoming available from normal usage versue Bluetooth becoming available due to a background restoration.
+                } else if let connectedPeripheral = self.connectedPeripheral {
+                    guard let backgroundRestorer = self.backgroundRestorer else {
+                        fatalError("No background restorer found during state restoration.")
+                    }
+
+                    log("Did restore connection to peripheral: \(connectedPeripheral.name)")
+
+                    let completion = backgroundRestorer.didRestoreConnection(to: connectedPeripheral)
+                    completion()
+
+                    // We don't broadcast the Bluetooth available event here because it is important to distinguish the difference between Bluetooth becoming available from normal usage versue Bluetooth becoming available due to a background restoration.
+                } else {
+                    for observer in self.observers {
+                        observer.weakReference?.bluetoothAvailable(true)
+                    }
+                }
+            default:
+                self.cancelEverything(error: BluejayError.bluetoothUnavailable)
+
+                self.connectingPeripheral = nil
+                self.connectedPeripheral = nil
+
+                for observer in self.observers {
+                    observer.weakReference?.bluetoothAvailable(false)
+                }
             }
+
+            UIApplication.shared.endBackgroundTask(backgroundTask)
         }
 
-        if central.state == .poweredOff {
-            cancelEverything(error: BluejayError.bluetoothUnavailable)
+        if central.state == .poweredOn {
+            if connectingPeripheralAtRestoration != nil {
+                log("Background restore to a connecting state.")
 
-            connectingPeripheral = nil
-            connectedPeripheral = nil
+                // Clear everything that might be in the queue before completing background restorations.
+                cancelEverything(error: BluejayError.backgroundRestorationInProgress, shouldDisconnect: false)
+
+                // Safe to start the queue once it is emptied to allow background restorations, as well as subsequent user requests to complete.
+                queue.start()
+
+                updateStateCompletion()
+            } else if connectedPeripheral != nil {
+                log("Background restore to a connected state.")
+
+                // Clear everything that might be in the queue before completing background and listen restorations.
+                cancelEverything(error: BluejayError.backgroundRestorationInProgress, shouldDisconnect: false)
+
+                // Safe to start the queue once it is emptied to allow listen and background restorations, as well as subsequent user requests to complete.
+                queue.start()
+
+                do {
+                    try requestListenRestoration(completion: {
+                        updateStateCompletion()
+                    })
+                } catch {
+                    log("Failed to complete listen restoration with error: \(error)")
+                    updateStateCompletion()
+                }
+            } else {
+                // First foreground initialization, or toggling of Bluetooth from iOS Control Center or Settings.
+                queue.start()
+                updateStateCompletion()
+            }
+        } else {
+            updateStateCompletion()
         }
-
-        for observer in observers {
-            observer.weakReference?.bluetoothAvailable(central.state == .poweredOn)
-        }
-
-        UIApplication.shared.endBackgroundTask(backgroundTask)
     }
 
     /**
      Examine the listen cache in `UserDefaults` to determine whether there are any listens that might need restoration.
      */
-    private func requestListenRestoration() throws {
+    private func requestListenRestoration(completion: () -> Void) throws {
         log("Starting listen restoration.")
 
         guard
@@ -932,6 +1001,7 @@ extension Bluejay: CBCentralManagerDelegate {
             let cacheData = listenCaches[restoreIdentifier] as? [Data]
         else {
             log("No listens to restore.")
+            completion()
             return
         }
 
@@ -946,7 +1016,7 @@ extension Bluejay: CBCentralManagerDelegate {
                 let serviceIdentifier = ServiceIdentifier(uuid: listenCache.serviceUUID)
                 let characteristicIdentifier = CharacteristicIdentifier(uuid: listenCache.characteristicUUID, service: serviceIdentifier)
 
-                if let listenRestorer = listenRestorer?.weakReference {
+                if let listenRestorer = listenRestorer {
                     // If true, assume the listen restorable delegate will restore the listen accordingly, otherwise end the listen.
                     if !listenRestorer.willRestoreListen(on: characteristicIdentifier) {
                         endListen(to: characteristicIdentifier)
@@ -960,7 +1030,9 @@ extension Bluejay: CBCentralManagerDelegate {
             }
         }
 
-        log("Listen restoration finished.")
+        log("Listen restoration has queued all necessary end listens as well as restored any provided callbacks.")
+
+        completion()
     }
 
     /**
@@ -971,19 +1043,16 @@ extension Bluejay: CBCentralManagerDelegate {
 
         shouldRestoreState = false
 
-        guard
-            let peripherals = dict[CBCentralManagerRestoredStatePeripheralsKey] as? [CBPeripheral],
-            let cbPeripheral = peripherals.first
-            else {
-                // Weird failure case that seems to happen sometime,
-                // restoring but don't have a device in the restore list
-                // try to trigger a reconnect if we have a stored
-                // peripheral
-                if let id = peripheralIdentifierToRestore {
-                    connect(id, timeout: previousConnectionTimeout ?? .none, completion: { _ in })
-                }
+        defer {
+            if startupBackgroundTask != UIBackgroundTaskInvalid {
+                log("Cancelling startup background task.")
+                UIApplication.shared.endBackgroundTask(startupBackgroundTask)
+            }
+        }
 
-                return
+        guard let peripherals = dict[CBCentralManagerRestoredStatePeripheralsKey] as? [CBPeripheral], let cbPeripheral = peripherals.first else {
+            log("No peripherals found during state restoration.")
+            return
         }
 
         let peripheral = Peripheral(bluejay: self, cbPeripheral: cbPeripheral)
@@ -996,7 +1065,7 @@ extension Bluejay: CBCentralManagerDelegate {
         case .connecting:
             precondition(connectedPeripheral == nil,
                          "Connected peripheral is not nil during willRestoreState for state: connecting.")
-            connect(PeripheralIdentifier(uuid: cbPeripheral.identifier), timeout: .none, completion: { _ in})
+            connectingPeripheralAtRestoration = peripheral
         case .connected:
             precondition(connectingPeripheral == nil,
                          "Connecting peripheral is not nil during willRestoreState for state: connected.")
@@ -1007,13 +1076,6 @@ extension Bluejay: CBCentralManagerDelegate {
         case .disconnected:
             precondition(connectingPeripheral == nil && connectedPeripheral == nil,
                          "Connecting and connected peripherals are not nil during willRestoreState for state: disconnected.")
-        }
-
-        log("State restoration finished.")
-
-        if startupBackgroundTask != UIBackgroundTaskInvalid {
-            log("Cancelling startup background task.")
-            UIApplication.shared.endBackgroundTask(startupBackgroundTask)
         }
     }
 
@@ -1032,8 +1094,13 @@ extension Bluejay: CBCentralManagerDelegate {
 
         precondition(connectedPeripheral != nil, "Connected peripheral is assigned a nil value despite Bluejay has successfully finished a connection.")
 
-        for observer in observers {
-            observer.weakReference?.connected(to: connectedPeripheral!)
+        // Don't broadcast a connected event if state restoration is able to complete the connection of a connecting peripheral, as the user should be using the background restoration delegation in that case.
+        if connectingPeripheralAtRestoration == nil {
+            for observer in observers {
+                observer.weakReference?.connected(to: connectedPeripheral!)
+            }
+        } else {
+            connectingPeripheralAtRestoration = nil
         }
 
         shouldAutoReconnect = true
@@ -1065,32 +1132,42 @@ extension Bluejay: CBCentralManagerDelegate {
             return
         }
 
+        let wasRestoringConnectingPeripheral = connectingPeripheralAtRestoration != nil
         let wasConnecting = isConnecting
         let wasConnected = isConnected
 
-        if wasConnecting {
+        if wasRestoringConnectingPeripheral {
+            log("Peripheral was still connecting during background restoration before disconnect.")
+        } else if wasConnecting {
             log("Peripheral was still connecting before disconnect.")
         } else if wasConnected {
             log("Peripheral was connected before disconnect.")
         }
 
+        connectingPeripheralAtRestoration = nil
         connectingPeripheral = nil
         connectedPeripheral = nil
 
         var isExpectedDisconnect = false
 
-        if !isDisconnecting && !queue.isRunningQueuedDisconnection {
+        if (!isDisconnecting && !queue.isRunningQueuedDisconnection) || wasRestoringConnectingPeripheral {
             log("The disconnect is unexpected.")
+
             isExpectedDisconnect = false
+            shouldAutoReconnect = !wasRestoringConnectingPeripheral
+
+            log("Should auto-reconnect: \(shouldAutoReconnect)")
 
             if wasConnected {
                 cancelEverything(error: BluejayError.notConnected)
             }
         } else {
             log("The disconnect is expected.")
-            isExpectedDisconnect = true
 
+            isExpectedDisconnect = true
             shouldAutoReconnect = false
+
+            log("Should auto-reconnect: \(shouldAutoReconnect)")
         }
 
         disconnectCleanUp = { [weak self] in
@@ -1127,49 +1204,63 @@ extension Bluejay: CBCentralManagerDelegate {
                 precondition(weakSelf.queue.isEmpty, "Queue should be emptied before notifying and invoking all disconnect observers and callbacks.")
             }
 
-            log("Disconnect clean up: notifying all connection observers.")
-            for observer in weakSelf.observers {
-                observer.weakReference?.disconnected(from: disconnectedPeripheral)
-            }
+            if wasRestoringConnectingPeripheral {
+                log("Disconnect clean up: disconnected while restoring a connecting peripheral, will not auto-reconnect.")
 
-            log("Disconnect clean up: should auto-reconnect: \(weakSelf.shouldAutoReconnect)")
-
-            if let disconnectHandler = weakSelf.disconnectHandler {
-                log("Disconnect clean up: calling the disconnect handler.")
-                switch disconnectHandler.didDisconnect(from: disconnectedPeripheral, with: error, willReconnect: weakSelf.shouldAutoReconnect) {
-                case .noChange:
-                    log("Disconnect handler will not change auto-reconnect.")
-                case .change(let autoReconnect):
-                    weakSelf.shouldAutoReconnect = autoReconnect
-                    log("Disconnect handler changing auto-reconnect to: \(weakSelf.shouldAutoReconnect)")
-                }
-            }
-
-            if isExpectedDisconnect {
-                log("Disconnect clean up: calling the explicit disconnect callback if it is provided.")
-                weakSelf.disconnectCallback?(.disconnected(disconnectedPeripheral))
-                weakSelf.disconnectCallback = nil
-            }
-
-            if wasConnecting {
                 guard let connectingError = connectingError else {
-                    preconditionFailure("Missing connecting error at the end of a disconnect clean up after cancelling a pending connection.")
+                    preconditionFailure(
+                        "Missing connecting error at the end of a disconnect clean up after cancelling a connecting peripheral during state restoration."
+                    )
                 }
 
-                log("Disconnect clean up: calling the connecting callback if it is provided.")
                 weakSelf.connectingCallback?(.failure(connectingError))
                 weakSelf.connectingCallback = nil
-            }
+            } else {
+                log("Disconnect clean up: notifying all connection observers.")
 
-            weakSelf.isDisconnecting = false
+                for observer in weakSelf.observers {
+                    observer.weakReference?.disconnected(from: disconnectedPeripheral)
+                }
 
-            if weakSelf.shouldAutoReconnect {
-                log("Disconnect clean up: issuing reconnect to: \(peripheral.name ?? peripheral.identifier.uuidString)")
-                weakSelf.connect(
-                    PeripheralIdentifier(uuid: peripheral.identifier),
-                    timeout: weakSelf.previousConnectionTimeout ?? .none,
-                    completion: {_ in }
-                )
+                log("Disconnect clean up: should auto-reconnect: \(weakSelf.shouldAutoReconnect)")
+
+                if let disconnectHandler = weakSelf.disconnectHandler {
+                    log("Disconnect clean up: calling the disconnect handler.")
+                    switch disconnectHandler.didDisconnect(from: disconnectedPeripheral, with: error, willReconnect: weakSelf.shouldAutoReconnect) {
+                    case .noChange:
+                        log("Disconnect handler will not change auto-reconnect.")
+                    case .change(let autoReconnect):
+                        weakSelf.shouldAutoReconnect = autoReconnect
+                        log("Disconnect handler changing auto-reconnect to: \(weakSelf.shouldAutoReconnect)")
+                    }
+                }
+
+                if isExpectedDisconnect {
+                    log("Disconnect clean up: calling the explicit disconnect callback if it is provided.")
+                    weakSelf.disconnectCallback?(.disconnected(disconnectedPeripheral))
+                    weakSelf.disconnectCallback = nil
+                }
+
+                if wasConnecting {
+                    guard let connectingError = connectingError else {
+                        preconditionFailure("Missing connecting error at the end of a disconnect clean up after cancelling a pending connection.")
+                    }
+
+                    log("Disconnect clean up: calling the connecting callback if it is provided.")
+                    weakSelf.connectingCallback?(.failure(connectingError))
+                    weakSelf.connectingCallback = nil
+                }
+
+                weakSelf.isDisconnecting = false
+
+                if weakSelf.shouldAutoReconnect {
+                    log("Disconnect clean up: issuing reconnect to: \(peripheral.name ?? peripheral.identifier.uuidString)")
+                    weakSelf.connect(
+                        PeripheralIdentifier(uuid: peripheral.identifier),
+                        timeout: weakSelf.previousConnectionTimeout ?? .none,
+                        completion: {_ in }
+                    )
+                }
             }
 
             log("End of disconnect clean up.")

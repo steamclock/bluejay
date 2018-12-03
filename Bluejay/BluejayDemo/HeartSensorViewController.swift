@@ -316,4 +316,14 @@ extension HeartSensorViewController: ConnectionObserver {
         sensorLocationCell.detailTextLabel?.text = "Unknown"
     }
 
+    func bluetoothAvailable(_ available: Bool) {
+        if !available {
+            isMonitoringHeartRate = false
+
+            statusCell.detailTextLabel?.text = "Disconnected"
+            bpmCell.detailTextLabel?.text = "0"
+            sensorLocationCell.detailTextLabel?.text = "Unknown"
+        }
+    }
+
 }

@@ -20,7 +20,6 @@ public class Peripheral: NSObject {
     private(set) var cbPeripheral: CBPeripheral
 
     private var listeners: [CharacteristicIdentifier: (ReadResult<Data?>) -> Void] = [:]
-    private var listenersBeingCancelled: [CharacteristicIdentifier] = []
 
     private var observers: [WeakRSSIObserver] = []
 
@@ -33,10 +32,12 @@ public class Peripheral: NSObject {
         super.init()
 
         self.cbPeripheral.delegate = self
+
+        log("Init Peripheral: \(self), \(self.cbPeripheral)")
     }
 
     deinit {
-        log("Deinit peripheral: \(String(describing: cbPeripheral.name ?? cbPeripheral.identifier.uuidString))")
+        log("Deinit Peripheral: \(self), \(cbPeripheral))")
     }
 
     // MARK: - Attributes
@@ -175,6 +176,11 @@ public class Peripheral: NSObject {
 
     /// Listen for notifications on a specified characterstic.
     public func listen<R: Receivable>(to characteristicIdentifier: CharacteristicIdentifier, completion: @escaping (ReadResult<R>) -> Void) {
+        if listeners[characteristicIdentifier] != nil {
+            log("Already listening to: \(characteristicIdentifier.uuid)")
+            return
+        }
+
         discoverCharactersitic(characteristicIdentifier, callback: { [weak self] success in
             guard let weakSelf = self else {
                 return
@@ -222,33 +228,32 @@ public class Peripheral: NSObject {
      Currently this can also cancel a regular in-progress read as well, but that behaviour may change down the road.
      */
     public func endListen(to characteristicIdentifier: CharacteristicIdentifier, error: Error? = nil, completion: ((WriteResult) -> Void)? = nil) {
+        listeners[characteristicIdentifier] = nil
+
+        if let restoreIdentifier = bluejay?.restoreIdentifier {
+            do {
+                // Make sure an ended listen does not exist in the cache, as we don't want to restore a cancelled listen on state restoration.
+                try remove(listeningCharacteristic: characteristicIdentifier, restoreIdentifier: restoreIdentifier)
+            } catch {
+                log("Failed to remove cached listen on characteristic: \(characteristicIdentifier.uuid) of service: \(characteristicIdentifier.service.uuid) for restore id: \(restoreIdentifier) with error: \(error.localizedDescription)")
+            }
+        }
+
         discoverCharactersitic(characteristicIdentifier, callback: { [weak self] _ in
             guard let weakSelf = self else {
                 return
             }
 
-            weakSelf.listenersBeingCancelled.append(characteristicIdentifier)
-
             // Not using the success variable here because the listen operation will also catch the error if the service or the characteristic is not discovered.
             weakSelf.addOperation(
-                ListenCharacteristic(characteristicIdentifier: characteristicIdentifier, peripheral: weakSelf.cbPeripheral, value: false, callback: { result in
-                    weakSelf.listeners[characteristicIdentifier] = nil
-
-                    // Only bother removing the listen cache if listen restoration is enabled.
-                    if
-                        let restoreIdentifier = weakSelf.bluejay?.restoreIdentifier,
-                        weakSelf.bluejay?.listenRestorer != nil
-                    {
-                        do {
-                            // Make sure an ended listen does not exist in the cache, as we don't want to restore a cancelled listen on state restoration.
-                            try weakSelf.remove(listeningCharacteristic: characteristicIdentifier, restoreIdentifier: restoreIdentifier)
-                        } catch {
-                            log("Failed to remove cached listen on characteristic: \(characteristicIdentifier.uuid) of service: \(characteristicIdentifier.service.uuid) for restore id: \(restoreIdentifier) with error: \(error.localizedDescription)")
-                        }
-                    }
-
-                    completion?(result)
-                }))
+                ListenCharacteristic(
+                    characteristicIdentifier: characteristicIdentifier,
+                    peripheral: weakSelf.cbPeripheral,
+                    value: false,
+                    callback: { result in
+                        completion?(result)
+                })
+            )
         })
     }
 
@@ -338,10 +343,6 @@ public class Peripheral: NSObject {
 
         UserDefaults.standard.set(newListenCaches, forKey: Constant.listenCaches)
         UserDefaults.standard.synchronize()
-
-        listenersBeingCancelled = listenersBeingCancelled.filter { (characteristicIdentifier) -> Bool in
-            return characteristicIdentifier.uuid.uuidString != listeningCharacteristic.uuid.uuidString
-        }
     }
 
     /// Ask for the peripheral's maximum payload length in bytes for a single write request.
@@ -376,19 +377,14 @@ extension Peripheral: CBPeripheralDelegate {
         }
 
         guard let listener = listeners[CharacteristicIdentifier(characteristic)] else {
-            // Handle attempting to read a characteristic whose listen is being cancelled during state restoration.
-            let isCancellingListenOnCurrentRead = listenersBeingCancelled.contains(where: { (characteristicIdentifier) -> Bool in
-                return characteristicIdentifier.uuid.uuidString == characteristic.uuid.uuidString
-            })
-
-            let isReadUnhandled = isCancellingListenOnCurrentRead || (listeners.isEmpty && bluejay.queue.isEmpty)
-
-            if isReadUnhandled {
-                return
-            } else {
+            if bluejay.queue.isReading {
                 handleEvent(.didReadCharacteristic(characteristic, characteristic.value ?? Data()), error: error as NSError?)
-                return
+            } else if bluejay.queue.willEndListen(on: CharacteristicIdentifier(characteristic)) {
+                log("Received read event with value \(String(data: characteristic.value ?? Data(), encoding: .utf8) ?? "") on characteristic \(characteristic.debugDescription), but queue contains an end listen operation for this characteristic.")
+            } else {
+                log("Unhandled read event with value \(String(data: characteristic.value ?? Data(), encoding: .utf8) ?? "") on characteristic \(characteristic.debugDescription)")
             }
+            return
         }
 
         if let error = error {

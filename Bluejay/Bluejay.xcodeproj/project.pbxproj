@@ -17,6 +17,7 @@
 		B80D299B2170062D001C3C9B /* DisconnectHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B80D299A2170062D001C3C9B /* DisconnectHandler.swift */; };
 		B81E37731EDE238900E0655F /* DisconnectionResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = B81E37721EDE238900E0655F /* DisconnectionResult.swift */; };
 		B83271A91E313CA300D68581 /* Queueable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B83271A81E313CA300D68581 /* Queueable.swift */; };
+		B83A67CE219F45C300076B9F /* BackgroundRestorer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B83A67CD219F45C300076B9F /* BackgroundRestorer.swift */; };
 		B842AAF81E4CF74300BB32EE /* String+Transferable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B842AAF71E4CF74300BB32EE /* String+Transferable.swift */; };
 		B850D0011E4A5015005F31C5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B850D0001E4A5015005F31C5 /* Main.storyboard */; };
 		B862B6811F1428B200578F94 /* SensorLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B862B6801F1428B200578F94 /* SensorLocationViewController.swift */; };
@@ -123,6 +124,7 @@
 		B80D299A2170062D001C3C9B /* DisconnectHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisconnectHandler.swift; sourceTree = "<group>"; };
 		B81E37721EDE238900E0655F /* DisconnectionResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DisconnectionResult.swift; sourceTree = "<group>"; };
 		B83271A81E313CA300D68581 /* Queueable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Queueable.swift; sourceTree = "<group>"; };
+		B83A67CD219F45C300076B9F /* BackgroundRestorer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundRestorer.swift; sourceTree = "<group>"; };
 		B842AAF71E4CF74300BB32EE /* String+Transferable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Transferable.swift"; sourceTree = "<group>"; };
 		B850D0001E4A5015005F31C5 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		B862B6801F1428B200578F94 /* SensorLocationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SensorLocationViewController.swift; sourceTree = "<group>"; };
@@ -408,6 +410,7 @@
 				B88F50ED1EB3E73D00D11CD8 /* ListenCache.swift */,
 				B8C052021E28561700EA3D76 /* ListenRestorer.swift */,
 				B8E9B3981EE0BDD0007519B0 /* BackgroundRestoreMode.swift */,
+				B83A67CD219F45C300076B9F /* BackgroundRestorer.swift */,
 			);
 			name = "Listen Restoration";
 			sourceTree = "<group>";
@@ -680,6 +683,7 @@
 				B88A0DA11E1DD15600A00FF8 /* DiscoverCharacteristic.swift in Sources */,
 				B80D299B2170062D001C3C9B /* DisconnectHandler.swift in Sources */,
 				B842AAF81E4CF74300BB32EE /* String+Transferable.swift in Sources */,
+				B83A67CE219F45C300076B9F /* BackgroundRestorer.swift in Sources */,
 				B83271A91E313CA300D68581 /* Queueable.swift in Sources */,
 				B8F8C0ED1E4E7CA300A0D0F7 /* Disconnection.swift in Sources */,
 				B8C70F991E1C5A7F0006CF58 /* ServiceIdentifier.swift in Sources */,

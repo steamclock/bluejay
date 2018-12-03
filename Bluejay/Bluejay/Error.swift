@@ -60,6 +60,8 @@ public enum BluejayError {
     case indefiniteFlush
     /// Bluejay has stopped.
     case stopped
+    /// Bluejay cannot perform certain actions when background restoration is still in progress.
+    case backgroundRestorationInProgress
 }
 
 extension BluejayError: LocalizedError {
@@ -119,6 +121,8 @@ extension BluejayError: LocalizedError {
             return "Flush listen timeout cannot be none or zero."
         case .stopped:
             return "Bluejay stopped."
+        case .backgroundRestorationInProgress:
+            return "Background restoration is in progress."
         }
     }
 }
@@ -156,6 +160,7 @@ extension BluejayError: CustomNSError {
         case .listenCacheDecoding: return 23
         case .indefiniteFlush: return 24
         case .stopped: return 25
+        case .backgroundRestorationInProgress: return 26
         }
     }
 
