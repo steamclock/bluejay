@@ -385,14 +385,10 @@ public class Bluejay: NSObject { //swiftlint:disable:this type_body_length
         expired: ((ScanDiscovery, [ScanDiscovery]) -> ScanAction)? = nil,
         stopped: @escaping ([ScanDiscovery], Error?) -> Void
         ) {
+        Dispatch.dispatchPrecondition(condition: .onQueue(.main))
+
         if isRunningBackgroundTask {
-            // Terminate the app if this is called from the same thread as the running background task.
-            if #available(iOS 10.0, *) {
-                Dispatch.dispatchPrecondition(condition: .notOnQueue(.global()))
-            } else {
-                // Fallback on earlier versions
-            }
-            log("Warning: You cannot start a scan while a background task is still running.")
+            stopped([], BluejayError.backgroundTaskRunning)
             return
         }
 
@@ -412,14 +408,10 @@ public class Bluejay: NSObject { //swiftlint:disable:this type_body_length
 
     /// Stops current or queued scan.
     public func stopScanning() {
+        Dispatch.dispatchPrecondition(condition: .onQueue(.main))
+
         if isRunningBackgroundTask {
-            // Terminate the app if this is called from the same thread as the running background task.
-            if #available(iOS 10.0, *) {
-                Dispatch.dispatchPrecondition(condition: .notOnQueue(.global()))
-            } else {
-                // Fallback on earlier versions
-            }
-            log("Warning: You cannot stop a scan while a background task is still running.")
+            log("Error: You cannot stop a scan while a background task is still running.")
             return
         }
 
@@ -442,15 +434,11 @@ public class Bluejay: NSObject { //swiftlint:disable:this type_body_length
         timeout: Timeout,
         warningOptions: WarningOptions? = nil,
         completion: @escaping (ConnectionResult) -> Void) {
+        Dispatch.dispatchPrecondition(condition: .onQueue(.main))
+
         previousConnectionTimeout = timeout
 
         if isRunningBackgroundTask {
-            // Terminate the app if this is called from the same thread as the running background task.
-            if #available(iOS 10.0, *) {
-                Dispatch.dispatchPrecondition(condition: .notOnQueue(.global()))
-            } else {
-                // Fallback on earlier versions
-            }
             completion(.failure(BluejayError.backgroundTaskRunning))
             return
         }
@@ -480,14 +468,9 @@ public class Bluejay: NSObject { //swiftlint:disable:this type_body_length
         - completion: Called when the disconnect request is fully completed.
     */
     public func disconnect(immediate: Bool = false, completion: ((DisconnectionResult) -> Void)? = nil) {
+        Dispatch.dispatchPrecondition(condition: .onQueue(.main))
+
         if isRunningBackgroundTask {
-            // Terminate the app if this is called from the same thread as the running background task.
-            if #available(iOS 10.0, *) {
-                Dispatch.dispatchPrecondition(condition: .notOnQueue(.global()))
-            } else {
-                // Fallback on earlier versions
-            }
-            log("Warning: You've tried to disconnect while a background task is still running. The disconnect call will either do nothing, or fail if a completion block is provided.")
             completion?(.failure(BluejayError.backgroundTaskRunning))
             return
         }
@@ -531,13 +514,9 @@ public class Bluejay: NSObject { //swiftlint:disable:this type_body_length
         - completion: Called with the result of the attempt to read from the specified characteristic.
     */
     public func read<R: Receivable>(from characteristicIdentifier: CharacteristicIdentifier, completion: @escaping (ReadResult<R>) -> Void) {
+        Dispatch.dispatchPrecondition(condition: .onQueue(.main))
+
         if isRunningBackgroundTask {
-            // Terminate the app if this is called from the same thread as the running background task.
-            if #available(iOS 10.0, *) {
-                Dispatch.dispatchPrecondition(condition: .notOnQueue(.global()))
-            } else {
-                // Fallback on earlier versions
-            }
             completion(.failure(BluejayError.backgroundTaskRunning))
             return
         }
@@ -557,14 +536,13 @@ public class Bluejay: NSObject { //swiftlint:disable:this type_body_length
         - type: Write type.
         - completion: Called with the result of the attempt to write to the specified characteristic.
     */
-    public func write<S: Sendable>(to characteristicIdentifier: CharacteristicIdentifier, value: S, type: CBCharacteristicWriteType = .withResponse, completion: @escaping (WriteResult) -> Void) {
+    public func write<S: Sendable>(
+        to characteristicIdentifier: CharacteristicIdentifier,
+        value: S, type: CBCharacteristicWriteType = .withResponse,
+        completion: @escaping (WriteResult) -> Void) {
+        Dispatch.dispatchPrecondition(condition: .onQueue(.main))
+
         if isRunningBackgroundTask {
-            // Terminate the app if this is called from the same thread as the running background task.
-            if #available(iOS 10.0, *) {
-                Dispatch.dispatchPrecondition(condition: .notOnQueue(.global()))
-            } else {
-                // Fallback on earlier versions
-            }
             completion(.failure(BluejayError.backgroundTaskRunning))
             return
         }
@@ -584,13 +562,9 @@ public class Bluejay: NSObject { //swiftlint:disable:this type_body_length
         - completion: Called with the result of the attempt to listen for notifications on the specified characteristic.
      */
     public func listen<R: Receivable>(to characteristicIdentifier: CharacteristicIdentifier, completion: @escaping (ReadResult<R>) -> Void) {
+        Dispatch.dispatchPrecondition(condition: .onQueue(.main))
+
         if isRunningBackgroundTask {
-            // Terminate the app if this is called from the same thread as the running background task.
-            if #available(iOS 10.0, *) {
-                Dispatch.dispatchPrecondition(condition: .notOnQueue(.global()))
-            } else {
-                // Fallback on earlier versions
-            }
             completion(.failure(BluejayError.backgroundTaskRunning))
             return
         }
@@ -610,14 +584,9 @@ public class Bluejay: NSObject { //swiftlint:disable:this type_body_length
         - completion: Called with the result of the attempt to stop listening to the specified characteristic.
     */
     public func endListen(to characteristicIdentifier: CharacteristicIdentifier, completion: ((WriteResult) -> Void)? = nil) {
+        Dispatch.dispatchPrecondition(condition: .onQueue(.main))
+
         if isRunningBackgroundTask {
-            // Terminate the app if this is called from the same thread as the running background task.
-            if #available(iOS 10.0, *) {
-                Dispatch.dispatchPrecondition(condition: .notOnQueue(.global()))
-            } else {
-                // Fallback on earlier versions
-            }
-            log("Warning: You've tried to end a listen while a background task is still running. The endListen call will either do nothing, or fail if a completion block is provided.")
             completion?(.failure(BluejayError.backgroundTaskRunning))
             return
         }
@@ -637,13 +606,9 @@ public class Bluejay: NSObject { //swiftlint:disable:this type_body_length
         - completion: Called with the result of the attempt to restore the listen on the specified characteristic.
     */
     public func restoreListen<R: Receivable>(to characteristicIdentifier: CharacteristicIdentifier, completion: @escaping (ReadResult<R>) -> Void) {
+        Dispatch.dispatchPrecondition(condition: .onQueue(.main))
+
         if isRunningBackgroundTask {
-            // Terminate the app if this is called from the same thread as the running background task.
-            if #available(iOS 10.0, *) {
-                Dispatch.dispatchPrecondition(condition: .notOnQueue(.global()))
-            } else {
-                // Fallback on earlier versions
-            }
             completion(.failure(BluejayError.backgroundTaskRunning))
             return
         }
@@ -888,12 +853,7 @@ extension Bluejay: CBCentralManagerDelegate {
     public func centralManagerDidUpdateState(_ central: CBCentralManager) {
         let backgroundTask = UIApplication.shared.beginBackgroundTask(expirationHandler: nil)
 
-        if #available(iOS 10.0, *) {
-            log("CBCentralManager state updated: \(central.state.string())")
-        } else {
-            // Fallback on earlier versions
-            log("CBCentralManager state updated: \(central.state)")
-        }
+        log("CBCentralManager state updated: \(central.state.string())")
 
         let updateStateCompletion = {
             switch central.state {

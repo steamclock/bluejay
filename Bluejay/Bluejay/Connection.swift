@@ -62,20 +62,9 @@ class Connection: Queueable {
         cancelTimer()
 
         if let timeOut = timeout, case let .seconds(timeoutInterval) = timeOut {
-            if #available(iOS 10.0, *) {
-                connectionTimer = Timer.scheduledTimer(withTimeInterval: timeoutInterval, repeats: false, block: { (_) in
-                    self.timedOut()
-                })
-            } else {
-                // Fallback on earlier versions
-                connectionTimer = Timer.scheduledTimer(
-                    timeInterval: timeoutInterval,
-                    target: self,
-                    selector: #selector(timedOut),
-                    userInfo: nil,
-                    repeats: false
-                )
-            }
+            connectionTimer = Timer.scheduledTimer(withTimeInterval: timeoutInterval, repeats: false, block: { (_) in
+                self.timedOut()
+            })
         }
 
         log("Started connecting to \(peripheral.name ?? peripheral.identifier.uuidString).")

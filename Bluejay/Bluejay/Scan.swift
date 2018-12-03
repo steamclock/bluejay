@@ -253,22 +253,11 @@ class Scan: Queueable {
 
         var timer: Timer?
 
-        if #available(iOS 10.0, *) {
-            timer = Timer.scheduledTimer(withTimeInterval: 15, repeats: false) { [weak self] (_) in
-                guard let weakSelf = self else {
-                    return
-                }
-                weakSelf.refresh(identifier: identifier)
+        timer = Timer.scheduledTimer(withTimeInterval: 15, repeats: false) { [weak self] (_) in
+            guard let weakSelf = self else {
+                return
             }
-        } else {
-            // Fallback on earlier versions
-            timer = Timer.scheduledTimer(
-                timeInterval: 15,
-                target: self,
-                selector: #selector(refresh(timer:)),
-                userInfo: identifier,
-                repeats: false
-            )
+            weakSelf.refresh(identifier: identifier)
         }
 
         timers.append((identifier, timer!))
