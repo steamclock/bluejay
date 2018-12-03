@@ -271,7 +271,6 @@ class HeartSensorViewController: UITableViewController {
 
         if let selectedCell = tableView.cellForRow(at: indexPath) {
             if selectedCell == sensorLocationCell {
-                stopMonitoringHeartRate()
                 shouldRefreshSensorLocation = true
                 performSegue(withIdentifier: "showSensorLocation", sender: self)
             } else if selectedCell == connectCell {
