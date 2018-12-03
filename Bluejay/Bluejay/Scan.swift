@@ -98,7 +98,7 @@ class Scan: Queueable {
                 userInfo: nil,
                 repeats: false)
             let runLoop: RunLoop = .current
-            runLoop.add(timeoutTimer, forMode: .defaultRunLoopMode)
+            runLoop.add(timeoutTimer, forMode: RunLoop.Mode.default)
             self.timeoutTimer = timeoutTimer
         }
 
@@ -112,7 +112,7 @@ class Scan: Queueable {
             NotificationCenter.default.addObserver(
                 self,
                 selector: #selector(didEnterBackgroundWithAllowDuplicates),
-                name: .UIApplicationDidEnterBackground,
+                name: UIApplication.didEnterBackgroundNotification,
                 object: nil
             )
         }
@@ -121,7 +121,7 @@ class Scan: Queueable {
             NotificationCenter.default.addObserver(
                 self,
                 selector: #selector(didEnterBackgroundWithoutServiceIdentifiers),
-                name: .UIApplicationDidEnterBackground,
+                name: UIApplication.didEnterBackgroundNotification,
                 object: nil
             )
         }

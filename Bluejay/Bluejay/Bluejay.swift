@@ -35,7 +35,7 @@ public class Bluejay: NSObject { //swiftlint:disable:this type_body_length
     private var connectedPeripheral: Peripheral?
 
     /// Reference to the background task used for supporting state restoration.
-    private var startupBackgroundTask: UIBackgroundTaskIdentifier = UIBackgroundTaskInvalid
+    private var startupBackgroundTask: UIBackgroundTaskIdentifier = UIBackgroundTaskIdentifier.invalid
 
     /// Determines whether state restoration is allowed.
     private var shouldRestoreState = false
@@ -161,9 +161,9 @@ public class Bluejay: NSObject { //swiftlint:disable:this type_body_length
          Therefore, an explicit call to start should assume that Bluejay is not initialized from background restoration, as the code flow for background restoration should not involve a call to start.
          */
         shouldRestoreState = false
-        if startupBackgroundTask != UIBackgroundTaskInvalid {
+        if startupBackgroundTask != UIBackgroundTaskIdentifier.invalid {
             debugPrint("Cancelling startup background task.")
-            UIApplication.shared.endBackgroundTask(startupBackgroundTask)
+            UIApplication.shared.endBackgroundTask(convertToUIBackgroundTaskIdentifier(startupBackgroundTask.rawValue))
         }
 
         if cbCentralManager != nil {
@@ -1005,9 +1005,9 @@ extension Bluejay: CBCentralManagerDelegate {
         shouldRestoreState = false
 
         defer {
-            if startupBackgroundTask != UIBackgroundTaskInvalid {
+            if startupBackgroundTask != UIBackgroundTaskIdentifier.invalid {
                 log("Cancelling startup background task.")
-                UIApplication.shared.endBackgroundTask(startupBackgroundTask)
+                UIApplication.shared.endBackgroundTask(convertToUIBackgroundTaskIdentifier(startupBackgroundTask.rawValue))
             }
         }
 
@@ -1269,5 +1269,10 @@ extension Bluejay: QueueObserver {
 /// Convenience function to log information specific to Bluejay within the framework. We have plans to improve logging significantly in the near future.
 func log(_ string: String) {
     debugPrint("[Bluejay-Debug] \(string)")
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+private func convertToUIBackgroundTaskIdentifier(_ input: Int) -> UIBackgroundTaskIdentifier {
+    return UIBackgroundTaskIdentifier(rawValue: input)
 }
 //swiftlint:disable:this file_length
