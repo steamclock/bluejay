@@ -7,17 +7,20 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2F74765D212E95F800D74B87 /* WarningOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F74765C212E95F800D74B87 /* WarningOptions.swift */; };
 		7677FF3A64A35BBC9125A87E /* Pods_Bluejay.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1460DB02323E612C0106BFE7 /* Pods_Bluejay.framework */; };
 		A771DD904B7377A554946587 /* Pods_BluejayDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8D160102397E85DC10B5ACF7 /* Pods_BluejayDemo.framework */; };
 		B8022D981E1EEED900EA360B /* WriteResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8022D971E1EEED900EA360B /* WriteResult.swift */; };
 		B8022D9A1E1F041D00EA360B /* SynchronizedPeripheral.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8022D991E1F041D00EA360B /* SynchronizedPeripheral.swift */; };
 		B8022D9C1E1F052F00EA360B /* ListenAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8022D9B1E1F052F00EA360B /* ListenAction.swift */; };
 		B80535741ECA239D002E5493 /* ScanHeartRateSensorsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B80535731ECA239D002E5493 /* ScanHeartRateSensorsViewController.swift */; };
+		B80D299B2170062D001C3C9B /* DisconnectHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B80D299A2170062D001C3C9B /* DisconnectHandler.swift */; };
 		B81E37731EDE238900E0655F /* DisconnectionResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = B81E37721EDE238900E0655F /* DisconnectionResult.swift */; };
 		B83271A91E313CA300D68581 /* Queueable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B83271A81E313CA300D68581 /* Queueable.swift */; };
 		B842AAF81E4CF74300BB32EE /* String+Transferable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B842AAF71E4CF74300BB32EE /* String+Transferable.swift */; };
 		B850D0011E4A5015005F31C5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B850D0001E4A5015005F31C5 /* Main.storyboard */; };
 		B862B6811F1428B200578F94 /* SensorLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B862B6801F1428B200578F94 /* SensorLocationViewController.swift */; };
+		B86586A9216D1105002E8E2D /* StartOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86586A8216D1105002E8E2D /* StartOptions.swift */; };
 		B869A2971E721D50003C1278 /* Data+Sendable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B869A2961E721D50003C1278 /* Data+Sendable.swift */; };
 		B881CB471EDCC4FE00624109 /* HeartSensorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B881CB461EDCC4FE00624109 /* HeartSensorViewController.swift */; };
 		B88A0D9C1E1DAA1600A00FF8 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88A0D9B1E1DAA1600A00FF8 /* Event.swift */; };
@@ -107,6 +110,7 @@
 
 /* Begin PBXFileReference section */
 		1460DB02323E612C0106BFE7 /* Pods_Bluejay.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Bluejay.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		2F74765C212E95F800D74B87 /* WarningOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WarningOptions.swift; sourceTree = "<group>"; };
 		4A0C82111DFB9F1235FECE79 /* Pods-BluejayDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BluejayDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BluejayDemo/Pods-BluejayDemo.debug.xcconfig"; sourceTree = "<group>"; };
 		6C7DA1388158BDFE6227706A /* Pods-BluejayDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BluejayDemo.release.xcconfig"; path = "Pods/Target Support Files/Pods-BluejayDemo/Pods-BluejayDemo.release.xcconfig"; sourceTree = "<group>"; };
 		8D160102397E85DC10B5ACF7 /* Pods_BluejayDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BluejayDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -116,11 +120,13 @@
 		B8022D991E1F041D00EA360B /* SynchronizedPeripheral.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SynchronizedPeripheral.swift; sourceTree = "<group>"; };
 		B8022D9B1E1F052F00EA360B /* ListenAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListenAction.swift; sourceTree = "<group>"; };
 		B80535731ECA239D002E5493 /* ScanHeartRateSensorsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScanHeartRateSensorsViewController.swift; sourceTree = "<group>"; };
+		B80D299A2170062D001C3C9B /* DisconnectHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisconnectHandler.swift; sourceTree = "<group>"; };
 		B81E37721EDE238900E0655F /* DisconnectionResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DisconnectionResult.swift; sourceTree = "<group>"; };
 		B83271A81E313CA300D68581 /* Queueable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Queueable.swift; sourceTree = "<group>"; };
 		B842AAF71E4CF74300BB32EE /* String+Transferable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Transferable.swift"; sourceTree = "<group>"; };
 		B850D0001E4A5015005F31C5 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		B862B6801F1428B200578F94 /* SensorLocationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SensorLocationViewController.swift; sourceTree = "<group>"; };
+		B86586A8216D1105002E8E2D /* StartOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartOptions.swift; sourceTree = "<group>"; };
 		B869A2961E721D50003C1278 /* Data+Sendable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Data+Sendable.swift"; sourceTree = "<group>"; };
 		B881CB461EDCC4FE00624109 /* HeartSensorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeartSensorViewController.swift; sourceTree = "<group>"; };
 		B88A0D9B1E1DAA1600A00FF8 /* Event.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
@@ -224,6 +230,15 @@
 				6C7DA1388158BDFE6227706A /* Pods-BluejayDemo.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		B86586A7216D10A9002E8E2D /* Options */ = {
+			isa = PBXGroup;
+			children = (
+				B86586A8216D1105002E8E2D /* StartOptions.swift */,
+				2F74765C212E95F800D74B87 /* WarningOptions.swift */,
+			);
+			name = Options;
 			sourceTree = "<group>";
 		};
 		B88A0D9D1E1DCFA300A00FF8 /* Operations */ = {
@@ -366,6 +381,7 @@
 		B8C70FA61E1C68AD0006CF58 /* Structs */ = {
 			isa = PBXGroup;
 			children = (
+				B86586A7216D10A9002E8E2D /* Options */,
 				B8C70F981E1C5A7F0006CF58 /* ServiceIdentifier.swift */,
 				B8C70F9A1E1C5A910006CF58 /* CharacteristicIdentifier.swift */,
 				B8C70F9F1E1C61BD0006CF58 /* PeripheralIdentifier.swift */,
@@ -380,6 +396,7 @@
 				B8C70FA81E1C69B60006CF58 /* Receivable.swift */,
 				B8C70FAA1E1C69C50006CF58 /* Sendable.swift */,
 				B8C70FB81E1C725C0006CF58 /* ConnectionObserver.swift */,
+				B80D299A2170062D001C3C9B /* DisconnectHandler.swift */,
 				B8FE9DF41E73597A00D361CE /* RSSIObserver.swift */,
 			);
 			name = Protocols;
@@ -714,6 +731,7 @@
 				B8C5E7131E64D6860094A708 /* ScanAction.swift in Sources */,
 				B8C70FA31E1C65000006CF58 /* ConnectionResult.swift in Sources */,
 				B88A0DA11E1DD15600A00FF8 /* DiscoverCharacteristic.swift in Sources */,
+				B80D299B2170062D001C3C9B /* DisconnectHandler.swift in Sources */,
 				B842AAF81E4CF74300BB32EE /* String+Transferable.swift in Sources */,
 				B83271A91E313CA300D68581 /* Queueable.swift in Sources */,
 				B8F8C0ED1E4E7CA300A0D0F7 /* Disconnection.swift in Sources */,
@@ -721,6 +739,8 @@
 				B88A0DA31E1DD18B00A00FF8 /* ReadCharacteristic.swift in Sources */,
 				B8022D981E1EEED900EA360B /* WriteResult.swift in Sources */,
 				B89AA4881E30373D006BA376 /* Scan.swift in Sources */,
+				2F74765D212E95F800D74B87 /* WarningOptions.swift in Sources */,
+				B86586A9216D1105002E8E2D /* StartOptions.swift in Sources */,
 				B8FE9DF51E73597A00D361CE /* RSSIObserver.swift in Sources */,
 				B8B5708F1ED8AEAA00603C0B /* Data+Extractable.swift in Sources */,
 				B8C70FA91E1C69B60006CF58 /* Receivable.swift in Sources */,

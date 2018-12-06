@@ -10,6 +10,7 @@
     
   </head>
   <body>
+    <a name="//apple_ref/swift/Section/Extensions" class="dashAnchor"></a>
     <a title="Extensions  Reference"></a>
     <header>
       <div class="content-wrapper">
@@ -45,6 +46,9 @@
             <a href="Enums.html">Enumerations</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
+                <a href="Enums/AutoReconnectMode.html">AutoReconnectMode</a>
+              </li>
+              <li class="nav-group-task">
                 <a href="Enums/BackgroundRestoreMode.html">BackgroundRestoreMode</a>
               </li>
               <li class="nav-group-task">
@@ -67,6 +71,9 @@
               </li>
               <li class="nav-group-task">
                 <a href="Enums/ScanAction.html">ScanAction</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Enums/StartMode.html">StartMode</a>
               </li>
               <li class="nav-group-task">
                 <a href="Enums/Timeout.html">Timeout</a>
@@ -109,6 +116,9 @@
                 <a href="Protocols/ConnectionObserver.html">ConnectionObserver</a>
               </li>
               <li class="nav-group-task">
+                <a href="Protocols/DisconnectHandler.html">DisconnectHandler</a>
+              </li>
+              <li class="nav-group-task">
                 <a href="Protocols/ListenRestorer.html">ListenRestorer</a>
               </li>
               <li class="nav-group-task">
@@ -140,6 +150,12 @@
               <li class="nav-group-task">
                 <a href="Structs/ServiceIdentifier.html">ServiceIdentifier</a>
               </li>
+              <li class="nav-group-task">
+                <a href="Structs/StartOptions.html">StartOptions</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/WarningOptions.html">WarningOptions</a>
+              </li>
             </ul>
           </li>
           <li class="nav-group-name">
@@ -165,9 +181,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:s13BinaryIntegerP"></a>
-                    <a name="//apple_ref/swift/Extension/BinaryInteger" class="dashAnchor"></a>
-                    <a class="token" href="#/s:s13BinaryIntegerP">BinaryInteger</a>
+                    <a name="/c:@E@CBManagerState"></a>
+                    <a name="//apple_ref/swift/Extension/CBManagerState" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@E@CBManagerState">CBManagerState</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -175,15 +191,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Extension to Int to make it Sendable and Receivable.</p>
-
-                        <a href="Extensions/BinaryInteger.html" class="slightly-smaller">See more</a>
+                        
+                        <a href="Extensions/CBManagerState.html" class="slightly-smaller">See more</a>
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">protocol</span> <span class="kt">BinaryInteger</span> <span class="p">:</span> <span class="kt">CustomStringConvertible</span><span class="p">,</span> <span class="kt">Hashable</span><span class="p">,</span> <span class="kt">Numeric</span><span class="p">,</span> <span class="kt">Strideable</span> <span class="k">where</span> <span class="k">Self</span><span class="o">.</span><span class="kt">Magnitude</span> <span class="p">:</span> <span class="kt">BinaryInteger</span><span class="p">,</span> <span class="k">Self</span><span class="o">.</span><span class="kt">Magnitude</span> <span class="o">==</span> <span class="k">Self</span><span class="o">.</span><span class="kt">Magnitude</span><span class="o">.</span><span class="kt">Magnitude</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">enum</span> <span class="kt">CBManagerState</span> <span class="p">:</span> <span class="kt">Int</span></code></pre>
 
                         </div>
                       </div>
@@ -228,6 +243,37 @@
                 <li class="item">
                   <div>
                     <code>
+                    <a name="/c:@E@CBPeripheralState"></a>
+                    <a name="//apple_ref/swift/Extension/CBPeripheralState" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@E@CBPeripheralState">CBPeripheralState</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                        <a href="Extensions/CBPeripheralState.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">enum</span> <span class="kt">CBPeripheralState</span> <span class="p">:</span> <span class="kt">Int</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
                     <a name="/c:objc(cs)CBService"></a>
                     <a name="//apple_ref/swift/Extension/CBService" class="dashAnchor"></a>
                     <a class="token" href="#/c:objc(cs)CBService">CBService</a>
@@ -259,9 +305,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/c:@E@CBManagerState"></a>
-                    <a name="//apple_ref/swift/Extension/CBManagerState" class="dashAnchor"></a>
-                    <a class="token" href="#/c:@E@CBManagerState">CBManagerState</a>
+                    <a name="/s:10Foundation4DataV"></a>
+                    <a name="//apple_ref/swift/Extension/Data" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10Foundation4DataV">Data</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -270,13 +316,45 @@
                       <div class="pointer"></div>
                       <div class="abstract">
                         
-                        <a href="Extensions/CBManagerState.html" class="slightly-smaller">See more</a>
+                        <a href="Extensions/Data.html" class="slightly-smaller">See more</a>
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">enum</span> <span class="kt">CBManagerState</span> <span class="p">:</span> <span class="kt">Int</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">struct</span> <span class="kt">Data</span> <span class="p">:</span> <span class="kt">ReferenceConvertible</span><span class="p">,</span> <span class="kt">Equatable</span><span class="p">,</span> <span class="kt">Hashable</span><span class="p">,</span> <span class="kt">RandomAccessCollection</span><span class="p">,</span> <span class="kt">MutableCollection</span><span class="p">,</span> <span class="kt">RangeReplaceableCollection</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:Sz"></a>
+                    <a name="//apple_ref/swift/Extension/BinaryInteger" class="dashAnchor"></a>
+                    <a class="token" href="#/s:Sz">BinaryInteger</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Extension to Int to make it Sendable and Receivable.</p>
+
+                        <a href="Extensions/BinaryInteger.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">protocol</span> <span class="kt">BinaryInteger</span> <span class="p">:</span> <span class="kt">CustomStringConvertible</span><span class="p">,</span> <span class="kt">Hashable</span><span class="p">,</span> <span class="kt">Numeric</span><span class="p">,</span> <span class="kt">Strideable</span> <span class="k">where</span> <span class="k">Self</span><span class="o">.</span><span class="kt">Magnitude</span> <span class="p">:</span> <span class="kt">BinaryInteger</span><span class="p">,</span> <span class="k">Self</span><span class="o">.</span><span class="kt">Magnitude</span> <span class="o">==</span> <span class="k">Self</span><span class="o">.</span><span class="kt">Magnitude</span><span class="o">.</span><span class="kt">Magnitude</span></code></pre>
 
                         </div>
                       </div>
@@ -317,65 +395,11 @@
                 </li>
               </ul>
             </div>
-            <div class="task-group">
-              <ul>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:10Foundation4DataV"></a>
-                    <a name="//apple_ref/swift/Extension/Data" class="dashAnchor"></a>
-                    <a class="token" href="#/s:10Foundation4DataV">Data</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        
-                        <a href="Extensions/Data.html" class="slightly-smaller">See more</a>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-              </ul>
-            </div>
-            <div class="task-group">
-              <ul>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/c:@E@CBPeripheralState"></a>
-                    <a name="//apple_ref/swift/Extension/CBPeripheralState" class="dashAnchor"></a>
-                    <a class="token" href="#/c:@E@CBPeripheralState">CBPeripheralState</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        
-                        <a href="Extensions/CBPeripheralState.html" class="slightly-smaller">See more</a>
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">enum</span> <span class="kt">CBPeripheralState</span> <span class="p">:</span> <span class="kt">Int</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-              </ul>
-            </div>
           </section>
         </section>
         <section id="footer">
           <p>Copyright © 2017 Steamclock Software. All rights reserved.</p>
-          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.1</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.4</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>
     </div>

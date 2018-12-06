@@ -32,7 +32,7 @@ class ConnectUsingSerialNumberViewController: UIViewController {
         
         statusLabel.text = "Waiting"
         
-        bluejay.start()
+        bluejay.start(mode: .new(StartOptions.default))
         
         askForSerialNumber()
     }
@@ -96,10 +96,13 @@ class ConnectUsingSerialNumberViewController: UIViewController {
                     return .blacklist
                 }
                 else {
-                    return .connect(discovery, .none, { (connectionResult) in
+                    return .connect(
+                        discovery,
+                        .none,
+                        WarningOptions(notifyOnConnection: false, notifyOnDisconnection: true, notifyOnNotification: false), { (connectionResult) in
                         switch connectionResult {
                         case .success(let peripheral):
-                            debugPrint("Connection to \(peripheral.identifier) successful.")
+                            debugPrint("Connection to \(peripheral.name) successful.")
                             
                             weakSelf.bluejay.read(from: Charactersitics.serialNumber, completion: { (readResult: ReadResult<String>) in
                                 switch readResult {
@@ -116,29 +119,19 @@ class ConnectUsingSerialNumberViewController: UIViewController {
                                         
                                         weakSelf.bluejay.disconnect(completion: { (result) in
                                             switch result {
-                                            case .success:
+                                            case .disconnected:
                                                 weakSelf.scan(services: [Services.deviceInfo], serialNumber: weakSelf.targetSerialNumber!)
-                                            case .cancelled:
-                                                preconditionFailure("Disconnect cancelled unexpectedly.")
                                             case .failure(let error):
                                                 preconditionFailure("Disconnect failed with error: \(error.localizedDescription)")
                                             }
                                         })
                                     }
-                                case .cancelled:
-                                    debugPrint("Read serial number cancelled.")
-                                    
-                                    weakSelf.statusLabel.text = "Read Cancelled"
                                 case .failure(let error):
                                     debugPrint("Read serial number failed with error: \(error.localizedDescription).")
                                     
                                     weakSelf.statusLabel.text = "Read Error: \(error.localizedDescription)"
                                 }
                             })
-                        case .cancelled:
-                            debugPrint("Connection to \(discovery.peripheralIdentifier) cancelled.")
-                            
-                            weakSelf.statusLabel.text = "Connection Cancelled"
                         case .failure(let error):
                             debugPrint("Connection to \(discovery.peripheralIdentifier) failed with error: \(error.localizedDescription)")
                             

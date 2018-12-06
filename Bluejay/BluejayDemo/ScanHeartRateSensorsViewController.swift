@@ -28,7 +28,8 @@ class ScanHeartRateSensorsViewController: UITableViewController {
         
         clearsSelectionOnViewWillAppear = true
         
-        bluejay.start(connectionObserver: self, backgroundRestore: .enableWithListenRestorer("com.steamclock.bluejay", self))
+        let startOptions = StartOptions(enableBluetoothAlert: true, backgroundRestore: .enableWithListenRestorer("com.steamclock.bluejay", self))
+        bluejay.start(mode: .new(startOptions), connectionObserver: self)
         
         scanHeartSensors()
     }
@@ -80,14 +81,12 @@ class ScanHeartRateSensorsViewController: UITableViewController {
                 }
                 
                 switch result {
-                case .success:
+                case .disconnected:
                     if !weakSelf.bluejay.isScanning {
                         DispatchQueue.main.async {
                             weakSelf.scanHeartSensors()
                         }
                     }
-                case .cancelled:
-                    preconditionFailure("Disconnect cancelled unexpectedly.")
                 case .failure(let error):
                     preconditionFailure("Disconnect failed with error: \(error.localizedDescription)")
                 }
@@ -123,7 +122,7 @@ class ScanHeartRateSensorsViewController: UITableViewController {
         bluejay.connect(peripheralIdentifier, timeout: .none) { [weak self] (result) in
             switch result {
             case .success(let peripheral):
-                debugPrint("Connection to \(peripheral.identifier) successful.")
+                debugPrint("Connection to \(peripheral.name) successful.")
                 
                 guard let weakSelf = self else {
                     return
@@ -132,8 +131,6 @@ class ScanHeartRateSensorsViewController: UITableViewController {
                 weakSelf.selectedPeripheralIdentifier = peripheralIdentifier
                 
                 weakSelf.performSegue(withIdentifier: "showHeartSensor", sender: self)
-            case .cancelled:
-                debugPrint("Connection to \(peripheral.peripheralIdentifier) cancelled.")
             case .failure(let error):
                 debugPrint("Connection to \(peripheral.peripheralIdentifier) failed with error: \(error.localizedDescription)")
             }

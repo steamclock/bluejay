@@ -24,26 +24,20 @@ protocol Queueable: class {
     
     /// Called when the queue would like to notify the operation in question that there is a Bluetooth response.
     func process(event: Event)
-    
-    /// Called when the operation in question should be cancelled for reasons that are not results of errors.
-    func cancel()
-    
-    /// Called when the operation in question has finished cancelling.
-    func cancelled()
-    
-    /// Called when the queue has determined that the operation in question has failed.
+        
+    /// Called when the operation has failed.
     func fail(_ error: Error)
     
 }
 
 extension Queueable {
     
-    func updateQueue() {
+    func updateQueue(cancel: Bool = false, cancelError: Error? = nil) {
         guard let queue = queue else {
             preconditionFailure("Containing queue is nil.")
         }
         
-        queue.update()
+        queue.update(cancel: cancel, cancelError: cancelError)
     }
     
 }

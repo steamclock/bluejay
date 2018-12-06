@@ -10,6 +10,7 @@
     
   </head>
   <body>
+    <a name="//apple_ref/swift/Section/Protocols" class="dashAnchor"></a>
     <a title="Protocols  Reference"></a>
     <header>
       <div class="content-wrapper">
@@ -45,6 +46,9 @@
             <a href="Enums.html">Enumerations</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
+                <a href="Enums/AutoReconnectMode.html">AutoReconnectMode</a>
+              </li>
+              <li class="nav-group-task">
                 <a href="Enums/BackgroundRestoreMode.html">BackgroundRestoreMode</a>
               </li>
               <li class="nav-group-task">
@@ -67,6 +71,9 @@
               </li>
               <li class="nav-group-task">
                 <a href="Enums/ScanAction.html">ScanAction</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Enums/StartMode.html">StartMode</a>
               </li>
               <li class="nav-group-task">
                 <a href="Enums/Timeout.html">Timeout</a>
@@ -109,6 +116,9 @@
                 <a href="Protocols/ConnectionObserver.html">ConnectionObserver</a>
               </li>
               <li class="nav-group-task">
+                <a href="Protocols/DisconnectHandler.html">DisconnectHandler</a>
+              </li>
+              <li class="nav-group-task">
                 <a href="Protocols/ListenRestorer.html">ListenRestorer</a>
               </li>
               <li class="nav-group-task">
@@ -140,6 +150,12 @@
               <li class="nav-group-task">
                 <a href="Structs/ServiceIdentifier.html">ServiceIdentifier</a>
               </li>
+              <li class="nav-group-task">
+                <a href="Structs/StartOptions.html">StartOptions</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/WarningOptions.html">WarningOptions</a>
+              </li>
             </ul>
           </li>
           <li class="nav-group-name">
@@ -165,6 +181,90 @@
                 <li class="item">
                   <div>
                     <code>
+                    <a name="/s:7Bluejay18ConnectionObserverP"></a>
+                    <a name="//apple_ref/swift/Protocol/ConnectionObserver" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Bluejay18ConnectionObserverP">ConnectionObserver</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>A protocol allowing conforming objects registered to Bluejay to optionally respond to Bluetooth connection events.</p>
+<div class="aside aside-attention">
+    <p class="aside-title">Attention</p>
+    <p>Attention
+On initial subscription to Bluetooth events, <code>bluetoothAvailable(_ available: Bool)</code> will always be called immediately with whatever the current state is, and <code>connected(to peripheral: Peripheral)</code> will also be called immediately if a device is already connected.</p>
+
+</div>
+<div class="aside aside-note">
+    <p class="aside-title">Note</p>
+    <p>Note
+Available callbacks:</p>
+
+</div>
+<li><p><code>func bluetoothAvailable(_ available: Bool)</code></p></li>
+<li><p><code>func connected(to peripheral: Peripheral)</code></p></li>
+<li><p><code>func disconnected(from peripheral: Peripheral)</code></p></li>
+
+                        <a href="Protocols/ConnectionObserver.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">ConnectionObserver</span> <span class="p">:</span> <span class="kt">AnyObject</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7Bluejay17DisconnectHandlerP"></a>
+                    <a name="//apple_ref/swift/Protocol/DisconnectHandler" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Bluejay17DisconnectHandlerP">DisconnectHandler</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>A protocol allowing a single delegate registered to Bluejay to have a final say at the end of a disconnection, as well as evaluate and control the auto-reconnect behaviour.</p>
+<div class="aside aside-attention">
+    <p class="aside-title">Attention</p>
+    Be careful with how you organize app and Bluejay logic inside your connect, explicit disconnect, the disconnect handler callbacks. It may be easy to create redundant or conflicting code. As a rule of thumb, we recommend putting light weight and repeatable logic, such as UI updates, inside your connect and disconnect callbacks. And for more major operations such as restarting any Bluetooth tasks, use the disconnect handler.
+
+</div>
+
+                        <a href="Protocols/DisconnectHandler.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">DisconnectHandler</span> <span class="p">:</span> <span class="kt">AnyObject</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
                     <a name="/s:7Bluejay14ListenRestorerP"></a>
                     <a name="//apple_ref/swift/Protocol/ListenRestorer" class="dashAnchor"></a>
                     <a class="token" href="#/s:7Bluejay14ListenRestorerP">ListenRestorer</a>
@@ -185,7 +285,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">ListenRestorer</span><span class="p">:</span> <span class="kd">class</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">ListenRestorer</span> <span class="p">:</span> <span class="kt">AnyObject</span></code></pre>
 
                         </div>
                       </div>
@@ -217,7 +317,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">RSSIObserver</span><span class="p">:</span> <span class="kd">class</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">RSSIObserver</span> <span class="p">:</span> <span class="kt">AnyObject</span></code></pre>
 
                         </div>
                       </div>
@@ -290,58 +390,11 @@
                 </li>
               </ul>
             </div>
-            <div class="task-group">
-              <ul>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:7Bluejay18ConnectionObserverP"></a>
-                    <a name="//apple_ref/swift/Protocol/ConnectionObserver" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7Bluejay18ConnectionObserverP">ConnectionObserver</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>A protocol allowing conforming objects registered to Bluejay to optionally respond to Bluetooth connection events.</p>
-<div class="aside aside-attention">
-    <p class="aside-title">Attention</p>
-    <p>Attention
-On initial subscription to Bluetooth events, <code>bluetoothAvailable(_ available: Bool)</code> will always be called immediately with whatever the current state is, and <code>connected(to peripheral: Peripheral)</code> will also be called immediately if a device is already connected.</p>
-
-</div>
-<div class="aside aside-note">
-    <p class="aside-title">Note</p>
-    <p>Note
-Available callbacks:</p>
-
-</div>
-<li><p><code>func bluetoothAvailable(_ available: Bool)</code></p></li>
-<li><p><code>func connected(to peripheral: Peripheral)</code></p></li>
-<li><p><code>func disconnected(from peripheral: Peripheral)</code></p></li>
-
-                        <a href="Protocols/ConnectionObserver.html" class="slightly-smaller">See more</a>
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">ConnectionObserver</span><span class="p">:</span> <span class="kd">class</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-              </ul>
-            </div>
           </section>
         </section>
         <section id="footer">
           <p>Copyright © 2017 Steamclock Software. All rights reserved.</p>
-          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.1</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.4</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>
     </div>

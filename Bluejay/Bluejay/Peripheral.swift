@@ -46,9 +46,9 @@ public class Peripheral: NSObject {
         return PeripheralIdentifier(uuid: cbPeripheral.identifier)
     }
     
-    /// The name of the peripheral.
-    public var name: String? {
-        return cbPeripheral.name
+    /// Returns the name of the peripheral. If name is not available, return the uuid string.
+    public var name: String {
+        return cbPeripheral.name ?? uuid.string
     }
     
     // MARK: - Operations
@@ -59,7 +59,7 @@ public class Peripheral: NSObject {
         }
         
         if cbPeripheral.state == .disconnected {
-            bluejay.queue.cancelAll(BluejayError.notConnected)
+            bluejay.cancelEverything(error: BluejayError.notConnected)
             return
         }
         
@@ -88,14 +88,10 @@ public class Peripheral: NSObject {
                         switch result {
                         case .success:
                             callback(true)
-                        case .cancelled:
-                            callback(false)
                         case .failure(_):
                             callback(false)
                         }
                 }))
-            case .cancelled:
-                callback(false)
             case .failure(_):
                 callback(false)
             }
@@ -212,8 +208,6 @@ public class Peripheral: NSObject {
                                 log("Failed to cache listen on characteristic: \(characteristicIdentifier.uuid) of service: \(characteristicIdentifier.service.uuid) for restore id: \(restoreIdentifier) with error: \(error.localizedDescription)")
                             }
                         }
-                    case .cancelled:
-                        completion(.cancelled)
                     case .failure(let error):
                         completion(.failure(error))
                     }
@@ -421,7 +415,7 @@ extension Peripheral: CBPeripheralDelegate {
     /// Captures CoreBluetooth's did read RSSI event and pass it to Bluejay's queue for processing.
     public func peripheral(_ peripheral: CBPeripheral, didReadRSSI RSSI: NSNumber, error: Error?) {
         for observer in observers {
-            observer.weakReference?.peripheral(peripheral, didReadRSSI: RSSI, error: error)
+            observer.weakReference?.peripheral(self, didReadRSSI: RSSI, error: error)
         }
     }
     

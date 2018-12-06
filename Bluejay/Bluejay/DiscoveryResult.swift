@@ -10,6 +10,5 @@ import Foundation
 
 enum DiscoveryResult {
     case success
-    case cancelled
     case failure(Error)
 }

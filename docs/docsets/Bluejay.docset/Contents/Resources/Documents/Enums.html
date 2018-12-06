@@ -10,6 +10,7 @@
     
   </head>
   <body>
+    <a name="//apple_ref/swift/Section/Enumerations" class="dashAnchor"></a>
     <a title="Enumerations  Reference"></a>
     <header>
       <div class="content-wrapper">
@@ -45,6 +46,9 @@
             <a href="Enums.html">Enumerations</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
+                <a href="Enums/AutoReconnectMode.html">AutoReconnectMode</a>
+              </li>
+              <li class="nav-group-task">
                 <a href="Enums/BackgroundRestoreMode.html">BackgroundRestoreMode</a>
               </li>
               <li class="nav-group-task">
@@ -67,6 +71,9 @@
               </li>
               <li class="nav-group-task">
                 <a href="Enums/ScanAction.html">ScanAction</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Enums/StartMode.html">StartMode</a>
               </li>
               <li class="nav-group-task">
                 <a href="Enums/Timeout.html">Timeout</a>
@@ -109,6 +116,9 @@
                 <a href="Protocols/ConnectionObserver.html">ConnectionObserver</a>
               </li>
               <li class="nav-group-task">
+                <a href="Protocols/DisconnectHandler.html">DisconnectHandler</a>
+              </li>
+              <li class="nav-group-task">
                 <a href="Protocols/ListenRestorer.html">ListenRestorer</a>
               </li>
               <li class="nav-group-task">
@@ -140,6 +150,12 @@
               <li class="nav-group-task">
                 <a href="Structs/ServiceIdentifier.html">ServiceIdentifier</a>
               </li>
+              <li class="nav-group-task">
+                <a href="Structs/StartOptions.html">StartOptions</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/WarningOptions.html">WarningOptions</a>
+              </li>
             </ul>
           </li>
           <li class="nav-group-name">
@@ -160,38 +176,6 @@
 
           </section>
           <section class="section task-group-section">
-            <div class="task-group">
-              <ul>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:7Bluejay10ReadResultO"></a>
-                    <a name="//apple_ref/swift/Enum/ReadResult" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7Bluejay10ReadResultO">ReadResult</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Indicates a successful, cancelled, or failed read attempt, where the success case contains the value read.</p>
-
-                        <a href="Enums/ReadResult.html" class="slightly-smaller">See more</a>
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">enum</span> <span class="kt">ReadResult</span><span class="o">&lt;</span><span class="kt">R</span><span class="o">&gt;</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-              </ul>
-            </div>
             <div class="task-group">
               <ul>
                 <li class="item">
@@ -229,9 +213,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7Bluejay19DisconnectionResultO"></a>
-                    <a name="//apple_ref/swift/Enum/DisconnectionResult" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7Bluejay19DisconnectionResultO">DisconnectionResult</a>
+                    <a name="/s:7Bluejay7TimeoutO"></a>
+                    <a name="//apple_ref/swift/Enum/Timeout" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Bluejay7TimeoutO">Timeout</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -239,47 +223,15 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Indicates a successful, cancelled, or failed disconnection attempt, where the success case contains the peripheral disconnected from.</p>
+                        <p>Types of connection time outs. Can specify a time out in seconds, or no time out.</p>
 
-                        <a href="Enums/DisconnectionResult.html" class="slightly-smaller">See more</a>
+                        <a href="Enums/Timeout.html" class="slightly-smaller">See more</a>
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">enum</span> <span class="kt">DisconnectionResult</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-              </ul>
-            </div>
-            <div class="task-group">
-              <ul>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:7Bluejay10ScanActionO"></a>
-                    <a name="//apple_ref/swift/Enum/ScanAction" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7Bluejay10ScanActionO">ScanAction</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Indicates whether a scan should continue, continue but blacklist the current discovery, stop, or stop and connect.</p>
-
-                        <a href="Enums/ScanAction.html" class="slightly-smaller">See more</a>
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">enum</span> <span class="kt">ScanAction</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">enum</span> <span class="kt">Timeout</span></code></pre>
 
                         </div>
                       </div>
@@ -325,9 +277,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7Bluejay11WriteResultO"></a>
-                    <a name="//apple_ref/swift/Enum/WriteResult" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7Bluejay11WriteResultO">WriteResult</a>
+                    <a name="/s:7Bluejay17AutoReconnectModeO"></a>
+                    <a name="//apple_ref/swift/Enum/AutoReconnectMode" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Bluejay17AutoReconnectModeO">AutoReconnectMode</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -335,15 +287,47 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Indicates a successful, cancelled, or failed write attempt.</p>
+                        <p>Tells Bluejay whether it should auto-reconnect.</p>
 
-                        <a href="Enums/WriteResult.html" class="slightly-smaller">See more</a>
+                        <a href="Enums/AutoReconnectMode.html" class="slightly-smaller">See more</a>
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">enum</span> <span class="kt">WriteResult</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">enum</span> <span class="kt">AutoReconnectMode</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7Bluejay19DisconnectionResultO"></a>
+                    <a name="//apple_ref/swift/Enum/DisconnectionResult" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Bluejay19DisconnectionResultO">DisconnectionResult</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Indicates a successful, cancelled, or failed disconnection attempt, where the success case contains the peripheral disconnected from.</p>
+
+                        <a href="Enums/DisconnectionResult.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">enum</span> <span class="kt">DisconnectionResult</span></code></pre>
 
                         </div>
                       </div>
@@ -421,9 +405,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7Bluejay7TimeoutO"></a>
-                    <a name="//apple_ref/swift/Enum/Timeout" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7Bluejay7TimeoutO">Timeout</a>
+                    <a name="/s:7Bluejay10ReadResultO"></a>
+                    <a name="//apple_ref/swift/Enum/ReadResult" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Bluejay10ReadResultO">ReadResult</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -431,15 +415,15 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Types of connection time outs. Can specify a time out in seconds, or no time out.</p>
+                        <p>Indicates a successful, cancelled, or failed read attempt, where the success case contains the value read.</p>
 
-                        <a href="Enums/Timeout.html" class="slightly-smaller">See more</a>
+                        <a href="Enums/ReadResult.html" class="slightly-smaller">See more</a>
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">enum</span> <span class="kt">Timeout</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">enum</span> <span class="kt">ReadResult</span><span class="o">&lt;</span><span class="kt">R</span><span class="o">&gt;</span></code></pre>
 
                         </div>
                       </div>
@@ -480,11 +464,107 @@
                 </li>
               </ul>
             </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7Bluejay10ScanActionO"></a>
+                    <a name="//apple_ref/swift/Enum/ScanAction" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Bluejay10ScanActionO">ScanAction</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Indicates whether a scan should continue, continue but blacklist the current discovery, stop, or stop and connect.</p>
+
+                        <a href="Enums/ScanAction.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">enum</span> <span class="kt">ScanAction</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7Bluejay9StartModeO"></a>
+                    <a name="//apple_ref/swift/Enum/StartMode" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Bluejay9StartModeO">StartMode</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Specifies whether to start a new Bluejay instance from scratch, or from an existing CoreBluetooth session.</p>
+
+                        <a href="Enums/StartMode.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">enum</span> <span class="kt">StartMode</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7Bluejay11WriteResultO"></a>
+                    <a name="//apple_ref/swift/Enum/WriteResult" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Bluejay11WriteResultO">WriteResult</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Indicates a successful, cancelled, or failed write attempt.</p>
+
+                        <a href="Enums/WriteResult.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">enum</span> <span class="kt">WriteResult</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
           </section>
         </section>
         <section id="footer">
           <p>Copyright © 2017 Steamclock Software. All rights reserved.</p>
-          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.1</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.4</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>
     </div>

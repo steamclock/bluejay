@@ -12,8 +12,6 @@ import Foundation
 public enum ReadResult<R> {
     /// The read is successful and the value read is captured in the associated value.
     case success(R)
-    /// The read is cancelled for a reason.
-    case cancelled
     /// The read has failed unexpectedly with an error.
     case failure(Error)
 }
@@ -35,8 +33,6 @@ extension ReadResult where R: Receivable {
             else {
                 self = .failure(BluejayError.missingData)
             }
-        case .cancelled:
-            self = .cancelled
         case .failure(let error):
             self = .failure(error)
         }

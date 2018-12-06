@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import CoreBluetooth
 
 /**
  A protocol allowing conforming objects to monitor the RSSI changes of a connected peripheral.
@@ -15,7 +14,7 @@ import CoreBluetooth
 public protocol RSSIObserver: class {
     
     /// Called whenever a peripheral's RSSI value changes.
-    func peripheral(_ peripheral: CBPeripheral, didReadRSSI RSSI: NSNumber, error: Error?)
+    func peripheral(_ peripheral: Peripheral, didReadRSSI RSSI: NSNumber, error: Error?)
     
 }
 

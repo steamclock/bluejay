@@ -52,7 +52,7 @@ class Scan: Queueable {
     private var blacklist = [ScanDiscovery]()
     
     /// The timers used to estimate an expiry callback, indicating that the peripheral is potentially no longer accessible.
-    private var timers = [(UUID, Timer)]()
+    private var timers = [(UUID, Timer?)]()
     
     init(duration: TimeInterval,
          allowDuplicates: Bool,
@@ -77,6 +77,10 @@ class Scan: Queueable {
         if serviceIdentifiers?.isEmpty != false {
             log("Warning: Setting `serviceIdentifiers` to `nil` is not recommended by Apple. It may cause battery and cpu issues on prolonged scanning, and **it also doesn't work in the background**. If you need to scan for all Bluetooth devices, we recommend making use of the `duration` parameter to stop the scan after 5 ~ 10 seconds to avoid scanning indefinitely and overloading the hardware.")
         }
+    }
+    
+    deinit {
+        log("Scan deinitialized")
     }
         
     func start() {        
@@ -118,7 +122,7 @@ class Scan: Queueable {
             )
         }
         
-        log("Started scanning.")
+        log("Scanning started.")
     }
     
     func process(event: Event) {
@@ -171,21 +175,21 @@ class Scan: Queueable {
             
             if case .stop = discovery(newDiscovery, discoveries) {
                 state = .completed
-
-                log("Finished scanning.")
-
                 stopScan(with: discoveries, error: nil)
             }
-            else if case .connect(let discovery, let timeout, let completion) = discovery(newDiscovery, discoveries) {
+            else if case .connect(let discovery, let timeout, let warningOptions, let completion) = discovery(newDiscovery, discoveries) {
                 state = .completed
-                
-                log("Finished scanning.")
-
                 stopScan(with: discoveries, error: nil)
                 
                 if let queue = queue {
                     if let cbPeripheral = manager.retrievePeripherals(withIdentifiers: [discovery.peripheralIdentifier.uuid]).first {
-                        queue.add(Connection(peripheral: cbPeripheral, manager: manager, timeout: timeout, callback: completion))
+                        queue.add(Connection(
+                            peripheral: cbPeripheral,
+                            manager: manager,
+                            timeout: timeout,
+                            warningOptions: warningOptions,
+                            callback: completion)
+                        )
                     }
                     else {
                         completion(.failure(BluejayError.unexpectedPeripheral(discovery.peripheralIdentifier)))
@@ -201,23 +205,13 @@ class Scan: Queueable {
         }
     }
     
-    func cancel() {
-        cancelled()
-    }
-    
-    func cancelled() {
-        state = .cancelled
-        
-        log("Cancelled scanning.")
-
+    func stop() {
+        state = .completed
         stopScan(with: discoveries, error: nil)
     }
     
-    func fail(_ error : Error) {
+    func fail(_ error: Error) {
         state = .failed(error)
-        
-        log("Failed scanning with error: \(error.localizedDescription)")
-        
         stopScan(with: discoveries, error: error)
     }
     
@@ -232,9 +226,15 @@ class Scan: Queueable {
     private func stopScan(with discoveries: [ScanDiscovery], error: Error?) {
         clearTimers()
         
-        // There is no point trying to stop the scan if the error is due to the manager being powered off, as trying to do so has no effect and will also cause CoreBluetooth to log an "API MISUSE" warning.
+        // There is no point trying to stop the scan if Bluetooth off, as trying to do so has no effect and will also cause CoreBluetooth to log an "API MISUSE" warning.
         if manager.state == .poweredOn {
             manager.stopScan()
+        }
+        
+        if let error = error {
+            log("Scanning stopped with error: \(error.localizedDescription)")
+        } else {
+            log("Scanning stopped.")
         }
         
         stopped(discoveries, error)
@@ -249,7 +249,8 @@ class Scan: Queueable {
             return uuid == identifier
         })
         {
-            timers[indexOfExistingTimer].1.invalidate()
+            timers[indexOfExistingTimer].1?.invalidate()
+            timers[indexOfExistingTimer].1 = nil
             timers.remove(at: indexOfExistingTimer)
         }
         
@@ -309,21 +310,23 @@ class Scan: Queueable {
     }
     
     private func clearTimers() {
-        for timer in timers {
-            timer.1.invalidate()
+        for timerIndex in 0..<timers.count {
+            timers[timerIndex].1?.invalidate()
+            timers[timerIndex].1 = nil
         }
         
         timers = []
+        
+        timeoutTimer?.invalidate()
+        timeoutTimer = nil
     }
 
     @objc func timeoutTimerAction(_ timer: Timer) {
         self.timeoutTimer = nil
 
         switch state {
-        case .cancelled, .cancelling, .completed, .failed:
-            break
-        case .notStarted:
-            assertionFailure()
+        case .notStarted, .stopping, .failed, .completed:
+            preconditionFailure("Scan timer expired when state was: \(state.description)")
         case .running:
             state = .completed
 

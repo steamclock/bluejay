@@ -25,10 +25,11 @@ Bluejay's primary goals are:
   - [Services and Characteristics](#services-and-characteristics)
   - [Scanning](#scanning)
   - [Connecting](#connecting)
-    - [Disconnect](#disconnect)
-    - [Timeouts](#timeouts)
-    - [Connection States](#connection-states)
-    - [Auto Reconnect](#auto-reconnect)
+  - [Disconnect](#disconnect)
+  - [Cancel Everything](#cancel-everything)
+  - [Auto Reconnect](#auto-reconnect)
+  - [Timeouts](#timeouts)
+  - [Connection States](#connection-states)
 - [Deserialization and Serialization](#deserialization-and-serialization)
   - [Receivable](#receivable)
   - [Sendable](#sendable)
@@ -66,7 +67,7 @@ Bluejay's primary goals are:
 
 Install using CocoaPods:
 
-`pod 'Bluejay', '~> 0.6'`
+`pod 'Bluejay', '~> 0.7'`
 
 Or to try the latest master:
 
@@ -74,7 +75,7 @@ Or to try the latest master:
 
 Cartfile:
 
-`github "steamclock/bluejay" ~> 0.6`
+`github "steamclock/bluejay" ~> 0.7`
 
 Import using:
 
@@ -115,7 +116,7 @@ let bluejay = Bluejay()
 
 While you may want to create one Bluejay instance and use it everywhere, you can also create instances in specific portions of your app and tear them down after use. It's worth noting, however, that each instance of Bluejay has its own [CBCentralManager](https://developer.apple.com/documentation/corebluetooth/cbcentralmanager), which makes the multi-instance approach somewhat more complex.
 
-Once you've created an instance, you can start the [Core Bluetooth](https://developer.apple.com/documentation/corebluetooth) session. You can do this during initialization of your app or view controller, as appropriate. For example, in the demo app Bluejay is started inside `viewDidLoad` of the root view controller.
+Once you've created an instance, you can start the [Core Bluetooth](https://developer.apple.com/documentation/corebluetooth) session. You can do this during initialization of your app or view controller as appropriate. For example, in the demo app Bluejay is started inside `viewDidLoad` of the root view controller.
 
 ```swift
 bluejay.start()
@@ -142,7 +143,7 @@ public protocol ConnectionObserver: class {
 You can register a `ConnectionObserver` when starting Bluejay:
 
 ```swift
-bluejay.start(connectionObserver: self)
+bluejay.start(mode: .new(StartOptions.bluejayDefault), connectionObserver: self)
 ```
 
 Or you can add additional observers later using:
@@ -185,22 +186,22 @@ This simple call will just notify you when there is a new discovery, and when th
 bluejay.scan(
     serviceIdentifiers: [heartRateService],
     discovery: { [weak self] (discovery, discoveries) -> ScanAction in
-	guard let weakSelf = self else {
-	    return .stop
-	}
+        guard let weakSelf = self else {
+            return .stop
+        }
 
-	weakSelf.peripherals = discoveries
-	weakSelf.tableView.reloadData()
+        weakSelf.peripherals = discoveries
+        weakSelf.tableView.reloadData()
 
-	return .continue
+        return .continue
     },
     stopped: { (discoveries, error) in
-	if let error = error {
-	    debugPrint("Scan stopped with error: \(error.localizedDescription)")
-	}
-	else {
-	    debugPrint("Scan stopped without error.")
-	}
+        if let error = error {
+            debugPrint("Scan stopped with error: \(error.localizedDescription)")
+        }
+        else {
+            debugPrint("Scan stopped without error.")
+        }
 })
 ```
 
@@ -235,33 +236,33 @@ bluejay.scan(
     allowDuplicates: true,
     serviceIdentifiers: nil,
     discovery: { [weak self] (discovery, discoveries) -> ScanAction in
-	guard let weakSelf = self else {
-	    return .stop
-	}
+        guard let weakSelf = self else {
+            return .stop
+        }
 
-	weakSelf.peripherals = discoveries
-	weakSelf.tableView.reloadData()
+        weakSelf.peripherals = discoveries
+        weakSelf.tableView.reloadData()
 
-	return .continue
+        return .continue
     },
     expired: { [weak self] (lostDiscovery, discoveries) -> ScanAction in
-	guard let weakSelf = self else {
-	    return .stop
-	}
+        guard let weakSelf = self else {
+            return .stop
+        }
 
-	debugPrint("Lost discovery: \(lostDiscovery)")
+        debugPrint("Lost discovery: \(lostDiscovery)")
 
-	weakSelf.peripherals = discoveries
-	weakSelf.tableView.reloadData()
+        weakSelf.peripherals = discoveries
+        weakSelf.tableView.reloadData()
 
-	return .continue
+        return .continue
 }) { (discoveries, error) in
-    if let error = error {
-	debugPrint("Scan stopped with error: \(error.localizedDescription)")
-    }
-    else {
-	debugPrint("Scan stopped without error.")
-    }
+        if let error = error {
+            debugPrint("Scan stopped with error: \(error.localizedDescription)")
+        }
+        else {
+            debugPrint("Scan stopped without error.")
+        }
 }
 ```
 
@@ -281,22 +282,20 @@ It is important to keep in mind that Bluejay is designed to work with a single B
 bluejay.connect(peripheralIdentifier) { [weak self] (result) in
     switch result {
     case .success(let peripheral):
-	debugPrint("Connection to \(peripheral.identifier) successful.")
+        debugPrint("Connection to \(peripheral.name) successful.")
 
-	guard let weakSelf = self else {
-	    return
-	}
+	      guard let weakSelf = self else {
+	          return
+	      }
 
-	weakSelf.performSegue(withIdentifier: "showHeartSensor", sender: self)
-    case .cancelled:
-	debugPrint("Connection to \(peripheral.identifier) cancelled.")
+	      weakSelf.performSegue(withIdentifier: "showHeartSensor", sender: self)
     case .failure(let error):
-	debugPrint("Connection to \(peripheral.identifier) failed with error: \(error.localizedDescription)")
+        debugPrint("Connection to \(peripheral.name) failed with error: \(error.localizedDescription)")
     }
 }
 ```
 
-#### Disconnect
+### Disconnect
 
 To disconnect:
 
@@ -304,22 +303,74 @@ To disconnect:
 bluejay.disconnect()
 ```
 
-Rarely, a disconnect request can fail or get cancelled, so it is generally a good idea to make use of the completion block to provide error handling.
+Bluejay also supports finer controls over your disconnection:
+
+#### Queued Disconnect
+
+A queued disconnect will be queued like all other Bluejay API requests, so the disconnect attempt will wait for its turn until all the queued tasks before it finishes.
+
+To perform a queued disconnect, simply:
 
 ```swift
-bluejay.disconnect { (result) in
-    switch result {
-    case .success(let peripheral):
-	debugPrint("Disconnection from \(peripheral.identifier) successful.")
-    case .cancelled:
-	debugPrint("Disconnection from \(peripheralIdentifier.uuid.uuidString) cancelled.")
-    case .failure(let error):
-	debugPrint("Disconnection from \(peripheralIdentifier.uuid.uuidString) failed with error: \(error.localizedDescription)")
-    }
+bluejay.disconnect()
+```
+
+#### Immediate Disconnect
+
+An immediate disconnect will immediately fail and empty all tasks from the queue even if they are still running and then immediately disconnect.
+
+There are two ways to perform an immediate disconnect:
+
+```swift
+bluejay.disconnect(immediate: true)
+```
+
+```swift
+bluejay.cancelEverything()
+```
+
+### Cancel Everything
+
+The reason why there is a `cancelEverything` API in addition to `disconnect`, is because sometimes we want to cancel everything in the queue but **without** disconnecting.
+
+```swift
+bluejay.cancelEverything(shouldDisconnect: false)
+```
+
+### Auto Reconnect
+
+By default, `shouldAutoReconnect` is `true` and Bluejay will always try to automatically reconnect after an unexpected disconnection.
+
+Bluejay will only set `shouldAutoReconnect` to `false` under these circumstances:
+
+1. If you manually call `disconnect` and the disconnection is successful.
+2. If you manually call `cancelEverything` and its disconnection is successful.
+
+Bluejay will also **always** reset `shouldAutoReconnect` to `true` on a successful connection to a peripheral, as we usually want to reconnect to the same device as soon as possible if a connection is lost unexpectedly during normal usage.
+
+However, there are some cases where auto reconnect is not desirable. In those cases, use a `DisconnectHandler`.
+
+### Disconnect Handler
+
+A disconnect handler is a single delegate that is suitable for performing major Bluetooth operations, such as restarting a scan, when there is a disconnection. Its singularity makes it a safer and more organized way to perform critical resuscitation tasks than the various callbacks you can install to various Bluejay requests, such as your connect, disconnect, read, and write calls. Ideally, when there is a disconnection, you should only clean up, update the UI, and perform certain safe and repeatable tasks in the callbacks of your regular Bluejay requests. Use the disconnect handler to perform one-time and major operations that you need to do at the end of a disconnection.
+
+In addition to helping you avoid redundant and conflicted logic in various callbacks when there is a disconnection, the disconnect handler also allows you to evaluate and to control Bluejay's auto-reconnect behaviour.
+
+For example, this delegate will turn off auto-reconnect whenever there is a disconnection.
+
+```swift
+func didDisconnect(from peripheral: Peripheral, with error: Error?, willReconnect autoReconnect: Bool) -> AutoReconnectMode {
+    return .change(shouldAutoReconnect: false)
 }
 ```
 
-#### Timeouts
+We also anticipate that for most apps, different view controllers may want to handle disconnection differently, so simply register and replace the existing disconnect handler as your user navigates to different parts of your app.
+
+```swift
+bluejay.registerDisconnectHandler(handler: self)
+```
+
+### Timeouts
 
 You can also specify a timeout for a connection request, default is no timeout:
 
@@ -332,7 +383,7 @@ public enum Timeout {
 }
 ```
 
-#### Connection States
+### Connection States
 
 Your Bluejay instance has these properties to help you make connection-related decisions:
 
@@ -342,19 +393,6 @@ Your Bluejay instance has these properties to help you make connection-related d
 - `isDisconnecting`
 - `shouldAutoReconnect`
 - `isScanning`
-
-#### Auto Reconnect
-
-By default, `shouldAutoReconnect` is `true` and Bluejay will always try to automatically reconnect after an unexpected disconnection.
-
-Bluejay will only set `shouldAutoReconnect` to `false` under these circumstances:
-
-1. If you manually call `disconnect` and the disconnection is successful.
-2. If you manually call `cancelEverything` and set the parameter `autoReconnect` to `false`.
-
-Bluejay will also **always** reset `shouldAutoReconnect` to `true` on a successful connection to a peripheral, as we usually want to reconnect to the same device as soon as possible if a connection is lost unexpectedly during normal usage.
-
-However, there are some cases where auto reconnect is not desired. Keeping the above default behaviors in mind, you can manually set the `shouldAutoReconnect` variable to control when and whether Bluejay should automatically attempt to reconnect.
 
 ## Deserialization and Serialization
 
@@ -466,40 +504,38 @@ let sensorLocation = CharacteristicIdentifier(uuid: "2A38", service: heartRateSe
 
 bluejay.read(from: sensorLocation) { [weak self] (result: ReadResult<UInt8>) in
     guard let weakSelf = self else {
-	return
+	     return
     }
 
     switch result {
     case .success(let location):
-	debugPrint("Read from sensor location is successful: \(location)")
+        debugPrint("Read from sensor location is successful: \(location)")
 
-	var locationString = "Unknown"
+        var locationString = "Unknown"
 
-	switch location {
-	case 0:
-	    locationString = "Other"
-	case 1:
-	    locationString = "Chest"
-	case 2:
-	    locationString = "Wrist"
-	case 3:
-	    locationString = "Finger"
-	case 4:
-	    locationString = "Hand"
-	case 5:
-	    locationString = "Ear Lobe"
-	case 6:
-	    locationString = "Foot"
-	default:
-	    locationString = "Unknown"
-	}
+        switch location {
+        case 0:
+            locationString = "Other"
+        case 1:
+            locationString = "Chest"
+        case 2:
+            locationString = "Wrist"
+        case 3:
+            locationString = "Finger"
+        case 4:
+            locationString = "Hand"
+        case 5:
+            locationString = "Ear Lobe"
+        case 6:
+            locationString = "Foot"
+        default:
+            locationString = "Unknown"
+        }
 
-	weakSelf.sensorLocationCell.detailTextLabel?.text = locationString
-	weakSelf.sensorLocation = location
-    case .cancelled:
-	debugPrint("Cancelled read from sensor location.")
+        weakSelf.sensorLocationCell.detailTextLabel?.text = locationString
+        weakSelf.sensorLocation = location
     case .failure(let error):
-	debugPrint("Failed to read from sensor location with error: \(error.localizedDescription)")
+        debugPrint("Failed to read from sensor location with error: \(error.localizedDescription)")
     }
 }
 ```
@@ -511,23 +547,21 @@ Note that LightBlue Explorer's virtual heart sensor does not have write enabled 
 ```swift
 bluejay.write(to: sensorLocation, value: UInt8(indexPath.row), completion: { [weak self] (result) in
     guard let weakSelf = self else {
-	return
+        return
     }
 
     switch result {
     case .success:
-	debugPrint("Write to sensor location is successful.")
+        debugPrint("Write to sensor location is successful.")
 
-	if let selectedCell = weakSelf.selectedCell {
-	    selectedCell.accessoryType = .none
-	}
-	cell.accessoryType = .checkmark
+        if let selectedCell = weakSelf.selectedCell {
+            selectedCell.accessoryType = .none
+        }
+        cell.accessoryType = .checkmark
 
-	weakSelf.navigationController?.popViewController(animated: true)
-    case .cancelled:
-	debugPrint("Cancelled write to sensor location.")
+        weakSelf.navigationController?.popViewController(animated: true)
     case .failure(let error):
-	debugPrint("Failed to write to sensor location with error: \(error.localizedDescription)")
+        debugPrint("Failed to write to sensor location with error: \(error.localizedDescription)")
     }
 })
 ```
@@ -545,16 +579,14 @@ Not all characteristics support listening, it is a feature that must be enabled 
 ```swift
 bluejay.listen(to: heartRateMeasurement) { [weak self] (result: ReadResult<HeartRateMeasurement>) in
     guard let weakSelf = self else {
-	return
+        return
     }
 
     switch result {
     case .success(let heartRateMeasurement):
-	debugPrint(heartRateMeasurement.measurement)
-    case .cancelled:
-	debugPrint("Listen to heart rate measurement cancelled.")
+        debugPrint(heartRateMeasurement.measurement)
     case .failure(let error):
-	debugPrint("Failed to listen to heart rate measurement with error: \(error.localizedDescription)")
+        debugPrint("Failed to listen to heart rate measurement with error: \(error.localizedDescription)")
     }
 }
 ```
@@ -600,8 +632,6 @@ bluejay.run(backgroundTask: { (peripheral) -> UInt8 in
 
         // Resume monitoring. Now we can use the non-blocking listen from Bluejay, not from the SynchronizedPeripheral.
         weakSelf.startMonitoringHeartRate()
-    case .cancelled:
-        debugPrint("Cancelled reset background task.")
     case .failure(let error):
         debugPrint("Failed to complete reset background task with error: \(error.localizedDescription)")
     }
@@ -625,13 +655,21 @@ Enabling background mode doesn't enable state restoration. State restoration is 
 Once your project has BLE accessories background mode enabled, you can choose to opt in to State Restoration when you start your Bluejay session.
 
 ```swift
-bluejay.start(backgroundRestore: .enable(yourRestoreIdentifier))
+let startOptions = StartOptions(
+  enableBluetoothAlert: true,
+  backgroundRestore: .enable("com.steamclock.bluejay")
+)
+bluejay.start(mode: .new(startOptions), connectionObserver: self)
 ```
 
 Additionally, Bluejay allows you to restore listen callbacks on subscribed characteristics that did not end when the app has stopped running.
 
 ```swift
-bluejay.start(backgroundRestore: .enable(yourRestoreIdentifier, yourListenRestorer))
+let startOptions = StartOptions(
+  enableBluetoothAlert: true,
+  backgroundRestore: .enableWithListenRestorer("com.steamclock.bluejay", self)
+)
+bluejay.start(mode: .new(startOptions), connectionObserver: self)
 ```
 
 ### Listen Restoration
@@ -729,16 +767,19 @@ private func scan(services: [ServiceIdentifier], serialNumber: String) {
             }
 
             if weakSelf.blacklistedDiscoveries.contains(where: { (blacklistedDiscovery) -> Bool in
-                return blacklistedDiscovery.peripheral.identifier == discovery.peripheral.identifier
+                return blacklistedDiscovery.peripheralIdentifier == discovery.peripheralIdentifier
             })
             {
                 return .blacklist
             }
             else {
-                return .connect(discovery, { (connectionResult) in
+                return .connect(
+                    discovery,
+                    .none,
+                    WarningOptions(notifyOnConnection: false, notifyOnDisconnection: true, notifyOnNotification: false), { (connectionResult) in
                     switch connectionResult {
                     case .success(let peripheral):
-                        debugPrint("Connection to \(peripheral.identifier) successful.")
+                        debugPrint("Connection to \(peripheral.name) successful.")
 
                         weakSelf.bluejay.read(from: Charactersitics.serialNumber, completion: { (readResult: ReadResult<String>) in
                             switch readResult {
@@ -757,29 +798,19 @@ private func scan(services: [ServiceIdentifier], serialNumber: String) {
                                         switch result {
                                         case .success:
                                             weakSelf.scan(services: [Services.deviceInfo], serialNumber: weakSelf.targetSerialNumber!)
-                                        case .cancelled:
-                                            preconditionFailure("Disconnection cancelled unexpectedly.")
                                         case .failure(let error):
-                                            preconditionFailure("Disconnection failed with error: \(error.localizedDescription)")
+                                            preconditionFailure("Disconnect failed with error: \(error.localizedDescription)")
                                         }
                                     })
                                 }
-                            case .cancelled:
-                                debugPrint("Read serial number cancelled.")
-
-                                weakSelf.statusLabel.text = "Read Cancelled"
                             case .failure(let error):
                                 debugPrint("Read serial number failed with error: \(error.localizedDescription).")
 
                                 weakSelf.statusLabel.text = "Read Error: \(error.localizedDescription)"
                             }
                         })
-                    case .cancelled:
-                        debugPrint("Connection to \(discovery.peripheral.identifier) cancelled.")
-
-                        weakSelf.statusLabel.text = "Connection Cancelled"
                     case .failure(let error):
-                        debugPrint("Connection to \(discovery.peripheral.identifier) failed with error: \(error.localizedDescription)")
+                        debugPrint("Connection to \(discovery.peripheralIdentifier) failed with error: \(error.localizedDescription)")
 
                         weakSelf.statusLabel.text = "Connection Error: \(error.localizedDescription)"
                     }
@@ -842,10 +873,10 @@ The `idleWindow` is in seconds, and basically specifies the duration of the abse
 
 ### CoreBluetooth Migration
 
-If you want to start Bluejay with a pre-existing CoreBluetooth stack, you can do so using the `coreBluetoothState` parameter available in the `start` function.
+If you want to start Bluejay with a pre-existing CoreBluetooth stack, you can do so using the `.use` start mode instead of `.new` when calling the `start` function.
 
 ```swift
-coreBluetoothState: (manager: CBCentralManager, peripheral: CBPeripheral?)? = nil
+bluejay.start(mode: .use(manager: anotherManager, peripheral: alreadyConnectedPeripheral))
 ```
 
 You can also transfer Bluejay's CoreBluetooth stack to another Bluetooth library or your own using this function:
