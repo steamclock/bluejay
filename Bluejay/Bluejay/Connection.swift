@@ -125,9 +125,6 @@ class Connection: Queueable {
         } else {
             failed(error)
         }
-        else {
-            failed(error)
-        }
     }
 
     func failed(_ error: Error) {
