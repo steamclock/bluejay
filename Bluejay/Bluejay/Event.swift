@@ -13,7 +13,7 @@ import CoreBluetooth
 enum Event {
     case didDiscoverServices
     case didDiscoverCharacteristics
-    case didDiscoverPeripheral(CBPeripheral, [String : Any], NSNumber)
+    case didDiscoverPeripheral(CBPeripheral, [String: Any], NSNumber)
     case didConnectPeripheral(Peripheral)
     case didDisconnectPeripheral(Peripheral)
     case didReadCharacteristic(CBCharacteristic, Data)

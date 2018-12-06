@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 ### Changed
 
+## [0.7.1] - 2018-12-06
+- Add SwiftLint
+- Add custom SwiftLint yaml with minor alterations
+- Conform all files to SwiftLint suggestions
+
 ## [0.7.0] - 2018-11-02
 - Add StartMode to better encapsulate CBCentralManager initialization options
 - Add WarningOptions to better encapsulate connect warning options

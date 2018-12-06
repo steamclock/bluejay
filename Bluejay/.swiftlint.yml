@@ -1,0 +1,28 @@
+excluded:
+  - Carthage
+  - Pods
+
+force_try:
+  severity: warning
+
+force_cast:
+  severity: warning
+
+file_length: 500
+
+type_body_length: 300
+
+line_length:
+  warning: 200
+  ignores_comments: true
+  ignores_interpolated_strings: true
+
+function_body_length: 125
+
+large_tuple:
+  warning: 3
+  error: 4
+
+identifier_name:
+  excluded:
+    - id

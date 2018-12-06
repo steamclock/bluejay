@@ -9,7 +9,7 @@
 import Foundation
 
 extension Data {
-    
+
     /**
      Convenience function to read a range of Data and deserialize it into the specified type.
      
@@ -21,8 +21,8 @@ extension Data {
         if start + length > self.count {
             throw BluejayError.dataOutOfBounds(start: start, length: length, count: self.count)
         }
-        
+
         return self.subdata(in: start..<start+length).withUnsafeBytes { $0.pointee }
     }
-    
+
 }

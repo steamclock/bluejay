@@ -10,7 +10,7 @@ import Foundation
 
 /// Extension to Int to make it Sendable and Receivable.
 extension BinaryInteger {
-    
+
     /// This function is required to conform to `Sendable`, and figures out the size of the `Integer` used by the iOS device.
     public func toBluetoothData() -> Data {
         var tmp = self
@@ -18,14 +18,14 @@ extension BinaryInteger {
             return Data(bytes: $0, count: MemoryLayout<Self>.size)
         }
     }
-    
+
     /// This function is required to conform to `Receivable`, and figures out the size of the `Integer` used by the iOS device.
     public init(bluetoothData: Data) {
-        var tmp : Self = 0
+        var tmp: Self = 0
         (bluetoothData as NSData).getBytes(&tmp, length: MemoryLayout<Self>.size)
         self = tmp
     }
-    
+
 }
 
 /// Extensions to existing primitive types to make them Sendable and Receivable.

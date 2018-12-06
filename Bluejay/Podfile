@@ -6,7 +6,7 @@ def core_pods
   use_frameworks!
 
   # Pods for Bluejay
-  # Not using any pods for now to minimize dependency conflicts
+  pod 'SwiftLint'
 end
 
 def demo_pods

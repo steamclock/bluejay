@@ -10,7 +10,7 @@ import Foundation
 import CoreBluetooth
 
 extension CBPeripheralState {
-    
+
     /// Returns the name of a `CBPeripheralState` as a string.
     public func string() -> String {
         switch self {
@@ -20,5 +20,5 @@ extension CBPeripheralState {
         case .disconnecting: return "Disconnecting"
         }
     }
-    
+
 }

@@ -45,7 +45,7 @@ public enum BluejayError {
     /// An unexpected peripheral is cached and retrieved from CoreBluetooth.
     case unexpectedPeripheral(PeripheralIdentifier)
     /// iOS will not continue scanning in the background if allow duplicates is turned on.
-    case scanningWithAllowDuplicatesInBackgroundNotSupported
+    case allowDuplicatesInBackgroundNotSupported
     /// iOS will not continue scanning in the background if no service identifiers are specified.
     case missingServiceIdentifiersInBackground
     /// Bluejay does not support further Bluetooth operations while a Bluejay background task is still running.
@@ -99,12 +99,16 @@ extension BluejayError: LocalizedError {
             return "Cannot extract data with a size of \(count) using start: \(start), length: \(length)."
         case let .unexpectedPeripheral(peripheral):
             return "Unexpected peripheral: \(peripheral.uuid)."
-        case .scanningWithAllowDuplicatesInBackgroundNotSupported:
+        case .allowDuplicatesInBackgroundNotSupported:
             return "Scanning with allow duplicates while in the background is not supported."
         case .missingServiceIdentifiersInBackground:
             return "Scanning without specifying any service identifiers while in the background is not supported."
         case .backgroundTaskRunning:
-            return "Regular Bluetooth operation is not available when a background task is running. For reading, writing, and listening, please use only the API found in the Synchronized Peripheral provided to you when working inside a background task block."
+            return """
+            Regular Bluetooth operation is not available when a background task is running. \
+            For reading, writing, and listening, please use only the API found in the Synchronized Peripheral \
+            provided to you when working inside a background task block.
+            """
         case .multipleBackgroundTaskNotSupported:
             return "Multiple background task is not supported."
         case let .listenCacheEncoding(error):
@@ -120,7 +124,7 @@ extension BluejayError: LocalizedError {
 }
 
 extension BluejayError: CustomNSError {
-    
+
     public static var errorDomain: String {
         return "Bluejay"
     }
@@ -144,7 +148,7 @@ extension BluejayError: CustomNSError {
         case .missingData: return 15
         case .dataOutOfBounds: return 16
         case .unexpectedPeripheral: return 17
-        case .scanningWithAllowDuplicatesInBackgroundNotSupported: return 18
+        case .allowDuplicatesInBackgroundNotSupported: return 18
         case .missingServiceIdentifiersInBackground: return 19
         case .backgroundTaskRunning: return 20
         case .multipleBackgroundTaskNotSupported: return 21
@@ -155,7 +159,7 @@ extension BluejayError: CustomNSError {
         }
     }
 
-    public var errorUserInfo: [String : Any] {
+    public var errorUserInfo: [String: Any] {
         guard let errorDescription = errorDescription else {
             return [:]
         }

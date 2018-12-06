@@ -9,28 +9,28 @@
 import UIKit
 
 class SelectDemoViewController: UITableViewController {
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         clearsSelectionOnViewWillAppear = true
     }
-    
+
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
-    
+
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 3
     }
-    
+
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return "Choose a demo"
     }
-    
+
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "demoCell", for: indexPath)
-        
+
         switch indexPath.row {
         case 0:
             cell.textLabel?.text = "Scan Everything"
@@ -41,10 +41,10 @@ class SelectDemoViewController: UITableViewController {
         default:
             cell.textLabel?.text = ""
         }
-        
+
         return cell
     }
-    
+
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch indexPath.row {
         case 0:
@@ -57,5 +57,5 @@ class SelectDemoViewController: UITableViewController {
             break
         }
     }
-    
+
 }
