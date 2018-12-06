@@ -6,8 +6,8 @@
 //  Copyright © 2017 Steamclock Software. All rights reserved.
 //
 
-import Foundation
 import CoreBluetooth
+import Foundation
 
 /// A scan operation.
 class Scan: Queueable {
@@ -102,9 +102,9 @@ class Scan: Queueable {
             self.timeoutTimer = timeoutTimer
         }
 
-        let services = serviceIdentifiers?.map({ (element) -> CBUUID in
-            return element.uuid
-        })
+        let services = serviceIdentifiers?.map { element -> CBUUID in
+            element.uuid
+        }
 
         manager.scanForPeripherals(withServices: services, options: [CBCentralManagerScanOptionAllowDuplicatesKey: allowDuplicates])
 
@@ -140,8 +140,8 @@ class Scan: Queueable {
                 rssi: rssi.intValue)
 
             // Ignore discovery if it is blacklisted.
-            if blacklist.contains(where: { (blacklistedDiscovery) -> Bool in
-                return newDiscovery.peripheralIdentifier == blacklistedDiscovery.peripheralIdentifier
+            if blacklist.contains(where: { blacklistedDiscovery -> Bool in
+                newDiscovery.peripheralIdentifier == blacklistedDiscovery.peripheralIdentifier
             }) {
                 return
             }
@@ -157,8 +157,8 @@ class Scan: Queueable {
                 refreshTimer(identifier: newDiscovery.peripheralIdentifier.uuid)
             }
 
-            if let indexOfExistingDiscovery = discoveries.index(where: { (existingDiscovery) -> Bool in
-                return existingDiscovery.peripheralIdentifier == peripheralIdentifier
+            if let indexOfExistingDiscovery = discoveries.index(where: { existingDiscovery -> Bool in
+                existingDiscovery.peripheralIdentifier == peripheralIdentifier
             }) {
                 let existingDiscovery = discoveries[indexOfExistingDiscovery]
 
@@ -243,8 +243,8 @@ class Scan: Queueable {
     }
 
     private func refreshTimer(identifier: UUID) {
-        if let indexOfExistingTimer = timers.index(where: { (uuid, _) -> Bool in
-            return uuid == identifier
+        if let indexOfExistingTimer = timers.index(where: { uuid, _ -> Bool in
+            uuid == identifier
         }) {
             timers[indexOfExistingTimer].1?.invalidate()
             timers[indexOfExistingTimer].1 = nil
@@ -254,7 +254,7 @@ class Scan: Queueable {
         var timer: Timer?
 
         if #available(iOS 10.0, *) {
-            timer = Timer.scheduledTimer(withTimeInterval: 15, repeats: false) { [weak self] (_) in
+            timer = Timer.scheduledTimer(withTimeInterval: 15, repeats: false) { [weak self] _ in
                 guard let weakSelf = self else {
                     return
                 }
@@ -279,8 +279,8 @@ class Scan: Queueable {
             return
         }
 
-        if let indexOfExpiredDiscovery = discoveries.index(where: { (discovery) -> Bool in
-            return discovery.peripheralIdentifier.uuid == identifier
+        if let indexOfExpiredDiscovery = discoveries.index(where: { discovery -> Bool in
+            discovery.peripheralIdentifier.uuid == identifier
         }) {
             let expiredDiscovery = discoveries[indexOfExpiredDiscovery]
             discoveries.remove(at: indexOfExpiredDiscovery)

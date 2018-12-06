@@ -6,8 +6,8 @@
 //  Copyright © 2017 Steamclock Software. All rights reserved.
 //
 
-import Foundation
 import CoreBluetooth
+import Foundation
 
 /**
  Defines the properties and behaviours of all Bluetooth operations that can be added to the Bluejay queue for ordered execution.

@@ -6,8 +6,8 @@
 //  Copyright © 2017 Steamclock Software. All rights reserved.
 //
 
-import Foundation
 import CoreBluetooth
+import Foundation
 
 /// The available events a queue can and should respond to.
 enum Event {

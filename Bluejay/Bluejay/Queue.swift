@@ -6,8 +6,8 @@
 //  Copyright © 2017 Steamclock Software. All rights reserved.
 //
 
-import Foundation
 import CoreBluetooth
+import Foundation
 
 /// Allows the queue to notify states or delegate tasks.
 protocol QueueObserver: class {
@@ -230,9 +230,9 @@ class Queue {
     }
 
     var isDisconnectionQueued: Bool {
-        return queue.contains(where: { (queueable) -> Bool in
-            return queueable is Disconnection
-        })
+        return queue.contains { queueable -> Bool in
+            queueable is Disconnection
+        }
     }
 
     var isRunningQueuedDisconnection: Bool {

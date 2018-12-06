@@ -6,8 +6,8 @@
 //  Copyright © 2017 Steamclock Software. All rights reserved.
 //
 
-import Foundation
 import CoreBluetooth
+import Foundation
 
 /// Types of connection time outs. Can specify a time out in seconds, or no time out.
 public enum Timeout {
@@ -63,9 +63,9 @@ class Connection: Queueable {
 
         if let timeOut = timeout, case let .seconds(timeoutInterval) = timeOut {
             if #available(iOS 10.0, *) {
-                connectionTimer = Timer.scheduledTimer(withTimeInterval: timeoutInterval, repeats: false, block: { (_) in
+                connectionTimer = Timer.scheduledTimer(withTimeInterval: timeoutInterval, repeats: false) { _ in
                     self.timedOut()
-                })
+                }
             } else {
                 // Fallback on earlier versions
                 connectionTimer = Timer.scheduledTimer(

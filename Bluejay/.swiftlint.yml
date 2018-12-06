@@ -26,3 +26,21 @@ large_tuple:
 identifier_name:
   excluded:
     - id
+
+opt_in_rules:
+  - closure_end_indentation
+  - closure_spacing
+  - empty_count
+  - explicit_init
+  - fatal_error_message
+  - first_where
+  - multiline_parameters
+  - operator_usage_whitespace
+  - private_outlet
+  - trailing_closure
+  - unneeded_parentheses_in_closure_argument
+  - implicit_return
+  - prohibited_super_call
+  - redundant_nil_coalescing
+  - sorted_imports
+  - let_var_whitespace

@@ -6,8 +6,8 @@
 //  Copyright © 2018 Steamclock Software. All rights reserved.
 //
 
-import Foundation
 import CoreBluetooth
+import Foundation
 
 /// Wrapper for CBCentralManager initialization configurations when starting a new Bluejay instance.
 public struct StartOptions {

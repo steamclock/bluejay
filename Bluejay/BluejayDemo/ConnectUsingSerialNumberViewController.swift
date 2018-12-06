@@ -6,8 +6,8 @@
 //  Copyright © 2017 Steamclock Software. All rights reserved.
 //
 
-import UIKit
 import Bluejay
+import UIKit
 
 struct Services {
     static let deviceInfo = ServiceIdentifier(uuid: "D12F953F-18ED-45F8-BC0B-6B78DB90B491")
@@ -19,7 +19,7 @@ struct Charactersitics {
 
 class ConnectUsingSerialNumberViewController: UIViewController {
 
-    @IBOutlet var statusLabel: UILabel!
+    @IBOutlet private var statusLabel: UILabel!
 
     private let bluejay = Bluejay()
 
@@ -44,11 +44,11 @@ class ConnectUsingSerialNumberViewController: UIViewController {
             preferredStyle: .alert
         )
 
-        alert.addTextField { (textField) in
+        alert.addTextField { textField in
             textField.placeholder = "ASDF1234"
         }
 
-        let connect = UIAlertAction(title: "Connect", style: .default) { [weak self] (_) in
+        let connect = UIAlertAction(title: "Connect", style: .default) { [weak self] _ in
             guard let weakSelf = self else {
                 return
             }
@@ -63,7 +63,7 @@ class ConnectUsingSerialNumberViewController: UIViewController {
             }
         }
 
-        let cancel = UIAlertAction(title: "Cancel", style: .cancel) { [weak self] (_) in
+        let cancel = UIAlertAction(title: "Cancel", style: .cancel) { [weak self] _ in
             if let weakSelf = self {
                 weakSelf.navigationController?.popViewController(animated: true)
             }
@@ -84,20 +84,20 @@ class ConnectUsingSerialNumberViewController: UIViewController {
         bluejay.scan(
             allowDuplicates: false,
             serviceIdentifiers: services,
-            discovery: { [weak self] (discovery, _) -> ScanAction in
+            discovery: { [weak self] discovery, _ -> ScanAction in
                 guard let weakSelf = self else {
                     return .stop
                 }
 
-                if weakSelf.blacklistedDiscoveries.contains(where: { (blacklistedDiscovery) -> Bool in
-                    return blacklistedDiscovery.peripheralIdentifier == discovery.peripheralIdentifier
+                if weakSelf.blacklistedDiscoveries.contains(where: { blacklistedDiscovery -> Bool in
+                    blacklistedDiscovery.peripheralIdentifier == discovery.peripheralIdentifier
                 }) {
                     return .blacklist
                 } else {
                     return .connect(
                         discovery,
                         .none,
-                        WarningOptions(notifyOnConnection: false, notifyOnDisconnection: true, notifyOnNotification: false), { (connectionResult) in
+                        WarningOptions(notifyOnConnection: false, notifyOnDisconnection: true, notifyOnNotification: false), { connectionResult in
                         switch connectionResult {
                         case .success(let peripheral):
                             debugPrint("Connection to \(peripheral.name) successful.")
@@ -114,7 +114,7 @@ class ConnectUsingSerialNumberViewController: UIViewController {
 
                                         weakSelf.blacklistedDiscoveries.append(discovery)
 
-                                        weakSelf.bluejay.disconnect(completion: { (result) in
+                                        weakSelf.bluejay.disconnect(completion: { result in
                                             switch result {
                                             case .disconnected:
                                                 weakSelf.scan(services: [Services.deviceInfo], serialNumber: weakSelf.targetSerialNumber!)
@@ -137,7 +137,7 @@ class ConnectUsingSerialNumberViewController: UIViewController {
                     })
                 }
             },
-            stopped: { [weak self] (_, error) in
+            stopped: { [weak self] _, error in
                 guard let weakSelf = self else {
                     return
                 }

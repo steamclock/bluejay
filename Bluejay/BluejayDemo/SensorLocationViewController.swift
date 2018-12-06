@@ -6,8 +6,8 @@
 //  Copyright © 2017 Steamclock Software. All rights reserved.
 //
 
-import UIKit
 import Bluejay
+import UIKit
 
 class SensorLocationViewController: UITableViewController {
 
@@ -33,7 +33,7 @@ class SensorLocationViewController: UITableViewController {
 
         let cell = super.tableView(tableView, cellForRowAt: indexPath)
 
-        bluejay?.write(to: sensorLocation, value: UInt8(indexPath.row), completion: { [weak self] (result) in
+        bluejay?.write(to: sensorLocation, value: UInt8(indexPath.row)) { [weak self] result in
             guard let weakSelf = self else {
                 return
             }
@@ -51,6 +51,6 @@ class SensorLocationViewController: UITableViewController {
             case .failure(let error):
                 debugPrint("Failed write to sensor location with error: \(error.localizedDescription)")
             }
-        })
+        }
     }
 }

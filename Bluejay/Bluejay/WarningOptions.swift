@@ -1,5 +1,5 @@
-import Foundation
 import CoreBluetooth
+import Foundation
 
 /// A connection's configurations for system alerts.
 public struct WarningOptions {

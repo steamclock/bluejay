@@ -6,14 +6,14 @@
 //  Copyright © 2017 Steamclock Software. All rights reserved.
 //
 
-import Foundation
 import CoreBluetooth
+import Foundation
 
 extension CBPeripheral {
 
     /// Find a service on a peripheral by CBUUID.
     public func service(with uuid: CBUUID) -> CBService? {
-        return services?.first(where: { $0.uuid == uuid })
+        return services?.first { $0.uuid == uuid }
     }
 
 }

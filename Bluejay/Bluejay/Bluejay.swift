@@ -6,8 +6,8 @@
 //  Copyright © 2017 Steamclock Software. All rights reserved.
 //
 
-import Foundation
 import CoreBluetooth
+import Foundation
 
 /**
  Bluejay is a simple wrapper around CoreBluetooth that focuses on making a common usage case as straight forward as possible: a single connected peripheral that the user is interacting with regularly (think most personal electronics devices that have an associated iOS app: fitness trackers, guitar amps, etc).
@@ -980,7 +980,7 @@ extension Bluejay: CBCentralManagerDelegate {
                 // try to trigger a reconnect if we have a stored
                 // peripheral
                 if let id = peripheralIdentifierToRestore {
-                    connect(id, timeout: previousConnectionTimeout ?? .none, completion: { _ in })
+                    connect(id, timeout: previousConnectionTimeout ?? .none) { _ in }
                 }
 
                 return
@@ -996,7 +996,7 @@ extension Bluejay: CBCentralManagerDelegate {
         case .connecting:
             precondition(connectedPeripheral == nil,
                          "Connected peripheral is not nil during willRestoreState for state: connecting.")
-            connect(PeripheralIdentifier(uuid: cbPeripheral.identifier), timeout: .none, completion: { _ in})
+            connect(PeripheralIdentifier(uuid: cbPeripheral.identifier), timeout: .none, completion: { _ in })
         case .connected:
             precondition(connectingPeripheral == nil,
                          "Connecting peripheral is not nil during willRestoreState for state: connected.")
@@ -1021,7 +1021,7 @@ extension Bluejay: CBCentralManagerDelegate {
      When connected, update Bluejay's states by updating the values for `connectingPeripheral`, `connectedPeripheral`, and `shouldAutoReconnect`. Also, make sure to broadcast the event to observers, and notify the queue so that the current operation in-flight can process this event and get a chance to finish.
     */
     public func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
-        let backgroundTask =  UIApplication.shared.beginBackgroundTask(expirationHandler: nil)
+        let backgroundTask = UIApplication.shared.beginBackgroundTask(expirationHandler: nil)
 
         log("Did connect to: \(peripheral.name ?? peripheral.identifier.uuidString)")
 
@@ -1049,7 +1049,7 @@ extension Bluejay: CBCentralManagerDelegate {
     */
     public func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
         // swiftlint:disable:previous cyclomatic_complexity
-        let backgroundTask =  UIApplication.shared.beginBackgroundTask(expirationHandler: nil)
+        let backgroundTask = UIApplication.shared.beginBackgroundTask(expirationHandler: nil)
 
         let peripheralString = peripheral.name ?? peripheral.identifier.uuidString
         let errorString = error?.localizedDescription
@@ -1167,9 +1167,7 @@ extension Bluejay: CBCentralManagerDelegate {
                 log("Disconnect clean up: issuing reconnect to: \(peripheral.name ?? peripheral.identifier.uuidString)")
                 weakSelf.connect(
                     PeripheralIdentifier(uuid: peripheral.identifier),
-                    timeout: weakSelf.previousConnectionTimeout ?? .none,
-                    completion: {_ in }
-                )
+                    timeout: weakSelf.previousConnectionTimeout ?? .none) { _ in }
             }
 
             log("End of disconnect clean up.")

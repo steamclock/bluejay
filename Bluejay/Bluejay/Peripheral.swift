@@ -6,8 +6,8 @@
 //  Copyright © 2017 Steamclock Software. All rights reserved.
 //
 
-import Foundation
 import CoreBluetooth
+import Foundation
 
 /**
  An interface to the Bluetooth peripheral.
@@ -76,7 +76,7 @@ public class Peripheral: NSObject {
 
     /// Queue the necessary operations needed to discover the specified characteristic.
     private func discoverCharactersitic(_ characteristicIdentifier: CharacteristicIdentifier, callback: @escaping (Bool) -> Void) {
-        addOperation(DiscoverService(serviceIdentifier: characteristicIdentifier.service, peripheral: cbPeripheral, callback: { [weak self] result in
+        addOperation(DiscoverService(serviceIdentifier: characteristicIdentifier.service, peripheral: cbPeripheral) { [weak self] result in
             guard let weakSelf = self else {
                 return
             }
@@ -91,11 +91,11 @@ public class Peripheral: NSObject {
                         case .failure:
                             callback(false)
                         }
-                }))
+                    }))
             case .failure:
                 callback(false)
             }
-        }))
+        })
     }
 
     // MARK: - Bluetooth Event
@@ -138,7 +138,7 @@ public class Peripheral: NSObject {
 
         // log.debug("Queueing read to: \(characteristicIdentifier.uuid.uuidString)")
 
-        discoverCharactersitic(characteristicIdentifier, callback: { [weak self] success in
+        discoverCharactersitic(characteristicIdentifier) { [weak self] success in
             guard let weakSelf = self else {
                 return
             }
@@ -150,14 +150,14 @@ public class Peripheral: NSObject {
             } else {
                 completion(.failure(BluejayError.missingCharacteristic(characteristicIdentifier)))
             }
-        })
+        }
     }
 
     /// Write to a specified characteristic.
     public func write<S: Sendable>(to characteristicIdentifier: CharacteristicIdentifier, value: S, type: CBCharacteristicWriteType = .withResponse, completion: @escaping (WriteResult) -> Void) {
         // log.debug("Queueing write to: \(characteristicIdentifier.uuid.uuidString) with value of: \(value)")
 
-        discoverCharactersitic(characteristicIdentifier, callback: { [weak self] _ in
+        discoverCharactersitic(characteristicIdentifier) { [weak self] _ in
             guard let weakSelf = self else {
                 return
             }
@@ -165,7 +165,7 @@ public class Peripheral: NSObject {
             // Not using the success variable here because the write operation will also catch the error if the service or the characteristic is not discovered.
             weakSelf.addOperation(
                 WriteCharacteristic(characteristicIdentifier: characteristicIdentifier, peripheral: weakSelf.cbPeripheral, value: value, type: type, callback: completion))
-        })
+        }
     }
 
     /// Checks whether Bluejay is currently listening to the specified charactersitic.
@@ -175,14 +175,14 @@ public class Peripheral: NSObject {
 
     /// Listen for notifications on a specified characterstic.
     public func listen<R: Receivable>(to characteristicIdentifier: CharacteristicIdentifier, completion: @escaping (ReadResult<R>) -> Void) {
-        discoverCharactersitic(characteristicIdentifier, callback: { [weak self] success in
+        discoverCharactersitic(characteristicIdentifier) { [weak self] success in
             guard let weakSelf = self else {
                 return
             }
 
             // Not using the success variable here because the listen operation will also catch the error if the service or the characteristic is not discovered.
             weakSelf.addOperation(
-                ListenCharacteristic(characteristicIdentifier: characteristicIdentifier, peripheral: weakSelf.cbPeripheral, value: true, callback: { result in
+                ListenCharacteristic(characteristicIdentifier: characteristicIdentifier, peripheral: weakSelf.cbPeripheral, value: true) { result in
                     precondition(
                         weakSelf.listeners[characteristicIdentifier] == nil,
                         "Cannot have multiple active listens against the same characteristic: \(characteristicIdentifier.uuid)"
@@ -209,8 +209,9 @@ public class Peripheral: NSObject {
                     case .failure(let error):
                         completion(.failure(error))
                     }
-                }))
-        })
+                }
+            )
+        }
     }
 
     /**
@@ -222,7 +223,7 @@ public class Peripheral: NSObject {
      Currently this can also cancel a regular in-progress read as well, but that behaviour may change down the road.
      */
     public func endListen(to characteristicIdentifier: CharacteristicIdentifier, error: Error? = nil, completion: ((WriteResult) -> Void)? = nil) {
-        discoverCharactersitic(characteristicIdentifier, callback: { [weak self] _ in
+        discoverCharactersitic(characteristicIdentifier) { [weak self] _ in
             guard let weakSelf = self else {
                 return
             }
@@ -231,7 +232,7 @@ public class Peripheral: NSObject {
 
             // Not using the success variable here because the listen operation will also catch the error if the service or the characteristic is not discovered.
             weakSelf.addOperation(
-                ListenCharacteristic(characteristicIdentifier: characteristicIdentifier, peripheral: weakSelf.cbPeripheral, value: false, callback: { result in
+                ListenCharacteristic(characteristicIdentifier: characteristicIdentifier, peripheral: weakSelf.cbPeripheral, value: false) { result in
                     weakSelf.listeners[characteristicIdentifier] = nil
 
                     // Only bother removing the listen cache if listen restoration is enabled.
@@ -248,8 +249,9 @@ public class Peripheral: NSObject {
                     }
 
                     completion?(result)
-                }))
-        })
+                }
+            )
+        }
     }
 
     /// Restore a (believed to be) active listening session, so if we start up in response to a notification, we can receive it.
@@ -318,7 +320,7 @@ public class Peripheral: NSObject {
 
         var newCacheData = cacheData
         let decoder = JSONDecoder()
-        newCacheData = try newCacheData.filter { (data) -> Bool in
+        newCacheData = try newCacheData.filter { data -> Bool in
             do {
                 let listenCache = try decoder.decode(ListenCache.self, from: data)
                 return (listenCache.serviceUUID != serviceUUID) && (listenCache.characteristicUUID != characteristicUUID)
@@ -339,8 +341,8 @@ public class Peripheral: NSObject {
         UserDefaults.standard.set(newListenCaches, forKey: Constant.listenCaches)
         UserDefaults.standard.synchronize()
 
-        listenersBeingCancelled = listenersBeingCancelled.filter { (characteristicIdentifier) -> Bool in
-            return characteristicIdentifier.uuid.uuidString != listeningCharacteristic.uuid.uuidString
+        listenersBeingCancelled = listenersBeingCancelled.filter { characteristicIdentifier -> Bool in
+            characteristicIdentifier.uuid.uuidString != listeningCharacteristic.uuid.uuidString
         }
     }
 
@@ -377,9 +379,9 @@ extension Peripheral: CBPeripheralDelegate {
 
         guard let listener = listeners[CharacteristicIdentifier(characteristic)] else {
             // Handle attempting to read a characteristic whose listen is being cancelled during state restoration.
-            let isCancellingListenOnCurrentRead = listenersBeingCancelled.contains(where: { (characteristicIdentifier) -> Bool in
-                return characteristicIdentifier.uuid.uuidString == characteristic.uuid.uuidString
-            })
+            let isCancellingListenOnCurrentRead = listenersBeingCancelled.contains { characteristicIdentifier -> Bool in
+                characteristicIdentifier.uuid.uuidString == characteristic.uuid.uuidString
+            }
 
             let isReadUnhandled = isCancellingListenOnCurrentRead || (listeners.isEmpty && bluejay.queue.isEmpty)
 
