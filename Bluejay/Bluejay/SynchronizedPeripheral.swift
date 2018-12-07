@@ -103,7 +103,7 @@ public class SynchronizedPeripheral {
         }
 
         DispatchQueue.main.async {
-            self.parent.listen(to: characteristicIdentifier, completion: { (result: ReadResult<R>) in
+            self.parent.listen(to: characteristicIdentifier, multipleListenOption: .trap, completion: { (result: ReadResult<R>) in
                 listenResult = result
                 var action = ListenAction.done
 
@@ -211,7 +211,7 @@ public class SynchronizedPeripheral {
 
             shouldListenAgain = false
 
-            self.parent.listen(to: characteristicIdentifier, completion: { (result: ReadResult<Data>) in
+            self.parent.listen(to: characteristicIdentifier, multipleListenOption: .trap, completion: { (result: ReadResult<Data>) in
                 switch result {
                 case .success:
                     log("Flushed some data.")
@@ -283,7 +283,7 @@ public class SynchronizedPeripheral {
         }
 
         DispatchQueue.main.sync {
-            self.parent.listen(to: charToListenTo, completion: { (result: ReadResult<R>) in
+            self.parent.listen(to: charToListenTo, multipleListenOption: .trap, completion: { (result: ReadResult<R>) in
                 listenResult = result
                 var action: ListenAction = .done
 
@@ -366,7 +366,7 @@ public class SynchronizedPeripheral {
         }
 
         DispatchQueue.main.sync {
-            self.parent.listen(to: charToListenTo, completion: { (result: ReadResult<Data>) in
+            self.parent.listen(to: charToListenTo, multipleListenOption: .trap, completion: { (result: ReadResult<Data>) in
                 listenResult = result
                 var action = ListenAction.keepListening
 

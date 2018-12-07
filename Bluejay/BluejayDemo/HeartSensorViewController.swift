@@ -124,9 +124,11 @@ class HeartSensorViewController: UITableViewController {
         }
 
         let heartRateService = ServiceIdentifier(uuid: "180D")
-        let heartRateMeasurement = CharacteristicIdentifier(uuid: "2A37", service: heartRateService)
+        let heartRateCharacteristic = CharacteristicIdentifier(uuid: "2A37", service: heartRateService)
 
-        bluejay.listen(to: heartRateMeasurement) { [weak self] (result: ReadResult<HeartRateMeasurement>) in
+        var triedThirdListen = false
+
+        bluejay.listen(to: heartRateCharacteristic, multipleListenOption: .replaceable) { [weak self] (result: ReadResult<HeartRateMeasurement>) in
             guard let weakSelf = self else {
                 return
             }
@@ -148,9 +150,42 @@ class HeartSensorViewController: UITableViewController {
                         }
                     })
                 }
+
+                if !triedThirdListen {
+                    triedThirdListen = true
+                    bluejay.listen(to: heartRateCharacteristic) { (result: ReadResult<HeartRateMeasurement>) in
+                        switch result {
+                        case .success(let heartRateMeasurement):
+                            debugPrint("Third listen: \(heartRateMeasurement.measurement)")
+                        case .failure(let error):
+                            debugPrint("Failed to third listen to heart rate measurement with error: \(error.localizedDescription)")
+                        }
+                    }
+                }
             case .failure(let error):
                 debugPrint("Failed to listen to heart rate measurement with error: \(error.localizedDescription)")
                 weakSelf.isMonitoringHeartRate = false
+
+                if !triedThirdListen {
+                    triedThirdListen = true
+                    bluejay.listen(to: heartRateCharacteristic) { (result: ReadResult<HeartRateMeasurement>) in
+                        switch result {
+                        case .success(let heartRateMeasurement):
+                            debugPrint("Third listen: \(heartRateMeasurement.measurement)")
+                        case .failure(let error):
+                            debugPrint("Failed to third listen to heart rate measurement with error: \(error.localizedDescription)")
+                        }
+                    }
+                }
+            }
+        }
+
+        bluejay.listen(to: heartRateCharacteristic) { (result: ReadResult<HeartRateMeasurement>) in
+            switch result {
+            case .success(let heartRateMeasurement):
+                debugPrint("Duplicated listen: \(heartRateMeasurement.measurement)")
+            case .failure(let error):
+                debugPrint("Failed to duplicate listen to heart rate measurement with error: \(error.localizedDescription)")
             }
         }
     }

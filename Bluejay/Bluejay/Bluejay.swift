@@ -561,7 +561,10 @@ public class Bluejay: NSObject { //swiftlint:disable:this type_body_length
         - characteristicIdentifier: The characteristic to listen to.
         - completion: Called with the result of the attempt to listen for notifications on the specified characteristic.
      */
-    public func listen<R: Receivable>(to characteristicIdentifier: CharacteristicIdentifier, completion: @escaping (ReadResult<R>) -> Void) {
+    public func listen<R: Receivable>(
+        to characteristicIdentifier: CharacteristicIdentifier,
+        multipleListenOption option: MultipleListenOption = .trap,
+        completion: @escaping (ReadResult<R>) -> Void) {
         Dispatch.dispatchPrecondition(condition: .onQueue(.main))
 
         if isRunningBackgroundTask {
@@ -570,7 +573,7 @@ public class Bluejay: NSObject { //swiftlint:disable:this type_body_length
         }
 
         if let peripheral = connectedPeripheral {
-            peripheral.listen(to: characteristicIdentifier, completion: completion)
+            peripheral.listen(to: characteristicIdentifier, multipleListenOption: option, completion: completion)
         } else {
             completion(.failure(BluejayError.notConnected))
         }

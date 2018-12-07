@@ -62,6 +62,10 @@ public enum BluejayError {
     case stopped
     /// Bluejay cannot perform certain actions when background restoration is still in progress.
     case backgroundRestorationInProgress
+    /// The original listen declared that duplicated listens are not allowed.
+    case multipleListenTrapped
+    /// The original listen declared that it can be replaced by a new listen.
+    case multipleListenReplaced
 }
 
 extension BluejayError: LocalizedError {
@@ -123,6 +127,10 @@ extension BluejayError: LocalizedError {
             return "Bluejay stopped."
         case .backgroundRestorationInProgress:
             return "Background restoration is in progress."
+        case .multipleListenTrapped:
+            return "The current listen cannot be installed because an existing listen on the same characteristic is configured to trap."
+        case .multipleListenReplaced:
+            return "The current listen has been replaced by a newer listen on the same characteristic."
         }
     }
 }
@@ -161,6 +169,8 @@ extension BluejayError: CustomNSError {
         case .indefiniteFlush: return 24
         case .stopped: return 25
         case .backgroundRestorationInProgress: return 26
+        case .multipleListenTrapped: return 27
+        case .multipleListenReplaced: return 28
         }
     }
 

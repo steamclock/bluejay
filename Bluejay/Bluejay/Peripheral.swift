@@ -19,8 +19,7 @@ public class Peripheral: NSObject {
     private(set) weak var bluejay: Bluejay?
     private(set) var cbPeripheral: CBPeripheral
 
-    private var listeners: [CharacteristicIdentifier: (ReadResult<Data?>) -> Void] = [:]
-
+    private var listeners: [CharacteristicIdentifier: (ListenCallback?, MultipleListenOption)] = [:]
     private var observers: [WeakRSSIObserver] = []
 
     // MARK: - Initialization
@@ -76,26 +75,37 @@ public class Peripheral: NSObject {
     }
 
     /// Queue the necessary operations needed to discover the specified characteristic.
-    private func discoverCharactersitic(_ characteristicIdentifier: CharacteristicIdentifier, callback: @escaping (Bool) -> Void) {
-        addOperation(DiscoverService(serviceIdentifier: characteristicIdentifier.service, peripheral: cbPeripheral, callback: { [weak self] result in
-            guard let weakSelf = self else {
-                return
-            }
+    private func discoverCharactersitic(_ characteristicIdentifier: CharacteristicIdentifier, callback: @escaping (DiscoveryResult) -> Void) {
+        var discoverServiceFailed = false
 
+        addOperation(DiscoverService(
+            serviceIdentifier: characteristicIdentifier.service,
+            peripheral: cbPeripheral,
+            callback: { result in
             switch result {
             case .success:
-                weakSelf.addOperation(DiscoverCharacteristic(
-                    characteristicIdentifier: characteristicIdentifier, peripheral: weakSelf.cbPeripheral, callback: { result in
-                        switch result {
-                        case .success:
-                            callback(true)
-                        case .failure:
-                            callback(false)
-                        }
-                }))
-            case .failure:
-                callback(false)
+                // Do nothing and wait for the subsequent discover characteristic operation to complete.
+                break
+            case .failure(let error):
+                discoverServiceFailed = true
+                callback(.failure(error))
             }
+        }))
+
+        addOperation(DiscoverCharacteristic(
+            characteristicIdentifier: characteristicIdentifier,
+            peripheral: cbPeripheral,
+            callback: { result in
+                if discoverServiceFailed {
+                    return
+                } else {
+                    switch result {
+                    case .success:
+                        callback(.success)
+                    case .failure(let error):
+                        callback(.failure(error))
+                    }
+                }
         }))
     }
 
@@ -139,17 +149,18 @@ public class Peripheral: NSObject {
 
         // log.debug("Queueing read to: \(characteristicIdentifier.uuid.uuidString)")
 
-        discoverCharactersitic(characteristicIdentifier, callback: { [weak self] success in
+        discoverCharactersitic(characteristicIdentifier, callback: { [weak self] result in
             guard let weakSelf = self else {
                 return
             }
 
-            if success {
+            switch result {
+            case .success:
                 weakSelf.addOperation(
                     ReadCharacteristic(characteristicIdentifier: characteristicIdentifier, peripheral: weakSelf.cbPeripheral, callback: completion)
                 )
-            } else {
-                completion(.failure(BluejayError.missingCharacteristic(characteristicIdentifier)))
+            case .failure(let error):
+                completion(.failure(error))
             }
         })
     }
@@ -158,14 +169,24 @@ public class Peripheral: NSObject {
     public func write<S: Sendable>(to characteristicIdentifier: CharacteristicIdentifier, value: S, type: CBCharacteristicWriteType = .withResponse, completion: @escaping (WriteResult) -> Void) {
         // log.debug("Queueing write to: \(characteristicIdentifier.uuid.uuidString) with value of: \(value)")
 
-        discoverCharactersitic(characteristicIdentifier, callback: { [weak self] _ in
+        discoverCharactersitic(characteristicIdentifier, callback: { [weak self] result in
             guard let weakSelf = self else {
                 return
             }
 
-            // Not using the success variable here because the write operation will also catch the error if the service or the characteristic is not discovered.
-            weakSelf.addOperation(
-                WriteCharacteristic(characteristicIdentifier: characteristicIdentifier, peripheral: weakSelf.cbPeripheral, value: value, type: type, callback: completion))
+            switch result {
+            case .success:
+                weakSelf.addOperation(
+                    WriteCharacteristic(
+                        characteristicIdentifier: characteristicIdentifier,
+                        peripheral: weakSelf.cbPeripheral,
+                        value: value,
+                        type: type,
+                        callback: completion)
+                )
+            case .failure(let error):
+                completion(.failure(error))
+            }
         })
     }
 
@@ -175,47 +196,73 @@ public class Peripheral: NSObject {
     }
 
     /// Listen for notifications on a specified characterstic.
-    public func listen<R: Receivable>(to characteristicIdentifier: CharacteristicIdentifier, completion: @escaping (ReadResult<R>) -> Void) {
-        if listeners[characteristicIdentifier] != nil {
-            log("Already listening to: \(characteristicIdentifier.uuid)")
+    public func listen<R: Receivable>(
+        to characteristicIdentifier: CharacteristicIdentifier,
+        multipleListenOption option: MultipleListenOption,
+        completion: @escaping (ReadResult<R>) -> Void) {
+
+        // Fail this duplicate listen early if an original listen is being installed or installed and was configured to trap.
+        guard listeners[characteristicIdentifier]?.1 != .trap else {
+            completion(.failure(BluejayError.multipleListenTrapped))
             return
         }
 
-        discoverCharactersitic(characteristicIdentifier, callback: { [weak self] success in
+        // Add to the listeners cache if it doesn't exist, but only option is saved and callback is nil because this first listen is not installed yet.
+        if listeners[characteristicIdentifier] == nil {
+            listeners[characteristicIdentifier] = (nil, option)
+        } // If the listen already exists, don't overwrite its option.
+
+        discoverCharactersitic(characteristicIdentifier, callback: { [weak self] result in
             guard let weakSelf = self else {
                 return
             }
 
-            // Not using the success variable here because the listen operation will also catch the error if the service or the characteristic is not discovered.
-            weakSelf.addOperation(
-                ListenCharacteristic(characteristicIdentifier: characteristicIdentifier, peripheral: weakSelf.cbPeripheral, value: true, callback: { result in
-                    precondition(
-                        weakSelf.listeners[characteristicIdentifier] == nil,
-                        "Cannot have multiple active listens against the same characteristic: \(characteristicIdentifier.uuid)"
-                    )
+            switch result {
+            case .success:
+                weakSelf.addOperation(
+                    ListenCharacteristic(
+                        characteristicIdentifier: characteristicIdentifier,
+                        peripheral: weakSelf.cbPeripheral,
+                        value: true, callback: { result in
+                            switch result {
+                            case .success:
+                                guard let cachedListener = weakSelf.listeners[characteristicIdentifier] else {
+                                    fatalError("Installed a listen on characteristic \(characteristicIdentifier) but it is not cached.")
+                                }
 
-                    switch result {
-                    case .success:
-                        weakSelf.listeners[characteristicIdentifier] = { dataResult in
-                            completion(ReadResult<R>(dataResult: dataResult))
-                        }
+                                let originalMultipleListenOption = cachedListener.1
 
-                        // Only bother caching if listen restoration is enabled.
-                        if
-                            let restoreIdentifier = weakSelf.bluejay?.restoreIdentifier,
-                            weakSelf.bluejay?.listenRestorer != nil
-                        {
-                            do {
-                                // Make sure a successful listen is cached, so Bluejay can inform its delegate on which characteristics need their listens restored during state restoration.
-                                try weakSelf.cache(listeningCharacteristic: characteristicIdentifier, restoreIdentifier: restoreIdentifier)
-                            } catch {
-                                log("Failed to cache listen on characteristic: \(characteristicIdentifier.uuid) of service: \(characteristicIdentifier.service.uuid) for restore id: \(restoreIdentifier) with error: \(error.localizedDescription)")
+                                switch originalMultipleListenOption {
+                                case .trap:
+                                    precondition(cachedListener.0 == nil, "Duplicated listen installed despite original listen was set to trap.")
+                                case .replaceable:
+                                    if let previousListenerCallback = cachedListener.0 {
+                                        previousListenerCallback(.failure(BluejayError.multipleListenReplaced))
+                                    }
+                                }
+
+                                weakSelf.listeners[characteristicIdentifier] = ({ dataResult in
+                                    completion(ReadResult<R>(dataResult: dataResult))
+                                }, originalMultipleListenOption)
+
+                                // Only bother caching if listen restoration is enabled.
+                                if let restoreIdentifier = weakSelf.bluejay?.restoreIdentifier, weakSelf.bluejay?.listenRestorer != nil {
+                                    do {
+                                        // Make sure a successful listen is cached, so Bluejay can inform its delegate on which characteristics need their listens restored during state restoration.
+                                        try weakSelf.cache(listeningCharacteristic: characteristicIdentifier, restoreIdentifier: restoreIdentifier)
+                                    } catch {
+                                        log("Failed to cache listen on characteristic: \(characteristicIdentifier.uuid) of service: \(characteristicIdentifier.service.uuid) for restore id: \(restoreIdentifier) with error: \(error.localizedDescription)")
+                                    }
+                                }
+                            case .failure(let error):
+                                weakSelf.listeners[characteristicIdentifier] = nil
+                                completion(.failure(error))
                             }
-                        }
-                    case .failure(let error):
-                        completion(.failure(error))
-                    }
-                }))
+                    }))
+            case .failure(let error):
+                weakSelf.listeners[characteristicIdentifier] = nil
+                completion(.failure(error))
+            }
         })
     }
 
@@ -239,21 +286,25 @@ public class Peripheral: NSObject {
             }
         }
 
-        discoverCharactersitic(characteristicIdentifier, callback: { [weak self] _ in
+        discoverCharactersitic(characteristicIdentifier, callback: { [weak self] result in
             guard let weakSelf = self else {
                 return
             }
 
-            // Not using the success variable here because the listen operation will also catch the error if the service or the characteristic is not discovered.
-            weakSelf.addOperation(
-                ListenCharacteristic(
-                    characteristicIdentifier: characteristicIdentifier,
-                    peripheral: weakSelf.cbPeripheral,
-                    value: false,
-                    callback: { result in
-                        completion?(result)
-                })
-            )
+            switch result {
+            case .success:
+                weakSelf.addOperation(
+                    ListenCharacteristic(
+                        characteristicIdentifier: characteristicIdentifier,
+                        peripheral: weakSelf.cbPeripheral,
+                        value: false,
+                        callback: { result in
+                            completion?(result)
+                    })
+                )
+            case .failure(let error):
+                completion?(.failure(error))
+            }
         })
     }
 
@@ -264,7 +315,7 @@ public class Peripheral: NSObject {
             "Cannot have multiple active listens against the same characteristic"
         )
 
-        listeners[characteristicIdentifier] = { dataResult in
+        listeners[characteristicIdentifier]?.0 = { dataResult in
             completion(ReadResult<R>(dataResult: dataResult))
         }
     }
@@ -376,7 +427,7 @@ extension Peripheral: CBPeripheralDelegate {
             preconditionFailure("Cannot handle did update value for \(characteristic.uuid.uuidString): Bluejay is nil.")
         }
 
-        guard let listener = listeners[CharacteristicIdentifier(characteristic)] else {
+        guard let listener = listeners[CharacteristicIdentifier(characteristic)], let listenCallback = listener.0 else {
             if bluejay.queue.isReading {
                 handleEvent(.didReadCharacteristic(characteristic, characteristic.value ?? Data()), error: error as NSError?)
             } else if bluejay.queue.willEndListen(on: CharacteristicIdentifier(characteristic)) {
@@ -388,9 +439,9 @@ extension Peripheral: CBPeripheralDelegate {
         }
 
         if let error = error {
-            listener(.failure(error))
+            listenCallback(.failure(error))
         } else {
-            listener(.success(characteristic.value))
+            listenCallback(.success(characteristic.value))
         }
     }
 
