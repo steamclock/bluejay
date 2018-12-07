@@ -6,8 +6,8 @@
 //  Copyright © 2017 Steamclock Software. All rights reserved.
 //
 
-import Foundation
 import CoreBluetooth
+import Foundation
 
 /// Types of connection time outs. Can specify a time out in seconds, or no time out.
 public enum Timeout {

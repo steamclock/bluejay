@@ -1,5 +1,5 @@
-import Foundation
 import CoreBluetooth
+import Foundation
 
 /// A connection's configurations for system alerts.
 public struct WarningOptions {
@@ -27,7 +27,7 @@ public struct WarningOptions {
 
     /**
      Creates a connection options that can specify whether iOS can display a system alert when certain conditions are met while your app is suspended, usually an alert dialog outside of your app in the Home screen for example.
-     
+
      - Parameters:
          - notifyOnConnection: Determines whether iOS should show a system alert when your suspended app is connected to a peripheral.
          - notifyOnDisconnection: Determines whether iOS should show a system alert when your suspended app is disconnected from a peripheral.

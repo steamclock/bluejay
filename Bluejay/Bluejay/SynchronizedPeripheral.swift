@@ -6,8 +6,8 @@
 //  Copyright © 2017 Steamclock Software. All rights reserved.
 //
 
-import Foundation
 import CoreBluetooth
+import Foundation
 
 /**
     A synchronous interface to the Bluetooth peripheral, intended to be used inside the backgroundTask block of `run(backgroundTask:completionOnMainThread:)` to perform multi-part operations without the need for a complicated callback or promise setup.
@@ -40,10 +40,10 @@ public class SynchronizedPeripheral {
         let sem = DispatchSemaphore(value: 0)
 
         DispatchQueue.main.async {
-            self.parent.read(from: characteristicIdentifier, completion: { (result: ReadResult<R>) in
+            self.parent.read(from: characteristicIdentifier) { (result: ReadResult<R>) in
                 finalResult = result
                 sem.signal()
-            })
+            }
             return
         }
 
@@ -64,10 +64,10 @@ public class SynchronizedPeripheral {
         let sem = DispatchSemaphore(value: 0)
 
         DispatchQueue.main.async {
-            self.parent.write(to: characteristicIdentifier, value: value, type: type, completion: { (result) in
+            self.parent.write(to: characteristicIdentifier, value: value, type: type) { result in
                 finalResult = result
                 sem.signal()
-            })
+            }
             return
         }
 
@@ -81,7 +81,8 @@ public class SynchronizedPeripheral {
     /// Write to one characterestic then reading a value from another.
     public func writeAndRead<R: Receivable, S: Sendable> (
         writeTo: CharacteristicIdentifier,
-        value: S, type: CBCharacteristicWriteType = .withResponse,
+        value: S,
+        type: CBCharacteristicWriteType = .withResponse,
         readFrom: CharacteristicIdentifier) throws -> R {
         try write(to: writeTo, value: value, type: type)
         return try read(from: readFrom)
@@ -116,7 +117,7 @@ public class SynchronizedPeripheral {
 
                 if error != nil || action == .done {
                     if self.parent.isListening(to: characteristicIdentifier) && self.bluetoothAvailable {
-                        self.parent.endListen(to: characteristicIdentifier, error: nil, completion: { (result) in
+                        self.parent.endListen(to: characteristicIdentifier, error: nil) { result in
                             switch result {
                             case .success:
                                 break
@@ -128,12 +129,12 @@ public class SynchronizedPeripheral {
                             }
 
                             sem.signal()
-                        })
+                        }
                     } else {
                         sem.signal()
                     }
                 }
-            })
+            }
         }
 
         if case let .seconds(timeoutInterval) = timeout {
@@ -163,7 +164,7 @@ public class SynchronizedPeripheral {
 
         DispatchQueue.main.async {
             if self.parent.isListening(to: characteristicIdentifier) {
-                self.parent.endListen(to: characteristicIdentifier, error: error, completion: { (result) in
+                self.parent.endListen(to: characteristicIdentifier, error: error) { result in
                     switch result {
                     case .success:
                         break
@@ -172,7 +173,7 @@ public class SynchronizedPeripheral {
                     }
 
                     sem.signal()
-                })
+                }
             } else {
                 sem.signal()
             }
@@ -187,9 +188,9 @@ public class SynchronizedPeripheral {
 
     /**
      Flush a listen to a characteristic by receiving and discarding values for the specified duration.
-     
+
      **Warning** Timeout defaults to 3 seconds. Specifying no timeout or a timeout with zero second will result in a fatal error.
-     
+
      - Parameters:
         - characteristicIdentifier: The characteristic to flush.
         - nonZeroTimeout: How long to wait for incoming data.
@@ -225,7 +226,7 @@ public class SynchronizedPeripheral {
                 }
 
                 listenSem.signal()
-            })
+            }
         }
 
         repeat {
@@ -236,7 +237,7 @@ public class SynchronizedPeripheral {
 
         DispatchQueue.main.async {
             if self.parent.isListening(to: characteristicIdentifier) {
-                self.parent.endListen(to: characteristicIdentifier, error: nil, completion: { (result) in
+                self.parent.endListen(to: characteristicIdentifier, error: nil) { result in
                     switch result {
                     case .success:
                         break
@@ -245,7 +246,7 @@ public class SynchronizedPeripheral {
                     }
 
                     endListenSem.signal()
-                })
+                }
             } else {
                 endListenSem.signal()
             }
@@ -262,7 +263,7 @@ public class SynchronizedPeripheral {
 
     /**
      Handle a compound operation consisting of writing on one characterstic followed by listening on another for some streamed data.
-     
+
      Conceptually very similar to just calling write, then listen, except that the listen is set up before the write is issued, so that there should be no risks of data loss due to missed notifications, which there would be with calling them seperatly.
      */
     public func writeAndListen<S: Sendable, R: Receivable>( // swiftlint:disable:this cyclomatic_complexity
@@ -296,7 +297,7 @@ public class SynchronizedPeripheral {
 
                 if error != nil || action == .done {
                     if self.parent.isListening(to: charToListenTo) && self.bluetoothAvailable {
-                        self.parent.endListen(to: charToListenTo, error: nil, completion: { (result) in
+                        self.parent.endListen(to: charToListenTo, error: nil) { result in
                             switch result {
                             case .success:
                                 break
@@ -308,14 +309,14 @@ public class SynchronizedPeripheral {
                             }
 
                             sem.signal()
-                        })
+                        }
                     } else {
                         sem.signal()
                     }
                 }
-            })
+            }
 
-            self.parent.write(to: charToWriteTo, value: value, type: type, completion: { result in
+            self.parent.write(to: charToWriteTo, value: value, type: type) { result in
                 switch result {
                 case .success:
                     return
@@ -323,7 +324,7 @@ public class SynchronizedPeripheral {
                     error = failureError
                     sem.signal()
                 }
-            })
+            }
 
         }
 
@@ -391,7 +392,7 @@ public class SynchronizedPeripheral {
 
                 if writeAndAssembleError != nil || action == .done {
                     if self.parent.isListening(to: charToListenTo) && self.bluetoothAvailable {
-                        self.parent.endListen(to: charToListenTo, error: nil, completion: { (result) in
+                        self.parent.endListen(to: charToListenTo, error: nil) { result in
                             switch result {
                             case .success:
                                 break
@@ -403,14 +404,14 @@ public class SynchronizedPeripheral {
                             }
 
                             sem.signal()
-                        })
+                        }
                     } else {
                         sem.signal()
                     }
                 }
-            })
+            }
 
-            self.parent.write(to: charToWriteTo, value: value, completion: { result in
+            self.parent.write(to: charToWriteTo, value: value) { result in
                 switch result {
                 case .success:
                     return
@@ -418,7 +419,7 @@ public class SynchronizedPeripheral {
                     writeAndAssembleError = error
                     sem.signal()
                 }
-            })
+            }
         }
 
         _ = sem.wait(timeout: timeoutInSeconds == 0 ? .distantFuture : .now() + .seconds(timeoutInSeconds))

@@ -22,7 +22,7 @@ extension Data {
             throw BluejayError.dataOutOfBounds(start: start, length: length, count: self.count)
         }
 
-        return self.subdata(in: start..<start+length).withUnsafeBytes { $0.pointee }
+        return self.subdata(in: start..<start + length).withUnsafeBytes { $0.pointee }
     }
 
 }

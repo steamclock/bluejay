@@ -6,12 +6,12 @@
 //  Copyright © 2017 Steamclock Software. All rights reserved.
 //
 
-import Foundation
 import CoreBluetooth
+import Foundation
 
 /**
  Bluejay is a simple wrapper around CoreBluetooth that focuses on making a common usage case as straight forward as possible: a single connected peripheral that the user is interacting with regularly (think most personal electronics devices that have an associated iOS app: fitness trackers, guitar amps, etc).
- 
+
  It also supports a few other niceties for simplifying usage, including automatic discovery of services and characteristics as they are used, as well as supporting a background task mode where the interaction with the device can be written as synchronous calls running on a background thread to avoid callback pyramids of death, or heavily chained promises.
  */
 public class Bluejay: NSObject { //swiftlint:disable:this type_body_length
@@ -84,7 +84,7 @@ public class Bluejay: NSObject { //swiftlint:disable:this type_body_length
     }
 
     /// Allows checking for if CoreBluetooth state is transitional (update is imminent)
-    /// please re-evaluate the bluetooth state again as it may change momentarily after it has returned true 
+    /// please re-evaluate the bluetooth state again as it may change momentarily after it has returned true
     public var isBluetoothStateUpdateImminent: Bool {
         return cbCentralManager.state == .unknown ||
             cbCentralManager.state == .resetting
@@ -148,7 +148,7 @@ public class Bluejay: NSObject { //swiftlint:disable:this type_body_length
 
     /**
      Starting Bluejay will initialize the CoreBluetooth stack. Simply initializing a Bluejay instance without calling this function will not initialize the CoreBluetooth stack. An explicit start call is required because in cases where a state resotration is trying to restore a listen on a characteristic, a listen restorer must be available before the CoreBluetooth stack is re-initialized. This two-step startup (init then start) allows you to prepare and gaurantee the setup of your listen restorer in between the initialization of Bluejay and the initialization of the CoreBluetooth stack.
-     
+
      - Parameters:
         - mode: CoreBluetooth initialization modes and options.
         - observer: A delegate interested in observing Bluetooth connection events and state changes.
@@ -157,7 +157,7 @@ public class Bluejay: NSObject { //swiftlint:disable:this type_body_length
     public func start(mode: StartMode = .new(StartOptions.default), connectionObserver observer: ConnectionObserver? = nil, disconnectHandler handler: DisconnectHandler? = nil) {
         /**
          If a call to start is made while the app is still in the background (can happen if Bluejay is instantiated and started in the initialization of UIApplicationDelegate for example), Bluejay will mistake its unexpectedly early instantiation as an instantiation from background restoration.
-         
+
          Therefore, an explicit call to start should assume that Bluejay is not initialized from background restoration, as the code flow for background restoration should not involve a call to start.
          */
         shouldRestoreState = false
@@ -218,7 +218,7 @@ public class Bluejay: NSObject { //swiftlint:disable:this type_body_length
 
     /**
      Stops all operations and clears all states in Bluejay before returning a Core Bluetooth state that can then be used by another library or code outside of Bluejay.
-     
+
      - Returns: Returns a CBCentralManager and possibly a CBPeripheral as well if there was one connected at the time of this call.
      - Warning: Will crash if Bluejay has not been instantiated properly or if Bluejay is still connecting.
     */
@@ -263,7 +263,7 @@ public class Bluejay: NSObject { //swiftlint:disable:this type_body_length
 
     /**
      This will cancel the current and all pending operations in the Bluejay queue. It will also disconnect by default after the queue is emptied, but you can cancel everything without disconnecting.
-     
+
      - Parameters:
        - error: Defaults to a generic `cancelled` error. Pass in a specific error if you want to deliver a specific error to all of your running and queued tasks.
        - shouldDisconnect: Defaults to true, will not disconnect if set to false, but only matters if Bluejay is actually connected.
@@ -296,7 +296,7 @@ public class Bluejay: NSObject { //swiftlint:disable:this type_body_length
 
     /**
      This will remove any cached listens associated with the receiving Bluejay's restore identifier. Call this if you want to stop Bluejay from attempting to restore any listens when state restoration occurs.
-     
+
      - Note: For handling a single specific characteristic, use `endListen`. If that succeeds, it will not only stop the listening on that characteristic, it will also remove that listen from the cache for state restoration if listen restoration is enabled, and if that listen was indeed cached for restoration.
      */
     public func clearListenCaches() {
@@ -319,7 +319,7 @@ public class Bluejay: NSObject { //swiftlint:disable:this type_body_length
 
     /**
      Register for notifications on Bluetooth connection events and state changes. Unregistering is not required, Bluejay will unregister for you if the observer is no longer in memory.
-     
+
      - Parameter observer: object interested in receiving Bluejay's Bluetooth connection related events.
      */
     public func register(observer: ConnectionObserver) {
@@ -337,7 +337,7 @@ public class Bluejay: NSObject { //swiftlint:disable:this type_body_length
 
     /**
      Unregister for notifications on Bluetooth connection events and state changes. Unregistering is not required, Bluejay will unregister for you if the observer is no longer in memory.
-     
+
      - Parameter observer: object no longer interested in receiving Bleujay's connection related events.
      */
     public func unregister(observer: ConnectionObserver) {
@@ -346,7 +346,7 @@ public class Bluejay: NSObject { //swiftlint:disable:this type_body_length
 
     /**
      Register a single disconnection handler for giving it a final say on what to do at the end of a disconnection, as well as evaluate and control Bluejay's auto-reconnect behaviour.
-     
+
      - Parameter handler: object interested in becoming Bluejay's optional but most featureful disconnection handler.
     */
     public func registerDisconnectHandler(handler: DisconnectHandler) {
@@ -366,7 +366,7 @@ public class Bluejay: NSObject { //swiftlint:disable:this type_body_length
      Scan for the peripheral(s) specified.
 
      - Warning: Setting `serviceIdentifiers` to `nil` will result in picking up all available Bluetooth peripherals in the vicinity, **but is not recommended by Apple**. It may cause battery and cpu issues on prolonged scanning, and **it also doesn't work in the background**. If you need to scan for all Bluetooth devices, we recommend making use of the `duration` parameter to stop the scan after 5 ~ 10 seconds to avoid scanning indefinitely and overloading the hardware.
-     
+
      - Parameters:
         - duration: Stops the scan when the duration in seconds is reached. Defaults to zero (indefinite).
         - allowDuplicates: Determines whether a previously scanned peripheral is allowed to be discovered again.
@@ -422,7 +422,7 @@ public class Bluejay: NSObject { //swiftlint:disable:this type_body_length
 
     /**
      Attempt to connect directly to a known peripheral. The call will fail if Bluetooth is not available, or if Bluejay is already connected. Making a connection request while Bluejay is scanning will also cause Bluejay to stop the current scan for you behind the scene prior to fulfilling your connection request.
-     
+
      - Parameters:
         - peripheralIdentifier: The peripheral to connect to.
         - timeout: Specify how long the connection time out should be.
@@ -460,9 +460,9 @@ public class Bluejay: NSObject { //swiftlint:disable:this type_body_length
 
     /**
      Disconnect a connected peripheral or cancel a connecting peripheral.
-     
+
      - Attention: If you are going to use the completion block, be careful on how you orchestrate and organize multiple disconnection callbacks if you are also using a `DisconnectHandler`.
-     
+
      - Parameters:
         - immediate: If true, the disconnect will not be enqueued and will cancel everything in the queue immediately then disconnect. If false, the disconnect will wait until everything in the queue is finished.
         - completion: Called when the disconnect request is fully completed.
@@ -508,7 +508,7 @@ public class Bluejay: NSObject { //swiftlint:disable:this type_body_length
 
     /**
      Read from the specified characteristic.
-     
+
      - Parameters:
         - characteristicIdentifier: The characteristic to read from.
         - completion: Called with the result of the attempt to read from the specified characteristic.
@@ -530,7 +530,7 @@ public class Bluejay: NSObject { //swiftlint:disable:this type_body_length
 
     /**
      Write to the specified characteristic.
-     
+
      - Parameters:
         - characteristicIdentifier: The characteristic to write to.
         - type: Write type.
@@ -556,7 +556,7 @@ public class Bluejay: NSObject { //swiftlint:disable:this type_body_length
 
     /**
      Listen for notifications on the specified characteristic.
-     
+
      - Parameters:
         - characteristicIdentifier: The characteristic to listen to.
         - completion: Called with the result of the attempt to listen for notifications on the specified characteristic.
@@ -581,7 +581,7 @@ public class Bluejay: NSObject { //swiftlint:disable:this type_body_length
 
     /**
      End listening on the specified characteristic.
-     
+
      - Parameters:
         - characteristicIdentifier: The characteristic to stop listening to.
         - completion: Called with the result of the attempt to stop listening to the specified characteristic.
@@ -603,7 +603,7 @@ public class Bluejay: NSObject { //swiftlint:disable:this type_body_length
 
     /**
      Restore a (believed to be) active listening session, so if we start up in response to a notification, we can receive it.
-     
+
      - Parameters:
         - characteristicIdentifier: The characteristic that needs the restoration.
         - completion: Called with the result of the attempt to restore the listen on the specified characteristic.
@@ -625,7 +625,7 @@ public class Bluejay: NSObject { //swiftlint:disable:this type_body_length
 
     /**
      Check if a peripheral is listening to a specific characteristic.
-     
+
      - Parameters:
        - to: The characteristic we want to check.
      */
@@ -640,9 +640,9 @@ public class Bluejay: NSObject { //swiftlint:disable:this type_body_length
 
     /**
      One of the three ways to run a background task using a synchronous interface to the Bluetooth peripheral. This is the simplest one as the background task will not return any typed values back to the completion block on finishing the background task, except for thrown errors, and it also doesn't provide an input for an object that might need thread safe access.
-     
+
      - Warning: Be careful not to access anything that is not thread safe inside background task.
-     
+
      - Parameters:
         - backgroundTask: A closure with the jobs to be executed in the background.
         - completionOnMainThread: A closure called on the main thread when the background task has either completed or failed.
@@ -700,9 +700,9 @@ public class Bluejay: NSObject { //swiftlint:disable:this type_body_length
 
     /**
      One of the three ways to run a background task using a synchronous interface to the Bluetooth peripheral. This one allows the background task to potentially return a typed value back to the completion block on finishing the background task successfully.
-     
+
      - Warning: Be careful not to access anything that is not thread safe inside background task.
-     
+
      - Parameters:
         - backgroundTask: A closure with the jobs to be executed in the background.
         - completionOnMainThread: A closure called on the main thread when the background task has either completed or failed.
@@ -760,9 +760,9 @@ public class Bluejay: NSObject { //swiftlint:disable:this type_body_length
 
     /**
      One of the three ways to run a background task using a synchronous interface to the Bluetooth peripheral. This one allows the background task to potentially return a typed value back to the completion block on finishing the background task successfully, as well as supplying an object for thread safe access inside the background task.
-     
+
      - Warning: Be careful not to access anything that is not thread safe inside background task.
-     
+
      - Parameters:
         - userData: Any object you wish to have thread safe access inside background task.
         - backgroundTask: A closure with the jobs to be executed in the background.
@@ -824,9 +824,9 @@ public class Bluejay: NSObject { //swiftlint:disable:this type_body_length
 
     /**
      A helper function to take an array of Sendables and combine their data together.
-     
+
      - Parameter sendables: An array of Sendables whose Data should be appended in the order of the given array.
-     
+
      - Returns: The resulting data of all the Sendables combined in the order of the passed in array.
      */
     public static func combine(sendables: [Sendable]) -> Data {
@@ -847,7 +847,7 @@ extension Bluejay: CBCentralManagerDelegate {
 
     /**
      Bluejay uses this to figure out whether Bluetooth is available or not.
-     
+
      - If Bluetooth is available for the first time, start running the queue.
      - If Bluetooth is available for the first time and the app is already connected, then this is a state restoration event. Try listen restoration if possible.
      - If Bluetooth is turned off, cancel everything with the `bluetoothUnavailable` error and disconnect.
@@ -1047,7 +1047,7 @@ extension Bluejay: CBCentralManagerDelegate {
      When connected, update Bluejay's states by updating the values for `connectingPeripheral`, `connectedPeripheral`, and `shouldAutoReconnect`. Also, make sure to broadcast the event to observers, and notify the queue so that the current operation in-flight can process this event and get a chance to finish.
     */
     public func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
-        let backgroundTask =  UIApplication.shared.beginBackgroundTask(expirationHandler: nil)
+        let backgroundTask = UIApplication.shared.beginBackgroundTask(expirationHandler: nil)
 
         log("Did connect to: \(peripheral.name ?? peripheral.identifier.uuidString)")
 
@@ -1080,7 +1080,7 @@ extension Bluejay: CBCentralManagerDelegate {
     */
     public func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
         // swiftlint:disable:previous cyclomatic_complexity
-        let backgroundTask =  UIApplication.shared.beginBackgroundTask(expirationHandler: nil)
+        let backgroundTask = UIApplication.shared.beginBackgroundTask(expirationHandler: nil)
 
         let peripheralString = peripheral.name ?? peripheral.identifier.uuidString
         let errorString = error?.localizedDescription

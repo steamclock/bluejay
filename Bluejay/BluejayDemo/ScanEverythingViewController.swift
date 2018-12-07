@@ -6,8 +6,8 @@
 //  Copyright © 2017 Steamclock Software. All rights reserved.
 //
 
-import UIKit
 import Bluejay
+import UIKit
 
 class ScanEverythingViewController: UITableViewController {
 
@@ -15,8 +15,8 @@ class ScanEverythingViewController: UITableViewController {
 
     private var peripherals = [ScanDiscovery]() {
         didSet {
-            peripherals.sort { (periphA, periphB) -> Bool in
-                return periphA.rssi < periphB.rssi
+            peripherals.sort { periphA, periphB -> Bool in
+                periphA.rssi < periphB.rssi
             }
         }
     }
@@ -38,7 +38,7 @@ class ScanEverythingViewController: UITableViewController {
             duration: 5,
             allowDuplicates: true,
             serviceIdentifiers: nil,
-            discovery: { [weak self] (_, discoveries) -> ScanAction in
+            discovery: { [weak self] _, discoveries -> ScanAction in
                 guard let weakSelf = self else {
                     return .stop
                 }
@@ -48,7 +48,7 @@ class ScanEverythingViewController: UITableViewController {
 
                 return .continue
             },
-            expired: { [weak self] (lostDiscovery, discoveries) -> ScanAction in
+            expired: { [weak self] lostDiscovery, discoveries -> ScanAction in
                 guard let weakSelf = self else {
                     return .stop
                 }
@@ -60,7 +60,7 @@ class ScanEverythingViewController: UITableViewController {
 
                 return .continue
             },
-            stopped: { (_, error) in
+            stopped: { _, error in
                 if let error = error {
                     debugPrint("Scan stopped with error: \(error.localizedDescription)")
                 } else {

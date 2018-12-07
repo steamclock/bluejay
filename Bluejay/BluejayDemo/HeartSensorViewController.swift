@@ -6,22 +6,22 @@
 //  Copyright © 2017 Steamclock Software. All rights reserved.
 //
 
-import UIKit
 import Bluejay
+import UIKit
 
 class HeartSensorViewController: UITableViewController {
 
     weak var bluejay: Bluejay?
     var peripheralIdentifier: PeripheralIdentifier?
 
-    @IBOutlet var statusCell: UITableViewCell!
-    @IBOutlet var bpmCell: UITableViewCell!
-    @IBOutlet var sensorLocationCell: UITableViewCell!
-    @IBOutlet var connectCell: UITableViewCell!
-    @IBOutlet var disconnectCell: UITableViewCell!
-    @IBOutlet var startMonitoringCell: UITableViewCell!
-    @IBOutlet var resetCell: UITableViewCell!
-    @IBOutlet var cancelEverythingCell: UITableViewCell!
+    @IBOutlet private var statusCell: UITableViewCell!
+    @IBOutlet private var bpmCell: UITableViewCell!
+    @IBOutlet private var sensorLocationCell: UITableViewCell!
+    @IBOutlet private var connectCell: UITableViewCell!
+    @IBOutlet private var disconnectCell: UITableViewCell!
+    @IBOutlet private var startMonitoringCell: UITableViewCell!
+    @IBOutlet private var resetCell: UITableViewCell!
+    @IBOutlet private var cancelEverythingCell: UITableViewCell!
 
     private var isMonitoringHeartRate = false
 
@@ -142,7 +142,7 @@ class HeartSensorViewController: UITableViewController {
                 DispatchQueue.main.async {
                     UIView.animate(withDuration: 0.25, animations: {
                         weakSelf.bpmCell.detailTextLabel?.transform = weakSelf.bpmCell.detailTextLabel!.transform.scaledBy(x: 1.5, y: 1.5)
-                    }, completion: { (completed) in
+                    }, completion: { completed in
                         if completed {
                             UIView.animate(withDuration: 0.25, animations: {
                                 weakSelf.bpmCell.detailTextLabel?.transform = CGAffineTransform.identity
@@ -213,7 +213,7 @@ class HeartSensorViewController: UITableViewController {
             return
         }
 
-        bluejay.connect(peripheralIdentifier, timeout: .none) { (result) in
+        bluejay.connect(peripheralIdentifier, timeout: .none) { result in
             switch result {
             case .success(let peripheral):
                 debugPrint("Connection to \(peripheral.name) successful.")
@@ -234,7 +234,7 @@ class HeartSensorViewController: UITableViewController {
             return
         }
 
-        bluejay.disconnect { (result) in
+        bluejay.disconnect { result in
             switch result {
             case .disconnected(let peripheral):
                 debugPrint("Disconnect from \(peripheral.name) successful.")
@@ -254,7 +254,7 @@ class HeartSensorViewController: UITableViewController {
         let heartRateMeasurement = CharacteristicIdentifier(uuid: "2A37", service: heartRateService)
         let sensorLocation = CharacteristicIdentifier(uuid: "2A38", service: heartRateService)
 
-        bluejay.run(backgroundTask: { (peripheral) -> UInt8 in
+        bluejay.run(backgroundTask: { peripheral -> UInt8 in
             // 1. Stop monitoring.
             debugPrint("Reset step 1: stop monitoring.")
             try peripheral.endListen(to: heartRateMeasurement)

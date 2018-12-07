@@ -6,8 +6,8 @@
 //  Copyright © 2017 Steamclock Software. All rights reserved.
 //
 
-import XCTest
 @testable import Bluejay
+import XCTest
 
 class BluejayTests: XCTestCase {
 

@@ -6,8 +6,8 @@
 //  Copyright © 2017 Steamclock Software. All rights reserved.
 //
 
-import Foundation
 import CoreBluetooth
+import Foundation
 
 /**
  An interface to the Bluetooth peripheral.
@@ -162,7 +162,7 @@ public class Peripheral: NSObject {
             case .failure(let error):
                 completion(.failure(error))
             }
-        })
+        }
     }
 
     /// Write to a specified characteristic.
@@ -268,9 +268,9 @@ public class Peripheral: NSObject {
 
     /**
      End listening on a specified characteristic.
-     
+
      Provides the ability to suppress the failure message to the listen callback. This is useful in the internal implimentation of some of the listening logic, since we want to be able to share the clear logic on a .done exit, but don't need to send a failure in that case.
-     
+
      - Note
      Currently this can also cancel a regular in-progress read as well, but that behaviour may change down the road.
      */
@@ -374,7 +374,7 @@ public class Peripheral: NSObject {
 
         var newCacheData = cacheData
         let decoder = JSONDecoder()
-        newCacheData = try newCacheData.filter { (data) -> Bool in
+        newCacheData = try newCacheData.filter { data -> Bool in
             do {
                 let listenCache = try decoder.decode(ListenCache.self, from: data)
                 return (listenCache.serviceUUID != serviceUUID) && (listenCache.characteristicUUID != characteristicUUID)

@@ -6,8 +6,8 @@
 //  Copyright © 2017 Steamclock Software. All rights reserved.
 //
 
-import Foundation
 import CoreBluetooth
+import Foundation
 
 /// A wrapper for `CBUUID` specific to a service to help distinguish it from a `CBUUID` of a characteristic.
 public struct ServiceIdentifier {

@@ -6,14 +6,14 @@
 //  Copyright © 2017 Steamclock Software. All rights reserved.
 //
 
-import Foundation
 import CoreBluetooth
+import Foundation
 
 extension CBService {
 
     /// Find a characteristic on a service by CBUUID.
     public func characteristic(with uuid: CBUUID) -> CBCharacteristic? {
-        return characteristics?.first(where: { $0.uuid == uuid })
+        return characteristics?.first { $0.uuid == uuid }
     }
 
 }

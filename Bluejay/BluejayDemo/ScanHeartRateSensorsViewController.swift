@@ -6,8 +6,8 @@
 //  Copyright © 2017 Steamclock Software. All rights reserved.
 //
 
-import UIKit
 import Bluejay
+import UIKit
 
 class ScanHeartRateSensorsViewController: UITableViewController {
 
@@ -15,8 +15,8 @@ class ScanHeartRateSensorsViewController: UITableViewController {
 
     private var peripherals = [ScanDiscovery]() {
         didSet {
-            peripherals.sort { (periphA, periphB) -> Bool in
-                return periphA.rssi < periphB.rssi
+            peripherals.sort { periphA, periphB -> Bool in
+                periphA.rssi < periphB.rssi
             }
         }
     }
@@ -43,7 +43,7 @@ class ScanHeartRateSensorsViewController: UITableViewController {
         bluejay.scan(
             allowDuplicates: true,
             serviceIdentifiers: [heartRateService],
-            discovery: { [weak self] (_, discoveries) -> ScanAction in
+            discovery: { [weak self] _, discoveries -> ScanAction in
                 guard let weakSelf = self else {
                     return .stop
                 }
@@ -53,7 +53,7 @@ class ScanHeartRateSensorsViewController: UITableViewController {
 
                 return .continue
             },
-            expired: { [weak self] (lostDiscovery, discoveries) -> ScanAction in
+            expired: { [weak self] lostDiscovery, discoveries -> ScanAction in
                 guard let weakSelf = self else {
                     return .stop
                 }
@@ -65,7 +65,7 @@ class ScanHeartRateSensorsViewController: UITableViewController {
 
                 return .continue
             },
-            stopped: { (_, error) in
+            stopped: { _, error in
                 if let error = error {
                     debugPrint("Scan stopped with error: \(error.localizedDescription)")
                 } else {
@@ -78,7 +78,7 @@ class ScanHeartRateSensorsViewController: UITableViewController {
         super.viewWillAppear(animated)
 
         if bluejay.isConnecting || bluejay.isConnected {
-            bluejay.disconnect(completion: { [weak self] (result) in
+            bluejay.disconnect { [weak self] result in
                 guard let weakSelf = self else {
                     return
                 }
@@ -93,7 +93,7 @@ class ScanHeartRateSensorsViewController: UITableViewController {
                 case .failure(let error):
                     preconditionFailure("Disconnect failed with error: \(error.localizedDescription)")
                 }
-            })
+            }
         } else if !bluejay.isScanning {
             scanHeartSensors()
         }
@@ -122,7 +122,7 @@ class ScanHeartRateSensorsViewController: UITableViewController {
         let peripheralIdentifier = peripherals[indexPath.row].peripheralIdentifier
         selectedPeripheralIdentifier = peripheralIdentifier
 
-        bluejay.connect(peripheralIdentifier, timeout: .none) { [weak self] (result) in
+        bluejay.connect(peripheralIdentifier, timeout: .none) { [weak self] result in
             switch result {
             case .success(let peripheral):
                 debugPrint("Connection to \(peripheral.name) successful.")

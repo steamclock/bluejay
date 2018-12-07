@@ -6,8 +6,8 @@
 //  Copyright © 2017 Steamclock Software. All rights reserved.
 //
 
-import Foundation
 import CoreBluetooth
+import Foundation
 
 /// A listen operation.
 class ListenCharacteristic: Operation {
@@ -30,7 +30,7 @@ class ListenCharacteristic: Operation {
     /// Callback for the attempt to start or stop listening, not the values received from the characteristic.
     private var callback: ((WriteResult) -> Void)?
 
-    /// Internal reference to the CBCharacteristic. 
+    /// Internal reference to the CBCharacteristic.
     private var characteristic: CBCharacteristic?
 
     init(characteristicIdentifier: CharacteristicIdentifier, peripheral: CBPeripheral, value: Bool, callback: @escaping (WriteResult) -> Void) {

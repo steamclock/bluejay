@@ -15,7 +15,7 @@ extension BinaryInteger {
     public func toBluetoothData() -> Data {
         var tmp = self
         return withUnsafePointer(to: &tmp) {
-            return Data(bytes: $0, count: MemoryLayout<Self>.size)
+            Data(bytes: $0, count: MemoryLayout<Self>.size)
         }
     }
 
