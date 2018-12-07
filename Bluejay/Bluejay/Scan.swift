@@ -253,7 +253,7 @@ class Scan: Queueable {
 
         var timer: Timer?
 
-        timer = Timer.scheduledTimer(withTimeInterval: 15, repeats: false) { [weak self] (_) in
+        timer = Timer.scheduledTimer(withTimeInterval: 15, repeats: false) { [weak self] _ in
             guard let weakSelf = self else {
                 return
             }

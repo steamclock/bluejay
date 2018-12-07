@@ -80,8 +80,7 @@ public class Peripheral: NSObject {
 
         addOperation(DiscoverService(
             serviceIdentifier: characteristicIdentifier.service,
-            peripheral: cbPeripheral,
-            callback: { result in
+            peripheral: cbPeripheral) { result in
             switch result {
             case .success:
                 // Do nothing and wait for the subsequent discover characteristic operation to complete.
@@ -90,12 +89,11 @@ public class Peripheral: NSObject {
                 discoverServiceFailed = true
                 callback(.failure(error))
             }
-        }))
+        })
 
         addOperation(DiscoverCharacteristic(
             characteristicIdentifier: characteristicIdentifier,
-            peripheral: cbPeripheral,
-            callback: { result in
+            peripheral: cbPeripheral) { result in
                 if discoverServiceFailed {
                     return
                 } else {
@@ -106,7 +104,7 @@ public class Peripheral: NSObject {
                         callback(.failure(error))
                     }
                 }
-        }))
+        })
     }
 
     // MARK: - Bluetooth Event
@@ -149,7 +147,7 @@ public class Peripheral: NSObject {
 
         // log.debug("Queueing read to: \(characteristicIdentifier.uuid.uuidString)")
 
-        discoverCharactersitic(characteristicIdentifier, callback: { [weak self] result in
+        discoverCharactersitic(characteristicIdentifier) { [weak self] result in
             guard let weakSelf = self else {
                 return
             }
@@ -169,7 +167,7 @@ public class Peripheral: NSObject {
     public func write<S: Sendable>(to characteristicIdentifier: CharacteristicIdentifier, value: S, type: CBCharacteristicWriteType = .withResponse, completion: @escaping (WriteResult) -> Void) {
         // log.debug("Queueing write to: \(characteristicIdentifier.uuid.uuidString) with value of: \(value)")
 
-        discoverCharactersitic(characteristicIdentifier, callback: { [weak self] result in
+        discoverCharactersitic(characteristicIdentifier) { [weak self] result in
             guard let weakSelf = self else {
                 return
             }
@@ -187,7 +185,7 @@ public class Peripheral: NSObject {
             case .failure(let error):
                 completion(.failure(error))
             }
-        })
+        }
     }
 
     /// Checks whether Bluejay is currently listening to the specified charactersitic.
@@ -212,7 +210,7 @@ public class Peripheral: NSObject {
             listeners[characteristicIdentifier] = (nil, option)
         } // If the listen already exists, don't overwrite its option.
 
-        discoverCharactersitic(characteristicIdentifier, callback: { [weak self] result in
+        discoverCharactersitic(characteristicIdentifier) { [weak self] result in
             guard let weakSelf = self else {
                 return
             }
@@ -223,7 +221,7 @@ public class Peripheral: NSObject {
                     ListenCharacteristic(
                         characteristicIdentifier: characteristicIdentifier,
                         peripheral: weakSelf.cbPeripheral,
-                        value: true, callback: { result in
+                        value: true) { result in
                             switch result {
                             case .success:
                                 guard let cachedListener = weakSelf.listeners[characteristicIdentifier] else {
@@ -258,12 +256,13 @@ public class Peripheral: NSObject {
                                 weakSelf.listeners[characteristicIdentifier] = nil
                                 completion(.failure(error))
                             }
-                    }))
+                    }
+                )
             case .failure(let error):
                 weakSelf.listeners[characteristicIdentifier] = nil
                 completion(.failure(error))
             }
-        })
+        }
     }
 
     /**
@@ -286,7 +285,7 @@ public class Peripheral: NSObject {
             }
         }
 
-        discoverCharactersitic(characteristicIdentifier, callback: { [weak self] result in
+        discoverCharactersitic(characteristicIdentifier) { [weak self] result in
             guard let weakSelf = self else {
                 return
             }
@@ -297,15 +296,14 @@ public class Peripheral: NSObject {
                     ListenCharacteristic(
                         characteristicIdentifier: characteristicIdentifier,
                         peripheral: weakSelf.cbPeripheral,
-                        value: false,
-                        callback: { result in
+                        value: false) { result in
                             completion?(result)
-                    })
+                    }
                 )
             case .failure(let error):
                 completion?(.failure(error))
             }
-        })
+        }
     }
 
     /// Restore a (believed to be) active listening session, so if we start up in response to a notification, we can receive it.

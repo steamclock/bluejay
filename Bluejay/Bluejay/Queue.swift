@@ -129,9 +129,9 @@ class Queue {
         if isCBCentralManagerReady {
             precondition(queue.isEmpty, "Queue is active and is not emptied at the end of cancel all.")
         } else {
-            precondition(!queue.contains(where: { (queueable) -> Bool in
-                return !queueable.state.isFinished
-            }), "Queue is inactive but still contains unfinished queueable(s) at the end of cancel all.")
+            precondition(!queue.contains { queueable -> Bool in
+                !queueable.state.isFinished
+            }, "Queue is inactive but still contains unfinished queueable(s) at the end of cancel all.")
         }
     }
 
@@ -238,7 +238,7 @@ class Queue {
     var isReading: Bool = false
 
     func willEndListen(on characteristic: CharacteristicIdentifier) -> Bool {
-        return queue.contains(where: { (queueable) -> Bool in
+        return queue.contains { queueable -> Bool in
             if let
                 endListen = queueable as? ListenCharacteristic,
                 endListen.characteristicIdentifier == characteristic,
@@ -247,13 +247,13 @@ class Queue {
             } else {
                 return false
             }
-        })
+        }
     }
 
     var multipleConnectionsQueued: Bool {
-        return queue.filter({ (queueable) -> Bool in
-            return queueable is Connection
-        }).count > 1
+        return queue.filter { queueable -> Bool in
+            queueable is Connection
+        }.count > 1
     }
 
     var isDisconnectionQueued: Bool {

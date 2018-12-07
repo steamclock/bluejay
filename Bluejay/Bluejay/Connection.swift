@@ -62,9 +62,13 @@ class Connection: Queueable {
         cancelTimer()
 
         if let timeOut = timeout, case let .seconds(timeoutInterval) = timeOut {
-            connectionTimer = Timer.scheduledTimer(withTimeInterval: timeoutInterval, repeats: false, block: { (_) in
-                self.timedOut()
-            })
+            connectionTimer = Timer.scheduledTimer(withTimeInterval: timeoutInterval, repeats: false) { [weak self] _ in
+                guard let weakSelf = self else {
+                    return
+                }
+
+                weakSelf.timedOut()
+            }
         }
 
         log("Started connecting to \(peripheral.name ?? peripheral.identifier.uuidString).")

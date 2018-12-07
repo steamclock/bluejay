@@ -538,7 +538,8 @@ public class Bluejay: NSObject { //swiftlint:disable:this type_body_length
     */
     public func write<S: Sendable>(
         to characteristicIdentifier: CharacteristicIdentifier,
-        value: S, type: CBCharacteristicWriteType = .withResponse,
+        value: S,
+        type: CBCharacteristicWriteType = .withResponse,
         completion: @escaping (WriteResult) -> Void) {
         Dispatch.dispatchPrecondition(condition: .onQueue(.main))
 
@@ -866,7 +867,7 @@ extension Bluejay: CBCentralManagerDelegate {
                         fatalError("No background restorer found during state restoration.")
                     }
 
-                    self.connect(connectingPeripheralAtRestoration.uuid, timeout: .seconds(15), completion: { (result) in
+                    self.connect(connectingPeripheralAtRestoration.uuid, timeout: .seconds(15)) { result in
                         switch result {
                         case .success(let peripheral):
                             log("Did restore connection to peripheral: \(peripheral.name)")
@@ -882,7 +883,7 @@ extension Bluejay: CBCentralManagerDelegate {
                             )
                             completion()
                         }
-                    })
+                    }
 
                     // We don't broadcast the Bluetooth available event here because it is important to distinguish the difference between Bluetooth becoming available from normal usage versue Bluetooth becoming available due to a background restoration.
                 } else if let connectedPeripheral = self.connectedPeripheral {
@@ -1221,9 +1222,7 @@ extension Bluejay: CBCentralManagerDelegate {
                     log("Disconnect clean up: issuing reconnect to: \(peripheral.name ?? peripheral.identifier.uuidString)")
                     weakSelf.connect(
                         PeripheralIdentifier(uuid: peripheral.identifier),
-                        timeout: weakSelf.previousConnectionTimeout ?? .none,
-                        completion: {_ in }
-                    )
+                        timeout: weakSelf.previousConnectionTimeout ?? .none) { _ in }
                 }
             }
 
