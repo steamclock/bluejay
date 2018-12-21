@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "B8C70F741E1C22850006CF58"
-               BuildableName = "Bluejay.framework"
-               BlueprintName = "Bluejay"
+               BlueprintIdentifier = "B8383B5C21C3162800F07306"
+               BuildableName = "BluejayHeartSensorDemo.app"
+               BlueprintName = "BluejayHeartSensorDemo"
                ReferencedContainer = "container:Bluejay.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -28,23 +28,13 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "B8C70F7D1E1C22850006CF58"
-               BuildableName = "BluejayTests.xctest"
-               BlueprintName = "BluejayTests"
-               ReferencedContainer = "container:Bluejay.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "B8C70F741E1C22850006CF58"
-            BuildableName = "Bluejay.framework"
-            BlueprintName = "Bluejay"
+            BlueprintIdentifier = "B8383B5C21C3162800F07306"
+            BuildableName = "BluejayHeartSensorDemo.app"
+            BlueprintName = "BluejayHeartSensorDemo"
             ReferencedContainer = "container:Bluejay.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -61,15 +51,16 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <MacroExpansion>
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "B8C70F741E1C22850006CF58"
-            BuildableName = "Bluejay.framework"
-            BlueprintName = "Bluejay"
+            BlueprintIdentifier = "B8383B5C21C3162800F07306"
+            BuildableName = "BluejayHeartSensorDemo.app"
+            BlueprintName = "BluejayHeartSensorDemo"
             ReferencedContainer = "container:Bluejay.xcodeproj">
          </BuildableReference>
-      </MacroExpansion>
+      </BuildableProductRunnable>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
@@ -79,15 +70,16 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <MacroExpansion>
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "B8C70F741E1C22850006CF58"
-            BuildableName = "Bluejay.framework"
-            BlueprintName = "Bluejay"
+            BlueprintIdentifier = "B8383B5C21C3162800F07306"
+            BuildableName = "BluejayHeartSensorDemo.app"
+            BlueprintName = "BluejayHeartSensorDemo"
             ReferencedContainer = "container:Bluejay.xcodeproj">
          </BuildableReference>
-      </MacroExpansion>
+      </BuildableProductRunnable>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

@@ -10,18 +10,21 @@ import Foundation
 
 /// Uniquely identifies a peripheral to the current iOS device. The UUID changes and is different on different iOS devices.
 public struct PeripheralIdentifier {
-
     /// The UUID of the peripheral.
     public let uuid: UUID
 
-    /// The UUID string of the peripheral.
-    public var string: String {
-        return uuid.uuidString
+    /// The name of the peripheral.
+    public let name: String
+
+    /// Returns both the name and uuid of the peripheral.
+    public var description: String {
+        return "Peripheral: \(name), UUID: \(uuid)"
     }
 
     /// Create a PeripheralIdentifier using a UUID.
-    public init(uuid: UUID) {
+    public init(uuid: UUID, name: String?) {
         self.uuid = uuid
+        self.name = name ?? "No Name"
     }
 }
 

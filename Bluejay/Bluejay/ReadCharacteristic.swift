@@ -10,7 +10,7 @@ import CoreBluetooth
 import Foundation
 
 /// A read operation.
-class ReadCharacteristic<T: Receivable>: Operation {
+class ReadCharacteristic<T: Receivable>: ReadOperation {
 
     /// The queue this operation belongs to.
     var queue: Queue?
@@ -48,8 +48,6 @@ class ReadCharacteristic<T: Receivable>: Operation {
 
         peripheral.readValue(for: characteristic)
 
-        queue?.isReading = true
-
         log("Started read for \(characteristicIdentifier.uuid) on \(peripheral.identifier).")
     }
 
@@ -60,8 +58,6 @@ class ReadCharacteristic<T: Receivable>: Operation {
             }
 
             state = .completed
-
-            queue?.isReading = false
 
             log("Read for \(characteristicIdentifier.uuid) on \(peripheral.identifier) is successful.")
 
@@ -76,8 +72,6 @@ class ReadCharacteristic<T: Receivable>: Operation {
 
     func fail(_ error: Error) {
         state = .failed(error)
-
-        queue?.isReading = false
 
         log("Failed reading for \(characteristicIdentifier.uuid) on \(peripheral.identifier) with error: \(error.localizedDescription)")
 

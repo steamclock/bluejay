@@ -12,66 +12,51 @@ import Foundation
 /**
  An interface to the Bluetooth peripheral.
  */
-public class Peripheral: NSObject {
+class Peripheral: NSObject {
 
     // MARK: Properties
 
-    private(set) weak var bluejay: Bluejay?
-    private(set) var cbPeripheral: CBPeripheral
+    private(set) weak var delegate: PeripheralDelegate!
+    private(set) var cbPeripheral: CBPeripheral!
 
     private var listeners: [CharacteristicIdentifier: (ListenCallback?, MultipleListenOption)] = [:]
-    private var observers: [WeakRSSIObserver] = []
 
     // MARK: - Initialization
 
-    init(bluejay: Bluejay, cbPeripheral: CBPeripheral) {
-        self.bluejay = bluejay
+    init(delegate: PeripheralDelegate, cbPeripheral: CBPeripheral) {
+        self.delegate = delegate
         self.cbPeripheral = cbPeripheral
 
         super.init()
 
+        guard self.delegate != nil else {
+            fatalError("Peripheral initialized without a PeripheralDelegate association.")
+        }
+
+        guard self.cbPeripheral != nil else {
+            fatalError("Peripheral initialized without a CBPeripheral association.")
+        }
+
         self.cbPeripheral.delegate = self
 
-        log("Init Peripheral: \(self), \(self.cbPeripheral)")
+        log("Init Peripheral: \(self), \(self.cbPeripheral.debugDescription)")
     }
 
     deinit {
-        log("Deinit Peripheral: \(self), \(cbPeripheral))")
+        log("Deinit Peripheral: \(self), \(self.cbPeripheral.debugDescription))")
     }
 
     // MARK: - Attributes
 
-    /// The UUID of the peripheral.
-    public var uuid: PeripheralIdentifier {
-        return PeripheralIdentifier(uuid: cbPeripheral.identifier)
-    }
-
-    /// Returns the name of the peripheral. If name is not available, return the uuid string.
-    public var name: String {
-        return cbPeripheral.name ?? uuid.string
+    /// The identifier for this peripheral.
+    public var identifier: PeripheralIdentifier {
+        return PeripheralIdentifier(uuid: cbPeripheral.identifier, name: cbPeripheral.name)
     }
 
     // MARK: - Operations
 
-    private func updateOperations() {
-        guard let bluejay = bluejay else {
-            preconditionFailure("Cannot update operation: Bluejay is nil.")
-        }
-
-        if cbPeripheral.state == .disconnected {
-            bluejay.cancelEverything(error: BluejayError.notConnected)
-            return
-        }
-
-        bluejay.queue.update()
-    }
-
     private func addOperation(_ operation: Operation) {
-        guard let bluejay = bluejay else {
-            preconditionFailure("Cannot add operation: Bluejay is nil.")
-        }
-
-        bluejay.queue.add(operation)
+        delegate.requested(operation: operation, from: self)
     }
 
     /// Queue the necessary operations needed to discover the specified characteristic.
@@ -109,34 +94,16 @@ public class Peripheral: NSObject {
 
     // MARK: - Bluetooth Event
 
-    private func handleEvent(_ event: Event, error: NSError?) {
-        guard let bluejay = bluejay else {
-            preconditionFailure("Cannot handle event: Bluejay is nil.")
-        }
-
-        bluejay.queue.process(event: event, error: error)
-        updateOperations()
-    }
-
-    // MARK: - RSSI Event
-
-    /// Requests the current RSSI value from the peripheral, and the value is returned via the `RSSIObserver` delegation.
-    public func readRSSI() {
-        cbPeripheral.readRSSI()
-    }
-
-    /// Register a RSSI observer that can receive the RSSI value when `readRSSI` is called.
-    public func register(observer: RSSIObserver) {
-        observers = observers.filter { $0.weakReference != nil && $0.weakReference !== observer }
-        observers.append(WeakRSSIObserver(weakReference: observer))
-    }
-
-    /// Unregister a RSSI observer.
-    public func unregister(observer: RSSIObserver) {
-        observers = observers.filter { $0.weakReference != nil && $0.weakReference !== observer }
+    private func handle(event: Event, error: NSError?) {
+        delegate.received(event: event, error: error, from: self)
     }
 
     // MARK: - Actions
+
+    /// Requests the current RSSI value from the peripheral.
+    func readRSSI() {
+        cbPeripheral.readRSSI()
+    }
 
     /// Read from a specified characteristic.
     public func read<R: Receivable>(from characteristicIdentifier: CharacteristicIdentifier, completion: @escaping (ReadResult<R>) -> Void) {
@@ -194,7 +161,7 @@ public class Peripheral: NSObject {
     }
 
     /// Listen for notifications on a specified characterstic.
-    public func listen<R: Receivable>(
+    public func listen<R: Receivable>( // swiftlint:disable:this cyclomatic_complexity
         to characteristicIdentifier: CharacteristicIdentifier,
         multipleListenOption option: MultipleListenOption,
         completion: @escaping (ReadResult<R>) -> Void) {
@@ -242,16 +209,6 @@ public class Peripheral: NSObject {
                                 weakSelf.listeners[characteristicIdentifier] = ({ dataResult in
                                     completion(ReadResult<R>(dataResult: dataResult))
                                 }, originalMultipleListenOption)
-
-                                // Only bother caching if listen restoration is enabled.
-                                if let restoreIdentifier = weakSelf.bluejay?.restoreIdentifier, weakSelf.bluejay?.listenRestorer != nil {
-                                    do {
-                                        // Make sure a successful listen is cached, so Bluejay can inform its delegate on which characteristics need their listens restored during state restoration.
-                                        try weakSelf.cache(listeningCharacteristic: characteristicIdentifier, restoreIdentifier: restoreIdentifier)
-                                    } catch {
-                                        log("Failed to cache listen on characteristic: \(characteristicIdentifier.uuid) of service: \(characteristicIdentifier.service.uuid) for restore id: \(restoreIdentifier) with error: \(error.localizedDescription)")
-                                    }
-                                }
                             case .failure(let error):
                                 weakSelf.listeners[characteristicIdentifier] = nil
                                 completion(.failure(error))
@@ -276,15 +233,6 @@ public class Peripheral: NSObject {
     public func endListen(to characteristicIdentifier: CharacteristicIdentifier, error: Error? = nil, completion: ((WriteResult) -> Void)? = nil) {
         listeners[characteristicIdentifier] = nil
 
-        if let restoreIdentifier = bluejay?.restoreIdentifier {
-            do {
-                // Make sure an ended listen does not exist in the cache, as we don't want to restore a cancelled listen on state restoration.
-                try remove(listeningCharacteristic: characteristicIdentifier, restoreIdentifier: restoreIdentifier)
-            } catch {
-                log("Failed to remove cached listen on characteristic: \(characteristicIdentifier.uuid) of service: \(characteristicIdentifier.service.uuid) for restore id: \(restoreIdentifier) with error: \(error.localizedDescription)")
-            }
-        }
-
         discoverCharactersitic(characteristicIdentifier) { [weak self] result in
             guard let weakSelf = self else {
                 return
@@ -306,94 +254,6 @@ public class Peripheral: NSObject {
         }
     }
 
-    /// Restore a (believed to be) active listening session, so if we start up in response to a notification, we can receive it.
-    public func restoreListen<R: Receivable>(to characteristicIdentifier: CharacteristicIdentifier, completion: @escaping (ReadResult<R>) -> Void) {
-        precondition(
-            listeners[characteristicIdentifier] == nil,
-            "Cannot have multiple active listens against the same characteristic"
-        )
-
-        listeners[characteristicIdentifier]?.0 = { dataResult in
-            completion(ReadResult<R>(dataResult: dataResult))
-        }
-    }
-
-    // MARK: - Listen Caching
-
-    private func cache(listeningCharacteristic: CharacteristicIdentifier, restoreIdentifier: RestoreIdentifier) throws {
-        let serviceUUID = listeningCharacteristic.service.uuid.uuidString
-        let characteristicUUID = listeningCharacteristic.uuid.uuidString
-
-        let encoder = JSONEncoder()
-
-        do {
-            let cacheData = try encoder.encode(ListenCache(serviceUUID: serviceUUID, characteristicUUID: characteristicUUID))
-
-            // If the UserDefaults for the specified restore identifier doesn't exist yet, create one and add the ListenCache to it.
-            guard
-                let listenCaches = UserDefaults.standard.dictionary(forKey: Constant.listenCaches),
-                let listenCacheData = listenCaches[restoreIdentifier] as? [Data]
-            else {
-                UserDefaults.standard.set([restoreIdentifier: [cacheData]], forKey: Constant.listenCaches)
-                UserDefaults.standard.synchronize()
-                return
-            }
-
-            // If the ListenCache already exists, don't add it to the cache again.
-            if listenCacheData.contains(cacheData) {
-                return
-            } else {
-                // Add the ListenCache to the existing UserDefaults for the specified restore identifier.
-                var newListenCacheData = listenCacheData
-                newListenCacheData.append(cacheData)
-
-                var newListenCaches = listenCaches
-                newListenCaches[restoreIdentifier] = newListenCacheData
-
-                UserDefaults.standard.set(newListenCaches, forKey: Constant.listenCaches)
-                UserDefaults.standard.synchronize()
-            }
-        } catch {
-            throw BluejayError.listenCacheEncoding(error)
-        }
-    }
-
-    private func remove(listeningCharacteristic: CharacteristicIdentifier, restoreIdentifier: RestoreIdentifier) throws {
-        let serviceUUID = listeningCharacteristic.service.uuid.uuidString
-        let characteristicUUID = listeningCharacteristic.uuid.uuidString
-
-        guard
-            let listenCaches = UserDefaults.standard.dictionary(forKey: Constant.listenCaches),
-            let cacheData = listenCaches[restoreIdentifier] as? [Data]
-        else {
-            // Nothing to remove.
-            return
-        }
-
-        var newCacheData = cacheData
-        let decoder = JSONDecoder()
-        newCacheData = try newCacheData.filter { data -> Bool in
-            do {
-                let listenCache = try decoder.decode(ListenCache.self, from: data)
-                return (listenCache.serviceUUID != serviceUUID) && (listenCache.characteristicUUID != characteristicUUID)
-            } catch {
-                throw BluejayError.listenCacheDecoding(error)
-            }
-        }
-
-        var newListenCaches = listenCaches
-
-        // If the new cache data is empty after the filter removal, remove the entire cache entry for the specified restore identifier as well.
-        if newCacheData.isEmpty {
-            newListenCaches.removeValue(forKey: restoreIdentifier)
-        } else {
-            newListenCaches[restoreIdentifier] = newCacheData
-        }
-
-        UserDefaults.standard.set(newListenCaches, forKey: Constant.listenCaches)
-        UserDefaults.standard.synchronize()
-    }
-
     /// Ask for the peripheral's maximum payload length in bytes for a single write request.
     public func maximumWriteValueLength(`for` writeType: CBCharacteristicWriteType) -> Int {
         return cbPeripheral.maximumWriteValueLength(for: writeType)
@@ -406,32 +266,47 @@ extension Peripheral: CBPeripheralDelegate {
 
     /// Captures CoreBluetooth's did discover services event and pass it to Bluejay's queue for processing.
     public func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
-        handleEvent(.didDiscoverServices, error: error as NSError?)
+        handle(event: .didDiscoverServices, error: error as NSError?)
     }
 
     /// Captures CoreBluetooth's did discover characteristics event and pass it to Bluejay's queue for processing.
     public func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
-        handleEvent(.didDiscoverCharacteristics, error: error as NSError?)
+        handle(event: .didDiscoverCharacteristics, error: error as NSError?)
     }
 
     /// Captures CoreBluetooth's did write to charactersitic event and pass it to Bluejay's queue for processing.
     public func peripheral(_ peripheral: CBPeripheral, didWriteValueFor characteristic: CBCharacteristic, error: Error?) {
-        handleEvent(.didWriteCharacteristic(characteristic), error: error as NSError?)
+        handle(event: .didWriteCharacteristic(characteristic), error: error as NSError?)
     }
 
     /// Captures CoreBluetooth's did receive a notification/value from a characteristic event and pass it to Bluejay's queue for processing.
     public func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
-        guard let bluejay = bluejay else {
-            preconditionFailure("Cannot handle did update value for \(characteristic.uuid.uuidString): Bluejay is nil.")
-        }
+        let characteristicIdentifier = CharacteristicIdentifier(characteristic)
 
-        guard let listener = listeners[CharacteristicIdentifier(characteristic)], let listenCallback = listener.0 else {
-            if bluejay.queue.isReading {
-                handleEvent(.didReadCharacteristic(characteristic, characteristic.value ?? Data()), error: error as NSError?)
-            } else if bluejay.queue.willEndListen(on: CharacteristicIdentifier(characteristic)) {
-                log("Received read event with value \(String(data: characteristic.value ?? Data(), encoding: .utf8) ?? "") on characteristic \(characteristic.debugDescription), but queue contains an end listen operation for this characteristic.")
+        guard let listener = listeners[characteristicIdentifier], let listenCallback = listener.0 else {
+            if delegate.isReading(characteristic: characteristicIdentifier) {
+                handle(event: .didReadCharacteristic(characteristic, characteristic.value ?? Data()), error: error as NSError?)
+            } else if delegate.willEndListen(on: CharacteristicIdentifier(characteristic)) {
+                log("""
+                    Received read event with value \(String(data: characteristic.value ?? Data(), encoding: .utf8) ?? "") \
+                    on characteristic \(characteristic.debugDescription), \
+                    but queue contains an end listen operation for this characteristic and should stop it soon.
+                    """)
             } else {
-                log("Unhandled read event with value \(String(data: characteristic.value ?? Data(), encoding: .utf8) ?? "") on characteristic \(characteristic.debugDescription)")
+                if delegate.backgroundRestorationEnabled() {
+                    log("""
+                        Unhandled listen with value: \(String(data: characteristic.value ?? Data(), encoding: .utf8) ?? ""), \
+                        on charactersitic: \(characteristic.uuid.uuidString), \
+                        from peripheral: \(identifier.description)
+                        """)
+
+                    delegate.receivedUnhandledListen(from: self, on: characteristicIdentifier, with: characteristic.value)
+                } else {
+                    log("""
+                        Unhandled read event value: \(String(data: characteristic.value ?? Data(), encoding: .utf8) ?? ""), \
+                        on charactersitic: \(characteristic.debugDescription)
+                        """)
+                }
             }
             return
         }
@@ -445,14 +320,12 @@ extension Peripheral: CBPeripheralDelegate {
 
     /// Captures CoreBluetooth's did turn on or off notification/listening on a characteristic event and pass it to Bluejay's queue for processing.
     public func peripheral(_ peripheral: CBPeripheral, didUpdateNotificationStateFor characteristic: CBCharacteristic, error: Error?) {
-        handleEvent(.didUpdateCharacteristicNotificationState(characteristic), error: error as NSError?)
+        handle(event: .didUpdateCharacteristicNotificationState(characteristic), error: error as NSError?)
     }
 
     /// Captures CoreBluetooth's did read RSSI event and pass it to Bluejay's queue for processing.
     public func peripheral(_ peripheral: CBPeripheral, didReadRSSI RSSI: NSNumber, error: Error?) {
-        for observer in observers {
-            observer.weakReference?.peripheral(self, didReadRSSI: RSSI, error: error)
-        }
+        delegate.didReadRSSI(from: self, RSSI: RSSI, error: error)
     }
 
 }

@@ -28,7 +28,7 @@ target 'Bluejay' do
 
 end
 
-target 'BluejayDemo' do
+target 'BluejayHeartSensorDemo' do
 
   demo_pods
 

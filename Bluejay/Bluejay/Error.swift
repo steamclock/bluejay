@@ -30,6 +30,8 @@ public enum BluejayError {
     case cancelled
     /// Bluejay disconnect is called.
     case explicitDisconnect
+    /// Bluejay disconnected unexpectedly.
+    case unexpectedDisconnect
     /// A disconnection operation is queued.
     case disconnectQueued
     /// An attempt to listen on a characteristic has timed out.
@@ -52,16 +54,14 @@ public enum BluejayError {
     case backgroundTaskRunning
     /// Bluejay does not support another Bluejay background task when there is already one that is still running.
     case multipleBackgroundTaskNotSupported
-    /// Bluejay has failed to encode a listen cache.
-    case listenCacheEncoding(Error)
-    /// Bluejay has failed to decode a listen cache.
-    case listenCacheDecoding(Error)
     /// Indefinite flush will not exit.
     case indefiniteFlush
     /// Bluejay has stopped.
     case stopped
     /// Bluejay cannot perform certain actions when background restoration is still in progress.
     case backgroundRestorationInProgress
+    /// Startup background task has expired during state restoration.
+    case startupBackgroundTaskExpired
     /// The original listen declared that duplicated listens are not allowed.
     case multipleListenTrapped
     /// The original listen declared that it can be replaced by a new listen.
@@ -72,65 +72,65 @@ extension BluejayError: LocalizedError {
     public var errorDescription: String? {
         switch self {
         case .bluetoothUnavailable:
-            return "Bluetooth unavailable."
+            return "Bluetooth unavailable"
         case .multipleScanNotSupported:
-            return "Multiple scan is not supported."
+            return "Multiple scan is not supported"
         case .multipleConnectNotSupported:
-            return "Multiple connect is not supported."
+            return "Multiple connect is not supported"
         case .multipleDisconnectNotSupported:
-            return "Multiple disconnect is not supported."
+            return "Multiple disconnect is not supported"
         case .connectionTimedOut:
-            return "Connection timed out."
+            return "Connection timed out"
         case .notConnected:
-            return "Not connected to a peripheral."
+            return "Not connected to a peripheral"
         case let .missingService(service):
-            return "Service not found: \(service.uuid)."
+            return "Service not found: \(service.uuid)"
         case let .missingCharacteristic(characteristic):
-            return "Characteristic not found: \(characteristic.uuid)."
+            return "Characteristic not found: \(characteristic.uuid)"
         case .cancelled:
             return "Cancelled"
         case .explicitDisconnect:
             return "Explicit disconnect"
+        case .unexpectedDisconnect:
+            return "Unexpected disconnect"
         case .disconnectQueued:
             return "Disconnection is queued"
         case .listenTimedOut:
-            return "Listen timed out."
+            return "Listen timed out"
         case .readFailed:
-            return "Read failed."
+            return "Read failed"
         case .writeFailed:
-            return "Write failed."
+            return "Write failed"
         case .missingData:
-            return "No data from peripheral."
+            return "No data from peripheral"
         case let .dataOutOfBounds(start, length, count):
-            return "Cannot extract data with a size of \(count) using start: \(start), length: \(length)."
+            return "Cannot extract data with a size of \(count) using start: \(start), length: \(length)"
         case let .unexpectedPeripheral(peripheral):
-            return "Unexpected peripheral: \(peripheral.uuid)."
+            return "Unexpected peripheral: \(peripheral.uuid)"
         case .allowDuplicatesInBackgroundNotSupported:
-            return "Scanning with allow duplicates while in the background is not supported."
+            return "Scanning with allow duplicates while in the background is not supported"
         case .missingServiceIdentifiersInBackground:
-            return "Scanning without specifying any service identifiers while in the background is not supported."
+            return "Scanning without specifying any service identifiers while in the background is not supported"
         case .backgroundTaskRunning:
             return """
             Regular Bluetooth operation is not available when a background task is running. \
             For reading, writing, and listening, please use only the API found in the Synchronized Peripheral \
-            provided to you when working inside a background task block.
+            provided to you when working inside a background task block
             """
         case .multipleBackgroundTaskNotSupported:
-            return "Multiple background task is not supported."
-        case let .listenCacheEncoding(error):
-            return "Listen cache encoding failed with error: \(error.localizedDescription)"
-        case let .listenCacheDecoding(error):
-            return "Listen cache decoding failed with error: \(error.localizedDescription)"
+            return "Multiple background task is not supported"
         case .indefiniteFlush:
-            return "Flush listen timeout cannot be none or zero."
+            return "Flush listen timeout cannot be none or zero"
         case .stopped:
-            return "Bluejay stopped."
+            return "Bluejay stopped"
         case .backgroundRestorationInProgress:
-            return "Background restoration is in progress."
+            return "Background restoration is in progress"
+        case .startupBackgroundTaskExpired:
+            return "Startup background task expired during state restoration"
         case .multipleListenTrapped:
-            return "The current listen cannot be installed because an existing listen on the same characteristic is configured to trap."
+            return "The current listen cannot be installed because an existing listen on the same characteristic is configured to trap"
         case .multipleListenReplaced:
-            return "The current listen has been replaced by a newer listen on the same characteristic."
+            return "The current listen has been replaced by a newer listen on the same characteristic"
         }
     }
 }
@@ -153,22 +153,22 @@ extension BluejayError: CustomNSError {
         case .missingCharacteristic: return 8
         case .cancelled: return 9
         case .explicitDisconnect: return 10
-        case .disconnectQueued: return 11
-        case .listenTimedOut: return 12
-        case .readFailed: return 13
-        case .writeFailed: return 14
-        case .missingData: return 15
-        case .dataOutOfBounds: return 16
-        case .unexpectedPeripheral: return 17
-        case .allowDuplicatesInBackgroundNotSupported: return 18
-        case .missingServiceIdentifiersInBackground: return 19
-        case .backgroundTaskRunning: return 20
-        case .multipleBackgroundTaskNotSupported: return 21
-        case .listenCacheEncoding: return 22
-        case .listenCacheDecoding: return 23
-        case .indefiniteFlush: return 24
-        case .stopped: return 25
-        case .backgroundRestorationInProgress: return 26
+        case .unexpectedDisconnect: return 11
+        case .disconnectQueued: return 12
+        case .listenTimedOut: return 13
+        case .readFailed: return 14
+        case .writeFailed: return 15
+        case .missingData: return 16
+        case .dataOutOfBounds: return 17
+        case .unexpectedPeripheral: return 18
+        case .allowDuplicatesInBackgroundNotSupported: return 19
+        case .missingServiceIdentifiersInBackground: return 20
+        case .backgroundTaskRunning: return 21
+        case .multipleBackgroundTaskNotSupported: return 22
+        case .indefiniteFlush: return 23
+        case .stopped: return 24
+        case .backgroundRestorationInProgress: return 25
+        case .startupBackgroundTaskExpired: return 26
         case .multipleListenTrapped: return 27
         case .multipleListenReplaced: return 28
         }

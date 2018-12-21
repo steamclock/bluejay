@@ -8,13 +8,24 @@
 
 import Foundation
 
-/// Make it clearer that the return type for the `BackgroundRestorer` protocols will be a completion block called at the end of a background restoration.
-public typealias BackgroundRestoreCompletion = () -> Void
-
-/// Protocols for handling the results of a background restoration.
-public protocol BackgroundRestorer: class {
+/**
+ * Protocols for handling the results of a background restoration.
+ *
+ * - Important: The delegate must be an `UIApplicationDelegate` in order to properly support background restoration during `didFinishLaunchingWithOptions`.
+ */
+public protocol BackgroundRestorer: UIApplicationDelegate {
     /// Bluejay was able to restore a connection.
-    func didRestoreConnection(to peripheral: Peripheral) -> BackgroundRestoreCompletion
+    func didRestoreConnection(to peripheral: PeripheralIdentifier) -> BackgroundRestoreCompletion
     /// Bluejay failed to restore a connection.
-    func didFailToRestoreConnection(to peripheral: Peripheral, error: Error) -> BackgroundRestoreCompletion
+    func didFailToRestoreConnection(to peripheral: PeripheralIdentifier, error: Error) -> BackgroundRestoreCompletion
+}
+
+/**
+ * Allows capturing further Bluejay operations to be queued and executed after background restoration is completed.
+ */
+public enum BackgroundRestoreCompletion {
+    /// Put required Bluejay API or application calls that are needed after a background restoration inside this callback.
+    case callback(() -> Void)
+    /// Return this if no callback is needed after a background restoration.
+    case `continue`
 }

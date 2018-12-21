@@ -28,7 +28,7 @@ public class SynchronizedPeripheral {
     }
 
     deinit {
-        log("Deinit synchronized peripheral: \(String(describing: parent.cbPeripheral.name ?? parent.cbPeripheral.identifier.uuidString))")
+         log("Deinit synchronized peripheral: \(parent.identifier.description))")
     }
 
     // MARK: - Actions
@@ -455,7 +455,7 @@ extension SynchronizedPeripheral: ConnectionObserver {
         }
     }
 
-    public func disconnected(from peripheral: Peripheral) {
+    public func disconnected(from peripheral: PeripheralIdentifier) {
         backupTermination?(BluejayError.notConnected)
     }
 

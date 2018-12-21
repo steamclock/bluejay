@@ -235,7 +235,13 @@ class Queue {
         return scan != nil
     }
 
-    var isReading: Bool = false
+    func isReading(characteristic: CharacteristicIdentifier) -> Bool {
+        if let readOperation = queue.first as? ReadOperation, case .running = readOperation.state {
+            return true
+        } else {
+            return false
+        }
+    }
 
     func willEndListen(on characteristic: CharacteristicIdentifier) -> Bool {
         return queue.contains { queueable -> Bool in
@@ -292,7 +298,7 @@ extension Queue: ConnectionObserver {
         }
     }
 
-    func connected(to peripheral: Peripheral) {
+    func connected(to peripheral: PeripheralIdentifier) {
         if !isEmpty {
             update()
         }

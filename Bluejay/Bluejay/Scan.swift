@@ -130,12 +130,11 @@ class Scan: Queueable {
     }
 
     func process(event: Event) {
-        if case .didDiscoverPeripheral(let peripheral, let advertisementData, let rssi) = event {
-            let peripheralIdentifier = PeripheralIdentifier(
-                uuid: peripheral.identifier)
+        if case .didDiscoverPeripheral(let cbPeripheral, let advertisementData, let rssi) = event {
+            let peripheralIdentifier = PeripheralIdentifier(uuid: cbPeripheral.identifier, name: cbPeripheral.name)
+
             let newDiscovery = ScanDiscovery(
                 peripheralIdentifier: peripheralIdentifier,
-                peripheralName: peripheral.name,
                 advertisementPacket: advertisementData,
                 rssi: rssi.intValue)
 

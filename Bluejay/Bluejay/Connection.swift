@@ -78,7 +78,9 @@ class Connection: Queueable {
         if case .didConnectPeripheral(let peripheral) = event {
             success(peripheral)
         } else if case .didDisconnectPeripheral = event {
-            if case .stopping(let error) = state {
+            if case .running = state {
+                failed(BluejayError.unexpectedDisconnect)
+            } else if case .stopping(let error) = state {
                 failed(error)
             } else if case .failed(let error) = state {
                 failed(error)
@@ -95,9 +97,9 @@ class Connection: Queueable {
 
         state = .completed
 
-        log("Connected to: \(peripheral.name).")
+        log("Connected to: \(peripheral.identifier.name).")
 
-        callback?(.success(peripheral))
+        callback?(.success(peripheral.identifier))
         callback = nil
 
         updateQueue()
