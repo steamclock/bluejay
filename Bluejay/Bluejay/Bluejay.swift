@@ -8,6 +8,7 @@
 
 import CoreBluetooth
 import Foundation
+import XCGLogger
 
 /**
  Bluejay is a simple wrapper around CoreBluetooth that focuses on making a common usage case as straight forward as possible: a single connected peripheral that the user is interacting with regularly (think most personal electronics devices that have an associated iOS app: fitness trackers, guitar amps, etc).
@@ -29,6 +30,9 @@ public class Bluejay: NSObject { //swiftlint:disable:this type_body_length
 
     /// List of weak references to objects interested in receiving notifications on RSSI reads.
     private var rssiObservers: [WeakRSSIObserver] = []
+
+    /// List of weak references to objects interested in receiving notifications on log file changes.
+    private var logObservers: [WeakLogObserver] = []
 
     /// Reference to a peripheral that is still connecting. If this is nil, then the peripheral should either be disconnected or connected. This is used to help determine the state of the peripheral's connection.
     private var connectingPeripheral: Peripheral?
@@ -79,6 +83,22 @@ public class Bluejay: NSObject { //swiftlint:disable:this type_body_length
 
     /// Only **not nil** when background restoration is restoring into a disconnected state.
     private var disconnectedPeripheralAtRestoration: Peripheral?
+
+    /// Convenient accessor to app document directory.
+    private var documentUrl: URL? {
+        do {
+            return try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+        } catch {
+            return nil
+        }
+    }
+
+    /// File name for the log file.
+    private let logFileName = "bluejay_debug.txt"
+
+    /// For setting up the monitoring of changes in the log file.
+    private var logFileMonitorSource: DispatchSourceFileSystemObject?
+    private var logFileDescriptor: CInt = 0
 
     // MARK: - Public Properties
 
@@ -136,6 +156,69 @@ public class Bluejay: NSObject { //swiftlint:disable:this type_body_length
         return restoreIdentifier != nil
     }
 
+    // MARK: - Logging
+
+    public func getLogs() -> String? {
+        guard let documentUrl = documentUrl else {
+            return nil
+        }
+
+        do {
+            return try String(contentsOf: documentUrl.appendingPathComponent(logFileName))
+        } catch {
+            return nil
+        }
+    }
+
+    private func monitorLogFile() {
+        guard let documentUrl = documentUrl else {
+            return
+        }
+
+        let logFilePath = documentUrl.appendingPathComponent(logFileName).path
+
+        logFileDescriptor = open(
+            FileManager.default.fileSystemRepresentation(withPath: logFilePath),
+            O_EVTONLY
+        )
+
+        let logFileMonitorQueue = DispatchQueue.global()
+
+        logFileMonitorSource = DispatchSource.makeFileSystemObjectSource(fileDescriptor: logFileDescriptor, eventMask: .write, queue: logFileMonitorQueue)
+
+        guard let logFileMonitorSource = logFileMonitorSource else {
+            return
+        }
+
+        logFileMonitorSource.setEventHandler {
+            DispatchQueue.main.async { [weak self] in
+                guard let weakSelf = self else {
+                    return
+                }
+
+                weakSelf.logFileChanged()
+            }
+        }
+
+        logFileMonitorSource.setCancelHandler { [weak self] in
+            guard let weakSelf = self else {
+                return
+            }
+
+            close(weakSelf.logFileDescriptor)
+            weakSelf.logFileDescriptor = 0
+            weakSelf.logFileMonitorSource = nil
+        }
+
+        logFileMonitorSource.resume()
+    }
+
+    private func logFileChanged() {
+        for observer in logObservers {
+            observer.weakReference?.logFileUpdated(logs: getLogs() ?? "")
+        }
+    }
+
     // MARK: - Initialization
 
     /**
@@ -143,7 +226,41 @@ public class Bluejay: NSObject { //swiftlint:disable:this type_body_length
      */
     public override init() {
         super.init()
-        log("Bluejay initialized with UUID: \(uuid.uuidString).")
+
+        defer {
+            log("Bluejay initialized with UUID: \(uuid.uuidString).")
+        }
+
+        logger.setup(
+            level: .debug,
+            showLogIdentifier: true,
+            showFunctionName: false,
+            showThreadName: true,
+            showLevel: false,
+            showFileNames: false,
+            showLineNumbers: false,
+            showDate: true)
+
+        guard let documentUrl = documentUrl else {
+            log("App document URL not found, cannot create log file destination")
+            return
+        }
+
+        let fileDestination = AutoRotatingFileDestination(
+            writeToFile: documentUrl.appendingPathComponent(logFileName),
+            identifier: "Bluejay.File")
+
+        fileDestination.outputLevel = .debug
+        fileDestination.showLogIdentifier = true
+        fileDestination.showFunctionName = false
+        fileDestination.showThreadName = true
+        fileDestination.showLevel = false
+        fileDestination.showFileName = false
+        fileDestination.showLineNumber = false
+        fileDestination.showDate = true
+        fileDestination.logQueue = XCGLogger.logQueue
+
+        logger.add(destination: fileDestination)
     }
 
     deinit {
@@ -325,6 +442,22 @@ public class Bluejay: NSObject { //swiftlint:disable:this type_body_length
     /// Unregister a RSSI observer.
     public func unregister(rssiObserver: RSSIObserver) {
         rssiObservers = rssiObservers.filter { $0.weakReference != nil && $0.weakReference !== rssiObserver }
+    }
+
+    /// Register a log observer that is notified whenever the log file is updated
+    public func register(logObserver: LogObserver) {
+        if logObservers.isEmpty && logFileMonitorSource == nil {
+            // Only start monitoring the log file on first log observer registration.
+            monitorLogFile()
+        }
+
+        logObservers = logObservers.filter { $0.weakReference != nil && $0.weakReference !== logObserver }
+        logObservers.append(WeakLogObserver(weakReference: logObserver))
+    }
+
+    /// Unregister a log observer.
+    public func unregister(logObserver: LogObserver) {
+        logObservers = logObservers.filter { $0.weakReference != nil && $0.weakReference !== logObserver }
     }
 
     /**
@@ -1297,9 +1430,11 @@ extension Bluejay: PeripheralDelegate {
     }
 }
 
-/// Convenience function to log information specific to Bluejay within the framework. We have plans to improve logging significantly in the near future.
+let logger = XCGLogger(identifier: "Bluejay", includeDefaultDestinations: true)
+
+/// Convenience function to log information specific to Bluejay within the framework.
 func log(_ string: String) {
-    debugPrint("[Bluejay-Debug] \(string)")
+    logger.debug(string)
 }
 
 // Helper function inserted by Swift 4.2 migrator.

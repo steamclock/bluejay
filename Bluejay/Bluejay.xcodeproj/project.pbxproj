@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2F74765D212E95F800D74B87 /* WarningOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F74765C212E95F800D74B87 /* WarningOptions.swift */; };
+		3B53B16E1014E47D8AF3BBDC /* Pods_BluejayHeartSensorDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B82FE820DEBA78205D73DB03 /* Pods_BluejayHeartSensorDemo.framework */; };
 		7677FF3A64A35BBC9125A87E /* Pods_Bluejay.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1460DB02323E612C0106BFE7 /* Pods_Bluejay.framework */; };
 		B8022D981E1EEED900EA360B /* WriteResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8022D971E1EEED900EA360B /* WriteResult.swift */; };
 		B8022D9A1E1F041D00EA360B /* SynchronizedPeripheral.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8022D991E1F041D00EA360B /* SynchronizedPeripheral.swift */; };
@@ -66,6 +67,8 @@
 		B8C9684921B5DDB900905896 /* MultipleListenOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C9684821B5DDB900905896 /* MultipleListenOption.swift */; };
 		B8D2078C1E26D446007E670A /* CBPeripheralState+ReturnString.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8D2078B1E26D446007E670A /* CBPeripheralState+ReturnString.swift */; };
 		B8D2078E1E26D702007E670A /* CBManagerState+ReturnString.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8D2078D1E26D702007E670A /* CBManagerState+ReturnString.swift */; };
+		B8DC6C6C21DD6B49004A8EA6 /* LogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8DC6C6B21DD6B48004A8EA6 /* LogViewController.swift */; };
+		B8DC6C6E21DD7917004A8EA6 /* LogObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8DC6C6D21DD7917004A8EA6 /* LogObserver.swift */; };
 		B8E9B3971EE0A724007519B0 /* RunResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8E9B3961EE0A724007519B0 /* RunResult.swift */; };
 		B8E9B3991EE0BDD0007519B0 /* BackgroundRestoreMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8E9B3981EE0BDD0007519B0 /* BackgroundRestoreMode.swift */; };
 		B8F8C0ED1E4E7CA300A0D0F7 /* Disconnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8F8C0EC1E4E7CA300A0D0F7 /* Disconnection.swift */; };
@@ -99,12 +102,15 @@
 /* Begin PBXFileReference section */
 		1460DB02323E612C0106BFE7 /* Pods_Bluejay.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Bluejay.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2F74765C212E95F800D74B87 /* WarningOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WarningOptions.swift; sourceTree = "<group>"; };
+		6D73B082C20E892DBC931F5D /* Pods-BluejayHeartSensorDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BluejayHeartSensorDemo.release.xcconfig"; path = "Pods/Target Support Files/Pods-BluejayHeartSensorDemo/Pods-BluejayHeartSensorDemo.release.xcconfig"; sourceTree = "<group>"; };
+		6D8D558D0951A33AECAED2CE /* Pods-BluejayHeartSensorDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BluejayHeartSensorDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BluejayHeartSensorDemo/Pods-BluejayHeartSensorDemo.debug.xcconfig"; sourceTree = "<group>"; };
 		916C6338CC4E6D8DBA1A561C /* Pods-Bluejay.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Bluejay.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Bluejay/Pods-Bluejay.debug.xcconfig"; sourceTree = "<group>"; };
 		B8022D971E1EEED900EA360B /* WriteResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WriteResult.swift; sourceTree = "<group>"; };
 		B8022D991E1F041D00EA360B /* SynchronizedPeripheral.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SynchronizedPeripheral.swift; sourceTree = "<group>"; };
 		B8022D9B1E1F052F00EA360B /* ListenAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListenAction.swift; sourceTree = "<group>"; };
 		B80D299A2170062D001C3C9B /* DisconnectHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisconnectHandler.swift; sourceTree = "<group>"; };
 		B81E37721EDE238900E0655F /* DisconnectionResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DisconnectionResult.swift; sourceTree = "<group>"; };
+		B82FE820DEBA78205D73DB03 /* Pods_BluejayHeartSensorDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BluejayHeartSensorDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B83271A81E313CA300D68581 /* Queueable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Queueable.swift; sourceTree = "<group>"; };
 		B8330D5021B9E03B006F29C7 /* ListenCallback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListenCallback.swift; sourceTree = "<group>"; };
 		B8383B5D21C3162800F07306 /* BluejayHeartSensorDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BluejayHeartSensorDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -160,6 +166,8 @@
 		B8CA5E5A1EFD935B006D7B12 /* HeartRateMeasurement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeartRateMeasurement.swift; sourceTree = "<group>"; };
 		B8D2078B1E26D446007E670A /* CBPeripheralState+ReturnString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CBPeripheralState+ReturnString.swift"; sourceTree = "<group>"; };
 		B8D2078D1E26D702007E670A /* CBManagerState+ReturnString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CBManagerState+ReturnString.swift"; sourceTree = "<group>"; };
+		B8DC6C6B21DD6B48004A8EA6 /* LogViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogViewController.swift; sourceTree = "<group>"; };
+		B8DC6C6D21DD7917004A8EA6 /* LogObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogObserver.swift; sourceTree = "<group>"; };
 		B8E9B3961EE0A724007519B0 /* RunResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RunResult.swift; sourceTree = "<group>"; };
 		B8E9B3981EE0BDD0007519B0 /* BackgroundRestoreMode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackgroundRestoreMode.swift; sourceTree = "<group>"; };
 		B8F8C0EC1E4E7CA300A0D0F7 /* Disconnection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Disconnection.swift; sourceTree = "<group>"; };
@@ -173,6 +181,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B89C0B6321CC452500320A52 /* Bluejay.framework in Frameworks */,
+				3B53B16E1014E47D8AF3BBDC /* Pods_BluejayHeartSensorDemo.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -192,6 +201,8 @@
 			children = (
 				916C6338CC4E6D8DBA1A561C /* Pods-Bluejay.debug.xcconfig */,
 				D3A376B191A26044FDEBF5C5 /* Pods-Bluejay.release.xcconfig */,
+				6D8D558D0951A33AECAED2CE /* Pods-BluejayHeartSensorDemo.debug.xcconfig */,
+				6D73B082C20E892DBC931F5D /* Pods-BluejayHeartSensorDemo.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -213,6 +224,7 @@
 			isa = PBXGroup;
 			children = (
 				B8383B5F21C3162800F07306 /* AppDelegate.swift */,
+				B8DC6C6B21DD6B48004A8EA6 /* LogViewController.swift */,
 				B89C0B6021CC410600320A52 /* ScanViewController.swift */,
 				B89C0B6821CC49B700320A52 /* SensorViewController.swift */,
 				B8CA5E5A1EFD935B006D7B12 /* HeartRateMeasurement.swift */,
@@ -261,7 +273,6 @@
 				B8F8C0EC1E4E7CA300A0D0F7 /* Disconnection.swift */,
 				B8C70FA21E1C65000006CF58 /* ConnectionResult.swift */,
 				B81E37721EDE238900E0655F /* DisconnectionResult.swift */,
-				B8C70FA71E1C696A0006CF58 /* Protocols */,
 			);
 			name = Connectivity;
 			sourceTree = "<group>";
@@ -337,6 +348,7 @@
 				B88A0D9D1E1DCFA300A00FF8 /* Queueing */,
 				B8D2AADF1EC0F39E00F4F27C /* Background Restoration */,
 				B8046D0021CD730F005A58A2 /* Serialization and Deserialization */,
+				B8C70FA71E1C696A0006CF58 /* Protocols */,
 				B8C70FA61E1C68AD0006CF58 /* Structs */,
 				B8C70F931E1C56D80006CF58 /* Extensions */,
 				B8C70F791E1C22850006CF58 /* Info.plist */,
@@ -360,6 +372,7 @@
 			children = (
 				B8C70F9D1E1C5AD80006CF58 /* CoreBluetooth.framework */,
 				1460DB02323E612C0106BFE7 /* Pods_Bluejay.framework */,
+				B82FE820DEBA78205D73DB03 /* Pods_BluejayHeartSensorDemo.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -380,8 +393,9 @@
 			isa = PBXGroup;
 			children = (
 				B8C70FB81E1C725C0006CF58 /* ConnectionObserver.swift */,
-				B80D299A2170062D001C3C9B /* DisconnectHandler.swift */,
 				B8FE9DF41E73597A00D361CE /* RSSIObserver.swift */,
+				B8DC6C6D21DD7917004A8EA6 /* LogObserver.swift */,
+				B80D299A2170062D001C3C9B /* DisconnectHandler.swift */,
 			);
 			name = Protocols;
 			sourceTree = "<group>";
@@ -415,10 +429,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = B8383B6E21C3162A00F07306 /* Build configuration list for PBXNativeTarget "BluejayHeartSensorDemo" */;
 			buildPhases = (
+				A3B0253955770A9E58E075E5 /* [CP] Check Pods Manifest.lock */,
 				B8383B5921C3162800F07306 /* Sources */,
 				B8383B5A21C3162800F07306 /* Frameworks */,
 				B8383B5B21C3162800F07306 /* Resources */,
 				B89C0B6721CC452500320A52 /* Embed Frameworks */,
+				67094269506EC621B23F439B /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -518,16 +534,50 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		67094269506EC621B23F439B /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-BluejayHeartSensorDemo/Pods-BluejayHeartSensorDemo-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/ObjcExceptionBridging/ObjcExceptionBridging.framework",
+				"${BUILT_PRODUCTS_DIR}/XCGLogger/XCGLogger.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ObjcExceptionBridging.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/XCGLogger.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-BluejayHeartSensorDemo/Pods-BluejayHeartSensorDemo-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A3B0253955770A9E58E075E5 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-BluejayHeartSensorDemo-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
 		B8F72762219114DC00286236 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputFileListPaths = (
-			);
 			inputPaths = (
-			);
-			outputFileListPaths = (
 			);
 			outputPaths = (
 			);
@@ -561,6 +611,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B89C0B5E21CC3FC800320A52 /* HeartRateMeasurement.swift in Sources */,
+				B8DC6C6C21DD6B49004A8EA6 /* LogViewController.swift in Sources */,
 				B8383B6021C3162800F07306 /* AppDelegate.swift in Sources */,
 				B89C0B6921CC49B700320A52 /* SensorViewController.swift in Sources */,
 				B89C0B6121CC410600320A52 /* ScanViewController.swift in Sources */,
@@ -588,6 +639,7 @@
 				B88A0DA11E1DD15600A00FF8 /* DiscoverCharacteristic.swift in Sources */,
 				B80D299B2170062D001C3C9B /* DisconnectHandler.swift in Sources */,
 				B842AAF81E4CF74300BB32EE /* String+Transferable.swift in Sources */,
+				B8DC6C6E21DD7917004A8EA6 /* LogObserver.swift in Sources */,
 				B83A67CE219F45C300076B9F /* BackgroundRestorer.swift in Sources */,
 				B83271A91E313CA300D68581 /* Queueable.swift in Sources */,
 				B8F8C0ED1E4E7CA300A0D0F7 /* Disconnection.swift in Sources */,
@@ -658,6 +710,7 @@
 /* Begin XCBuildConfiguration section */
 		B8383B6C21C3162A00F07306 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6D8D558D0951A33AECAED2CE /* Pods-BluejayHeartSensorDemo.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -678,12 +731,13 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 4.2;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
 		B8383B6D21C3162A00F07306 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6D73B082C20E892DBC931F5D /* Pods-BluejayHeartSensorDemo.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -703,7 +757,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 4.2;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
