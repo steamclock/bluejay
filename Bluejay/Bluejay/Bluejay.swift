@@ -87,7 +87,11 @@ public class Bluejay: NSObject { //swiftlint:disable:this type_body_length
     /// Convenient accessor to app document directory.
     private var documentUrl: URL? {
         do {
-            return try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+            return try FileManager.default.url(
+                for: .documentDirectory,
+                in: .userDomainMask,
+                appropriateFor: nil,
+                create: true)
         } catch {
             return nil
         }
@@ -96,7 +100,7 @@ public class Bluejay: NSObject { //swiftlint:disable:this type_body_length
     /// File name for the log file.
     private let logFileName = "bluejay_debug.txt"
 
-    /// For setting up the monitoring of changes in the log file.
+    /// Source and descriptor for setting up the monitoring of changes in the log file.
     private var logFileMonitorSource: DispatchSourceFileSystemObject?
     private var logFileDescriptor: CInt = 0
 
@@ -158,6 +162,11 @@ public class Bluejay: NSObject { //swiftlint:disable:this type_body_length
 
     // MARK: - Logging
 
+    /**
+     * Get the current content of the log file.
+     *
+     * - Returns: The current content of the log file as a String.
+     */
     public func getLogs() -> String? {
         guard let documentUrl = documentUrl else {
             return nil
@@ -170,6 +179,7 @@ public class Bluejay: NSObject { //swiftlint:disable:this type_body_length
         }
     }
 
+    /// Begin monitoring changes in the log file and start notifying log file observers.
     private func monitorLogFile() {
         guard let documentUrl = documentUrl else {
             return
@@ -213,6 +223,7 @@ public class Bluejay: NSObject { //swiftlint:disable:this type_body_length
         logFileMonitorSource.resume()
     }
 
+    /// Notify log file observers.
     private func logFileChanged() {
         for observer in logObservers {
             observer.weakReference?.logFileUpdated(logs: getLogs() ?? "")
@@ -292,6 +303,7 @@ public class Bluejay: NSObject { //swiftlint:disable:this type_body_length
                 checkBackgroundSupportForBluetooth()
                 restoreIdentifier = backgroundRestoreConfig.restoreIdentifier
                 backgroundRestorer = backgroundRestoreConfig.backgroundRestorer
+                listenRestorer = backgroundRestoreConfig.listenRestorer
                 isRestoring = backgroundRestoreConfig.isRestoringFromBackground
                 managerOptions[CBCentralManagerOptionRestoreIdentifierKey] = restoreIdentifier
 
@@ -409,7 +421,7 @@ public class Bluejay: NSObject { //swiftlint:disable:this type_body_length
     /**
      Register for notifications on Bluetooth connection events and state changes. Unregistering is not required, Bluejay will unregister for you if the observer is no longer in memory.
 
-     - Parameter observer: object interested in receiving Bluejay's Bluetooth connection related events.
+     - Parameter connectionObserver: object interested in receiving Bluejay's Bluetooth connection related events.
      */
     public func register(connectionObserver: ConnectionObserver) {
         connectionObservers = connectionObservers.filter { $0.weakReference != nil && $0.weakReference !== connectionObserver }
@@ -427,24 +439,36 @@ public class Bluejay: NSObject { //swiftlint:disable:this type_body_length
     /**
      Unregister for notifications on Bluetooth connection events and state changes. Unregistering is not required, Bluejay will unregister for you if the observer is no longer in memory.
 
-     - Parameter observer: object no longer interested in receiving Bleujay's connection related events.
+     - Parameter connectionObserver: object no longer interested in receiving Bluejay's connection related events.
      */
     public func unregister(connectionObserver: ConnectionObserver) {
         connectionObservers = connectionObservers.filter { $0.weakReference != nil && $0.weakReference !== connectionObserver }
     }
 
-    /// Register a RSSI observer that can receive the RSSI value when `readRSSI` is called.
+    /**
+     Register for notifications when `readRSSI` is called. Unregistering is not required, Bluejay will unregister for you if the observer is no longer in memory.
+
+     - Parameter rssiObserver: object interested in receiving Bluejay's `readRSSI` response.
+     */
     public func register(rssiObserver: RSSIObserver) {
         rssiObservers = rssiObservers.filter { $0.weakReference != nil && $0.weakReference !== rssiObserver }
         rssiObservers.append(WeakRSSIObserver(weakReference: rssiObserver))
     }
 
-    /// Unregister a RSSI observer.
+    /**
+     Unregister for notifications when `readRSSI` is called. Unregistering is not required, Bluejay will unregister for you if the observer is no longer in memory.
+
+     - Parameter rssiObserver: object no longer interested in receiving Bluejay's `readRSSI` response.
+     */
     public func unregister(rssiObserver: RSSIObserver) {
         rssiObservers = rssiObservers.filter { $0.weakReference != nil && $0.weakReference !== rssiObserver }
     }
 
-    /// Register a log observer that is notified whenever the log file is updated
+    /**
+     Register for notifications when the log file is updated. Unregistering is not required, Bluejay will unregister for you if the observer is no longer in memory.
+
+     - Parameter logObserver: object interested in receiving log file updates.
+     */
     public func register(logObserver: LogObserver) {
         if logObservers.isEmpty && logFileMonitorSource == nil {
             // Only start monitoring the log file on first log observer registration.
@@ -453,9 +477,15 @@ public class Bluejay: NSObject { //swiftlint:disable:this type_body_length
 
         logObservers = logObservers.filter { $0.weakReference != nil && $0.weakReference !== logObserver }
         logObservers.append(WeakLogObserver(weakReference: logObserver))
+
+        logObserver.logFileUpdated(logs: getLogs() ?? "")
     }
 
-    /// Unregister a log observer.
+    /**
+     Unregister for notifications when the log file is updated. Unregistering is not required, Bluejay will unregister for you if the observer is no longer in memory.
+
+     - Parameter logObserver: object no longer interested in notifications when the log file is updated.
+     */
     public func unregister(logObserver: LogObserver) {
         logObservers = logObservers.filter { $0.weakReference != nil && $0.weakReference !== logObserver }
     }
@@ -731,6 +761,11 @@ public class Bluejay: NSObject { //swiftlint:disable:this type_body_length
         return periph.isListening(to: characteristicIdentifier)
     }
 
+    /**
+     Attempts to read the RSSI (signal strength) of the currently connected peripheral.
+
+     - Warning: Will throw if called while a Bluejay background task is running, or if not connected.
+     */
     public func readRSSI() throws {
         Dispatch.dispatchPrecondition(condition: .onQueue(.main))
 
@@ -983,6 +1018,13 @@ public class Bluejay: NSObject { //swiftlint:disable:this type_body_length
 
 extension Bluejay: CBCentralManagerDelegate {
 
+    /**
+     * Routine for restoring to a connecting peripheral.
+     *
+     * A manual connect attempt is required (Bluejay will do this for you), as CoreBluetooth does not have a connection in-progress, nor does it issue a connect for you even when it is restoring into a connecting state.
+     *
+     * - Parameter peripheral: the connecting peripheral restored.
+     */
     private func restoreConnecting(peripheral: Peripheral) {
         guard let backgroundRestorer = self.backgroundRestorer else {
             fatalError("No background restorer found when restoring a connecting peripheral.")
@@ -1001,8 +1043,6 @@ extension Bluejay: CBCentralManagerDelegate {
                 case .continue:
                     break
                 }
-
-                self.endStartupBackgroundTask()
             case .failure(let error):
                 log("Did fail to to restore connection with error: \(error.localizedDescription)")
 
@@ -1017,12 +1057,18 @@ extension Bluejay: CBCentralManagerDelegate {
                 case .continue:
                     break
                 }
-
-                self.endStartupBackgroundTask()
             }
+            self.endStartupBackgroundTask()
         }
     }
 
+    /**
+     * Routine for restoring to a connected peripheral.
+     *
+     * No further connection related actions are required, simply notify the background restorer as well as the connection observers, as interaction with the peripheral is now possible.
+     *
+     * - Parameter peripheral: the connected peripheral restored.
+     */
     private func restoreConnected(peripheral: Peripheral) {
         guard let backgroundRestorer = self.backgroundRestorer else {
             fatalError("No background restorer found when restoring a connected peripheral.")
@@ -1046,6 +1092,13 @@ extension Bluejay: CBCentralManagerDelegate {
         endStartupBackgroundTask()
     }
 
+    /**
+     * Routine for restoring to a disconnecting peripheral.
+     *
+     * There is currently no known way to recreate nor to test this scenario. For now, we believe centralManager(_:didDisconnectPeripheral:error:) will not be called in this case, so simply notify failure to restore connection and assume CoreBluetooth will clean up and discard the unused and disconnecting peripheral as long as we don't hold a reference to the disconnecting `CBPeripheral`.
+     *
+     * - Parameter peripheral: the disconnecting peripheral during state restoration.
+     */
     private func restoreDisconnecting(peripheral: Peripheral) {
         guard let backgroundRestorer = self.backgroundRestorer else {
             fatalError("No background restorer found when restoring a disconnecting peripheral.")
@@ -1066,6 +1119,13 @@ extension Bluejay: CBCentralManagerDelegate {
         endStartupBackgroundTask()
     }
 
+    /**
+     * Routine for restoring to a disconnected peripheral.
+     *
+     * There is currently no known way to recreate nor to test this scenario. For now, we believe centralManager(_:didDisconnectPeripheral:error:) will not be called in this case, so simply notify failure to restore connection and assume CoreBluetooth will clean up and discard the unused and disconnected peripheral as long as we don't hold a reference to the disconnected `CBPeripheral`.
+     *
+     * - Parameter peripheral: the disconnected peripheral during state restoration.
+     */
     private func restoreDisconnected(peripheral: Peripheral) {
         guard let backgroundRestorer = self.backgroundRestorer else {
             fatalError("No background restorer found when restoring a disconnected peripheral.")
@@ -1212,21 +1272,32 @@ extension Bluejay: CBCentralManagerDelegate {
             log("Central manager did disconnect from \(peripheralString) without errors.")
         }
 
-        guard let disconnectedPeripheral = connectedPeripheral ?? connectingPeripheral ?? connectingPeripheralAtRestoration else {
-            log("Central manager disconnected from an unexpected peripheral.")
-            return
+        guard let disconnectedPeripheral =
+            connectedPeripheral ??
+            connectingPeripheral ??
+            connectingPeripheralAtRestoration ??
+            disconnectingPeripheralAtRestoration ??
+            disconnectedPeripheralAtRestoration else {
+                log("Central manager disconnected from an unexpected peripheral.")
+                return
         }
 
         let wasRestoringConnectingPeripheral = connectingPeripheralAtRestoration != nil
+        let wasRestoringDisconnectingPeripheral = disconnectingPeripheralAtRestoration != nil
+        let wasRestoringDisconnectedPeripheral = disconnectedPeripheralAtRestoration != nil
         let wasConnecting = isConnecting
         let wasConnected = isConnected
 
         if wasRestoringConnectingPeripheral {
-            log("Peripheral was still connecting during background restoration before disconnect.")
+            log("Peripheral state was connecting during background restoration before centralManager(_:didDisconnectPeripheral:error:).")
+        } else if wasRestoringDisconnectingPeripheral {
+            log("Peripheral state was disconnecting during background restoration before centralManager(_:didDisconnectPeripheral:error:).")
+        } else if wasRestoringDisconnectedPeripheral {
+            log("Peripheral state was disconnected during background restoration before centralManager(_:didDisconnectPeripheral:error:).")
         } else if wasConnecting {
-            log("Peripheral was still connecting before disconnect.")
+            log("Peripheral was still connecting before centralManager(_:didDisconnectPeripheral:error:).")
         } else if wasConnected {
-            log("Peripheral was connected before disconnect.")
+            log("Peripheral was connected before centralManager(_:didDisconnectPeripheral:error:).")
         }
 
         clearAllRestorationPeripherals()

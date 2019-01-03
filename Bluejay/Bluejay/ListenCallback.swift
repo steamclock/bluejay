@@ -8,4 +8,5 @@
 
 import Foundation
 
+/// Gives name to a specific callback type used for listens.
 public typealias ListenCallback = (ReadResult<Data?>) -> Void

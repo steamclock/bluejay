@@ -35,9 +35,6 @@
                 <a href="../Classes/Bluejay.html">Bluejay</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Classes/Peripheral.html">Peripheral</a>
-              </li>
-              <li class="nav-group-task">
                 <a href="../Classes/SynchronizedPeripheral.html">SynchronizedPeripheral</a>
               </li>
             </ul>
@@ -47,6 +44,9 @@
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a href="../Enums/AutoReconnectMode.html">AutoReconnectMode</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/BackgroundRestoreCompletion.html">BackgroundRestoreCompletion</a>
               </li>
               <li class="nav-group-task">
                 <a href="../Enums/BackgroundRestoreMode.html">BackgroundRestoreMode</a>
@@ -62,6 +62,12 @@
               </li>
               <li class="nav-group-task">
                 <a href="../Enums/ListenAction.html">ListenAction</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/ListenRestoreAction.html">ListenRestoreAction</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/MultipleListenOption.html">MultipleListenOption</a>
               </li>
               <li class="nav-group-task">
                 <a href="../Enums/ReadResult.html">ReadResult</a>
@@ -105,6 +111,9 @@
                 <a href="../Extensions/Data.html">Data</a>
               </li>
               <li class="nav-group-task">
+                <a href="../Extensions/Peripheral.html">Peripheral</a>
+              </li>
+              <li class="nav-group-task">
                 <a href="../Extensions/String.html">String</a>
               </li>
             </ul>
@@ -125,6 +134,9 @@
                 <a href="../Protocols/ListenRestorer.html">ListenRestorer</a>
               </li>
               <li class="nav-group-task">
+                <a href="../Protocols/LogObserver.html">LogObserver</a>
+              </li>
+              <li class="nav-group-task">
                 <a href="../Protocols/RSSIObserver.html">RSSIObserver</a>
               </li>
               <li class="nav-group-task">
@@ -138,6 +150,9 @@
           <li class="nav-group-name">
             <a href="../Structs.html">Structures</a>
             <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Structs/BackgroundRestoreConfig.html">BackgroundRestoreConfig</a>
+              </li>
               <li class="nav-group-task">
                 <a href="../Structs/CharacteristicIdentifier.html">CharacteristicIdentifier</a>
               </li>
@@ -165,7 +180,10 @@
             <a href="../Typealiases.html">Type Aliases</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a href="../Typealiases.html#/s:7Bluejay27BackgroundRestoreCompletiona">BackgroundRestoreCompletion</a>
+                <a href="../Typealiases.html#/s:7Bluejay13LaunchOptionsa">LaunchOptions</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:7Bluejay14ListenCallbacka">ListenCallback</a>
               </li>
               <li class="nav-group-task">
                 <a href="../Typealiases.html#/s:7Bluejay17RestoreIdentifiera">RestoreIdentifier</a>
@@ -180,11 +198,16 @@
             <h1>BackgroundRestorer</h1>
               <div class="declaration">
                 <div class="language">
-                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">BackgroundRestorer</span> <span class="p">:</span> <span class="kt">AnyObject</span></code></pre>
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">BackgroundRestorer</span> <span class="p">:</span> <span class="kt">UIApplicationDelegate</span></code></pre>
 
                 </div>
               </div>
             <p>Protocols for handling the results of a background restoration.</p>
+<div class="aside aside-important">
+    <p class="aside-title">Important</p>
+    The delegate must be an <code>UIApplicationDelegate</code> in order to properly support background restoration during <code>didFinishLaunchingWithOptions</code>.
+
+</div>
 
           </section>
           <section class="section task-group-section">
@@ -193,9 +216,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7Bluejay18BackgroundRestorerP20didRestoreConnection2toyycAA10PeripheralC_tF"></a>
+                    <a name="/s:7Bluejay18BackgroundRestorerP20didRestoreConnection2toAA0bE10CompletionOAA20PeripheralIdentifierV_tF"></a>
                     <a name="//apple_ref/swift/Method/didRestoreConnection(to:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7Bluejay18BackgroundRestorerP20didRestoreConnection2toyycAA10PeripheralC_tF">didRestoreConnection(to:)</a>
+                    <a class="token" href="#/s:7Bluejay18BackgroundRestorerP20didRestoreConnection2toAA0bE10CompletionOAA20PeripheralIdentifierV_tF">didRestoreConnection(to:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -210,7 +233,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">didRestoreConnection</span><span class="p">(</span><span class="n">to</span> <span class="nv">peripheral</span><span class="p">:</span> <span class="kt"><a href="../Classes/Peripheral.html">Peripheral</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Typealiases.html#/s:7Bluejay27BackgroundRestoreCompletiona">BackgroundRestoreCompletion</a></span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">didRestoreConnection</span><span class="p">(</span><span class="n">to</span> <span class="nv">peripheral</span><span class="p">:</span> <span class="kt"><a href="../Structs/PeripheralIdentifier.html">PeripheralIdentifier</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Enums/BackgroundRestoreCompletion.html">BackgroundRestoreCompletion</a></span></code></pre>
 
                         </div>
                       </div>
@@ -220,9 +243,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7Bluejay18BackgroundRestorerP26didFailToRestoreConnection2to5erroryycAA10PeripheralC_s5Error_ptF"></a>
+                    <a name="/s:7Bluejay18BackgroundRestorerP26didFailToRestoreConnection2to5errorAA0bG10CompletionOAA20PeripheralIdentifierV_s5Error_ptF"></a>
                     <a name="//apple_ref/swift/Method/didFailToRestoreConnection(to:error:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7Bluejay18BackgroundRestorerP26didFailToRestoreConnection2to5erroryycAA10PeripheralC_s5Error_ptF">didFailToRestoreConnection(to:error:)</a>
+                    <a class="token" href="#/s:7Bluejay18BackgroundRestorerP26didFailToRestoreConnection2to5errorAA0bG10CompletionOAA20PeripheralIdentifierV_s5Error_ptF">didFailToRestoreConnection(to:error:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -237,7 +260,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">didFailToRestoreConnection</span><span class="p">(</span><span class="n">to</span> <span class="nv">peripheral</span><span class="p">:</span> <span class="kt"><a href="../Classes/Peripheral.html">Peripheral</a></span><span class="p">,</span> <span class="nv">error</span><span class="p">:</span> <span class="kt">Error</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Typealiases.html#/s:7Bluejay27BackgroundRestoreCompletiona">BackgroundRestoreCompletion</a></span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">didFailToRestoreConnection</span><span class="p">(</span><span class="n">to</span> <span class="nv">peripheral</span><span class="p">:</span> <span class="kt"><a href="../Structs/PeripheralIdentifier.html">PeripheralIdentifier</a></span><span class="p">,</span> <span class="nv">error</span><span class="p">:</span> <span class="kt">Error</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Enums/BackgroundRestoreCompletion.html">BackgroundRestoreCompletion</a></span></code></pre>
 
                         </div>
                       </div>

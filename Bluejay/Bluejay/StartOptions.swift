@@ -16,7 +16,13 @@ public struct StartOptions {
     /// Enable or disable state restoration.
     var backgroundRestore: BackgroundRestoreMode
 
-    /// Public initializer.
+    /**
+     * Configurations for starting Bluejay.
+     *
+     * - Parameters:
+     *    - enableBluetoothAlert: whether to show an iOS system alert when Bluetooth is turned off while the app is still running in the background.
+     *    - backgroundRestore: enable or disable state restoration.
+     */
     public init(enableBluetoothAlert: Bool, backgroundRestore: BackgroundRestoreMode) {
         self.enableBluetoothAlert = enableBluetoothAlert
         self.backgroundRestore = backgroundRestore

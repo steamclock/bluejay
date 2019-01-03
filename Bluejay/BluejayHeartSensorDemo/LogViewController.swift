@@ -15,9 +15,6 @@ class LogViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        logTextView.text = bluejay.getLogs()
-
         bluejay.register(logObserver: self)
     }
 

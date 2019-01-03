@@ -1,6 +1,12 @@
 {
   "warnings": [
-
+    {
+      "file": "/Users/jeremychiang/Dropbox (Personal)/Steamclock/Steamclock Software/bluejay/Bluejay/Bluejay/ListenRestorer.swift",
+      "line": 15,
+      "symbol": "ListenRestorer.didReceiveUnhandledListen(from:on:with:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    }
   ],
   "source_directory": "/Users/jeremychiang/Dropbox (Personal)/Steamclock/Steamclock Software/bluejay/Bluejay"
 }

@@ -10,9 +10,16 @@ import Foundation
 
 /// Contains all required configurations for background restoration.
 public struct BackgroundRestoreConfig {
+    /// A restore identifier helps uniquely identify which device is triggering background restoration.
     public let restoreIdentifier: RestoreIdentifier
+
+    /// A background restorer is required to handle the results of a background restoration.
     public let backgroundRestorer: BackgroundRestorer
+
+    /// A listen restorer is required for any potential unhandled listens when restoring to a connected peripheral.
     public let listenRestorer: ListenRestorer
+
+    /// The launch options from `application(_:didFinishLaunchingWithOptions:)` is required to parse the restore identifier.
     public let launchOptions: LaunchOptions
 
     /// Convenience return of bluetooth central keys from the launch options.
@@ -25,6 +32,15 @@ public struct BackgroundRestoreConfig {
         return centralKeys?.contains(restoreIdentifier) ?? false
     }
 
+    /**
+     * Initializes a container for all required configurations necessary to support background restoration.
+     *
+     * - Parameters:
+     *    - restoreIdentifier: a restore identifier helps uniquely identify which device is triggering background restoration.
+     *    - backgroundRestorer: a background restorer is required to handle the results of a background restoration.
+     *    - listenRestorer: a listen restorer is required for any potential unhandled listens when restoring to a connected peripheral.
+     *    - launchOptions: the launch options from `application(_:didFinishLaunchingWithOptions:)` is required to parse the restore identifier.
+     */
     public init(
         restoreIdentifier: RestoreIdentifier,
         backgroundRestorer: BackgroundRestorer,

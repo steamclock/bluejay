@@ -12,13 +12,13 @@ import Foundation
     A protocol allowing conforming objects registered to Bluejay to optionally respond to Bluetooth connection events.
  
     - Attention
-    On initial subscription to Bluetooth events, `bluetoothAvailable(_ available: Bool)` will always be called immediately with whatever the current state is, and `connected(to peripheral: Peripheral)` will also be called immediately if a device is already connected.
+    On initial subscription to Bluetooth events, `bluetoothAvailable(_ available: Bool)` will always be called immediately with whatever the current state is, and `connected(to peripheral: PeripheralIdentifier)` will also be called immediately if a device is already connected.
 
     - Note
     Available callbacks:
     * `func bluetoothAvailable(_ available: Bool)`
-    * `func connected(to peripheral: Peripheral)`
-    * `func disconnected(from peripheral: Peripheral)`
+    * `func connected(to peripheral: PeripheralIdentifier)`
+    * `func disconnected(from peripheral: PeripheralIdentifier)`
 */
 public protocol ConnectionObserver: class {
 

@@ -12,7 +12,14 @@ import Foundation
  A protocol allowing conforming objects to monitor the RSSI changes of a connected peripheral.
 */
 public protocol RSSIObserver: class {
-    /// Called whenever a peripheral's RSSI value changes.
+    /**
+     * Called whenever a peripheral's RSSI value changes.
+     *
+     * - Parameters:
+     *    - from: the peripheral that read the RSSI value.
+     *    - RSSI: the RSSI value as a `NSNumber`.
+     *    - error: the error if the RSSI read failed.
+     */
     func didReadRSSI(from peripheral: PeripheralIdentifier, RSSI: NSNumber, error: Error?)
 }
 

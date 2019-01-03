@@ -12,6 +12,15 @@ import Foundation
  * Protocol for handling a listen event that does not have a callback due to background restoration.
  */
 public protocol ListenRestorer: UIApplicationDelegate {
+
+    /**
+     * Called whenever there is an unhandled listen.
+     *
+     * - Parameters:
+     *    - from: the peripheral receiving the unhandled listen notification.
+     *    - on: the notifying characteristic.
+     *    - with: the notified value.
+     */
     func didReceiveUnhandledListen(
         from peripheral: PeripheralIdentifier,
         on characteristic: CharacteristicIdentifier,

@@ -12,7 +12,11 @@ import Foundation
  A protocol allowing conforming objects to monitor log file changes.
  */
 public protocol LogObserver: class {
-    /// Called whenever the log file is updated.
+    /**
+     * Called whenever the log file is updated.
+     *
+     * - Parameter logs: the full content of the log as a String.
+     */
     func logFileUpdated(logs: String)
 }
 
