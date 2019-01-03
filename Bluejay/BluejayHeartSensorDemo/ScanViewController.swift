@@ -82,6 +82,7 @@ class ScanViewController: UITableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         bluejay.register(connectionObserver: self)
+        scanHeartSensors()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
