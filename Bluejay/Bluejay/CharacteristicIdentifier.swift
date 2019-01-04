@@ -23,6 +23,11 @@ public struct CharacteristicIdentifier {
         self.uuid = cbCharacteristic.uuid
     }
 
+    /// Returns the essential description of a characteristic.
+    public var description: String {
+        return "Characteristic: \(uuid.uuidString), Service: \(service.uuid.uuidString)"
+    }
+
     /**
      * Create a `CharacteristicIdentifier` using a string and a `ServiceIdentifier`. Please supply a valid 128-bit UUID, or a valid 16 or 32-bit commonly used UUID.
      *

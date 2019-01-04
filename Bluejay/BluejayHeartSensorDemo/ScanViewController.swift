@@ -30,6 +30,8 @@ class ScanViewController: UITableViewController {
             name: UIApplication.didEnterBackgroundNotification,
             object: nil
         )
+
+        bluejay.registerDisconnectHandler(handler: self)
     }
 
     @objc func appDidResume() {
@@ -82,7 +84,6 @@ class ScanViewController: UITableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         bluejay.register(connectionObserver: self)
-        scanHeartSensors()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -136,5 +137,15 @@ extension ScanViewController: ConnectionObserver {
     func connected(to peripheral: PeripheralIdentifier) {
         debugPrint("ScanViewController - Connected to: \(peripheral.description)")
         performSegue(withIdentifier: "showSensor", sender: self)
+    }
+}
+
+extension ScanViewController: DisconnectHandler {
+    func didDisconnect(from peripheral: PeripheralIdentifier, with error: Error?, willReconnect autoReconnect: Bool) -> AutoReconnectMode {
+        if navigationController?.topViewController is ScanViewController {
+            scanHeartSensors()
+        }
+
+        return .noChange
     }
 }

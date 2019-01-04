@@ -58,9 +58,9 @@ class ListenCharacteristic: Operation {
         self.characteristic = characteristic
 
         if value {
-            log("Will start listening to \(characteristicIdentifier.uuid) on \(peripheral.name ?? peripheral.identifier.uuidString).")
+            log("Will start listening to \(characteristicIdentifier.description) on \(peripheral.name ?? peripheral.identifier.uuidString).")
         } else {
-            log("Will stop listening to \(characteristicIdentifier.uuid) on \(peripheral.name ?? peripheral.identifier.uuidString).")
+            log("Will stop listening to \(characteristicIdentifier.description) on \(peripheral.name ?? peripheral.identifier.uuidString).")
         }
     }
 
@@ -68,16 +68,16 @@ class ListenCharacteristic: Operation {
         if case .didUpdateCharacteristicNotificationState(let updated) = event {
             if updated.uuid != characteristicIdentifier.uuid {
                 preconditionFailure(
-                    "Expecting notification state update to charactersitic: \(characteristicIdentifier.uuid), but actually updated: \(updated.uuid)"
+                    "Expecting notification state update to \(characteristicIdentifier.description), but actually updated \(updated.uuid)"
                 )
             }
 
             state = .completed
 
             if value {
-                log("Listening to \(characteristicIdentifier.uuid) on \(peripheral.name ?? peripheral.identifier.uuidString).")
+                log("Listening to \(characteristicIdentifier.description) on \(peripheral.name ?? peripheral.identifier.uuidString).")
             } else {
-                log("Stopped listening to \(characteristicIdentifier.uuid) on \(peripheral.name ?? peripheral.identifier.uuidString).")
+                log("Stopped listening to \(characteristicIdentifier.description) on \(peripheral.name ?? peripheral.identifier.uuidString).")
             }
 
             callback?(.success)
@@ -86,7 +86,7 @@ class ListenCharacteristic: Operation {
             updateQueue()
         } else {
             preconditionFailure(
-                "Expecting notification state update to charactersitic: \(characteristicIdentifier.uuid), but received event: \(event)"
+                "Expecting notification state update to \(characteristicIdentifier.uuid), but received event: \(event)"
             )
         }
     }
@@ -94,7 +94,7 @@ class ListenCharacteristic: Operation {
     func fail(_ error: Error) {
         state = .failed(error)
 
-        log("Failed listening to \(characteristicIdentifier.uuid) on \(peripheral.name ?? peripheral.identifier.uuidString) with error: \(error.localizedDescription)")
+        log("Failed listening to \(characteristicIdentifier.description) on \(peripheral.name ?? peripheral.identifier.uuidString) with error: \(error.localizedDescription)")
 
         callback?(.failure(error))
         callback = nil

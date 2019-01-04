@@ -208,7 +208,7 @@ public class SynchronizedPeripheral {
         var shouldListenAgain = false
 
         DispatchQueue.main.async {
-            log("Flushing listen to \(characteristicIdentifier.uuid.uuidString)")
+            log("Flushing listen to \(characteristicIdentifier.description)")
 
             shouldListenAgain = false
 
@@ -232,7 +232,7 @@ public class SynchronizedPeripheral {
         repeat {
             shouldListenAgain = false
             _ = listenSem.wait(timeout: .now() + DispatchTimeInterval.seconds(Int(timeoutInterval)))
-            log("Flush to \(characteristicIdentifier.uuid.uuidString) finished, should flush again: \(shouldListenAgain).")
+            log("Flush to \(characteristicIdentifier.description) finished, should flush again: \(shouldListenAgain).")
         } while shouldListenAgain
 
         DispatchQueue.main.async {

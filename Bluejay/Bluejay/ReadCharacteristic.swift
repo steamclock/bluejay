@@ -48,32 +48,32 @@ class ReadCharacteristic<T: Receivable>: ReadOperation {
 
         peripheral.readValue(for: characteristic)
 
-        log("Started read for \(characteristicIdentifier.uuid) on \(peripheral.identifier).")
+        log("Started read for \(characteristicIdentifier.description) on \(peripheral.identifier).")
     }
 
     func process(event: Event) {
         if case .didReadCharacteristic(let readFrom, let value) = event {
             if readFrom.uuid != characteristicIdentifier.uuid {
-                preconditionFailure("Expecting read from charactersitic: \(characteristicIdentifier.uuid), but actually read from: \(readFrom.uuid)")
+                preconditionFailure("Expecting read from \(characteristicIdentifier.description), but actually read from \(readFrom.uuid)")
             }
 
             state = .completed
 
-            log("Read for \(characteristicIdentifier.uuid) on \(peripheral.identifier) is successful.")
+            log("Read for \(characteristicIdentifier.description) on \(peripheral.identifier) is successful.")
 
             callback?(ReadResult<T>(dataResult: .success(value)))
             callback = nil
 
             updateQueue()
         } else {
-            preconditionFailure("Expecting write to characteristic: \(characteristicIdentifier.uuid), but received event: \(event)")
+            preconditionFailure("Expecting write to \(characteristicIdentifier.description), but received event: \(event)")
         }
     }
 
     func fail(_ error: Error) {
         state = .failed(error)
 
-        log("Failed reading for \(characteristicIdentifier.uuid) on \(peripheral.identifier) with error: \(error.localizedDescription)")
+        log("Failed reading for \(characteristicIdentifier.description) on \(peripheral.identifier) with error: \(error.localizedDescription)")
 
         callback?(.failure(error))
         callback = nil

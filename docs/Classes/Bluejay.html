@@ -608,14 +608,14 @@ please re-evaluate the bluetooth state again as it may change momentarily after 
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Starting Bluejay will initialize the CoreBluetooth stack. Simply initializing a Bluejay instance without calling this function will not initialize the CoreBluetooth stack. An explicit start call is required because in cases where a state resotration is trying to restore a listen on a characteristic, a listen restorer must be available before the CoreBluetooth stack is re-initialized. This two-step startup (init then start) allows you to prepare and gaurantee the setup of your listen restorer in between the initialization of Bluejay and the initialization of the CoreBluetooth stack.</p>
+                        <p>Starting Bluejay will initialize the CoreBluetooth stack. Simply initializing a Bluejay instance without calling this function will not initialize the CoreBluetooth stack. An explicit start call is required so that we can also support proper background restoration, where CoreBluetooth must be initialized in the AppDelegate&rsquo;s application(_:didFinishLaunchingWithOptions:) for both starting an iOS background task and for parsing the restore identifier.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">start</span><span class="p">(</span><span class="nv">mode</span><span class="p">:</span> <span class="kt"><a href="../Enums/StartMode.html">StartMode</a></span> <span class="o">=</span> <span class="o">.</span><span class="nf">new</span><span class="p">(</span><span class="kt"><a href="../Structs/StartOptions.html">StartOptions</a></span><span class="o">.</span><span class="k">default</span><span class="p">))</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">start</span><span class="p">(</span><span class="nv">mode</span><span class="p">:</span> <span class="kt"><a href="../Enums/StartMode.html">StartMode</a></span> <span class="o">=</span> <span class="o">.</span><span class="nf">new</span><span class="p">(</span><span class="o">.</span><span class="k">default</span><span class="p">))</span></code></pre>
 
                         </div>
                       </div>
@@ -632,30 +632,6 @@ please re-evaluate the bluetooth state again as it may change momentarily after 
                               <td>
                                 <div>
                                   <p>CoreBluetooth initialization modes and options.</p>
-                                </div>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>observer</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>A delegate interested in observing Bluetooth connection events and state changes.</p>
-                                </div>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>handler</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>A single delegate with the final say on what to do at the end of a disconnection and control auto-reconnect behaviour</p>
                                 </div>
                               </td>
                             </tr>
@@ -1332,7 +1308,7 @@ please re-evaluate the bluetooth state again as it may change momentarily after 
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">connect</span><span class="p">(</span>
     <span class="n">_</span> <span class="nv">peripheralIdentifier</span><span class="p">:</span> <span class="kt"><a href="../Structs/PeripheralIdentifier.html">PeripheralIdentifier</a></span><span class="p">,</span>
-    <span class="nv">timeout</span><span class="p">:</span> <span class="kt"><a href="../Enums/Timeout.html">Timeout</a></span><span class="p">,</span>
+    <span class="nv">timeout</span><span class="p">:</span> <span class="kt"><a href="../Enums/Timeout.html">Timeout</a></span> <span class="o">=</span> <span class="o">.</span><span class="k">none</span><span class="p">,</span>
     <span class="nv">warningOptions</span><span class="p">:</span> <span class="kt"><a href="../Structs/WarningOptions.html">WarningOptions</a></span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span>
     <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt"><a href="../Enums/ConnectionResult.html">ConnectionResult</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
 

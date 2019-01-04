@@ -109,10 +109,10 @@ class Peripheral: NSObject {
     public func read<R: Receivable>(from characteristicIdentifier: CharacteristicIdentifier, completion: @escaping (ReadResult<R>) -> Void) {
         precondition(
             listeners[characteristicIdentifier] == nil,
-            "Cannot read from characteristic: \(characteristicIdentifier.uuid), which is already being listened on."
+            "Cannot read from characteristic: \(characteristicIdentifier.description), which is already being listened on."
         )
 
-        log("Requesting read on \(characteristicIdentifier)...")
+        log("Requesting read on \(characteristicIdentifier.description)...")
 
         discoverCharactersitic(characteristicIdentifier) { [weak self] result in
             guard let weakSelf = self else {
@@ -133,7 +133,7 @@ class Peripheral: NSObject {
     /// Write to a specified characteristic.
     public func write<S: Sendable>(to characteristicIdentifier: CharacteristicIdentifier, value: S, type: CBCharacteristicWriteType = .withResponse, completion: @escaping (WriteResult) -> Void) {
 
-        log("Requesting write on \(characteristicIdentifier)...")
+        log("Requesting write on \(characteristicIdentifier.description)...")
 
         discoverCharactersitic(characteristicIdentifier) { [weak self] result in
             guard let weakSelf = self else {
@@ -178,7 +178,7 @@ class Peripheral: NSObject {
             listeners[characteristicIdentifier] = (nil, option)
         } // If the listen already exists, don't overwrite its option.
 
-        log("Requesting listen on \(characteristicIdentifier)...")
+        log("Requesting listen on \(characteristicIdentifier.description)...")
 
         discoverCharactersitic(characteristicIdentifier) { [weak self] result in
             guard let weakSelf = self else {
@@ -195,7 +195,7 @@ class Peripheral: NSObject {
                             switch result {
                             case .success:
                                 guard let cachedListener = weakSelf.listeners[characteristicIdentifier] else {
-                                    fatalError("Installed a listen on characteristic \(characteristicIdentifier) but it is not cached.")
+                                    fatalError("Installed a listen on characteristic \(characteristicIdentifier.description) but it is not cached.")
                                 }
 
                                 let originalMultipleListenOption = cachedListener.1
@@ -236,7 +236,7 @@ class Peripheral: NSObject {
     public func endListen(to characteristicIdentifier: CharacteristicIdentifier, error: Error? = nil, completion: ((WriteResult) -> Void)? = nil) {
         listeners[characteristicIdentifier] = nil
 
-        log("Requesting end listen on \(characteristicIdentifier)...")
+        log("Requesting end listen on \(characteristicIdentifier.description)...")
 
         discoverCharactersitic(characteristicIdentifier) { [weak self] result in
             guard let weakSelf = self else {
@@ -301,7 +301,7 @@ extension Peripheral: CBPeripheralDelegate {
                 if delegate.backgroundRestorationEnabled() {
                     log("""
                         Unhandled listen with value: \(String(data: characteristic.value ?? Data(), encoding: .utf8) ?? ""), \
-                        on charactersitic: \(characteristic.uuid.uuidString), \
+                        on charactersitic: \(characteristic.debugDescription), \
                         from peripheral: \(identifier.description)
                         """)
 

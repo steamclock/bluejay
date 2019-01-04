@@ -280,14 +280,12 @@ public class Bluejay: NSObject { //swiftlint:disable:this type_body_length
     }
 
     /**
-     Starting Bluejay will initialize the CoreBluetooth stack. Simply initializing a Bluejay instance without calling this function will not initialize the CoreBluetooth stack. An explicit start call is required because in cases where a state resotration is trying to restore a listen on a characteristic, a listen restorer must be available before the CoreBluetooth stack is re-initialized. This two-step startup (init then start) allows you to prepare and gaurantee the setup of your listen restorer in between the initialization of Bluejay and the initialization of the CoreBluetooth stack.
+     Starting Bluejay will initialize the CoreBluetooth stack. Simply initializing a Bluejay instance without calling this function will not initialize the CoreBluetooth stack. An explicit start call is required so that we can also support proper background restoration, where CoreBluetooth must be initialized in the AppDelegate's application(_:didFinishLaunchingWithOptions:) for both starting an iOS background task and for parsing the restore identifier.
 
      - Parameters:
         - mode: CoreBluetooth initialization modes and options.
-        - observer: A delegate interested in observing Bluetooth connection events and state changes.
-        - handler: A single delegate with the final say on what to do at the end of a disconnection and control auto-reconnect behaviour
     */
-    public func start(mode: StartMode = .new(StartOptions.default)) {
+    public func start(mode: StartMode = .new(.default)) {
         queue = Queue(bluejay: self)
 
         switch mode {
@@ -577,7 +575,7 @@ public class Bluejay: NSObject { //swiftlint:disable:this type_body_length
     */
     public func connect(
         _ peripheralIdentifier: PeripheralIdentifier,
-        timeout: Timeout,
+        timeout: Timeout = .none,
         warningOptions: WarningOptions? = nil,
         completion: @escaping (ConnectionResult) -> Void) {
         Dispatch.dispatchPrecondition(condition: .onQueue(.main))
@@ -670,6 +668,7 @@ public class Bluejay: NSObject { //swiftlint:disable:this type_body_length
         if let peripheral = connectedPeripheral {
             peripheral.read(from: characteristicIdentifier, completion: completion)
         } else {
+            log("Cannot request read on \(characteristicIdentifier.description): \(BluejayError.notConnected.localizedDescription)")
             completion(.failure(BluejayError.notConnected))
         }
     }
@@ -697,6 +696,7 @@ public class Bluejay: NSObject { //swiftlint:disable:this type_body_length
         if let peripheral = connectedPeripheral {
             peripheral.write(to: characteristicIdentifier, value: value, type: type, completion: completion)
         } else {
+            log("Cannot request write on \(characteristicIdentifier.description): \(BluejayError.notConnected.localizedDescription)")
             completion(.failure(BluejayError.notConnected))
         }
     }
@@ -722,6 +722,7 @@ public class Bluejay: NSObject { //swiftlint:disable:this type_body_length
         if let peripheral = connectedPeripheral {
             peripheral.listen(to: characteristicIdentifier, multipleListenOption: option, completion: completion)
         } else {
+            log("Cannot request listen on \(characteristicIdentifier.description): \(BluejayError.notConnected.localizedDescription)")
             completion(.failure(BluejayError.notConnected))
         }
     }
@@ -744,6 +745,7 @@ public class Bluejay: NSObject { //swiftlint:disable:this type_body_length
         if let peripheral = connectedPeripheral {
             peripheral.endListen(to: characteristicIdentifier, error: nil, completion: completion)
         } else {
+            log("Cannot request end listen on \(characteristicIdentifier.description): \(BluejayError.notConnected.localizedDescription)")
             completion?(.failure(BluejayError.notConnected))
         }
     }
@@ -1487,9 +1489,9 @@ extension Bluejay: PeripheralDelegate {
 
         switch listenRestoreAction {
         case .promiseRestoration:
-            log("Promised restoration for listen on \(characteristic.uuid.uuidString) for \(peripheral.identifier.description)")
+            log("Promised restoration for listen on \(characteristic.description) for \(peripheral.identifier.description)")
         case .stopListen:
-            log("End listen requested for listen on \(characteristic.uuid.uuidString) for \(peripheral.identifier.description)")
+            log("End listen requested for listen on \(characteristic.description) for \(peripheral.identifier.description)")
             endListen(to: characteristic)
         }
     }
