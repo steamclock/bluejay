@@ -35,26 +35,41 @@
                                         <fontDescription key="fontDescription" type="system" pointSize="10"/>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                     </textView>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="F3X-H0-dfO">
-                                        <rect key="frame" x="146" y="218" width="83" height="30"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="30" id="LNy-iF-L2C"/>
-                                        </constraints>
-                                        <state key="normal" title="Export Logs"/>
-                                        <connections>
-                                            <action selector="exportLogs" destination="yo9-ns-sOL" eventType="touchUpInside" id="DrG-FL-c5W"/>
-                                        </connections>
-                                    </button>
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="y67-6h-VMS">
+                                        <rect key="frame" x="8" y="218" width="359" height="30"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="n8E-6R-3pU">
+                                                <rect key="frame" x="0.0" y="0.0" width="179.5" height="30"/>
+                                                <state key="normal" title="Clear Logs">
+                                                    <color key="titleColor" red="1" green="0.14913141730000001" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="clearLogs" destination="yo9-ns-sOL" eventType="touchUpInside" id="b51-SS-hxo"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="F3X-H0-dfO">
+                                                <rect key="frame" x="179.5" y="0.0" width="179.5" height="30"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="30" id="LNy-iF-L2C"/>
+                                                </constraints>
+                                                <state key="normal" title="Export Logs"/>
+                                                <connections>
+                                                    <action selector="exportLogs" destination="yo9-ns-sOL" eventType="touchUpInside" id="DrG-FL-c5W"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                    </stackView>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstItem="F3X-H0-dfO" firstAttribute="top" secondItem="ZQU-bj-WbE" secondAttribute="bottom" constant="8" id="2h7-o1-6b7"/>
+                                    <constraint firstItem="y67-6h-VMS" firstAttribute="leading" secondItem="RAg-O1-E1y" secondAttribute="leading" constant="8" id="3R9-AM-8r2"/>
                                     <constraint firstAttribute="height" constant="256" id="6LN-f1-Spa"/>
-                                    <constraint firstItem="F3X-H0-dfO" firstAttribute="centerX" secondItem="RAg-O1-E1y" secondAttribute="centerX" id="Emm-oF-RYZ"/>
+                                    <constraint firstAttribute="bottom" secondItem="y67-6h-VMS" secondAttribute="bottom" constant="8" id="6bk-1A-EtX"/>
+                                    <constraint firstAttribute="trailing" secondItem="y67-6h-VMS" secondAttribute="trailing" constant="8" id="8Zs-bP-Ig0"/>
                                     <constraint firstAttribute="trailing" secondItem="ZQU-bj-WbE" secondAttribute="trailing" id="eUr-YO-0rS"/>
                                     <constraint firstItem="ZQU-bj-WbE" firstAttribute="leading" secondItem="RAg-O1-E1y" secondAttribute="leading" id="nUm-EI-3fo"/>
-                                    <constraint firstAttribute="bottom" secondItem="F3X-H0-dfO" secondAttribute="bottom" constant="8" id="oX7-yN-Qvr"/>
                                     <constraint firstItem="ZQU-bj-WbE" firstAttribute="top" secondItem="RAg-O1-E1y" secondAttribute="top" id="rGG-e1-R3v"/>
+                                    <constraint firstItem="y67-6h-VMS" firstAttribute="top" secondItem="ZQU-bj-WbE" secondAttribute="bottom" constant="8" id="sch-RV-aqT"/>
                                 </constraints>
                             </view>
                         </subviews>

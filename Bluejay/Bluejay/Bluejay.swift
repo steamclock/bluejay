@@ -179,6 +179,27 @@ public class Bluejay: NSObject { //swiftlint:disable:this type_body_length
         }
     }
 
+    /**
+     * Clears the log file.
+     */
+    public func clearLogs() {
+        guard let documentUrl = documentUrl else {
+            return
+        }
+
+        do {
+            try "".write(
+                toFile: documentUrl.appendingPathComponent(logFileName).path,
+                atomically: false,
+                encoding: .utf8
+            )
+
+            logFileChanged()
+        } catch {
+            return
+        }
+    }
+
     /// Begin monitoring changes in the log file and start notifying log file observers.
     private func monitorLogFile() {
         guard let documentUrl = documentUrl else {

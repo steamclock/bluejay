@@ -18,6 +18,10 @@ class LogViewController: UIViewController {
         bluejay.register(logObserver: self)
     }
 
+    @IBAction func clearLogs() {
+        bluejay.clearLogs()
+    }
+
     @IBAction func exportLogs() {
         present(UIActivityViewController(activityItems: [bluejay.getLogs() ?? ""], applicationActivities: nil), animated: true, completion: nil)
     }
