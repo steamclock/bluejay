@@ -259,9 +259,11 @@ public class Bluejay: NSObject { //swiftlint:disable:this type_body_length
 
         let fileDestination = AutoRotatingFileDestination(
             writeToFile: documentUrl.appendingPathComponent(logFileName),
-            identifier: "Bluejay.File")
+            identifier: "Bluejay.File",
+            shouldAppend: true)
 
         fileDestination.outputLevel = .debug
+        fileDestination.targetMaxTimeInterval = 0
         fileDestination.showLogIdentifier = true
         fileDestination.showFunctionName = false
         fileDestination.showThreadName = true
