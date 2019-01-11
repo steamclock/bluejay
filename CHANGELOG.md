@@ -7,6 +7,25 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 ### Changed
 
+## [0.8.0] - 2019-01-11
+### Added
+- XCGLogger, and APIs for logging to a file and monitoring log file changes
+- Dittojay demo app as a virtual Bluetooth LE heart rate sensor
+  - Also allows testing background state restoration
+
+### Changed
+- Migrate to Swift 4.2
+- Dropped support for iOS 9
+- Removed outdated or soon-to-be-replaced demo projects and documentation
+- Redo, clean up, and improve Bluejay demo app to work with Dittojay demo.
+- Restrict public access to `Peripheral`
+
+### Fixed
+- Background and listen restoration callbacks
+- Multiple listen crash by allowing trapping or replacing an existing listen
+- Order of queueing when discovering services and characteristics
+- Thread-related crashes by adding main thread safety checks to important Bluejay API calls
+
 ## [0.7.1] - 2018-12-06
 - Add SwiftLint
 - Add custom SwiftLint yaml with minor alterations
