@@ -22,7 +22,10 @@ public protocol DisconnectHandler: class {
         - error: the reason of the disconnection from CoreBluetooth, not Bluejay
         - autoReconnect: whether Bluejay will auto-reconnect if no change is given
     */
-    func didDisconnect(from peripheral: Peripheral, with error: Error?, willReconnect autoReconnect: Bool) -> AutoReconnectMode
+    func didDisconnect(
+        from peripheral: PeripheralIdentifier,
+        with error: Error?,
+        willReconnect autoReconnect: Bool) -> AutoReconnectMode
 }
 
 /// Tells Bluejay whether it should auto-reconnect.

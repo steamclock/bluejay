@@ -35,9 +35,6 @@
                 <a href="../Classes/Bluejay.html">Bluejay</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Classes/Peripheral.html">Peripheral</a>
-              </li>
-              <li class="nav-group-task">
                 <a href="../Classes/SynchronizedPeripheral.html">SynchronizedPeripheral</a>
               </li>
             </ul>
@@ -47,6 +44,9 @@
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a href="../Enums/AutoReconnectMode.html">AutoReconnectMode</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/BackgroundRestoreCompletion.html">BackgroundRestoreCompletion</a>
               </li>
               <li class="nav-group-task">
                 <a href="../Enums/BackgroundRestoreMode.html">BackgroundRestoreMode</a>
@@ -62,6 +62,12 @@
               </li>
               <li class="nav-group-task">
                 <a href="../Enums/ListenAction.html">ListenAction</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/ListenRestoreAction.html">ListenRestoreAction</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/MultipleListenOption.html">MultipleListenOption</a>
               </li>
               <li class="nav-group-task">
                 <a href="../Enums/ReadResult.html">ReadResult</a>
@@ -105,6 +111,9 @@
                 <a href="../Extensions/Data.html">Data</a>
               </li>
               <li class="nav-group-task">
+                <a href="../Extensions/Peripheral.html">Peripheral</a>
+              </li>
+              <li class="nav-group-task">
                 <a href="../Extensions/String.html">String</a>
               </li>
             </ul>
@@ -113,6 +122,9 @@
             <a href="../Protocols.html">Protocols</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
+                <a href="../Protocols/BackgroundRestorer.html">BackgroundRestorer</a>
+              </li>
+              <li class="nav-group-task">
                 <a href="../Protocols/ConnectionObserver.html">ConnectionObserver</a>
               </li>
               <li class="nav-group-task">
@@ -120,6 +132,9 @@
               </li>
               <li class="nav-group-task">
                 <a href="../Protocols/ListenRestorer.html">ListenRestorer</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/LogObserver.html">LogObserver</a>
               </li>
               <li class="nav-group-task">
                 <a href="../Protocols/RSSIObserver.html">RSSIObserver</a>
@@ -135,6 +150,9 @@
           <li class="nav-group-name">
             <a href="../Structs.html">Structures</a>
             <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Structs/BackgroundRestoreConfig.html">BackgroundRestoreConfig</a>
+              </li>
               <li class="nav-group-task">
                 <a href="../Structs/CharacteristicIdentifier.html">CharacteristicIdentifier</a>
               </li>
@@ -161,6 +179,12 @@
           <li class="nav-group-name">
             <a href="../Typealiases.html">Type Aliases</a>
             <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:7Bluejay13LaunchOptionsa">LaunchOptions</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:7Bluejay14ListenCallbacka">ListenCallback</a>
+              </li>
               <li class="nav-group-task">
                 <a href="../Typealiases.html#/s:7Bluejay17RestoreIdentifiera">RestoreIdentifier</a>
               </li>
@@ -214,9 +238,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7Bluejay20PeripheralIdentifierV6stringSSvp"></a>
-                    <a name="//apple_ref/swift/Property/string" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7Bluejay20PeripheralIdentifierV6stringSSvp">string</a>
+                    <a name="/s:7Bluejay20PeripheralIdentifierV4nameSSvp"></a>
+                    <a name="//apple_ref/swift/Property/name" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Bluejay20PeripheralIdentifierV4nameSSvp">name</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -224,14 +248,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>The UUID string of the peripheral.</p>
+                        <p>The name of the peripheral.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">string</span><span class="p">:</span> <span class="kt">String</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">name</span><span class="p">:</span> <span class="kt">String</span></code></pre>
 
                         </div>
                       </div>
@@ -241,9 +265,36 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7Bluejay20PeripheralIdentifierV4uuidAC10Foundation4UUIDV_tcfc"></a>
-                    <a name="//apple_ref/swift/Method/init(uuid:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7Bluejay20PeripheralIdentifierV4uuidAC10Foundation4UUIDV_tcfc">init(uuid:)</a>
+                    <a name="/s:7Bluejay20PeripheralIdentifierV11descriptionSSvp"></a>
+                    <a name="//apple_ref/swift/Property/description" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Bluejay20PeripheralIdentifierV11descriptionSSvp">description</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Returns both the name and uuid of the peripheral.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">description</span><span class="p">:</span> <span class="kt">String</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7Bluejay20PeripheralIdentifierV4uuid4nameAC10Foundation4UUIDV_SSSgtcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(uuid:name:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Bluejay20PeripheralIdentifierV4uuid4nameAC10Foundation4UUIDV_SSSgtcfc">init(uuid:name:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -258,7 +309,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">uuid</span><span class="p">:</span> <span class="kt">UUID</span><span class="p">)</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">uuid</span><span class="p">:</span> <span class="kt">UUID</span><span class="p">,</span> <span class="nv">name</span><span class="p">:</span> <span class="kt">String</span><span class="p">?)</span></code></pre>
 
                         </div>
                       </div>

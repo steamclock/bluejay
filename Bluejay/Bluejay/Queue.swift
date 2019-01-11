@@ -35,16 +35,16 @@ class Queue {
 
     init(bluejay: Bluejay) {
         self.bluejay = bluejay
-        log("Queue initialized with UUID: \(uuid.uuidString).")
+        debugLog("Queue initialized with UUID: \(uuid.uuidString).")
     }
 
     deinit {
-        log("Deinit Queue with UUID: \(uuid.uuidString).")
+        debugLog("Deinit Queue with UUID: \(uuid.uuidString).")
     }
 
     func start() {
         if !isCBCentralManagerReady {
-            log("Starting queue with UUID: \(uuid.uuidString).")
+            debugLog("Starting queue with UUID: \(uuid.uuidString).")
             isCBCentralManagerReady = true
             update()
         }
@@ -73,9 +73,9 @@ class Queue {
                 let name = listen.value ? "Listen" : "End Listen"
                 let char = listen.characteristicIdentifier.uuid.uuidString
 
-                log("\(name) for \(char) added to queue with UUID: \(uuid.uuidString).")
+                debugLog("\(name) for \(char) added to queue with UUID: \(uuid.uuidString).")
             } else {
-                log("\(queueable) added to queue with UUID: \(uuid.uuidString).")
+                debugLog("\(queueable) added to queue with UUID: \(uuid.uuidString).")
             }
         }
 
@@ -86,7 +86,7 @@ class Queue {
                 queueable.fail(BluejayError.multipleScanNotSupported)
             }
         } else if queueable is Connection {
-            if bluejay.isConnecting || bluejay.isConnected {
+            if bluejay.isConnecting || bluejay.isConnected || multipleConnectionsQueued {
                 queueable.fail(BluejayError.multipleConnectNotSupported)
                 return
             }
@@ -105,11 +105,11 @@ class Queue {
 
     @objc func cancelAll(error: Error = BluejayError.cancelled) {
         if queue.isEmpty {
-            log("Queue is empty, nothing to cancel.")
+            debugLog("Queue is empty, nothing to cancel.")
             return
         }
 
-        log("Queue will now cancel all operations with error: \(error.localizedDescription)")
+        debugLog("Queue will now cancel all operations with error: \(error.localizedDescription)")
 
         if isScanning {
             stopScanning(error: error)
@@ -120,28 +120,32 @@ class Queue {
 
             if let connection = queueable as? Connection {
                 if !connection.state.isFinished {
-                    log("Interrupting cancel all to terminate a pending connection...")
+                    debugLog("Interrupting cancel all to terminate a pending connection...")
                     return
                 }
             }
         }
 
-        if !queue.isEmpty {
-            preconditionFailure("Queue is not emptied at the end of cancel all.")
+        if isCBCentralManagerReady {
+            precondition(queue.isEmpty, "Queue is active and is not emptied at the end of cancel all.")
+        } else {
+            precondition(!queue.contains { queueable -> Bool in
+                !queueable.state.isFinished
+            }, "Queue is inactive but still contains unfinished queueable(s) at the end of cancel all.")
         }
     }
 
     func stopScanning(error: Error? = nil) {
-        guard isScanning, let scan = scan else {
-            log("Stop scanning requested but Bluejay is not scanning.")
+        guard let scan = scan else {
+            debugLog("Stop scanning requested but no scan is found in the queue.")
             return
         }
 
         if let error = error {
-            log("Stop scan requested with error: \(error.localizedDescription)")
+            debugLog("Stop scan requested with error: \(error.localizedDescription)")
             scan.fail(error)
         } else {
-            log("Stop scan requested.")
+            debugLog("Stop scan requested.")
             scan.stop()
         }
 
@@ -153,12 +157,12 @@ class Queue {
     // swiftlint:disable:next cyclomatic_complexity
     func update(cancel: Bool = false, cancelError: Error? = nil) {
         if queue.isEmpty {
-            log("Queue is empty, nothing to update.")
+            debugLog("Queue is empty, nothing to update.")
             return
         }
 
         if !isCBCentralManagerReady {
-            log("Queue is paused because CBCentralManager is not ready yet.")
+            debugLog("Queue is paused because CBCentralManager is not ready yet.")
             return
         }
 
@@ -170,9 +174,10 @@ class Queue {
                 }
 
                 queue.removeFirst()
+                debugLog("Queue has removed \(queueable) because it has finished.")
 
                 if cancel {
-                    log("Queue update will clear remaining operations in the queue.")
+                    debugLog("Queue update will clear remaining operations in the queue.")
                     cancelAll(error: cancelError ?? BluejayError.cancelled)
                 } else {
                     update()
@@ -196,6 +201,7 @@ class Queue {
                         bluejay.willConnect(to: connection.peripheral)
                     }
 
+                    debugLog("Queue will start \(queueable)...")
                     queueable.start()
                 }
             } else {
@@ -206,7 +212,7 @@ class Queue {
 
     func process(event: Event, error: Error?) {
         if isEmpty {
-            log("Queue is empty but received an event: \(event)")
+            debugLog("Queue is empty but received an event: \(event)")
             return
         }
 
@@ -227,6 +233,33 @@ class Queue {
 
     var isScanning: Bool {
         return scan != nil
+    }
+
+    func isReading(characteristic: CharacteristicIdentifier) -> Bool {
+        if let readOperation = queue.first as? ReadOperation, case .running = readOperation.state {
+            return true
+        } else {
+            return false
+        }
+    }
+
+    func willEndListen(on characteristic: CharacteristicIdentifier) -> Bool {
+        return queue.contains { queueable -> Bool in
+            if let
+                endListen = queueable as? ListenCharacteristic,
+                endListen.characteristicIdentifier == characteristic,
+                endListen.value == false {
+                return true
+            } else {
+                return false
+            }
+        }
+    }
+
+    var multipleConnectionsQueued: Bool {
+        return queue.filter { queueable -> Bool in
+            queueable is Connection
+        }.count > 1
     }
 
     var isDisconnectionQueued: Bool {
@@ -265,7 +298,7 @@ extension Queue: ConnectionObserver {
         }
     }
 
-    func connected(to peripheral: Peripheral) {
+    func connected(to peripheral: PeripheralIdentifier) {
         if !isEmpty {
             update()
         }

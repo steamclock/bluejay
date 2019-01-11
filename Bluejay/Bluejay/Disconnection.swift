@@ -40,11 +40,11 @@ class Disconnection: Queueable {
         state = .running
         manager.cancelPeripheralConnection(peripheral)
 
-        log("Started disconnecting from \(peripheral.name ?? peripheral.identifier.uuidString).")
+        debugLog("Started disconnecting from \(peripheral.name ?? peripheral.identifier.uuidString).")
     }
 
     deinit {
-        log("Disconnection deinitialized.")
+        debugLog("Disconnection deinitialized.")
     }
 
     func process(event: Event) {
@@ -66,7 +66,7 @@ class Disconnection: Queueable {
     func fail(_ error: Error) {
         state = .failed(error)
 
-        log("Failed disconnecting from: \(peripheral.name ?? peripheral.identifier.uuidString) with error: \(error.localizedDescription)")
+        debugLog("Failed disconnecting from: \(peripheral.name ?? peripheral.identifier.uuidString) with error: \(error.localizedDescription)")
 
         callback?(.failure(error))
         callback = nil

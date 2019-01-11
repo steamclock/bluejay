@@ -35,9 +35,6 @@
                 <a href="Classes/Bluejay.html">Bluejay</a>
               </li>
               <li class="nav-group-task">
-                <a href="Classes/Peripheral.html">Peripheral</a>
-              </li>
-              <li class="nav-group-task">
                 <a href="Classes/SynchronizedPeripheral.html">SynchronizedPeripheral</a>
               </li>
             </ul>
@@ -47,6 +44,9 @@
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a href="Enums/AutoReconnectMode.html">AutoReconnectMode</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Enums/BackgroundRestoreCompletion.html">BackgroundRestoreCompletion</a>
               </li>
               <li class="nav-group-task">
                 <a href="Enums/BackgroundRestoreMode.html">BackgroundRestoreMode</a>
@@ -62,6 +62,12 @@
               </li>
               <li class="nav-group-task">
                 <a href="Enums/ListenAction.html">ListenAction</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Enums/ListenRestoreAction.html">ListenRestoreAction</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Enums/MultipleListenOption.html">MultipleListenOption</a>
               </li>
               <li class="nav-group-task">
                 <a href="Enums/ReadResult.html">ReadResult</a>
@@ -105,6 +111,9 @@
                 <a href="Extensions/Data.html">Data</a>
               </li>
               <li class="nav-group-task">
+                <a href="Extensions/Peripheral.html">Peripheral</a>
+              </li>
+              <li class="nav-group-task">
                 <a href="Extensions/String.html">String</a>
               </li>
             </ul>
@@ -113,6 +122,9 @@
             <a href="Protocols.html">Protocols</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
+                <a href="Protocols/BackgroundRestorer.html">BackgroundRestorer</a>
+              </li>
+              <li class="nav-group-task">
                 <a href="Protocols/ConnectionObserver.html">ConnectionObserver</a>
               </li>
               <li class="nav-group-task">
@@ -120,6 +132,9 @@
               </li>
               <li class="nav-group-task">
                 <a href="Protocols/ListenRestorer.html">ListenRestorer</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Protocols/LogObserver.html">LogObserver</a>
               </li>
               <li class="nav-group-task">
                 <a href="Protocols/RSSIObserver.html">RSSIObserver</a>
@@ -135,6 +150,9 @@
           <li class="nav-group-name">
             <a href="Structs.html">Structures</a>
             <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Structs/BackgroundRestoreConfig.html">BackgroundRestoreConfig</a>
+              </li>
               <li class="nav-group-task">
                 <a href="Structs/CharacteristicIdentifier.html">CharacteristicIdentifier</a>
               </li>
@@ -162,6 +180,12 @@
             <a href="Typealiases.html">Type Aliases</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
+                <a href="Typealiases.html#/s:7Bluejay13LaunchOptionsa">LaunchOptions</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Typealiases.html#/s:7Bluejay14ListenCallbacka">ListenCallback</a>
+              </li>
+              <li class="nav-group-task">
                 <a href="Typealiases.html#/s:7Bluejay17RestoreIdentifiera">RestoreIdentifier</a>
               </li>
             </ul>
@@ -181,6 +205,43 @@
                 <li class="item">
                   <div>
                     <code>
+                    <a name="/s:7Bluejay18BackgroundRestorerP"></a>
+                    <a name="//apple_ref/swift/Protocol/BackgroundRestorer" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Bluejay18BackgroundRestorerP">BackgroundRestorer</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Protocols for handling the results of a background restoration.</p>
+<div class="aside aside-important">
+    <p class="aside-title">Important</p>
+    The delegate must be an <code>UIApplicationDelegate</code> in order to properly support background restoration during <code>didFinishLaunchingWithOptions</code>.
+
+</div>
+
+                        <a href="Protocols/BackgroundRestorer.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">BackgroundRestorer</span> <span class="p">:</span> <span class="kt">UIApplicationDelegate</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
                     <a name="/s:7Bluejay18ConnectionObserverP"></a>
                     <a name="//apple_ref/swift/Protocol/ConnectionObserver" class="dashAnchor"></a>
                     <a class="token" href="#/s:7Bluejay18ConnectionObserverP">ConnectionObserver</a>
@@ -195,7 +256,7 @@
 <div class="aside aside-attention">
     <p class="aside-title">Attention</p>
     <p>Attention
-On initial subscription to Bluetooth events, <code>bluetoothAvailable(_ available: Bool)</code> will always be called immediately with whatever the current state is, and <code>connected(to peripheral: Peripheral)</code> will also be called immediately if a device is already connected.</p>
+On initial subscription to Bluetooth events, <code>bluetoothAvailable(_ available: Bool)</code> will always be called immediately with whatever the current state is, and <code>connected(to peripheral: PeripheralIdentifier)</code> will also be called immediately if a device is already connected.</p>
 
 </div>
 <div class="aside aside-note">
@@ -205,8 +266,8 @@ Available callbacks:</p>
 
 </div>
 <li><p><code>func bluetoothAvailable(_ available: Bool)</code></p></li>
-<li><p><code>func connected(to peripheral: Peripheral)</code></p></li>
-<li><p><code>func disconnected(from peripheral: Peripheral)</code></p></li>
+<li><p><code>func connected(to peripheral: PeripheralIdentifier)</code></p></li>
+<li><p><code>func disconnected(from peripheral: PeripheralIdentifier)</code></p></li>
 
                         <a href="Protocols/ConnectionObserver.html" class="slightly-smaller">See more</a>
                       </div>
@@ -275,9 +336,7 @@ Available callbacks:</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>A class protocol allowing notification of a characteristic being listened on, and provides an opportunity to restore its listen callback during Bluetooth state restoration.</p>
-
-<p>Bluetooth state restoration occurs when the background mode capability is turned on, and if the app is backgrounded or even terminated while a Bluetooth operation is still ongoing, iOS may keep the Bluetooth state alive, and attempt to restore it on resuming the app, so that the connection and operation between the app and the Bluetooth accessory is not interrupted and severed.</p>
+                        <p>Protocol for handling a listen event that does not have a callback due to background restoration.</p>
 
                         <a href="Protocols/ListenRestorer.html" class="slightly-smaller">See more</a>
                       </div>
@@ -285,7 +344,39 @@ Available callbacks:</p>
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">ListenRestorer</span> <span class="p">:</span> <span class="kt">AnyObject</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">ListenRestorer</span> <span class="p">:</span> <span class="kt">UIApplicationDelegate</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7Bluejay11LogObserverP"></a>
+                    <a name="//apple_ref/swift/Protocol/LogObserver" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Bluejay11LogObserverP">LogObserver</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>A protocol allowing conforming objects to monitor log file changes.</p>
+
+                        <a href="Protocols/LogObserver.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">LogObserver</span> <span class="p">:</span> <span class="kt">AnyObject</span></code></pre>
 
                         </div>
                       </div>

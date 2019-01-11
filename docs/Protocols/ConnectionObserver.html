@@ -35,9 +35,6 @@
                 <a href="../Classes/Bluejay.html">Bluejay</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Classes/Peripheral.html">Peripheral</a>
-              </li>
-              <li class="nav-group-task">
                 <a href="../Classes/SynchronizedPeripheral.html">SynchronizedPeripheral</a>
               </li>
             </ul>
@@ -47,6 +44,9 @@
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a href="../Enums/AutoReconnectMode.html">AutoReconnectMode</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/BackgroundRestoreCompletion.html">BackgroundRestoreCompletion</a>
               </li>
               <li class="nav-group-task">
                 <a href="../Enums/BackgroundRestoreMode.html">BackgroundRestoreMode</a>
@@ -62,6 +62,12 @@
               </li>
               <li class="nav-group-task">
                 <a href="../Enums/ListenAction.html">ListenAction</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/ListenRestoreAction.html">ListenRestoreAction</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/MultipleListenOption.html">MultipleListenOption</a>
               </li>
               <li class="nav-group-task">
                 <a href="../Enums/ReadResult.html">ReadResult</a>
@@ -105,6 +111,9 @@
                 <a href="../Extensions/Data.html">Data</a>
               </li>
               <li class="nav-group-task">
+                <a href="../Extensions/Peripheral.html">Peripheral</a>
+              </li>
+              <li class="nav-group-task">
                 <a href="../Extensions/String.html">String</a>
               </li>
             </ul>
@@ -113,6 +122,9 @@
             <a href="../Protocols.html">Protocols</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
+                <a href="../Protocols/BackgroundRestorer.html">BackgroundRestorer</a>
+              </li>
+              <li class="nav-group-task">
                 <a href="../Protocols/ConnectionObserver.html">ConnectionObserver</a>
               </li>
               <li class="nav-group-task">
@@ -120,6 +132,9 @@
               </li>
               <li class="nav-group-task">
                 <a href="../Protocols/ListenRestorer.html">ListenRestorer</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/LogObserver.html">LogObserver</a>
               </li>
               <li class="nav-group-task">
                 <a href="../Protocols/RSSIObserver.html">RSSIObserver</a>
@@ -135,6 +150,9 @@
           <li class="nav-group-name">
             <a href="../Structs.html">Structures</a>
             <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Structs/BackgroundRestoreConfig.html">BackgroundRestoreConfig</a>
+              </li>
               <li class="nav-group-task">
                 <a href="../Structs/CharacteristicIdentifier.html">CharacteristicIdentifier</a>
               </li>
@@ -162,6 +180,12 @@
             <a href="../Typealiases.html">Type Aliases</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:7Bluejay13LaunchOptionsa">LaunchOptions</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:7Bluejay14ListenCallbacka">ListenCallback</a>
+              </li>
+              <li class="nav-group-task">
                 <a href="../Typealiases.html#/s:7Bluejay17RestoreIdentifiera">RestoreIdentifier</a>
               </li>
             </ul>
@@ -182,7 +206,7 @@
 <div class="aside aside-attention">
     <p class="aside-title">Attention</p>
     <p>Attention
-On initial subscription to Bluetooth events, <code>bluetoothAvailable(_ available: Bool)</code> will always be called immediately with whatever the current state is, and <code>connected(to peripheral: Peripheral)</code> will also be called immediately if a device is already connected.</p>
+On initial subscription to Bluetooth events, <code>bluetoothAvailable(_ available: Bool)</code> will always be called immediately with whatever the current state is, and <code>connected(to peripheral: PeripheralIdentifier)</code> will also be called immediately if a device is already connected.</p>
 
 </div>
 <div class="aside aside-note">
@@ -192,8 +216,8 @@ Available callbacks:</p>
 
 </div>
 <li><p><code>func bluetoothAvailable(_ available: Bool)</code></p></li>
-<li><p><code>func connected(to peripheral: Peripheral)</code></p></li>
-<li><p><code>func disconnected(from peripheral: Peripheral)</code></p></li>
+<li><p><code>func connected(to peripheral: PeripheralIdentifier)</code></p></li>
+<li><p><code>func disconnected(from peripheral: PeripheralIdentifier)</code></p></li>
 
           </section>
           <section class="section task-group-section">
@@ -236,9 +260,9 @@ Available callbacks:</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7Bluejay18ConnectionObserverP9connected2toyAA10PeripheralC_tF"></a>
+                    <a name="/s:7Bluejay18ConnectionObserverP9connected2toyAA20PeripheralIdentifierV_tF"></a>
                     <a name="//apple_ref/swift/Method/connected(to:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7Bluejay18ConnectionObserverP9connected2toyAA10PeripheralC_tF">connected(to:)</a>
+                    <a class="token" href="#/s:7Bluejay18ConnectionObserverP9connected2toyAA20PeripheralIdentifierV_tF">connected(to:)</a>
                     </code>
                       <span class="declaration-note">
                         Default implementation
@@ -260,7 +284,7 @@ Available callbacks:</p>
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">connected</span><span class="p">(</span><span class="n">to</span> <span class="nv">peripheral</span><span class="p">:</span> <span class="kt"><a href="../Classes/Peripheral.html">Peripheral</a></span><span class="p">)</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">connected</span><span class="p">(</span><span class="n">to</span> <span class="nv">peripheral</span><span class="p">:</span> <span class="kt"><a href="../Structs/PeripheralIdentifier.html">PeripheralIdentifier</a></span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -270,9 +294,9 @@ Available callbacks:</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7Bluejay18ConnectionObserverP12disconnected4fromyAA10PeripheralC_tF"></a>
+                    <a name="/s:7Bluejay18ConnectionObserverP12disconnected4fromyAA20PeripheralIdentifierV_tF"></a>
                     <a name="//apple_ref/swift/Method/disconnected(from:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7Bluejay18ConnectionObserverP12disconnected4fromyAA10PeripheralC_tF">disconnected(from:)</a>
+                    <a class="token" href="#/s:7Bluejay18ConnectionObserverP12disconnected4fromyAA20PeripheralIdentifierV_tF">disconnected(from:)</a>
                     </code>
                       <span class="declaration-note">
                         Default implementation
@@ -294,7 +318,7 @@ Available callbacks:</p>
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">disconnected</span><span class="p">(</span><span class="n">from</span> <span class="nv">peripheral</span><span class="p">:</span> <span class="kt"><a href="../Classes/Peripheral.html">Peripheral</a></span><span class="p">)</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">disconnected</span><span class="p">(</span><span class="n">from</span> <span class="nv">peripheral</span><span class="p">:</span> <span class="kt"><a href="../Structs/PeripheralIdentifier.html">PeripheralIdentifier</a></span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>

@@ -56,7 +56,7 @@ class WriteCharacteristic<T: Sendable>: Operation {
 
         peripheral.writeValue(value.toBluetoothData(), for: characteristic, type: type)
 
-        log("Started write to \(characteristicIdentifier.uuid) on \(peripheral.identifier).")
+        debugLog("Started write to \(characteristicIdentifier.description) on \(peripheral.identifier).")
 
         if type == .withoutResponse {
             process(event: .didWriteCharacteristic(characteristic))
@@ -66,26 +66,26 @@ class WriteCharacteristic<T: Sendable>: Operation {
     func process(event: Event) {
         if case .didWriteCharacteristic(let wroteTo) = event {
             if wroteTo.uuid != characteristicIdentifier.uuid {
-                preconditionFailure("Expecting write to charactersitic: \(characteristicIdentifier.uuid), but actually wrote to: \(wroteTo.uuid)")
+                preconditionFailure("Expecting write to \(characteristicIdentifier.description), but actually wrote to \(wroteTo.uuid)")
             }
 
             state = .completed
 
-            log("Write to \(characteristicIdentifier.uuid) on \(peripheral.identifier) is successful.")
+            debugLog("Write to \(characteristicIdentifier.description) on \(peripheral.identifier) is successful.")
 
             callback?(.success)
             callback = nil
 
             updateQueue()
         } else {
-            preconditionFailure("Expecting write to characteristic: \(characteristicIdentifier.uuid), but received event: \(event)")
+            preconditionFailure("Expecting write to \(characteristicIdentifier.description), but received event: \(event)")
         }
     }
 
     func fail(_ error: Error) {
         state = .failed(error)
 
-        log("Failed writing to \(characteristicIdentifier.uuid) on \(peripheral.identifier) with error: \(error.localizedDescription)")
+        debugLog("Failed writing to \(characteristicIdentifier.description) on \(peripheral.identifier) with error: \(error.localizedDescription)")
 
         callback?(.failure(error))
         callback = nil

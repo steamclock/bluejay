@@ -11,7 +11,6 @@ import Foundation
 
 /// A wrapper for CBUUID specific to a characteristic to help distinguish it from a CBUUID of a service.
 public struct CharacteristicIdentifier {
-
     /// The service this characteristic belongs to.
     public let service: ServiceIdentifier
 
@@ -22,6 +21,11 @@ public struct CharacteristicIdentifier {
     public init(_ cbCharacteristic: CBCharacteristic) {
         self.service = ServiceIdentifier(uuid: cbCharacteristic.service.uuid)
         self.uuid = cbCharacteristic.uuid
+    }
+
+    /// Returns the essential description of a characteristic.
+    public var description: String {
+        return "Characteristic: \(uuid.uuidString), Service: \(service.uuid.uuidString)"
     }
 
     /**
@@ -47,7 +51,6 @@ public struct CharacteristicIdentifier {
 }
 
 extension CharacteristicIdentifier: Equatable {
-
     /// Check equality between two CharacteristicIdentifiers.
     public static func == (lhs: CharacteristicIdentifier, rhs: CharacteristicIdentifier) -> Bool {
         return (lhs.uuid == rhs.uuid) && (lhs.service.uuid == rhs.service.uuid)
@@ -55,7 +58,6 @@ extension CharacteristicIdentifier: Equatable {
 }
 
 extension CharacteristicIdentifier: Hashable {
-
     /// The hash value of the `CBUUID`.
     public var hashValue: Int {
         let cHashValue = uuid.hashValue

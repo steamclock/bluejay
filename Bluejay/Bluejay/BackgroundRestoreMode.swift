@@ -10,21 +10,8 @@ import Foundation
 
 /// Determines how Bluejay should opt-in to CoreBluetooth state restoration.
 public enum BackgroundRestoreMode {
-    /// Bluejay will not receieve state restoration callbacks from CoreBluetooth.
+    /// Bluejay will not start CoreBluetooth with state restoration.
     case disable
-    /**
-     Bluejay will receive state restoration callbacks from CoreBluetooth.
-     
-     - Note: Please provide a unique restore identifier for CoreBluetooth. See [Apple documentation](https://developer.apple.com/reference/corebluetooth/cbcentralmanageroptionrestoreidentifierkey) for more details.
-    */
-    case enable(RestoreIdentifier)
-    /**
-     Bluejay will receive state restoration callbacks from CoreBluetooth **and** attempt to restore listens when necessary using the provided listen restorer.
-     
-     - Note: Please provide a unique restore identifier for CoreBluetooth. See [Apple documentation](https://developer.apple.com/reference/corebluetooth/cbcentralmanageroptionrestoreidentifierkey) for more details.
-     */
-    case enableWithListenRestorer(RestoreIdentifier, ListenRestorer)
+    /// Bluejay will start CoreBluetooth with state restoration.
+    case enable(BackgroundRestoreConfig)
 }
-
-/// An alias to make it clearer that the string should be some kind of identifier for restoration, and not just any arbitrary string.
-public typealias RestoreIdentifier = String

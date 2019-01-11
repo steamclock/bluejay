@@ -11,12 +11,8 @@ import Foundation
 
 /// A model capturing what is found from a scan callback.
 public struct ScanDiscovery {
-
     /// The unique, persistent identifier associated with the peer.
     public let peripheralIdentifier: PeripheralIdentifier
-
-    /// The name of the peripheral.
-    public let peripheralName: String?
 
     /// The advertisement packet the discovered peripheral is sending.
     public let advertisementPacket: [String: Any]

@@ -74,7 +74,7 @@ class Scan: Queueable {
         self.manager = manager
 
         if serviceIdentifiers?.isEmpty != false {
-            log("""
+            debugLog("""
                 Warning: Setting `serviceIdentifiers` to `nil` is not recommended by Apple. \
                 It may cause battery and cpu issues on prolonged scanning, and **it also doesn't work in the background**. \
                 If you need to scan for all Bluetooth devices, we recommend making use of the `duration` parameter to stop the scan \
@@ -84,7 +84,7 @@ class Scan: Queueable {
     }
 
     deinit {
-        log("Scan deinitialized")
+        debugLog("Scan deinitialized")
     }
 
     func start() {
@@ -98,7 +98,7 @@ class Scan: Queueable {
                 userInfo: nil,
                 repeats: false)
             let runLoop: RunLoop = .current
-            runLoop.add(timeoutTimer, forMode: .defaultRunLoopMode)
+            runLoop.add(timeoutTimer, forMode: RunLoop.Mode.default)
             self.timeoutTimer = timeoutTimer
         }
 
@@ -112,7 +112,7 @@ class Scan: Queueable {
             NotificationCenter.default.addObserver(
                 self,
                 selector: #selector(didEnterBackgroundWithAllowDuplicates),
-                name: .UIApplicationDidEnterBackground,
+                name: UIApplication.didEnterBackgroundNotification,
                 object: nil
             )
         }
@@ -121,21 +121,20 @@ class Scan: Queueable {
             NotificationCenter.default.addObserver(
                 self,
                 selector: #selector(didEnterBackgroundWithoutServiceIdentifiers),
-                name: .UIApplicationDidEnterBackground,
+                name: UIApplication.didEnterBackgroundNotification,
                 object: nil
             )
         }
 
-        log("Scanning started.")
+        debugLog("Scanning started.")
     }
 
     func process(event: Event) {
-        if case .didDiscoverPeripheral(let peripheral, let advertisementData, let rssi) = event {
-            let peripheralIdentifier = PeripheralIdentifier(
-                uuid: peripheral.identifier)
+        if case .didDiscoverPeripheral(let cbPeripheral, let advertisementData, let rssi) = event {
+            let peripheralIdentifier = PeripheralIdentifier(uuid: cbPeripheral.identifier, name: cbPeripheral.name)
+
             let newDiscovery = ScanDiscovery(
                 peripheralIdentifier: peripheralIdentifier,
-                peripheralName: peripheral.name,
                 advertisementPacket: advertisementData,
                 rssi: rssi.intValue)
 
@@ -229,9 +228,9 @@ class Scan: Queueable {
         }
 
         if let error = error {
-            log("Scanning stopped with error: \(error.localizedDescription)")
+            debugLog("Scanning stopped with error: \(error.localizedDescription)")
         } else {
-            log("Scanning stopped.")
+            debugLog("Scanning stopped.")
         }
 
         stopped(discoveries, error)
@@ -253,22 +252,11 @@ class Scan: Queueable {
 
         var timer: Timer?
 
-        if #available(iOS 10.0, *) {
-            timer = Timer.scheduledTimer(withTimeInterval: 15, repeats: false) { [weak self] _ in
-                guard let weakSelf = self else {
-                    return
-                }
-                weakSelf.refresh(identifier: identifier)
+        timer = Timer.scheduledTimer(withTimeInterval: 15, repeats: false) { [weak self] _ in
+            guard let weakSelf = self else {
+                return
             }
-        } else {
-            // Fallback on earlier versions
-            timer = Timer.scheduledTimer(
-                timeInterval: 15,
-                target: self,
-                selector: #selector(refresh(timer:)),
-                userInfo: identifier,
-                repeats: false
-            )
+            weakSelf.refresh(identifier: identifier)
         }
 
         timers.append((identifier, timer!))
@@ -327,7 +315,7 @@ class Scan: Queueable {
         case .running:
             state = .completed
 
-            log("Finished scanning on timeout.")
+            debugLog("Finished scanning on timeout.")
 
             stopScan(with: discoveries, error: nil)
         }

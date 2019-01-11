@@ -28,7 +28,7 @@ public class SynchronizedPeripheral {
     }
 
     deinit {
-        log("Deinit synchronized peripheral: \(String(describing: parent.cbPeripheral.name ?? parent.cbPeripheral.identifier.uuidString))")
+         debugLog("Deinit synchronized peripheral: \(parent.identifier.description))")
     }
 
     // MARK: - Actions
@@ -104,7 +104,7 @@ public class SynchronizedPeripheral {
         }
 
         DispatchQueue.main.async {
-            self.parent.listen(to: characteristicIdentifier) { (result: ReadResult<R>) in
+            self.parent.listen(to: characteristicIdentifier, multipleListenOption: .trap) { (result: ReadResult<R>) in
                 listenResult = result
                 var action = ListenAction.done
 
@@ -208,18 +208,18 @@ public class SynchronizedPeripheral {
         var shouldListenAgain = false
 
         DispatchQueue.main.async {
-            log("Flushing listen to \(characteristicIdentifier.uuid.uuidString)")
+            debugLog("Flushing listen to \(characteristicIdentifier.description)")
 
             shouldListenAgain = false
 
-            self.parent.listen(to: characteristicIdentifier) { (result: ReadResult<Data>) in
+            self.parent.listen(to: characteristicIdentifier, multipleListenOption: .trap) { (result: ReadResult<Data>) in
                 switch result {
                 case .success:
-                    log("Flushed some data.")
+                    debugLog("Flushed some data.")
 
                     shouldListenAgain = true
                 case .failure(let failureError):
-                    log("Flush failed with error: \(failureError.localizedDescription)")
+                    debugLog("Flush failed with error: \(failureError.localizedDescription)")
 
                     shouldListenAgain = false
                     error = failureError
@@ -232,7 +232,7 @@ public class SynchronizedPeripheral {
         repeat {
             shouldListenAgain = false
             _ = listenSem.wait(timeout: .now() + DispatchTimeInterval.seconds(Int(timeoutInterval)))
-            log("Flush to \(characteristicIdentifier.uuid.uuidString) finished, should flush again: \(shouldListenAgain).")
+            debugLog("Flush to \(characteristicIdentifier.description) finished, should flush again: \(shouldListenAgain).")
         } while shouldListenAgain
 
         DispatchQueue.main.async {
@@ -284,7 +284,7 @@ public class SynchronizedPeripheral {
         }
 
         DispatchQueue.main.sync {
-            self.parent.listen(to: charToListenTo) { (result: ReadResult<R>) in
+            self.parent.listen(to: charToListenTo, multipleListenOption: .trap) { (result: ReadResult<R>) in
                 listenResult = result
                 var action: ListenAction = .done
 
@@ -367,7 +367,7 @@ public class SynchronizedPeripheral {
         }
 
         DispatchQueue.main.sync {
-            self.parent.listen(to: charToListenTo) { (result: ReadResult<Data>) in
+            self.parent.listen(to: charToListenTo, multipleListenOption: .trap) { (result: ReadResult<Data>) in
                 listenResult = result
                 var action = ListenAction.keepListening
 
@@ -384,7 +384,7 @@ public class SynchronizedPeripheral {
                             writeAndAssembleError = error
                         }
                     } else {
-                        log("Need to continue to assemble data.")
+                        debugLog("Need to continue to assemble data.")
                     }
                 case .failure(let error):
                     writeAndAssembleError = error
@@ -455,7 +455,7 @@ extension SynchronizedPeripheral: ConnectionObserver {
         }
     }
 
-    public func disconnected(from peripheral: Peripheral) {
+    public func disconnected(from peripheral: PeripheralIdentifier) {
         backupTermination?(BluejayError.notConnected)
     }
 

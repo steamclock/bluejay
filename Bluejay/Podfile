@@ -7,13 +7,14 @@ def core_pods
 
   # Pods for Bluejay
   pod 'SwiftLint'
+  pod 'XCGLogger', '~> 6.1.0'
 end
 
 def demo_pods
   # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
   use_frameworks!
 
-  # Pods for BluejayDemo
+  # Pods for Bluejay Demo
 
 end
 
@@ -21,14 +22,15 @@ target 'Bluejay' do
 
   core_pods
 
-  target 'BluejayTests' do
-    inherit! :search_paths
-    # Pods for testing
-  end
+end
+
+target 'BluejayHeartSensorDemo' do
+
+  demo_pods
 
 end
 
-target 'BluejayDemo' do
+target 'DittojayHeartSensorDemo' do
 
   demo_pods
 

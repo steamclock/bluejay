@@ -10,7 +10,7 @@ import CoreBluetooth
 import Foundation
 
 /// A read operation.
-class ReadCharacteristic<T: Receivable>: Operation {
+class ReadCharacteristic<T: Receivable>: ReadOperation {
 
     /// The queue this operation belongs to.
     var queue: Queue?
@@ -48,32 +48,32 @@ class ReadCharacteristic<T: Receivable>: Operation {
 
         peripheral.readValue(for: characteristic)
 
-        log("Started read for \(characteristicIdentifier.uuid) on \(peripheral.identifier).")
+        debugLog("Started read for \(characteristicIdentifier.description) on \(peripheral.identifier).")
     }
 
     func process(event: Event) {
         if case .didReadCharacteristic(let readFrom, let value) = event {
             if readFrom.uuid != characteristicIdentifier.uuid {
-                preconditionFailure("Expecting read from charactersitic: \(characteristicIdentifier.uuid), but actually read from: \(readFrom.uuid)")
+                preconditionFailure("Expecting read from \(characteristicIdentifier.description), but actually read from \(readFrom.uuid)")
             }
 
             state = .completed
 
-            log("Read for \(characteristicIdentifier.uuid) on \(peripheral.identifier) is successful.")
+            debugLog("Read for \(characteristicIdentifier.description) on \(peripheral.identifier) is successful.")
 
             callback?(ReadResult<T>(dataResult: .success(value)))
             callback = nil
 
             updateQueue()
         } else {
-            preconditionFailure("Expecting write to characteristic: \(characteristicIdentifier.uuid), but received event: \(event)")
+            preconditionFailure("Expecting write to \(characteristicIdentifier.description), but received event: \(event)")
         }
     }
 
     func fail(_ error: Error) {
         state = .failed(error)
 
-        log("Failed reading for \(characteristicIdentifier.uuid) on \(peripheral.identifier) with error: \(error.localizedDescription)")
+        debugLog("Failed reading for \(characteristicIdentifier.description) on \(peripheral.identifier) with error: \(error.localizedDescription)")
 
         callback?(.failure(error))
         callback = nil
