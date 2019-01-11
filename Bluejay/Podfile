@@ -29,3 +29,9 @@ target 'BluejayHeartSensorDemo' do
   demo_pods
 
 end
+
+target 'DittojayHeartSensorDemo' do
+
+  demo_pods
+
+end
