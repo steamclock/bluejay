@@ -298,16 +298,29 @@
 </code></pre>
 <h2 id='demo' class='heading'>Demo</h2>
 
-<p>The iOS Simulator does not simulate Bluetooth. You may not have a debuggable Bluetooth LE peripheral handy, so we recommend trying Bluejay using a BLE peripheral simulator such as the <a href="https://itunes.apple.com/ca/app/lightblue-explorer-bluetooth/id557428110?mt=8">LightBlue Explorer App</a>.</p>
-
-<p>Bluejay has a demo app called <strong>BluejayHeartSensorDemo</strong> that works with LightBlue Explorer. To see it in action:</p>
+<p>The iOS Simulator does not simulate Bluetooth, and you may not have a debuggable Bluetooth LE peripheral handy, so we have prepared you a pair of demo apps to test with.</p>
 
 <ol>
-<li>Get two iOS devices – one to run LightBlue, and the other to run Bluejay Demo.</li>
-<li>On one iOS device, go to the App Store and download <a href="https://itunes.apple.com/ca/app/lightblue-explorer-bluetooth/id557428110?mt=8">LightBlue Explorer</a>.</li>
-<li>Launch LightBlue, and tap on the <strong>Create Virtual Peripheral</strong> button located at the bottom of the peripheral list.</li>
-<li>Choose <strong>Heart Rate</strong> from the base profile list, and finish by tapping the <strong>Save</strong> button.</li>
-<li>Finally, build and run <strong>BluejayHeartSensorDemo</strong> on the other iOS device. Once it launches, you should be able to see and connect to your virtual heart rate sensor.</li>
+<li><strong>BluejayHeartSensorDemo:</strong> an app that can connect to a Bluetooth LE heart sensor.</li>
+<li><strong>DittojayHeartSensorDemo:</strong> a virtual Bluetooth LE heart sensor.</li>
+</ol>
+<h4 id='to-try-out-bluejay' class='heading'>To try out Bluejay:</h4>
+
+<ol>
+<li>Get two iOS devices – one to run <strong>Bluejay Demo</strong>, and the other to run <strong>Dittojay Demo</strong>.</li>
+<li>Grant permission for notifications on <strong>Bluejay Demo</strong>.</li>
+<li>Grant permission for background mode on <strong>Dittojay Demo</strong>.</li>
+<li>Connect using <strong>Bluejay Demo</strong>.</li>
+</ol>
+<h4 id='to-try-out-background-restoration-after-connecting' class='heading'>To try out background restoration (after connecting):</h4>
+
+<ol>
+<li>In <strong>Bluejay Demo</strong>, tap on <q>End listen to heart rate</q>.</li>
+<li>This is to prevent the continuous heart rate notification from triggering state restoration right after we terminate the app, as it&rsquo;s much clearer and easier to verify state restoration when we can manually trigger a Bluetooth event at our own leisure and timing.</li>
+<li>Tap on <q>Terminate app</q>.</li>
+<li>This will crash the app, but also simulate app termination due to memory pressure, <strong>and</strong> allow CoreBluetooth to cache the current session and wait for Bluetooth events to begin state restoration.</li>
+<li>In <strong>Dittojay Demo</strong>, tap on <q>Chirp</q> to <em>revive</em> <strong>Bluejay Demo</strong></li>
+<li>This will send a Bluetooth event to the device with the terminated <strong>Bluejay Demo</strong>, and its CoreBluetooth stack will wake up the app in the background and execute a few quick tasks, such as scheduling a few local notifications for verification and debugging purposes in this case.</li>
 </ol>
 <h2 id='usage' class='heading'>Usage</h2>
 <h3 id='initialization' class='heading'>Initialization</h3>
@@ -700,8 +713,6 @@
     <span class="p">}</span>
 <span class="p">}</span>
 </code></pre>
-
-<p><strong>Note:</strong> By default, LightBlue Explorer&rsquo;s virtual heart sensor does not have write permission enabled for its sensor body location characteristic. You can enable it manually from within the LightBlue app. The error in the failure block will also inform you if write access is not allowed.</p>
 <h3 id='listening' class='heading'>Listening</h3>
 
 <p>Listening turns on broadcasting on a characteristic and allows you to receive its notifications.</p>

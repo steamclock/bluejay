@@ -54,7 +54,7 @@ class SensorViewController: UITableViewController {
         if section == 0 {
             return 3
         } else {
-            return 6
+            return 7
         }
     }
 
@@ -101,6 +101,8 @@ class SensorViewController: UITableViewController {
                 cell.textLabel?.text = "Listen to Dittojay"
             } else if indexPath.row == 5 {
                 cell.textLabel?.text = "Stop listening to Dittojay"
+            } else if indexPath.row == 6 {
+                cell.textLabel?.text = "Terminate app"
             }
 
             return cell
@@ -133,6 +135,8 @@ class SensorViewController: UITableViewController {
                 listen(to: chirpCharacteristic)
             } else if indexPath.row == 5 {
                 endListen(to: chirpCharacteristic)
+            } else if indexPath.row == 6 {
+                kill(getpid(), SIGKILL)
             }
 
             tableView.deselectRow(at: indexPath, animated: true)
@@ -157,7 +161,7 @@ class SensorViewController: UITableViewController {
                     }
             }
         } else if characteristic == chirpCharacteristic {
-            bluejay.listen(to: chirpCharacteristic, multipleListenOption: .trap) { (result: ReadResult<Data>) in
+            bluejay.listen(to: chirpCharacteristic, multipleListenOption: .replaceable) { (result: ReadResult<Data>) in
                 switch result {
                 case .success:
                     bluejay.log("Dittojay chirped.")
@@ -199,6 +203,7 @@ extension SensorViewController: ConnectionObserver {
 
         sensor = peripheral
         listen(to: heartRateCharacteristic)
+        listen(to: chirpCharacteristic)
 
         tableView.reloadData()
 

@@ -85,15 +85,26 @@ import Bluejay
 
 ## Demo
 
-The iOS Simulator does not simulate Bluetooth. You may not have a debuggable Bluetooth LE peripheral handy, so we recommend trying Bluejay using a BLE peripheral simulator such as the [LightBlue Explorer App](https://itunes.apple.com/ca/app/lightblue-explorer-bluetooth/id557428110?mt=8).
+The iOS Simulator does not simulate Bluetooth, and you may not have a debuggable Bluetooth LE peripheral handy, so we have prepared you a pair of demo apps to test with.
 
-Bluejay has a demo app called **BluejayHeartSensorDemo** that works with LightBlue Explorer. To see it in action:
+1. **BluejayHeartSensorDemo:** an app that can connect to a Bluetooth LE heart sensor.
+2. **DittojayHeartSensorDemo:** a virtual Bluetooth LE heart sensor.
 
-1. Get two iOS devices – one to run LightBlue, and the other to run Bluejay Demo.
-2. On one iOS device, go to the App Store and download [LightBlue Explorer](https://itunes.apple.com/ca/app/lightblue-explorer-bluetooth/id557428110?mt=8).
-3. Launch LightBlue, and tap on the **Create Virtual Peripheral** button located at the bottom of the peripheral list.
-4. Choose **Heart Rate** from the base profile list, and finish by tapping the **Save** button.
-5. Finally, build and run **BluejayHeartSensorDemo** on the other iOS device. Once it launches, you should be able to see and connect to your virtual heart rate sensor.
+#### To try out Bluejay:
+
+1. Get two iOS devices – one to run **Bluejay Demo**, and the other to run **Dittojay Demo**.
+2. Grant permission for notifications on **Bluejay Demo**.
+3. Grant permission for background mode on **Dittojay Demo**.
+4. Connect using **Bluejay Demo**.
+
+#### To try out background restoration (after connecting):
+
+1. In **Bluejay Demo**, tap on "End listen to heart rate".
+- This is to prevent the continuous heart rate notification from triggering state restoration right after we terminate the app, as it's much clearer and easier to verify state restoration when we can manually trigger a Bluetooth event at our own leisure and timing.
+2. Tap on "Terminate app".
+- This will crash the app, but also simulate app termination due to memory pressure, **and** allow CoreBluetooth to cache the current session and wait for Bluetooth events to begin state restoration.
+3. In **Dittojay Demo**, tap on "Chirp" to *revive* **Bluejay Demo**
+- This will send a Bluetooth event to the device with the terminated **Bluejay Demo**, and its CoreBluetooth stack will wake up the app in the background and execute a few quick tasks, such as scheduling a few local notifications for verification and debugging purposes in this case.
 
 ## Usage
 
@@ -547,8 +558,6 @@ bluejay.write(to: sensorLocation, value: UInt8(2)) { result in
     }
 }
 ```
-
-**Note:** By default, LightBlue Explorer's virtual heart sensor does not have write permission enabled for its sensor body location characteristic. You can enable it manually from within the LightBlue app. The error in the failure block will also inform you if write access is not allowed.
 
 ### Listening
 
