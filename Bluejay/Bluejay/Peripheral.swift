@@ -39,11 +39,11 @@ class Peripheral: NSObject {
 
         self.cbPeripheral.delegate = self
 
-        log("Init Peripheral: \(self), \(self.cbPeripheral.debugDescription)")
+        debugLog("Init Peripheral: \(self), \(self.cbPeripheral.debugDescription)")
     }
 
     deinit {
-        log("Deinit Peripheral: \(self), \(self.cbPeripheral.debugDescription))")
+        debugLog("Deinit Peripheral: \(self), \(self.cbPeripheral.debugDescription))")
     }
 
     // MARK: - Attributes
@@ -112,7 +112,7 @@ class Peripheral: NSObject {
             "Cannot read from characteristic: \(characteristicIdentifier.description), which is already being listened on."
         )
 
-        log("Requesting read on \(characteristicIdentifier.description)...")
+        debugLog("Requesting read on \(characteristicIdentifier.description)...")
 
         discoverCharactersitic(characteristicIdentifier) { [weak self] result in
             guard let weakSelf = self else {
@@ -133,7 +133,7 @@ class Peripheral: NSObject {
     /// Write to a specified characteristic.
     public func write<S: Sendable>(to characteristicIdentifier: CharacteristicIdentifier, value: S, type: CBCharacteristicWriteType = .withResponse, completion: @escaping (WriteResult) -> Void) {
 
-        log("Requesting write on \(characteristicIdentifier.description)...")
+        debugLog("Requesting write on \(characteristicIdentifier.description)...")
 
         discoverCharactersitic(characteristicIdentifier) { [weak self] result in
             guard let weakSelf = self else {
@@ -178,7 +178,7 @@ class Peripheral: NSObject {
             listeners[characteristicIdentifier] = (nil, option)
         } // If the listen already exists, don't overwrite its option.
 
-        log("Requesting listen on \(characteristicIdentifier.description)...")
+        debugLog("Requesting listen on \(characteristicIdentifier.description)...")
 
         discoverCharactersitic(characteristicIdentifier) { [weak self] result in
             guard let weakSelf = self else {
@@ -236,7 +236,7 @@ class Peripheral: NSObject {
     public func endListen(to characteristicIdentifier: CharacteristicIdentifier, error: Error? = nil, completion: ((WriteResult) -> Void)? = nil) {
         listeners[characteristicIdentifier] = nil
 
-        log("Requesting end listen on \(characteristicIdentifier.description)...")
+        debugLog("Requesting end listen on \(characteristicIdentifier.description)...")
 
         discoverCharactersitic(characteristicIdentifier) { [weak self] result in
             guard let weakSelf = self else {
@@ -292,14 +292,14 @@ extension Peripheral: CBPeripheralDelegate {
             if delegate.isReading(characteristic: characteristicIdentifier) {
                 handle(event: .didReadCharacteristic(characteristic, characteristic.value ?? Data()), error: error as NSError?)
             } else if delegate.willEndListen(on: CharacteristicIdentifier(characteristic)) {
-                log("""
+                debugLog("""
                     Received read event with value \(String(data: characteristic.value ?? Data(), encoding: .utf8) ?? "") \
                     on characteristic \(characteristic.debugDescription), \
                     but queue contains an end listen operation for this characteristic and should stop it soon.
                     """)
             } else {
                 if delegate.backgroundRestorationEnabled() {
-                    log("""
+                    debugLog("""
                         Unhandled listen with value: \(String(data: characteristic.value ?? Data(), encoding: .utf8) ?? ""), \
                         on charactersitic: \(characteristic.debugDescription), \
                         from peripheral: \(identifier.description)
@@ -307,7 +307,7 @@ extension Peripheral: CBPeripheralDelegate {
 
                     delegate.receivedUnhandledListen(from: self, on: characteristicIdentifier, with: characteristic.value)
                 } else {
-                    log("""
+                    debugLog("""
                         Unhandled read event value: \(String(data: characteristic.value ?? Data(), encoding: .utf8) ?? ""), \
                         on charactersitic: \(characteristic.debugDescription)
                         """)

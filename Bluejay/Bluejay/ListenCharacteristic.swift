@@ -58,9 +58,9 @@ class ListenCharacteristic: Operation {
         self.characteristic = characteristic
 
         if value {
-            log("Will start listening to \(characteristicIdentifier.description) on \(peripheral.name ?? peripheral.identifier.uuidString).")
+            debugLog("Will start listening to \(characteristicIdentifier.description) on \(peripheral.name ?? peripheral.identifier.uuidString).")
         } else {
-            log("Will stop listening to \(characteristicIdentifier.description) on \(peripheral.name ?? peripheral.identifier.uuidString).")
+            debugLog("Will stop listening to \(characteristicIdentifier.description) on \(peripheral.name ?? peripheral.identifier.uuidString).")
         }
     }
 
@@ -75,9 +75,9 @@ class ListenCharacteristic: Operation {
             state = .completed
 
             if value {
-                log("Listening to \(characteristicIdentifier.description) on \(peripheral.name ?? peripheral.identifier.uuidString).")
+                debugLog("Listening to \(characteristicIdentifier.description) on \(peripheral.name ?? peripheral.identifier.uuidString).")
             } else {
-                log("Stopped listening to \(characteristicIdentifier.description) on \(peripheral.name ?? peripheral.identifier.uuidString).")
+                debugLog("Stopped listening to \(characteristicIdentifier.description) on \(peripheral.name ?? peripheral.identifier.uuidString).")
             }
 
             callback?(.success)
@@ -94,7 +94,7 @@ class ListenCharacteristic: Operation {
     func fail(_ error: Error) {
         state = .failed(error)
 
-        log("Failed listening to \(characteristicIdentifier.description) on \(peripheral.name ?? peripheral.identifier.uuidString) with error: \(error.localizedDescription)")
+        debugLog("Failed listening to \(characteristicIdentifier.description) on \(peripheral.name ?? peripheral.identifier.uuidString) with error: \(error.localizedDescription)")
 
         callback?(.failure(error))
         callback = nil

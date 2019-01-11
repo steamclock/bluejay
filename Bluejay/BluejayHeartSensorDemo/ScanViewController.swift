@@ -64,7 +64,7 @@ class ScanViewController: UITableViewController {
                         return .stop
                     }
 
-                    debugPrint("Lost discovery: \(lostDiscovery)")
+                    bluejay.log("Lost discovery: \(lostDiscovery)")
 
                     weakSelf.sensors = discoveries
                     weakSelf.tableView.reloadData()
@@ -73,9 +73,9 @@ class ScanViewController: UITableViewController {
                 },
                 stopped: { _, error in
                     if let error = error {
-                        debugPrint("Scan stopped with error: \(error.localizedDescription)")
+                        bluejay.log("Scan stopped with error: \(error.localizedDescription)")
                     } else {
-                        debugPrint("Scan stopped without error")
+                        bluejay.log("Scan stopped without error")
                     }
                 })
         }
@@ -114,9 +114,9 @@ class ScanViewController: UITableViewController {
         bluejay.connect(selectedSensor, timeout: .seconds(15)) { result in
             switch result {
             case .success:
-                debugPrint("Connection attempt to: \(selectedSensor.description) is successful")
+                bluejay.log("Connection attempt to: \(selectedSensor.description) is successful")
             case .failure(let error):
-                debugPrint("Failed to connect to: \(selectedSensor.description) with error: \(error.localizedDescription)")
+                bluejay.log("Failed to connect to: \(selectedSensor.description) with error: \(error.localizedDescription)")
             }
         }
     }
@@ -124,7 +124,7 @@ class ScanViewController: UITableViewController {
 
 extension ScanViewController: ConnectionObserver {
     func bluetoothAvailable(_ available: Bool) {
-        debugPrint("ScanViewController - Bluetooth available: \(available)")
+        bluejay.log("ScanViewController - Bluetooth available: \(available)")
 
         if available {
             scanHeartSensors()
@@ -135,7 +135,7 @@ extension ScanViewController: ConnectionObserver {
     }
 
     func connected(to peripheral: PeripheralIdentifier) {
-        debugPrint("ScanViewController - Connected to: \(peripheral.description)")
+        bluejay.log("ScanViewController - Connected to: \(peripheral.description)")
         performSegue(withIdentifier: "showSensor", sender: self)
     }
 }

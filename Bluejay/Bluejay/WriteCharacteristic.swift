@@ -56,7 +56,7 @@ class WriteCharacteristic<T: Sendable>: Operation {
 
         peripheral.writeValue(value.toBluetoothData(), for: characteristic, type: type)
 
-        log("Started write to \(characteristicIdentifier.description) on \(peripheral.identifier).")
+        debugLog("Started write to \(characteristicIdentifier.description) on \(peripheral.identifier).")
 
         if type == .withoutResponse {
             process(event: .didWriteCharacteristic(characteristic))
@@ -71,7 +71,7 @@ class WriteCharacteristic<T: Sendable>: Operation {
 
             state = .completed
 
-            log("Write to \(characteristicIdentifier.description) on \(peripheral.identifier) is successful.")
+            debugLog("Write to \(characteristicIdentifier.description) on \(peripheral.identifier) is successful.")
 
             callback?(.success)
             callback = nil
@@ -85,7 +85,7 @@ class WriteCharacteristic<T: Sendable>: Operation {
     func fail(_ error: Error) {
         state = .failed(error)
 
-        log("Failed writing to \(characteristicIdentifier.description) on \(peripheral.identifier) with error: \(error.localizedDescription)")
+        debugLog("Failed writing to \(characteristicIdentifier.description) on \(peripheral.identifier) with error: \(error.localizedDescription)")
 
         callback?(.failure(error))
         callback = nil

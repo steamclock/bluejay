@@ -28,7 +28,7 @@ public class SynchronizedPeripheral {
     }
 
     deinit {
-         log("Deinit synchronized peripheral: \(parent.identifier.description))")
+         debugLog("Deinit synchronized peripheral: \(parent.identifier.description))")
     }
 
     // MARK: - Actions
@@ -208,18 +208,18 @@ public class SynchronizedPeripheral {
         var shouldListenAgain = false
 
         DispatchQueue.main.async {
-            log("Flushing listen to \(characteristicIdentifier.description)")
+            debugLog("Flushing listen to \(characteristicIdentifier.description)")
 
             shouldListenAgain = false
 
             self.parent.listen(to: characteristicIdentifier, multipleListenOption: .trap) { (result: ReadResult<Data>) in
                 switch result {
                 case .success:
-                    log("Flushed some data.")
+                    debugLog("Flushed some data.")
 
                     shouldListenAgain = true
                 case .failure(let failureError):
-                    log("Flush failed with error: \(failureError.localizedDescription)")
+                    debugLog("Flush failed with error: \(failureError.localizedDescription)")
 
                     shouldListenAgain = false
                     error = failureError
@@ -232,7 +232,7 @@ public class SynchronizedPeripheral {
         repeat {
             shouldListenAgain = false
             _ = listenSem.wait(timeout: .now() + DispatchTimeInterval.seconds(Int(timeoutInterval)))
-            log("Flush to \(characteristicIdentifier.description) finished, should flush again: \(shouldListenAgain).")
+            debugLog("Flush to \(characteristicIdentifier.description) finished, should flush again: \(shouldListenAgain).")
         } while shouldListenAgain
 
         DispatchQueue.main.async {
@@ -384,7 +384,7 @@ public class SynchronizedPeripheral {
                             writeAndAssembleError = error
                         }
                     } else {
-                        log("Need to continue to assemble data.")
+                        debugLog("Need to continue to assemble data.")
                     }
                 case .failure(let error):
                     writeAndAssembleError = error

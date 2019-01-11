@@ -74,7 +74,7 @@ class Scan: Queueable {
         self.manager = manager
 
         if serviceIdentifiers?.isEmpty != false {
-            log("""
+            debugLog("""
                 Warning: Setting `serviceIdentifiers` to `nil` is not recommended by Apple. \
                 It may cause battery and cpu issues on prolonged scanning, and **it also doesn't work in the background**. \
                 If you need to scan for all Bluetooth devices, we recommend making use of the `duration` parameter to stop the scan \
@@ -84,7 +84,7 @@ class Scan: Queueable {
     }
 
     deinit {
-        log("Scan deinitialized")
+        debugLog("Scan deinitialized")
     }
 
     func start() {
@@ -126,7 +126,7 @@ class Scan: Queueable {
             )
         }
 
-        log("Scanning started.")
+        debugLog("Scanning started.")
     }
 
     func process(event: Event) {
@@ -228,9 +228,9 @@ class Scan: Queueable {
         }
 
         if let error = error {
-            log("Scanning stopped with error: \(error.localizedDescription)")
+            debugLog("Scanning stopped with error: \(error.localizedDescription)")
         } else {
-            log("Scanning stopped.")
+            debugLog("Scanning stopped.")
         }
 
         stopped(discoveries, error)
@@ -315,7 +315,7 @@ class Scan: Queueable {
         case .running:
             state = .completed
 
-            log("Finished scanning on timeout.")
+            debugLog("Finished scanning on timeout.")
 
             stopScan(with: discoveries, error: nil)
         }
