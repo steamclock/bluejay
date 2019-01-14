@@ -280,20 +280,22 @@
 <li>Swift 4.2 or above</li>
 </ul>
 <h2 id='installation' class='heading'>Installation</h2>
-
-<p>Install using CocoaPods:</p>
+<h3 id='cocoapods' class='heading'>CocoaPods</h3>
 
 <p><code>pod &#39;Bluejay&#39;, &#39;~&gt; 0.8&#39;</code></p>
 
 <p>Or to try the latest master:</p>
 
 <p><code>pod &#39;Bluejay&#39;, :git =&gt; &#39;https://github.com/steamclock/bluejay.git&#39;, :branch =&gt; &#39;master&#39;</code></p>
+<h3 id='carthage' class='heading'>Carthage</h3>
+<pre class="highlight plaintext"><code>github "steamclock/bluejay" ~&gt; 0.8
+github "DaveWoodCom/XCGLogger" ~&gt; 6.1.0
+</code></pre>
 
-<p>Cartfile:</p>
+<p>Refer to <a href="https://github.com/Carthage/Carthage#supporting-carthage-for-your-framework">official Carthage documentation</a> for the rest of the instructions.</p>
 
-<p><code>github &quot;steamclock/bluejay&quot; ~&gt; 0.8</code></p>
-
-<p>Import using:</p>
+<p><strong>Note:</strong> <code>Bluejay.framework</code>, <code>ObjcExceptionBridging.framework</code>, and <code>XCGLogger.framework</code> are all required.</p>
+<h3 id='import' class='heading'>Import</h3>
 <pre class="highlight swift"><code><span class="kd">import</span> <span class="kt">Bluejay</span>
 </code></pre>
 <h2 id='demo' class='heading'>Demo</h2>

@@ -65,7 +65,7 @@ Bluejay's primary goals are:
 
 ## Installation
 
-Install using CocoaPods:
+### CocoaPods
 
 `pod 'Bluejay', '~> 0.8'`
 
@@ -73,11 +73,18 @@ Or to try the latest master:
 
 `pod 'Bluejay', :git => 'https://github.com/steamclock/bluejay.git', :branch => 'master'`
 
-Cartfile:
+### Carthage
 
-`github "steamclock/bluejay" ~> 0.8`
+```
+github "steamclock/bluejay" ~> 0.8
+github "DaveWoodCom/XCGLogger" ~> 6.1.0
+```
 
-Import using:
+Refer to [official Carthage documentation](https://github.com/Carthage/Carthage#supporting-carthage-for-your-framework) for the rest of the instructions.
+
+**Note:** `Bluejay.framework`, `ObjcExceptionBridging.framework`, and `XCGLogger.framework` are all required.
+
+### Import
 
 ```swift
 import Bluejay
