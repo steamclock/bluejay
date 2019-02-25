@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>LogObserver Protocol Reference</title>
+    <title>ServiceObserver Protocol Reference</title>
     <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
     <meta charset='utf-8'>
@@ -10,8 +10,8 @@
     
   </head>
   <body>
-    <a name="//apple_ref/swift/Protocol/LogObserver" class="dashAnchor"></a>
-    <a title="LogObserver Protocol Reference"></a>
+    <a name="//apple_ref/swift/Protocol/ServiceObserver" class="dashAnchor"></a>
+    <a title="ServiceObserver Protocol Reference"></a>
     <header>
       <div class="content-wrapper">
         <p><a href="../index.html">Bluejay Docs</a> (100% documented)</p>
@@ -22,7 +22,7 @@
       <p id="breadcrumbs">
         <a href="../index.html">Bluejay Reference</a>
         <img id="carat" src="../img/carat.png" />
-        LogObserver Protocol Reference
+        ServiceObserver Protocol Reference
       </p>
     </div>
     <div class="content-wrapper">
@@ -198,14 +198,14 @@
       <article class="main-content">
         <section>
           <section class="section">
-            <h1>LogObserver</h1>
+            <h1>ServiceObserver</h1>
               <div class="declaration">
                 <div class="language">
-                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">LogObserver</span> <span class="p">:</span> <span class="kt">AnyObject</span></code></pre>
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">ServiceObserver</span> <span class="p">:</span> <span class="kt">AnyObject</span></code></pre>
 
                 </div>
               </div>
-            <p>A protocol allowing conforming objects to monitor log file changes.</p>
+            <p>A protocol allowing conforming objects to monitor the services changes of a connected peripheral.</p>
 
           </section>
           <section class="section task-group-section">
@@ -214,9 +214,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7Bluejay11LogObserverP14logFileUpdated4logsySS_tF"></a>
-                    <a name="//apple_ref/swift/Method/logFileUpdated(logs:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7Bluejay11LogObserverP14logFileUpdated4logsySS_tF">logFileUpdated(logs:)</a>
+                    <a name="/s:7Bluejay15ServiceObserverP17didModifyServices4from011invalidatedF0yAA20PeripheralIdentifierV_SayAA0bJ0VGtF"></a>
+                    <a name="//apple_ref/swift/Method/didModifyServices(from:invalidatedServices:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Bluejay15ServiceObserverP17didModifyServices4from011invalidatedF0yAA20PeripheralIdentifierV_SayAA0bJ0VGtF">didModifyServices(from:invalidatedServices:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -224,14 +224,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Called whenever the log file is updated.</p>
+                        <p>Called whenever a peripheral&rsquo;s services change.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">logFileUpdated</span><span class="p">(</span><span class="nv">logs</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">didModifyServices</span><span class="p">(</span><span class="n">from</span> <span class="nv">peripheral</span><span class="p">:</span> <span class="kt"><a href="../Structs/PeripheralIdentifier.html">PeripheralIdentifier</a></span><span class="p">,</span> <span class="nv">invalidatedServices</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Structs/ServiceIdentifier.html">ServiceIdentifier</a></span><span class="p">])</span></code></pre>
 
                         </div>
                       </div>
@@ -242,12 +242,24 @@
                             <tr>
                               <td>
                                 <code>
-                                <em>logs</em>
+                                <em>from</em>
                                 </code>
                               </td>
                               <td>
                                 <div>
-                                  <p>the full content of the log as a String.</p>
+                                  <p>the peripheral that changed services.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>invalidatedServices</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the services invalidated.</p>
                                 </div>
                               </td>
                             </tr>
