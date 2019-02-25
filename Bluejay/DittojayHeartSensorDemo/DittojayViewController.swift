@@ -22,6 +22,7 @@ class DittojayViewController: UITableViewController {
     var addedServices: [CBService] = []
 
     var heartRate: UInt8 = 0
+    var timer: Timer?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,6 +49,12 @@ class DittojayViewController: UITableViewController {
         let wakeAppServiceUUID = CBUUID(string: "CED261B7-F120-41C8-9A92-A41DE69CF2A8")
         let wakeAppCharacteristicUUID = CBUUID(string: "83B4A431-A6F1-4540-B3EE-3C14AEF71A04")
 
+        if addedServices.contains(where: { addedService -> Bool in
+            addedService.uuid == wakeAppServiceUUID
+        }) {
+            return
+        }
+
         wakeAppCharacteristic = CBMutableCharacteristic(
             type: wakeAppCharacteristicUUID,
             properties: .notify,
@@ -57,7 +64,27 @@ class DittojayViewController: UITableViewController {
         wakeAppService = CBMutableService(type: wakeAppServiceUUID, primary: true)
         wakeAppService.characteristics = [wakeAppCharacteristic]
 
+        debugPrint("Will add wake app service...")
+
         manager.add(wakeAppService)
+    }
+
+    private func removeWakeAppService() {
+        addedServices.removeAll { addedService -> Bool in
+            addedService.uuid == wakeAppService.uuid
+        }
+
+        debugPrint("Will remove wake app service...")
+
+        manager.remove(wakeAppService)
+
+        if manager.isAdvertising {
+            debugPrint("Will stop advertising...")
+            manager.stopAdvertising()
+        }
+
+        debugPrint("Will start advertising...")
+        advertiseServices([heartRateService.uuid])
     }
 
     private func advertiseServices(_ services: [CBUUID]) {
@@ -65,7 +92,7 @@ class DittojayViewController: UITableViewController {
     }
 
     private func startHeartRateSensor() {
-        _ = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
+        timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
             guard let weakSelf = self else {
                 return
             }
@@ -93,7 +120,7 @@ class DittojayViewController: UITableViewController {
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return 2
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -103,24 +130,35 @@ class DittojayViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "actionCell", for: indexPath)
 
-        if indexPath.row == 0 {
-            cell.textLabel?.text = "Generated Heart Rate"
-            cell.detailTextLabel?.text = "\(heartRate)"
+        if indexPath.section == 0 {
+            if indexPath.row == 0 {
+                cell.textLabel?.text = "Generated Heart Rate"
+                cell.detailTextLabel?.text = "\(heartRate)"
+                cell.selectionStyle = .none
 
-            DispatchQueue.main.async {
-                UIView.animate(withDuration: 0.25, animations: {
-                    cell.detailTextLabel?.transform = cell.detailTextLabel!.transform.scaledBy(x: 1.5, y: 1.5)
-                }, completion: { completed in
-                    if completed {
-                        UIView.animate(withDuration: 0.25) {
-                            cell.detailTextLabel?.transform = CGAffineTransform.identity
+                DispatchQueue.main.async {
+                    UIView.animate(withDuration: 0.25, animations: {
+                        cell.detailTextLabel?.transform = cell.detailTextLabel!.transform.scaledBy(x: 1.5, y: 1.5)
+                    }, completion: { completed in
+                        if completed {
+                            UIView.animate(withDuration: 0.25) {
+                                cell.detailTextLabel?.transform = CGAffineTransform.identity
+                            }
                         }
-                    }
-                })
+                    })
+                }
+            } else {
+                cell.textLabel?.text = "Chirp"
+                cell.detailTextLabel?.text = ""
             }
         } else {
-            cell.textLabel?.text = "Chirp"
-            cell.detailTextLabel?.text = ""
+            if indexPath.row == 0 {
+                cell.textLabel?.text = "Add Chirp Service"
+                cell.detailTextLabel?.text = ""
+            } else {
+                cell.textLabel?.text = "Remove Chirp Service"
+                cell.detailTextLabel?.text = ""
+            }
         }
 
         return cell
@@ -128,7 +166,18 @@ class DittojayViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        chirp()
+
+        if indexPath.section == 0 {
+            if indexPath.row == 1 {
+                chirp()
+            }
+        } else {
+            if indexPath.row == 0 {
+                addWakeAppService()
+            } else {
+                removeWakeAppService()
+            }
+        }
     }
 }
 
@@ -146,13 +195,26 @@ extension DittojayViewController: CBPeripheralManagerDelegate {
         if let error = error {
             debugPrint("Failed to add service \(service.uuid.uuidString) with error: \(error.localizedDescription)")
         } else {
-            debugPrint("Added service \(service.uuid.uuidString)")
-
-            addedServices.append(service)
+            if !addedServices.contains { addedService -> Bool in
+                addedService.uuid == service.uuid
+            } {
+                debugPrint("Added service \(service.uuid.uuidString)")
+                addedServices.append(service)
+            }
 
             if addedServices.contains(heartRateService) && addedServices.contains(wakeAppService) {
+                if manager.isAdvertising {
+                    debugPrint("Will stop advertising...")
+                    manager.stopAdvertising()
+                }
+
+                debugPrint("Will start advertising...")
                 advertiseServices([heartRateService.uuid, wakeAppService.uuid])
-                startHeartRateSensor()
+
+                if timer == nil {
+                    debugPrint("Will start heart rate sensor...")
+                    startHeartRateSensor()
+                }
             }
         }
     }
