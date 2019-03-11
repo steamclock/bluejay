@@ -113,9 +113,6 @@
               <li class="nav-group-task">
                 <a href="../Extensions/Peripheral.html">Peripheral</a>
               </li>
-              <li class="nav-group-task">
-                <a href="../Extensions/String.html">String</a>
-              </li>
             </ul>
           </li>
           <li class="nav-group-name">
@@ -129,6 +126,9 @@
               </li>
               <li class="nav-group-task">
                 <a href="../Protocols/DisconnectHandler.html">DisconnectHandler</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols.html#/s:7Bluejay10FixedWidthP">FixedWidth</a>
               </li>
               <li class="nav-group-task">
                 <a href="../Protocols/ListenRestorer.html">ListenRestorer</a>
@@ -213,9 +213,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:10Foundation4DataV7BluejayE7extract5start6lengthxSi_SitKlF"></a>
+                    <a name="/s:10Foundation4DataV7BluejayE7extract5start6lengthxSi_SitKAD10FixedWidthRzlF"></a>
                     <a name="//apple_ref/swift/Method/extract(start:length:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:10Foundation4DataV7BluejayE7extract5start6lengthxSi_SitKlF">extract(start:length:)</a>
+                    <a class="token" href="#/s:10Foundation4DataV7BluejayE7extract5start6lengthxSi_SitKAD10FixedWidthRzlF">extract(start:length:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -223,14 +223,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Convenience function to read a range of Data and deserialize it into the specified type.</p>
+                        <p>Convenience function to read a range of Data and deserialize it into a fixed width type.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">extract</span><span class="o">&lt;</span><span class="kt">T</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">start</span><span class="p">:</span> <span class="kt">Int</span><span class="p">,</span> <span class="nv">length</span><span class="p">:</span> <span class="kt">Int</span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">T</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">extract</span><span class="o">&lt;</span><span class="kt">T</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">start</span><span class="p">:</span> <span class="kt">Int</span><span class="p">,</span> <span class="nv">length</span><span class="p">:</span> <span class="kt">Int</span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">T</span> <span class="k">where</span> <span class="kt">T</span> <span class="p">:</span> <span class="kt"><a href="../Protocols.html#/s:7Bluejay10FixedWidthP">FixedWidth</a></span></code></pre>
 
                         </div>
                       </div>
@@ -259,6 +259,139 @@
                               <td>
                                 <div>
                                   <p>The number of bytes to read from <code>start</code>.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10Foundation4DataV7BluejayE7extract5start6lengthACSi_SitKF"></a>
+                    <a name="//apple_ref/swift/Method/extract(start:length:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10Foundation4DataV7BluejayE7extract5start6lengthACSi_SitKF">extract(start:length:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Convenience function to extract a range of Data.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">extract</span><span class="p">(</span><span class="nv">start</span><span class="p">:</span> <span class="kt">Int</span><span class="p">,</span> <span class="nv">length</span><span class="p">:</span> <span class="kt">Int</span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">Data</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>start</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The starting position of the range to read.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>length</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The number of bytes to read from <code>start</code>.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10Foundation4DataV7BluejayE7extract5start6length8encodingSSSgSi_SiSSAAE8EncodingVtKF"></a>
+                    <a name="//apple_ref/swift/Method/extract(start:length:encoding:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10Foundation4DataV7BluejayE7extract5start6length8encodingSSSgSi_SiSSAAE8EncodingVtKF">extract(start:length:encoding:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Convenience function to read a range of Data and deserialize it into a String.</p>
+<div class="aside aside-note">
+    <p class="aside-title">Note</p>
+    <p>Defaults to using utf8 encoding.</p>
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">extract</span><span class="p">(</span><span class="nv">start</span><span class="p">:</span> <span class="kt">Int</span><span class="p">,</span> <span class="nv">length</span><span class="p">:</span> <span class="kt">Int</span><span class="p">,</span> <span class="nv">encoding</span><span class="p">:</span> <span class="kt">String</span><span class="o">.</span><span class="kt">Encoding</span> <span class="o">=</span> <span class="o">.</span><span class="n">utf8</span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">String</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>start</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The starting position of the range to read.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>length</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The number of bytes to read from <code>start</code>.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>encoding</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The string encoding to use, defaults to utf8.</p>
                                 </div>
                               </td>
                             </tr>

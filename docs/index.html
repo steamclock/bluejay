@@ -112,9 +112,6 @@
               <li class="nav-group-task">
                 <a href="Extensions/Peripheral.html">Peripheral</a>
               </li>
-              <li class="nav-group-task">
-                <a href="Extensions/String.html">String</a>
-              </li>
             </ul>
           </li>
           <li class="nav-group-name">
@@ -128,6 +125,9 @@
               </li>
               <li class="nav-group-task">
                 <a href="Protocols/DisconnectHandler.html">DisconnectHandler</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Protocols.html#/s:7Bluejay10FixedWidthP">FixedWidth</a>
               </li>
               <li class="nav-group-task">
                 <a href="Protocols/ListenRestorer.html">ListenRestorer</a>
@@ -240,6 +240,8 @@
 <ul>
 <li><a href="#receivable">Receivable</a></li>
 <li><a href="#sendable">Sendable</a></li>
+<li><a href="#sending-and-receiving-primitives">Sending and Receiving Primitives</a></li>
+<li><a href="#strings">Strings</a></li>
 </ul></li>
 <li><a href="#interactions">Interactions</a>
 
@@ -659,6 +661,40 @@ github "DaveWoodCom/XCGLogger" ~&gt; 6.1.0
 <p>In some cases, you may want to send or receive data simple enough that creating a custom struct which implements <code><a href="Protocols/Sendable.html">Sendable</a></code> or <code><a href="Protocols/Receivable.html">Receivable</a></code> to hold it is unnecessarily complicated. For those cases, Bluejay also retroactively conforms several built-in Swift types to <code><a href="Protocols/Sendable.html">Sendable</a></code> and <code><a href="Protocols/Receivable.html">Receivable</a></code>. <code>Int8</code>, <code>Int16</code>, <code>Int32</code>, <code>Int64</code>, <code>UInt8</code>, <code>UInt16</code>, <code>UInt32</code>, <code>UInt64</code>, <code>Data</code> are all conformed to both protocols and so they can all be sent or received directly.</p>
 
 <p><code>Int</code> and <code>UInt</code> are intentionally not conformed. Bluetooth values are always sent and/or received at a specific bit width. The intended bit width for an <code>Int</code> is ambiguous, and trying to use one often indicates a programmer error, in the form of not considering the bit width the Bluetooth device is expecting on a characteristic.</p>
+<h4 id='strings' class='heading'>Strings</h4>
+
+<p><code>String</code> is special because encoding can vary and it is not a fixed width type, so you cannot use a <code>String</code> on its own as a <code><a href="Protocols/Sendable.html">Sendable</a></code> nor <code><a href="Protocols/Receivable.html">Receivable</a></code>. To work around this, wrap the string data inside a <code><a href="Protocols/Sendable.html">Sendable</a></code> and/or <code><a href="Protocols/Receivable.html">Receivable</a></code> struct, then use iOS&rsquo; <code>Foundation</code> framework to serialize and/or to deserialize. But when deserializing, one of Bluejay&rsquo;s <code>extract</code> helpers does provide a slightly more convenient interface. For examples:</p>
+
+<p><strong>Serializing a packet containing a string</strong></p>
+<pre class="highlight swift"><code><span class="kd">struct</span> <span class="kt">MyBluetoothPacket</span><span class="p">:</span> <span class="kt">Sendable</span> <span class="p">{</span>
+
+    <span class="kd">private</span> <span class="k">let</span> <span class="nv">deviceName</span><span class="p">:</span> <span class="kt">String</span>
+
+    <span class="nf">init</span><span class="p">(</span><span class="nv">deviceName</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">self</span><span class="o">.</span><span class="n">deviceName</span> <span class="o">=</span> <span class="n">deviceName</span>
+    <span class="p">}</span>
+
+    <span class="kd">func</span> <span class="nf">toBluetoothData</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">Data</span> <span class="p">{</span>
+        <span class="c1">// Should probably validate the length here before sending it to your peripheral.</span>
+        <span class="k">return</span> <span class="n">deviceName</span><span class="o">.</span><span class="nf">data</span><span class="p">(</span><span class="nv">using</span><span class="p">:</span> <span class="o">.</span><span class="n">utf8</span><span class="p">)</span> <span class="p">??</span> <span class="kt">Data</span><span class="p">()</span>
+    <span class="p">}</span>
+
+<span class="p">}</span>
+</code></pre>
+
+<p><strong>Deserializing a packet containing a string</strong></p>
+<pre class="highlight swift"><code><span class="kd">struct</span> <span class="kt">MyBluetoothPacket</span><span class="p">:</span> <span class="kt">Receivable</span> <span class="p">{</span>
+
+    <span class="kd">private</span> <span class="k">var</span> <span class="nv">deviceName</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span>
+
+    <span class="nf">init</span><span class="p">(</span><span class="nv">bluetoothData</span><span class="p">:</span> <span class="kt">Data</span><span class="p">)</span> <span class="k">throws</span> <span class="p">{</span>
+        <span class="n">deviceName</span> <span class="o">=</span> <span class="k">try</span> <span class="n">bluetoothData</span><span class="o">.</span><span class="nf">extract</span><span class="p">(</span><span class="nv">start</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="nv">length</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="nv">encoding</span><span class="p">:</span> <span class="o">.</span><span class="n">utf8</span><span class="p">)</span>
+    <span class="p">}</span>
+
+<span class="p">}</span>
+</code></pre>
+
+<p><strong>Note:</strong> As with the majority of Bluetooth data you work with, you should know the length beforehand, and especially so for both incoming and outgoing strings.</p>
 <h2 id='interactions' class='heading'>Interactions</h2>
 
 <p>Once you have your data modelled using either the <code><a href="Protocols/Receivable.html">Receivable</a></code> or <code><a href="Protocols/Sendable.html">Sendable</a></code> protocol, the read, write, and listen APIs in Bluejay should handle the deserialization and serialization seamlessly for you. All you need to do is to specify the type for the generic result wrappers: <code><a href="Enums/ReadResult.html">ReadResult&lt;T&gt;</a></code> or <code><a href="Enums/WriteResult.html">WriteResult&lt;T&gt;</a></code>.</p>
