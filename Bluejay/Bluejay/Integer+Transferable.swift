@@ -29,12 +29,12 @@ extension BinaryInteger {
 }
 
 /// Extensions to existing primitive types to make them Sendable and Receivable.
-extension Int64: Sendable, Receivable {}
-extension Int32: Sendable, Receivable {}
-extension Int16: Sendable, Receivable {}
-extension Int8: Sendable, Receivable {}
+extension Int64: Sendable, Receivable, FixedWidth {}
+extension Int32: Sendable, Receivable, FixedWidth {}
+extension Int16: Sendable, Receivable, FixedWidth {}
+extension Int8: Sendable, Receivable, FixedWidth {}
 
-extension UInt64: Sendable, Receivable {}
-extension UInt32: Sendable, Receivable {}
-extension UInt16: Sendable, Receivable {}
-extension UInt8: Sendable, Receivable {}
+extension UInt64: Sendable, FixedWidth {}
+extension UInt32: Sendable, FixedWidth {}
+extension UInt16: Sendable, FixedWidth {}
+extension UInt8: Sendable, FixedWidth {}

@@ -30,4 +30,7 @@ protocol PeripheralDelegate: class {
 
     /// The peripheral has received a RSSI value and notifies Bluejay.
     func didReadRSSI(from peripheral: Peripheral, RSSI: NSNumber, error: Error?)
+
+    /// The peripheral's list of available services has changed.
+    func didModifyServices(from peripheral: Peripheral, invalidatedServices: [ServiceIdentifier])
 }

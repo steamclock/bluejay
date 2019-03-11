@@ -14,6 +14,7 @@
 		B8022D9A1E1F041D00EA360B /* SynchronizedPeripheral.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8022D991E1F041D00EA360B /* SynchronizedPeripheral.swift */; };
 		B8022D9C1E1F052F00EA360B /* ListenAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8022D9B1E1F052F00EA360B /* ListenAction.swift */; };
 		B80D299B2170062D001C3C9B /* DisconnectHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B80D299A2170062D001C3C9B /* DisconnectHandler.swift */; };
+		B8127C732236F63300218B97 /* FixedWidth.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8127C722236F63300218B97 /* FixedWidth.swift */; };
 		B81E37731EDE238900E0655F /* DisconnectionResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = B81E37721EDE238900E0655F /* DisconnectionResult.swift */; };
 		B83271A91E313CA300D68581 /* Queueable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B83271A81E313CA300D68581 /* Queueable.swift */; };
 		B8330D5121B9E03B006F29C7 /* ListenCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8330D5021B9E03B006F29C7 /* ListenCallback.swift */; };
@@ -24,7 +25,7 @@
 		B8383B7021C31B2D00F07306 /* ListenRestorer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8383B6F21C31B2D00F07306 /* ListenRestorer.swift */; };
 		B8383B7221C3239B00F07306 /* PeripheralDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8383B7121C3239B00F07306 /* PeripheralDelegate.swift */; };
 		B83A67CE219F45C300076B9F /* BackgroundRestorer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B83A67CD219F45C300076B9F /* BackgroundRestorer.swift */; };
-		B842AAF81E4CF74300BB32EE /* String+Transferable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B842AAF71E4CF74300BB32EE /* String+Transferable.swift */; };
+		B843657E221F73FC00990C83 /* ServiceObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = B843657D221F73FC00990C83 /* ServiceObserver.swift */; };
 		B86586A9216D1105002E8E2D /* StartOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86586A8216D1105002E8E2D /* StartOptions.swift */; };
 		B869A2971E721D50003C1278 /* Data+Sendable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B869A2961E721D50003C1278 /* Data+Sendable.swift */; };
 		B87CBB4D21C05F8400B67B5B /* BackgroundRestoreConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = B87CBB4C21C05F8400B67B5B /* BackgroundRestoreConfig.swift */; };
@@ -138,6 +139,7 @@
 		B8022D991E1F041D00EA360B /* SynchronizedPeripheral.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SynchronizedPeripheral.swift; sourceTree = "<group>"; };
 		B8022D9B1E1F052F00EA360B /* ListenAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListenAction.swift; sourceTree = "<group>"; };
 		B80D299A2170062D001C3C9B /* DisconnectHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisconnectHandler.swift; sourceTree = "<group>"; };
+		B8127C722236F63300218B97 /* FixedWidth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FixedWidth.swift; sourceTree = "<group>"; };
 		B81E37721EDE238900E0655F /* DisconnectionResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DisconnectionResult.swift; sourceTree = "<group>"; };
 		B82FE820DEBA78205D73DB03 /* Pods_BluejayHeartSensorDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BluejayHeartSensorDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B83271A81E313CA300D68581 /* Queueable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Queueable.swift; sourceTree = "<group>"; };
@@ -151,7 +153,7 @@
 		B8383B6F21C31B2D00F07306 /* ListenRestorer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListenRestorer.swift; sourceTree = "<group>"; };
 		B8383B7121C3239B00F07306 /* PeripheralDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeripheralDelegate.swift; sourceTree = "<group>"; };
 		B83A67CD219F45C300076B9F /* BackgroundRestorer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundRestorer.swift; sourceTree = "<group>"; };
-		B842AAF71E4CF74300BB32EE /* String+Transferable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Transferable.swift"; sourceTree = "<group>"; };
+		B843657D221F73FC00990C83 /* ServiceObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceObserver.swift; sourceTree = "<group>"; };
 		B86586A8216D1105002E8E2D /* StartOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartOptions.swift; sourceTree = "<group>"; };
 		B869A2961E721D50003C1278 /* Data+Sendable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Data+Sendable.swift"; sourceTree = "<group>"; };
 		B87CBB4C21C05F8400B67B5B /* BackgroundRestoreConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundRestoreConfig.swift; sourceTree = "<group>"; };
@@ -261,8 +263,8 @@
 			children = (
 				B8C70FAA1E1C69C50006CF58 /* Sendable.swift */,
 				B8C70FA81E1C69B60006CF58 /* Receivable.swift */,
+				B8127C722236F63300218B97 /* FixedWidth.swift */,
 				B8C70FAE1E1C6C780006CF58 /* Integer+Transferable.swift */,
-				B842AAF71E4CF74300BB32EE /* String+Transferable.swift */,
 				B869A2961E721D50003C1278 /* Data+Sendable.swift */,
 				B8B5708E1ED8AEAA00603C0B /* Data+Extractable.swift */,
 			);
@@ -460,6 +462,7 @@
 			children = (
 				B8C70FB81E1C725C0006CF58 /* ConnectionObserver.swift */,
 				B8FE9DF41E73597A00D361CE /* RSSIObserver.swift */,
+				B843657D221F73FC00990C83 /* ServiceObserver.swift */,
 				B8DC6C6D21DD7917004A8EA6 /* LogObserver.swift */,
 				B80D299A2170062D001C3C9B /* DisconnectHandler.swift */,
 			);
@@ -794,7 +797,7 @@
 				B8C70FA31E1C65000006CF58 /* ConnectionResult.swift in Sources */,
 				B88A0DA11E1DD15600A00FF8 /* DiscoverCharacteristic.swift in Sources */,
 				B80D299B2170062D001C3C9B /* DisconnectHandler.swift in Sources */,
-				B842AAF81E4CF74300BB32EE /* String+Transferable.swift in Sources */,
+				B8127C732236F63300218B97 /* FixedWidth.swift in Sources */,
 				B8DC6C6E21DD7917004A8EA6 /* LogObserver.swift in Sources */,
 				B83A67CE219F45C300076B9F /* BackgroundRestorer.swift in Sources */,
 				B83271A91E313CA300D68581 /* Queueable.swift in Sources */,
@@ -819,6 +822,7 @@
 				B8383B7021C31B2D00F07306 /* ListenRestorer.swift in Sources */,
 				B8022D9C1E1F052F00EA360B /* ListenAction.swift in Sources */,
 				B8C70F9B1E1C5A910006CF58 /* CharacteristicIdentifier.swift in Sources */,
+				B843657E221F73FC00990C83 /* ServiceObserver.swift in Sources */,
 				B869A2971E721D50003C1278 /* Data+Sendable.swift in Sources */,
 				B8D2078C1E26D446007E670A /* CBPeripheralState+ReturnString.swift in Sources */,
 				B88F79951EB7DB420094D8D1 /* Operation.swift in Sources */,

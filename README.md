@@ -33,6 +33,8 @@ Bluejay's primary goals are:
 - [Deserialization and Serialization](#deserialization-and-serialization)
   - [Receivable](#receivable)
   - [Sendable](#sendable)
+  - [Sending and Receiving Primitives](#sending-and-receiving-primitives)
+  - [Strings](#strings)
 - [Interactions](#interactions)
   - [Reading](#reading)
   - [Writing](#writing)
@@ -46,6 +48,7 @@ Bluejay's primary goals are:
   - [Write and Assemble](#write-and-assemble)
   - [Flush Listen](#flush-listen)
   - [CoreBluetooth Migration](#corebluetooth-migration)
+  - [Monitor Peripheral Services](#monitor-peripheral-services)
 
 ## Features
 
@@ -499,6 +502,45 @@ In some cases, you may want to send or receive data simple enough that creating 
 
 `Int` and `UInt` are intentionally not conformed. Bluetooth values are always sent and/or received at a specific bit width. The intended bit width for an `Int` is ambiguous, and trying to use one often indicates a programmer error, in the form of not considering the bit width the Bluetooth device is expecting on a characteristic.
 
+#### Strings
+
+`String` is special because encoding can vary and it is not a fixed width type, so you cannot use a `String` on its own as a `Sendable` nor `Receivable`. To work around this, wrap the string data inside a `Sendable` and/or `Receivable` struct, then use iOS' `Foundation` framework to serialize and/or to deserialize. But when deserializing, one of Bluejay's `extract` helpers does provide a slightly more convenient interface. For examples:
+
+**Serializing a packet containing a string**
+
+```swift
+struct MyBluetoothPacket: Sendable {
+
+    private let deviceName: String
+
+    init(deviceName: String) {
+        self.deviceName = deviceName
+    }
+
+    func toBluetoothData() -> Data {
+        // Should probably validate the length here before sending it to your peripheral.
+        return deviceName.data(using: .utf8) ?? Data()
+    }
+
+}
+```
+
+**Deserializing a packet containing a string**
+
+```swift
+struct MyBluetoothPacket: Receivable {
+
+    private var deviceName: String?
+
+    init(bluetoothData: Data) throws {
+        deviceName = try bluetoothData.extract(start: 0, length: 10, encoding: .utf8)
+    }
+
+}
+```
+
+**Note:** As with the majority of Bluetooth data you work with, you should know the length beforehand, and especially so for both incoming and outgoing strings.
+
 ## Interactions
 
 Once you have your data modelled using either the `Receivable` or `Sendable` protocol, the read, write, and listen APIs in Bluejay should handle the deserialization and serialization seamlessly for you. All you need to do is to specify the type for the generic result wrappers: `ReadResult<T>` or `WriteResult<T>`.
@@ -866,6 +908,32 @@ public func stopAndExtractBluetoothState() ->
 ```
 
 Finally, you can check whether Bluejay has been started or stopped using the `hasStarted` property.
+
+### Monitor Peripheral Services
+
+Some peripherals can add or remove services while it's being used, and Bluejay provides a basic way to react to this. See **BluejayHeartSensorDemo** and **DittojayHeartSensorDemo** in the project for more examples.
+
+```swift
+bluejay.register(serviceObserver: self)
+```
+
+```swift
+func didModifyServices(
+  from peripheral: PeripheralIdentifier,
+  invalidatedServices: [ServiceIdentifier]) {
+    if invalidatedServices.contains(where: { invalidatedServiceIdentifier -> Bool in
+        invalidatedServiceIdentifier == chirpCharacteristic.service
+    }) {
+        endListen(to: chirpCharacteristic)
+    } else if invalidatedServices.isEmpty {
+        listen(to: chirpCharacteristic)
+    }
+}
+```
+
+**Notes from Apple:**
+
+> If you previously discovered any of the services that have changed, they are provided in the invalidatedServices parameter and can no longer be used. You can use the discoverServices: method to discover any new services that have been added to the peripheral’s database or to find out whether any of the invalidated services that you were using (and want to continue using) have been added back to a different location in the peripheral’s database.
 
 ## API Documentation
 

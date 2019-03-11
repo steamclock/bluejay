@@ -31,6 +31,9 @@ public class Bluejay: NSObject { //swiftlint:disable:this type_body_length
     /// List of weak references to objects interested in receiving notifications on RSSI reads.
     private var rssiObservers: [WeakRSSIObserver] = []
 
+    /// List of weak references to objects interested in receiving notifications on services changes.
+    private var serviceObservers: [WeakServiceObserver] = []
+
     /// List of weak references to objects interested in receiving notifications on log file changes.
     private var logObservers: [WeakLogObserver] = []
 
@@ -494,6 +497,25 @@ public class Bluejay: NSObject { //swiftlint:disable:this type_body_length
      */
     public func unregister(rssiObserver: RSSIObserver) {
         rssiObservers = rssiObservers.filter { $0.weakReference != nil && $0.weakReference !== rssiObserver }
+    }
+
+    /**
+     Register for notifications when a connected peripheral's services change. Unregistering is not required, Bluejay will unregister for you if the observer is no longer in memory.
+
+     - Parameter serviceObserver: object interested in receiving the connected peripheral's did modify services event.
+     */
+    public func register(serviceObserver: ServiceObserver) {
+        serviceObservers = serviceObservers.filter { $0.weakReference != nil && $0.weakReference !== serviceObserver }
+        serviceObservers.append(WeakServiceObserver(weakReference: serviceObserver))
+    }
+
+    /**
+     Unregister for notifications when a connected peripheral's services change. Unregistering is not required, Bluejay will unregister for you if the observer is no longer in memory.
+
+     - Parameter serviceObserver: object no longer interested in receiving the connected peripheral's did modify services event.
+     */
+    public func unregister(serviceObserver: ServiceObserver) {
+        serviceObservers = serviceObservers.filter { $0.weakReference != nil && $0.weakReference !== serviceObserver }
     }
 
     /**
@@ -1533,6 +1555,15 @@ extension Bluejay: PeripheralDelegate {
     func didReadRSSI(from peripheral: Peripheral, RSSI: NSNumber, error: Error?) {
         for observer in rssiObservers {
             observer.weakReference?.didReadRSSI(from: peripheral.identifier, RSSI: RSSI, error: error)
+        }
+    }
+
+    func didModifyServices(from peripheral: Peripheral, invalidatedServices: [ServiceIdentifier]) {
+        for observer in serviceObservers {
+            observer.weakReference?.didModifyServices(
+                from: peripheral.identifier,
+                invalidatedServices: invalidatedServices
+            )
         }
     }
 }

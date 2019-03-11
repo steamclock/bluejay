@@ -113,9 +113,6 @@
               <li class="nav-group-task">
                 <a href="../Extensions/Peripheral.html">Peripheral</a>
               </li>
-              <li class="nav-group-task">
-                <a href="../Extensions/String.html">String</a>
-              </li>
             </ul>
           </li>
           <li class="nav-group-name">
@@ -131,6 +128,9 @@
                 <a href="../Protocols/DisconnectHandler.html">DisconnectHandler</a>
               </li>
               <li class="nav-group-task">
+                <a href="../Protocols.html#/s:7Bluejay10FixedWidthP">FixedWidth</a>
+              </li>
+              <li class="nav-group-task">
                 <a href="../Protocols/ListenRestorer.html">ListenRestorer</a>
               </li>
               <li class="nav-group-task">
@@ -144,6 +144,9 @@
               </li>
               <li class="nav-group-task">
                 <a href="../Protocols/Sendable.html">Sendable</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/ServiceObserver.html">ServiceObserver</a>
               </li>
             </ul>
           </li>
@@ -1005,6 +1008,98 @@ please re-evaluate the bluetooth state again as it may change momentarily after 
                               <td>
                                 <div>
                                   <p>object no longer interested in receiving Bluejay&rsquo;s <code>readRSSI</code> response.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7BluejayAAC8register15serviceObserveryAA07ServiceD0_p_tF"></a>
+                    <a name="//apple_ref/swift/Method/register(serviceObserver:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7BluejayAAC8register15serviceObserveryAA07ServiceD0_p_tF">register(serviceObserver:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Register for notifications when a connected peripheral&rsquo;s services change. Unregistering is not required, Bluejay will unregister for you if the observer is no longer in memory.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">register</span><span class="p">(</span><span class="nv">serviceObserver</span><span class="p">:</span> <span class="kt"><a href="../Protocols/ServiceObserver.html">ServiceObserver</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>serviceObserver</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>object interested in receiving the connected peripheral&rsquo;s did modify services event.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7BluejayAAC10unregister15serviceObserveryAA07ServiceD0_p_tF"></a>
+                    <a name="//apple_ref/swift/Method/unregister(serviceObserver:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7BluejayAAC10unregister15serviceObserveryAA07ServiceD0_p_tF">unregister(serviceObserver:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Unregister for notifications when a connected peripheral&rsquo;s services change. Unregistering is not required, Bluejay will unregister for you if the observer is no longer in memory.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">unregister</span><span class="p">(</span><span class="nv">serviceObserver</span><span class="p">:</span> <span class="kt"><a href="../Protocols/ServiceObserver.html">ServiceObserver</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>serviceObserver</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>object no longer interested in receiving the connected peripheral&rsquo;s did modify services event.</p>
                                 </div>
                               </td>
                             </tr>
@@ -2314,7 +2409,7 @@ please re-evaluate the bluetooth state again as it may change momentarily after 
         </section>
         <section id="footer">
           <p>Copyright © 2017 Steamclock Software. All rights reserved.</p>
-          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.4</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.5</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>
     </div>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>ScanDiscovery Structure Reference</title>
+    <title>ServiceObserver Protocol Reference</title>
     <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
     <meta charset='utf-8'>
@@ -10,8 +10,8 @@
     
   </head>
   <body>
-    <a name="//apple_ref/swift/Struct/ScanDiscovery" class="dashAnchor"></a>
-    <a title="ScanDiscovery Structure Reference"></a>
+    <a name="//apple_ref/swift/Protocol/ServiceObserver" class="dashAnchor"></a>
+    <a title="ServiceObserver Protocol Reference"></a>
     <header>
       <div class="content-wrapper">
         <p><a href="../index.html">Bluejay Docs</a> (100% documented)</p>
@@ -22,7 +22,7 @@
       <p id="breadcrumbs">
         <a href="../index.html">Bluejay Reference</a>
         <img id="carat" src="../img/carat.png" />
-        ScanDiscovery Structure Reference
+        ServiceObserver Protocol Reference
       </p>
     </div>
     <div class="content-wrapper">
@@ -198,14 +198,14 @@
       <article class="main-content">
         <section>
           <section class="section">
-            <h1>ScanDiscovery</h1>
+            <h1>ServiceObserver</h1>
               <div class="declaration">
                 <div class="language">
-                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">ScanDiscovery</span></code></pre>
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">ServiceObserver</span> <span class="p">:</span> <span class="kt">AnyObject</span></code></pre>
 
                 </div>
               </div>
-            <p>A model capturing what is found from a scan callback.</p>
+            <p>A protocol allowing conforming objects to monitor the services changes of a connected peripheral.</p>
 
           </section>
           <section class="section task-group-section">
@@ -214,9 +214,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7Bluejay13ScanDiscoveryV20peripheralIdentifierAA010PeripheralE0Vvp"></a>
-                    <a name="//apple_ref/swift/Property/peripheralIdentifier" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7Bluejay13ScanDiscoveryV20peripheralIdentifierAA010PeripheralE0Vvp">peripheralIdentifier</a>
+                    <a name="/s:7Bluejay15ServiceObserverP17didModifyServices4from011invalidatedF0yAA20PeripheralIdentifierV_SayAA0bJ0VGtF"></a>
+                    <a name="//apple_ref/swift/Method/didModifyServices(from:invalidatedServices:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Bluejay15ServiceObserverP17didModifyServices4from011invalidatedF0yAA20PeripheralIdentifierV_SayAA0bJ0VGtF">didModifyServices(from:invalidatedServices:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -224,70 +224,47 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>The unique, persistent identifier associated with the peer.</p>
+                        <p>Called whenever a peripheral&rsquo;s services change.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">peripheralIdentifier</span><span class="p">:</span> <span class="kt"><a href="../Structs/PeripheralIdentifier.html">PeripheralIdentifier</a></span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">didModifyServices</span><span class="p">(</span><span class="n">from</span> <span class="nv">peripheral</span><span class="p">:</span> <span class="kt"><a href="../Structs/PeripheralIdentifier.html">PeripheralIdentifier</a></span><span class="p">,</span> <span class="nv">invalidatedServices</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Structs/ServiceIdentifier.html">ServiceIdentifier</a></span><span class="p">])</span></code></pre>
 
                         </div>
                       </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:7Bluejay13ScanDiscoveryV19advertisementPacketSDySSypGvp"></a>
-                    <a name="//apple_ref/swift/Property/advertisementPacket" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7Bluejay13ScanDiscoveryV19advertisementPacketSDySSypGvp">advertisementPacket</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>The advertisement packet the discovered peripheral is sending.</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">advertisementPacket</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span> <span class="p">:</span> <span class="kt">Any</span><span class="p">]</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:7Bluejay13ScanDiscoveryV4rssiSivp"></a>
-                    <a name="//apple_ref/swift/Property/rssi" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7Bluejay13ScanDiscoveryV4rssiSivp">rssi</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>The signal strength of the peripheral discovered.</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">rssi</span><span class="p">:</span> <span class="kt">Int</span></code></pre>
-
-                        </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>from</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the peripheral that changed services.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>invalidatedServices</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the services invalidated.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </section>
                   </div>
