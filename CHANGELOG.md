@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 ### Changed
+## [0.9.0] - 2019-03-11
+- Fixed the extraction helper so that it can only extract supported primitives, but also data and string now without crashing
+- Added documentation on how to work with strings better
 
 ## [0.8.2] - 2019-02-25
 ### Added

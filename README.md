@@ -33,6 +33,8 @@ Bluejay's primary goals are:
 - [Deserialization and Serialization](#deserialization-and-serialization)
   - [Receivable](#receivable)
   - [Sendable](#sendable)
+  - [Sending and Receiving Primitives](#sending-and-receiving-primitives)
+  - [Strings](#strings)
 - [Interactions](#interactions)
   - [Reading](#reading)
   - [Writing](#writing)
@@ -499,6 +501,45 @@ The `combine` helper function makes it easier to group and to sequence the outgo
 In some cases, you may want to send or receive data simple enough that creating a custom struct which implements `Sendable` or `Receivable` to hold it is unnecessarily complicated. For those cases, Bluejay also retroactively conforms several built-in Swift types to `Sendable` and `Receivable`. `Int8`, `Int16`, `Int32`, `Int64`, `UInt8`, `UInt16`, `UInt32`, `UInt64`, `Data` are all conformed to both protocols and so they can all be sent or received directly.
 
 `Int` and `UInt` are intentionally not conformed. Bluetooth values are always sent and/or received at a specific bit width. The intended bit width for an `Int` is ambiguous, and trying to use one often indicates a programmer error, in the form of not considering the bit width the Bluetooth device is expecting on a characteristic.
+
+#### Strings
+
+`String` is special because encoding can vary and it is not a fixed width type, so you cannot use a `String` on its own as a `Sendable` nor `Receivable`. To work around this, wrap the string data inside a `Sendable` and/or `Receivable` struct, then use iOS' `Foundation` framework to serialize and/or to deserialize. But when deserializing, one of Bluejay's `extract` helpers does provide a slightly more convenient interface. For examples:
+
+**Serializing a packet containing a string**
+
+```swift
+struct MyBluetoothPacket: Sendable {
+
+    private let deviceName: String
+
+    init(deviceName: String) {
+        self.deviceName = deviceName
+    }
+
+    func toBluetoothData() -> Data {
+        // Should probably validate the length here before sending it to your peripheral.
+        return deviceName.data(using: .utf8) ?? Data()
+    }
+
+}
+```
+
+**Deserializing a packet containing a string**
+
+```swift
+struct MyBluetoothPacket: Receivable {
+
+    private var deviceName: String?
+
+    init(bluetoothData: Data) throws {
+        deviceName = try bluetoothData.extract(start: 0, length: 10, encoding: .utf8)
+    }
+
+}
+```
+
+**Note:** As with the majority of Bluetooth data you work with, you should know the length beforehand, and especially so for both incoming and outgoing strings.
 
 ## Interactions
 
