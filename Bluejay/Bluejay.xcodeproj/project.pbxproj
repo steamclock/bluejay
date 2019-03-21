@@ -25,6 +25,7 @@
 		B8383B7221C3239B00F07306 /* PeripheralDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8383B7121C3239B00F07306 /* PeripheralDelegate.swift */; };
 		B83A67CE219F45C300076B9F /* BackgroundRestorer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B83A67CD219F45C300076B9F /* BackgroundRestorer.swift */; };
 		B842AAF81E4CF74300BB32EE /* String+Transferable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B842AAF71E4CF74300BB32EE /* String+Transferable.swift */; };
+		B843657E221F73FC00990C83 /* ServiceObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = B843657D221F73FC00990C83 /* ServiceObserver.swift */; };
 		B86586A9216D1105002E8E2D /* StartOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86586A8216D1105002E8E2D /* StartOptions.swift */; };
 		B869A2971E721D50003C1278 /* Data+Sendable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B869A2961E721D50003C1278 /* Data+Sendable.swift */; };
 		B87CBB4D21C05F8400B67B5B /* BackgroundRestoreConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = B87CBB4C21C05F8400B67B5B /* BackgroundRestoreConfig.swift */; };
@@ -152,6 +153,7 @@
 		B8383B7121C3239B00F07306 /* PeripheralDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeripheralDelegate.swift; sourceTree = "<group>"; };
 		B83A67CD219F45C300076B9F /* BackgroundRestorer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundRestorer.swift; sourceTree = "<group>"; };
 		B842AAF71E4CF74300BB32EE /* String+Transferable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Transferable.swift"; sourceTree = "<group>"; };
+		B843657D221F73FC00990C83 /* ServiceObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceObserver.swift; sourceTree = "<group>"; };
 		B86586A8216D1105002E8E2D /* StartOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartOptions.swift; sourceTree = "<group>"; };
 		B869A2961E721D50003C1278 /* Data+Sendable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Data+Sendable.swift"; sourceTree = "<group>"; };
 		B87CBB4C21C05F8400B67B5B /* BackgroundRestoreConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundRestoreConfig.swift; sourceTree = "<group>"; };
@@ -460,6 +462,7 @@
 			children = (
 				B8C70FB81E1C725C0006CF58 /* ConnectionObserver.swift */,
 				B8FE9DF41E73597A00D361CE /* RSSIObserver.swift */,
+				B843657D221F73FC00990C83 /* ServiceObserver.swift */,
 				B8DC6C6D21DD7917004A8EA6 /* LogObserver.swift */,
 				B80D299A2170062D001C3C9B /* DisconnectHandler.swift */,
 			);
@@ -819,6 +822,7 @@
 				B8383B7021C31B2D00F07306 /* ListenRestorer.swift in Sources */,
 				B8022D9C1E1F052F00EA360B /* ListenAction.swift in Sources */,
 				B8C70F9B1E1C5A910006CF58 /* CharacteristicIdentifier.swift in Sources */,
+				B843657E221F73FC00990C83 /* ServiceObserver.swift in Sources */,
 				B869A2971E721D50003C1278 /* Data+Sendable.swift in Sources */,
 				B8D2078C1E26D446007E670A /* CBPeripheralState+ReturnString.swift in Sources */,
 				B88F79951EB7DB420094D8D1 /* Operation.swift in Sources */,

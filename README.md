@@ -46,6 +46,7 @@ Bluejay's primary goals are:
   - [Write and Assemble](#write-and-assemble)
   - [Flush Listen](#flush-listen)
   - [CoreBluetooth Migration](#corebluetooth-migration)
+  - [Monitor Peripheral Services](#monitor-peripheral-services)
 
 ## Features
 
@@ -866,6 +867,32 @@ public func stopAndExtractBluetoothState() ->
 ```
 
 Finally, you can check whether Bluejay has been started or stopped using the `hasStarted` property.
+
+### Monitor Peripheral Services
+
+Some peripherals can add or remove services while it's being used, and Bluejay provides a basic way to react to this. See **BluejayHeartSensorDemo** and **DittojayHeartSensorDemo** in the project for more examples.
+
+```swift
+bluejay.register(serviceObserver: self)
+```
+
+```swift
+func didModifyServices(
+  from peripheral: PeripheralIdentifier,
+  invalidatedServices: [ServiceIdentifier]) {
+    if invalidatedServices.contains(where: { invalidatedServiceIdentifier -> Bool in
+        invalidatedServiceIdentifier == chirpCharacteristic.service
+    }) {
+        endListen(to: chirpCharacteristic)
+    } else if invalidatedServices.isEmpty {
+        listen(to: chirpCharacteristic)
+    }
+}
+```
+
+**Notes from Apple:**
+
+> If you previously discovered any of the services that have changed, they are provided in the invalidatedServices parameter and can no longer be used. You can use the discoverServices: method to discover any new services that have been added to the peripheral’s database or to find out whether any of the invalidated services that you were using (and want to continue using) have been added back to a different location in the peripheral’s database.
 
 ## API Documentation
 

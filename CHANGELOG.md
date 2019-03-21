@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 ### Changed
 
+## [0.8.2] - 2019-02-25
+### Added
+- Added initial support for did modify services delegation
+
 ## [0.8.1] - 2019-01-14
 ### Fixed
 - Fixed and improved Carthage instruction

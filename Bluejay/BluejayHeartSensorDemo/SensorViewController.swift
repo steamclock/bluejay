@@ -27,6 +27,7 @@ class SensorViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         bluejay.register(connectionObserver: self)
+        bluejay.register(serviceObserver: self)
     }
 
     override func willMove(toParent parent: UIViewController?) {
@@ -226,5 +227,19 @@ extension SensorViewController: ConnectionObserver {
 
         let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: nil)
         UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
+    }
+}
+
+extension SensorViewController: ServiceObserver {
+    func didModifyServices(from peripheral: PeripheralIdentifier, invalidatedServices: [ServiceIdentifier]) {
+        bluejay.log("SensorViewController - Invalidated services: \(invalidatedServices.debugDescription)")
+
+        if invalidatedServices.contains(where: { invalidatedServiceIdentifier -> Bool in
+            invalidatedServiceIdentifier == chirpCharacteristic.service
+        }) {
+            endListen(to: chirpCharacteristic)
+        } else if invalidatedServices.isEmpty {
+            listen(to: chirpCharacteristic)
+        }
     }
 }

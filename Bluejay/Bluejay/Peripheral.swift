@@ -333,4 +333,14 @@ extension Peripheral: CBPeripheralDelegate {
         delegate.didReadRSSI(from: self, RSSI: RSSI, error: error)
     }
 
+    /// Called when the peripheral removed or added services.
+    public func peripheral(_ peripheral: CBPeripheral, didModifyServices invalidatedServices: [CBService]) {
+        delegate.didModifyServices(
+            from: self,
+            invalidatedServices: invalidatedServices.map {
+                ServiceIdentifier(uuid: $0.uuid)
+            }
+        )
+    }
+
 }
