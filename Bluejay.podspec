@@ -11,6 +11,6 @@ Pod::Spec.new do |spec|
   spec.framework = 'SystemConfiguration'
   spec.platform = :ios, '10.0'
   spec.requires_arc = true
-  spec.dependency 'XCGLogger', '~> 6.1.0'
+  spec.dependency 'XCGLogger', '~> 7.0.0'
   spec.swift_version = '4.2'
 end
