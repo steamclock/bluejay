@@ -30,18 +30,10 @@ public struct ServiceIdentifier {
     }
 }
 
-extension ServiceIdentifier: Equatable {
+extension ServiceIdentifier: Hashable {
 
     /// Check equality between two ServiceIdentifier.
     public static func == (lhs: ServiceIdentifier, rhs: ServiceIdentifier) -> Bool {
         return lhs.uuid == rhs.uuid
-    }
-}
-
-extension ServiceIdentifier: Hashable {
-
-    /// The hash value of the `CBUUID`.
-    public var hashValue: Int {
-        return uuid.hashValue
     }
 }

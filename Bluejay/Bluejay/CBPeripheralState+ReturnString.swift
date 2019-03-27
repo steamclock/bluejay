@@ -18,6 +18,8 @@ extension CBPeripheralState {
         case .connecting: return "Connecting"
         case .disconnected: return "Disconnected"
         case .disconnecting: return "Disconnecting"
+        @unknown default:
+            return "Unknown"
         }
     }
 

@@ -589,14 +589,14 @@
 					B8C70F741E1C22850006CF58 = {
 						CreatedOnToolsVersion = 8.2.1;
 						DevelopmentTeam = GH868RP95T;
-						LastSwiftMigration = 1010;
+						LastSwiftMigration = 1020;
 						ProvisioningStyle = Automatic;
 					};
 				};
 			};
 			buildConfigurationList = B8C70F6F1E1C22850006CF58 /* Build configuration list for PBXProject "Bluejay" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
@@ -669,7 +669,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-BluejayHeartSensorDemo/Pods-BluejayHeartSensorDemo-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-BluejayHeartSensorDemo/Pods-BluejayHeartSensorDemo-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/ObjcExceptionBridging/ObjcExceptionBridging.framework",
 				"${BUILT_PRODUCTS_DIR}/XCGLogger/XCGLogger.framework",
 			);
@@ -680,7 +680,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-BluejayHeartSensorDemo/Pods-BluejayHeartSensorDemo-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-BluejayHeartSensorDemo/Pods-BluejayHeartSensorDemo-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		A3B0253955770A9E58E075E5 /* [CP] Check Pods Manifest.lock */ = {
@@ -720,7 +720,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-DittojayHeartSensorDemo/Pods-DittojayHeartSensorDemo-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-DittojayHeartSensorDemo/Pods-DittojayHeartSensorDemo-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/ObjcExceptionBridging/ObjcExceptionBridging.framework",
 				"${BUILT_PRODUCTS_DIR}/XCGLogger/XCGLogger.framework",
 			);
@@ -731,7 +731,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-DittojayHeartSensorDemo/Pods-DittojayHeartSensorDemo-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-DittojayHeartSensorDemo/Pods-DittojayHeartSensorDemo-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		E74B2676FBABC2E126DD9A0D /* [CP] Check Pods Manifest.lock */ = {
@@ -1128,7 +1128,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -1151,7 +1151,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.steamclock.Bluejay;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};

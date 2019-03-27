@@ -1252,6 +1252,8 @@ extension Bluejay: CBCentralManagerDelegate {
             for observer in self.connectionObservers {
                 observer.weakReference?.bluetoothAvailable(false)
             }
+        @unknown default:
+            debugLog("New system level CBCentralManager state added.")
         }
     }
 
@@ -1290,6 +1292,8 @@ extension Bluejay: CBCentralManagerDelegate {
             precondition(connectingPeripheral == nil && connectedPeripheral == nil,
                          "Connecting and connected peripherals are not nil during willRestoreState for state: disconnected.")
             disconnectedPeripheralAtRestoration = peripheral
+        @unknown default:
+            debugLog("New system level CBCentralManager state added.")
         }
     }
 

@@ -50,18 +50,14 @@ public struct CharacteristicIdentifier {
     }
 }
 
-extension CharacteristicIdentifier: Equatable {
+extension CharacteristicIdentifier: Hashable {
     /// Check equality between two CharacteristicIdentifiers.
     public static func == (lhs: CharacteristicIdentifier, rhs: CharacteristicIdentifier) -> Bool {
         return (lhs.uuid == rhs.uuid) && (lhs.service.uuid == rhs.service.uuid)
     }
-}
-
-extension CharacteristicIdentifier: Hashable {
     /// The hash value of the `CBUUID`.
-    public var hashValue: Int {
-        let cHashValue = uuid.hashValue
-        let sHashValue = service.uuid.hashValue
-        return (cHashValue << 5) &+ cHashValue &+ sHashValue
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(uuid)
+        hasher.combine(service.uuid)
     }
 }

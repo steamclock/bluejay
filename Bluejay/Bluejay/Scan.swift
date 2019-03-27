@@ -156,7 +156,7 @@ class Scan: Queueable {
                 refreshTimer(identifier: newDiscovery.peripheralIdentifier.uuid)
             }
 
-            if let indexOfExistingDiscovery = discoveries.index(where: { existingDiscovery -> Bool in
+            if let indexOfExistingDiscovery = discoveries.firstIndex(where: { existingDiscovery -> Bool in
                 existingDiscovery.peripheralIdentifier == peripheralIdentifier
             }) {
                 let existingDiscovery = discoveries[indexOfExistingDiscovery]
@@ -242,7 +242,7 @@ class Scan: Queueable {
     }
 
     private func refreshTimer(identifier: UUID) {
-        if let indexOfExistingTimer = timers.index(where: { uuid, _ -> Bool in
+        if let indexOfExistingTimer = timers.firstIndex(where: { uuid, _ -> Bool in
             uuid == identifier
         }) {
             timers[indexOfExistingTimer].1?.invalidate()
@@ -267,7 +267,7 @@ class Scan: Queueable {
             return
         }
 
-        if let indexOfExpiredDiscovery = discoveries.index(where: { discovery -> Bool in
+        if let indexOfExpiredDiscovery = discoveries.firstIndex(where: { discovery -> Bool in
             discovery.peripheralIdentifier.uuid == identifier
         }) {
             let expiredDiscovery = discoveries[indexOfExpiredDiscovery]
