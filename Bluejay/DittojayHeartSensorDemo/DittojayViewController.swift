@@ -19,6 +19,9 @@ class DittojayViewController: UITableViewController {
     var wakeAppCharacteristic: CBMutableCharacteristic!
     var wakeAppService: CBMutableService!
 
+    var pairingCharacteristic: CBMutableCharacteristic!
+    var pairingService: CBMutableService!
+
     var addedServices: [CBService] = []
 
     var heartRate: UInt8 = 0
@@ -85,6 +88,31 @@ class DittojayViewController: UITableViewController {
 
         debugPrint("Will start advertising...")
         advertiseServices([heartRateService.uuid])
+    }
+
+    private func addPairingService() {
+        let pairingServiceUUID = CBUUID(string: "16274BFE-C539-416C-9646-CA3F991DADD6")
+        let pairingCharacteristicUUID = CBUUID(string: "E4D4A76C-B9F1-422F-8BBA-18508356A145")
+
+        if addedServices.contains(where: { addedService -> Bool in
+            addedService.uuid == pairingServiceUUID
+        }) {
+            return
+        }
+
+        pairingCharacteristic = CBMutableCharacteristic(
+            type: pairingCharacteristicUUID,
+            properties: .read,
+            value: "Steamclock Software".data(using: .utf8),
+            permissions: .readEncryptionRequired
+        )
+
+        pairingService = CBMutableService(type: pairingServiceUUID, primary: true)
+        pairingService.characteristics = [pairingCharacteristic]
+
+        debugPrint("Will add pairing service...")
+
+        manager.add(pairingService)
     }
 
     private func advertiseServices(_ services: [CBUUID]) {
@@ -188,6 +216,7 @@ extension DittojayViewController: CBPeripheralManagerDelegate {
         if peripheral.state == .poweredOn {
             addHeartRateService()
             addWakeAppService()
+            addPairingService()
         }
     }
 
@@ -233,5 +262,12 @@ extension DittojayViewController: CBPeripheralManagerDelegate {
 
     func peripheralManager(_ peripheral: CBPeripheralManager, central: CBCentral, didUnsubscribeFrom characteristic: CBCharacteristic) {
         debugPrint("Did unsubscribe from: \(characteristic.uuid.uuidString)")
+    }
+
+    func peripheralManager(_ peripheral: CBPeripheralManager, didReceiveRead request: CBATTRequest) {
+        debugPrint("Did receive read request for: \(request.characteristic.uuid.uuidString)")
+        if request.characteristic.uuid == pairingCharacteristic.uuid {
+            peripheral.respond(to: request, withResult: .success)
+        }
     }
 }

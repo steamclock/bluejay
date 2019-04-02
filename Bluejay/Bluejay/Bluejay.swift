@@ -1402,7 +1402,9 @@ extension Bluejay: CBCentralManagerDelegate {
                     debugLog("Disconnect clean up: delivering expected disconnected event back to the pending connection in the queue...")
 
                     if let connection = weakSelf.queue.first as? Connection {
-                        if case let .stopping(error) = connection.state {
+                        if case .running = connection.state {
+                            connectingError = BluejayError.unexpectedDisconnect
+                        } else if case let .stopping(error) = connection.state {
                             connectingError = error
                         }
                     }
