@@ -18,6 +18,10 @@ let chirpCharacteristic = CharacteristicIdentifier(
     uuid: "83B4A431-A6F1-4540-B3EE-3C14AEF71A04",
     service: ServiceIdentifier(uuid: "CED261B7-F120-41C8-9A92-A41DE69CF2A8")
 )
+let pairingCharacteristic = CharacteristicIdentifier(
+    uuid: "E4D4A76C-B9F1-422F-8BBA-18508356A145",
+    service: ServiceIdentifier(uuid: "16274BFE-C539-416C-9646-CA3F991DADD6")
+)
 
 class SensorViewController: UITableViewController {
 
@@ -55,7 +59,7 @@ class SensorViewController: UITableViewController {
         if section == 0 {
             return 3
         } else {
-            return 7
+            return 8
         }
     }
 
@@ -104,6 +108,8 @@ class SensorViewController: UITableViewController {
                 cell.textLabel?.text = "Stop listening to Dittojay"
             } else if indexPath.row == 6 {
                 cell.textLabel?.text = "Terminate app"
+            } else if indexPath.row == 7 {
+                cell.textLabel?.text = "Pair"
             }
 
             return cell
@@ -138,6 +144,15 @@ class SensorViewController: UITableViewController {
                 endListen(to: chirpCharacteristic)
             } else if indexPath.row == 6 {
                 kill(getpid(), SIGKILL)
+            } else if indexPath.row == 7 {
+                bluejay.read(from: pairingCharacteristic) { (result: ReadResult<Data>) in
+                    switch result {
+                    case .success(let data):
+                        bluejay.log("Pairing success: \(String(data: data, encoding: .utf8) ?? "")")
+                    case .failure(let error):
+                        bluejay.log("Pairing failed with error: \(error.localizedDescription)")
+                    }
+                }
             }
 
             tableView.deselectRow(at: indexPath, animated: true)
