@@ -55,12 +55,13 @@ class Queue {
             preconditionFailure("Cannot enqueue: Bluejay instance is nil.")
         }
 
+        queueable.queue = self
+
         if isDisconnectionQueued {
             queueable.fail(BluejayError.disconnectQueued)
             return
         }
 
-        queueable.queue = self
         queue.append(queueable)
 
         /*
