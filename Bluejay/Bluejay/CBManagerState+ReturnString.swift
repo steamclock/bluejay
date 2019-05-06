@@ -21,6 +21,8 @@ extension CBManagerState {
         case .unauthorized: return "Unauthorized"
         case .unknown: return "Unknown"
         case .unsupported: return "Unsupported"
+        @unknown default:
+            return "Unknown"
         }
     }
 
