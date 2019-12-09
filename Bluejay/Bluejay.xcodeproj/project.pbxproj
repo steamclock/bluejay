@@ -10,6 +10,7 @@
 		2F74765D212E95F800D74B87 /* WarningOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F74765C212E95F800D74B87 /* WarningOptions.swift */; };
 		3B53B16E1014E47D8AF3BBDC /* Pods_BluejayHeartSensorDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B82FE820DEBA78205D73DB03 /* Pods_BluejayHeartSensorDemo.framework */; };
 		7677FF3A64A35BBC9125A87E /* Pods_Bluejay.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1460DB02323E612C0106BFE7 /* Pods_Bluejay.framework */; };
+		B3266F90239EBF7600133BA2 /* demoSchema.json in Resources */ = {isa = PBXBuildFile; fileRef = B3266F8F239EBF7600133BA2 /* demoSchema.json */; };
 		B8022D981E1EEED900EA360B /* WriteResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8022D971E1EEED900EA360B /* WriteResult.swift */; };
 		B8022D9A1E1F041D00EA360B /* SynchronizedPeripheral.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8022D991E1F041D00EA360B /* SynchronizedPeripheral.swift */; };
 		B8022D9C1E1F052F00EA360B /* ListenAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8022D9B1E1F052F00EA360B /* ListenAction.swift */; };
@@ -134,6 +135,7 @@
 		6D8D558D0951A33AECAED2CE /* Pods-BluejayHeartSensorDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BluejayHeartSensorDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BluejayHeartSensorDemo/Pods-BluejayHeartSensorDemo.debug.xcconfig"; sourceTree = "<group>"; };
 		916C6338CC4E6D8DBA1A561C /* Pods-Bluejay.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Bluejay.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Bluejay/Pods-Bluejay.debug.xcconfig"; sourceTree = "<group>"; };
 		991CB1FE3605BDCF2951EEF8 /* Pods-DittojayHeartSensorDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DittojayHeartSensorDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DittojayHeartSensorDemo/Pods-DittojayHeartSensorDemo.debug.xcconfig"; sourceTree = "<group>"; };
+		B3266F8F239EBF7600133BA2 /* demoSchema.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = demoSchema.json; sourceTree = "<group>"; };
 		B4F875274536E6A2FACE6253 /* Pods_DittojayHeartSensorDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DittojayHeartSensorDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B8022D971E1EEED900EA360B /* WriteResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WriteResult.swift; sourceTree = "<group>"; };
 		B8022D991E1F041D00EA360B /* SynchronizedPeripheral.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SynchronizedPeripheral.swift; sourceTree = "<group>"; };
@@ -316,6 +318,7 @@
 				B87FDD6721E567160010D6CF /* Assets.xcassets */,
 				B87FDD6921E567160010D6CF /* LaunchScreen.storyboard */,
 				B87FDD6C21E567160010D6CF /* Info.plist */,
+				B3266F8F239EBF7600133BA2 /* demoSchema.json */,
 			);
 			path = DittojayHeartSensorDemo;
 			sourceTree = "<group>";
@@ -632,6 +635,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B87FDD6B21E567160010D6CF /* LaunchScreen.storyboard in Resources */,
+				B3266F90239EBF7600133BA2 /* demoSchema.json in Resources */,
 				B87FDD6821E567160010D6CF /* Assets.xcassets in Resources */,
 				B87FDD6621E567150010D6CF /* Main.storyboard in Resources */,
 			);

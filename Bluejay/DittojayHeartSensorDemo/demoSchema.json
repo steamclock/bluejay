@@ -1,0 +1,16 @@
+[
+    {
+        "name": "",
+        "primary": true,
+        "uuid": "",
+        "characteristics": [
+            {
+                "name": "",
+                "uuid": "",
+                "permissions": ["readable", "writeable", "readEncryptionRequired", "writeEncryptionRequired"],
+                "properties": ["broadcast", "read", "writeWithoutResponse", "write", "notify", "indicate", "authenticatedSignedWrites", "extendedProperties", "notiftyEncryptionRequired", "indicateEncryptionRequired"],
+                "value": ""
+            }
+        ]
+    }
+]
