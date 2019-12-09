@@ -1,15 +1,20 @@
 [
     {
-        "name": "",
-        "primary": true,
         "uuid": "",
+        "name": "",
+        "description": "",
+        "primary": true,
         "characteristics": [
             {
-                "name": "",
                 "uuid": "",
+                "name": "",
+                "description": "",
                 "permissions": ["readable", "writeable", "readEncryptionRequired", "writeEncryptionRequired"],
                 "properties": ["broadcast", "read", "writeWithoutResponse", "write", "notify", "indicate", "authenticatedSignedWrites", "extendedProperties", "notiftyEncryptionRequired", "indicateEncryptionRequired"],
-                "value": ""
+                "value": {
+                    "key": "",
+                    "anotherKey": ""
+                }
             }
         ]
     }
