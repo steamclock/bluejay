@@ -60,8 +60,8 @@ Bluejay's primary goals are:
 
 ## Requirements
 
-- iOS 10 or above
-- Xcode 10.2.1 or above
+- iOS 11 or above
+- Xcode 11.3.1 or above
 - Swift 5 or above
 
 ## Installation
