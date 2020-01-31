@@ -43,7 +43,7 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>NSBluetoothPeripheralUsageDescription</key>
+	<key>NSBluetoothAlwaysUsageDescription</key>
 	<string>Allow Dittojay to stay connected when it is backgrounded.</string>
 </dict>
 </plist>
