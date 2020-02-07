@@ -208,7 +208,7 @@ class SensorViewController: UITableViewController {
 }
 
 extension SensorViewController: ConnectionObserver {
-    func bluetoothAvailable(_ available: Bool) {
+    func bluetoothAvailable(_ available: Bool, state: CBManagerState) {
         bluejay.log("SensorViewController - Bluetooth available: \(available)")
 
         tableView.reloadData()

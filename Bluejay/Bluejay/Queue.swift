@@ -289,7 +289,7 @@ class Queue {
 
 extension Queue: ConnectionObserver {
 
-    func bluetoothAvailable(_ available: Bool) {
+    func bluetoothAvailable(_ available: Bool, state: CBManagerState) {
         if available {
             update()
         } else {

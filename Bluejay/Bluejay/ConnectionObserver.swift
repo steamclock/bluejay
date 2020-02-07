@@ -6,13 +6,14 @@
 //  Copyright © 2017 Steamclock Software. All rights reserved.
 //
 
+import CoreBluetooth
 import Foundation
 
 /**
     A protocol allowing conforming objects registered to Bluejay to optionally respond to Bluetooth connection events.
  
     - Attention
-    On initial subscription to Bluetooth events, `bluetoothAvailable(_ available: Bool)` will always be called immediately with whatever the current state is, and `connected(to peripheral: PeripheralIdentifier)` will also be called immediately if a device is already connected.
+    On initial subscription to Bluetooth events, `bluetoothAvailable(_ available: Bool, state: CBManagerState)` will always be called immediately with whatever the current state is, and `connected(to peripheral: PeripheralIdentifier)` will also be called immediately if a device is already connected.
 
     - Note
     Available callbacks:
@@ -23,7 +24,7 @@ import Foundation
 public protocol ConnectionObserver: class {
 
     /// Called whenever Bluetooth availability changes, as well as when an object first subscribes to become a ConnectionObserver.
-    func bluetoothAvailable(_ available: Bool)
+    func bluetoothAvailable(_ available: Bool, state: CBManagerState)
 
     /// Called whenever a peripheral is connected, as well as when an object first subscribes to become a ConnectionObserver and the peripheral is already connected.
     func connected(to peripheral: PeripheralIdentifier)
@@ -34,7 +35,7 @@ public protocol ConnectionObserver: class {
 
 /// Slightly less gross way to make the ConnectionObserver protocol's functions optional.
 extension ConnectionObserver {
-    public func bluetoothAvailable(_ available: Bool) {}
+    public func bluetoothAvailable(_ available: Bool, state: CBManagerState) {}
     public func connected(to peripheral: PeripheralIdentifier) {}
     public func disconnected(from peripheral: PeripheralIdentifier) {}
 }

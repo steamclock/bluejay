@@ -447,7 +447,7 @@ public class SynchronizedPeripheral {
 
 extension SynchronizedPeripheral: ConnectionObserver {
 
-    public func bluetoothAvailable(_ available: Bool) {
+    public func bluetoothAvailable(_ available: Bool, state: CBManagerState) {
         bluetoothAvailable = available
 
         if !available {

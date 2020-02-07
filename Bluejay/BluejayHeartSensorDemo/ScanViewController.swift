@@ -123,7 +123,7 @@ class ScanViewController: UITableViewController {
 }
 
 extension ScanViewController: ConnectionObserver {
-    func bluetoothAvailable(_ available: Bool) {
+    func bluetoothAvailable(_ available: Bool, state: CBManagerState) {
         bluejay.log("ScanViewController - Bluetooth available: \(available)")
 
         if available {

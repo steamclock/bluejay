@@ -463,7 +463,7 @@ public class Bluejay: NSObject { //swiftlint:disable:this type_body_length
         connectionObservers.append(WeakConnectionObserver(weakReference: connectionObserver))
 
         if cbCentralManager != nil {
-            connectionObserver.bluetoothAvailable(cbCentralManager.state == .poweredOn)
+            connectionObserver.bluetoothAvailable(cbCentralManager.state == .poweredOn, state: cbCentralManager.state)
         }
 
         if let connectedPeripheral = connectedPeripheral, !isDisconnecting {
@@ -1239,7 +1239,7 @@ extension Bluejay: CBCentralManagerDelegate {
             }
 
             for observer in self.connectionObservers {
-                observer.weakReference?.bluetoothAvailable(true)
+                observer.weakReference?.bluetoothAvailable(true, state: central.state)
             }
         case .poweredOff, .resetting, .unauthorized, .unknown, .unsupported:
             cancelEverything(error: BluejayError.bluetoothUnavailable)
@@ -1250,7 +1250,7 @@ extension Bluejay: CBCentralManagerDelegate {
             isDisconnecting = false
 
             for observer in self.connectionObservers {
-                observer.weakReference?.bluetoothAvailable(false)
+                observer.weakReference?.bluetoothAvailable(false, state: central.state)
             }
         @unknown default:
             debugLog("New system level CBCentralManager state added.")
