@@ -62,22 +62,12 @@ class Connection: Queueable {
         cancelTimer()
 
         if let timeOut = timeout, case let .seconds(timeoutInterval) = timeOut {
-            if #available(iOS 10.0, *) {
-                connectionTimer = Timer.scheduledTimer(withTimeInterval: timeoutInterval, repeats: false) { [weak self] _ in
-                    guard let weakSelf = self else {
-                        return
-                    }
-                    weakSelf.timedOut()
+            connectionTimer = Timer.scheduledTimer(withTimeInterval: timeoutInterval, repeats: false) { [weak self] _ in
+                guard let weakSelf = self else {
+                    return
                 }
-            } else {
-                // Fallback on earlier versions
-                connectionTimer = Timer.scheduledTimer(
-                    timeInterval: timeoutInterval,
-                    target: self,
-                    selector: #selector(timedOut),
-                    userInfo: nil,
-                    repeats: false
-                )
+
+                weakSelf.timedOut()
             }
         }
 

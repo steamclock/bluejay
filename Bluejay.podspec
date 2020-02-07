@@ -9,7 +9,7 @@ Pod::Spec.new do |spec|
   spec.source = { git: 'https://github.com/neurovalens/bluejay.git', tag: 'v0.8.6' }
   spec.source_files = 'Bluejay/Bluejay/*.{h,swift}'
   spec.framework = 'SystemConfiguration'
-  spec.platform = :ios, '9.0'
+  spec.platform = :ios, '10.0'
   spec.requires_arc = true
   spec.dependency 'XCGLogger', '~> 7.0.0'
   spec.swift_version = '5.0'

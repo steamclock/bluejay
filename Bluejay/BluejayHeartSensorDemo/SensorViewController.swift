@@ -63,7 +63,7 @@ class SensorViewController: UITableViewController {
         }
     }
 
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {  //swiftlint:disable:this cyclomatic_complexity
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "detailCell", for: indexPath)
 
@@ -116,7 +116,7 @@ class SensorViewController: UITableViewController {
         }
     }
 
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) { //swiftlint:disable:this cyclomatic_complexity
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let selectedSensor = sensor else {
             bluejay.log("No sensor found")
             return
