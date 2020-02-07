@@ -60,9 +60,9 @@ Bluejay's primary goals are:
 
 ## Requirements
 
-- iOS 10 or above
-- Xcode 10.2.1 or above
-- Swift 5 or above
+- iOS 11 or later recommended
+- Xcode 11.3.1 or later recommended
+- Swift 5 or later recommended
 
 ## Installation
 
@@ -704,7 +704,7 @@ Note that because the `backgroundTask` block is running on a background thread, 
 [CoreBluetooth allows apps to continue processing active Bluetooth operations when it is backgrounded or even when it is evicted from memory](https://developer.apple.com/library/archive/documentation/NetworkingInternetWeb/Conceptual/CoreBluetooth_concepts/CoreBluetoothBackgroundProcessingForIOSApps/PerformingTasksWhileYourAppIsInTheBackground.html). In Bluejay, we refer to this feature and behaviour as "background restoration". For examples, a pending connect request that finishes, or a subscribed characteristic that fires a notification, can cause the system to wake or restart the app in the background. This can, for example, allow syncing data from a device without requiring the user to launch the app.
 
 In order to support background Bluetooth, there are two steps to take:
-1. Give you app permission to use Bluetooth in the background
+1. Give your app permission to use Bluetooth in the background
 2. Implement and handle state restoration
 
 ### Background Permission

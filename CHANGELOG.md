@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 ### Changed
 
+## [0.8.6] - 2020-02-03
+### Changed
+- Bumped iOS target to 11 and recommended Xcode to 11.3.1
+
+## [0.8.5] - 2019-05-06
+### Changed
+- Updated source and dependencies to support Swift 5
+
+## [0.8.4] - 2019-04-05
+### Fixed
+- Fixed a crash when making a Bluejay call right after an explicit disconnect
+
+## [0.8.3] - 2019-04-03
+### Fixed
+- Fixed disconnection clean up not working and crashing when it's caused by an unpairing attempt
+
 ## [0.8.2] - 2019-02-25
 ### Added
 - Added initial support for did modify services delegation
