@@ -6,8 +6,9 @@
 //  Copyright © 2017 Steamclock Software. All rights reserved.
 //
 
-import CoreBluetooth
 import Foundation
+import UIKit
+import CoreBluetooth
 import XCGLogger
 
 /**
