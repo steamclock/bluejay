@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 /**
  * Protocol for handling a listen event that does not have a callback due to background restoration.

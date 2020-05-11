@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 /// Contains all required configurations for background restoration.
 public struct BackgroundRestoreConfig {

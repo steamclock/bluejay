@@ -8,6 +8,7 @@
 
 import CoreBluetooth
 import Foundation
+import UIKit
 
 /// A scan operation.
 class Scan: Queueable {

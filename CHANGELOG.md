@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 ### Changed
 
+## [0.8.7] - 2020-05-11
+### Added
+- Added support for Swift Package Manager
+
 ## [0.8.6] - 2020-02-03
 ### Changed
 - Bumped iOS target to 11 and recommended Xcode to 11.3.1
