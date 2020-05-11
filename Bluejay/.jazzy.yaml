@@ -2,7 +2,7 @@ output: ../docs
 author: Steamclock Software
 author_url: http://steamclock.com
 module: Bluejay
-module_version: 0.8.5
+module_version: 0.8.7
 readme: ../README.md
 sdk: iphone
 copyright: Copyright © 2017 Steamclock Software. All rights reserved.
