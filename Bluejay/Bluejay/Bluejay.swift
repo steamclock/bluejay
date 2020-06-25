@@ -1305,6 +1305,10 @@ extension Bluejay: CBCentralManagerDelegate {
 
         connectingCallback = nil
 
+        let wasConnected = isConnected
+
+        debugLog("Central manager connected to perihperal already: \(wasConnected)")
+
         connectedPeripheral = connectingPeripheral ?? connectedPeripheral
         connectingPeripheral = nil
 
@@ -1315,6 +1319,10 @@ extension Bluejay: CBCentralManagerDelegate {
 
         if queue.first is Connection {
             queue.process(event: .didConnectPeripheral(connectedPeripheral!), error: nil)
+        }
+
+        guard !wasConnected else {
+            return
         }
 
         for observer in connectionObservers {
