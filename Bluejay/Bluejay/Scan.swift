@@ -321,4 +321,8 @@ class Scan: Queueable {
             stopScan(with: discoveries, error: nil)
         }
     }
+
+    func debugLog(_ string: String) {
+        queue?.debugLog(string)
+    }
 }

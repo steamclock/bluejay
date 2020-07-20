@@ -285,6 +285,9 @@ class Queue {
         return queue.first
     }
 
+    func debugLog(_ string: String) {
+        bluejay?.debugLog(string)
+    }
 }
 
 extension Queue: ConnectionObserver {

@@ -9,7 +9,6 @@
 import Foundation
 import UIKit
 import CoreBluetooth
-import XCGLogger
 
 /**
  Bluejay is a simple wrapper around CoreBluetooth that focuses on making a common usage case as straight forward as possible: a single connected peripheral that the user is interacting with regularly (think most personal electronics devices that have an associated iOS app: fitness trackers, guitar amps, etc).
@@ -167,102 +166,31 @@ public class Bluejay: NSObject { //swiftlint:disable:this type_body_length
     // MARK: - Logging
 
     /**
-     * Allow apps that use Bluejay to log alongside of Bluejay's internal logs.
+     *  Log a message to the logObservers, or debug consiole if there is none
      *
      * - Parameter string: the message you want to log.
      */
-    public func log(_ string: String) {
-        let tags = XCGLogger.Constants.userInfoKeyTags
-        let bundleName = Bundle.main.infoDictionary?[kCFBundleNameKey as String] ?? ""
-        logger.debug("[\(bundleName)] > \(string)", userInfo: [tags: bundleName])
-    }
-
-    /**
-     * Get the current content of the log file.
-     *
-     * - Returns: The current content of the log file as a String.
-     */
-    public func getLogs() -> String? {
-        guard let documentUrl = documentUrl else {
-            return nil
+    internal func debugLog(_ string: String) {
+        if logObservers.isEmpty {
+            NSLog(string)
         }
 
-        do {
-            return try String(contentsOf: documentUrl.appendingPathComponent(logFileName))
-        } catch {
-            return nil
-        }
-    }
+        var missing = false
 
-    /**
-     * Clears the log file.
-     */
-    public func clearLogs() {
-        guard let documentUrl = documentUrl else {
-            return
-        }
-
-        do {
-            try "".write(
-                toFile: documentUrl.appendingPathComponent(logFileName).path,
-                atomically: false,
-                encoding: .utf8
-            )
-
-            logFileChanged()
-        } catch {
-            return
-        }
-    }
-
-    /// Begin monitoring changes in the log file and start notifying log file observers.
-    private func monitorLogFile() {
-        guard let documentUrl = documentUrl else {
-            return
-        }
-
-        let logFilePath = documentUrl.appendingPathComponent(logFileName).path
-
-        logFileDescriptor = open(
-            FileManager.default.fileSystemRepresentation(withPath: logFilePath),
-            O_EVTONLY
-        )
-
-        let logFileMonitorQueue = DispatchQueue.global()
-
-        logFileMonitorSource = DispatchSource.makeFileSystemObjectSource(fileDescriptor: logFileDescriptor, eventMask: .write, queue: logFileMonitorQueue)
-
-        guard let logFileMonitorSource = logFileMonitorSource else {
-            return
-        }
-
-        logFileMonitorSource.setEventHandler {
-            DispatchQueue.main.async { [weak self] in
-                guard let weakSelf = self else {
-                    return
-                }
-
-                weakSelf.logFileChanged()
+        for weakObserver in logObservers {
+            if let observer = weakObserver.weakReference {
+                observer.debug(string)
+            } else {
+                missing = true
             }
         }
 
-        logFileMonitorSource.setCancelHandler { [weak self] in
-            guard let weakSelf = self else {
-                return
+        if missing {
+            logObservers = logObservers.filter { $0.weakReference != nil }
+
+            if logObservers.isEmpty {
+                NSLog(string)
             }
-
-            close(weakSelf.logFileDescriptor)
-            weakSelf.logFileDescriptor = 0
-            weakSelf.logFileMonitorSource = nil
-        }
-
-        logFileMonitorSource.resume()
-    }
-
-    /// Notify log file observers.
-    private func logFileChanged() {
-        for observer in logObservers {
-            observer.weakReference?.logFileUpdated(logs: getLogs() ?? "")
         }
     }
 
@@ -273,43 +201,7 @@ public class Bluejay: NSObject { //swiftlint:disable:this type_body_length
      */
     public override init() {
         super.init()
-
-        defer {
-            debugLog("Bluejay initialized with UUID: \(uuid.uuidString).")
-        }
-
-        logger.setup(
-            level: .debug,
-            showLogIdentifier: true,
-            showFunctionName: false,
-            showThreadName: true,
-            showLevel: false,
-            showFileNames: false,
-            showLineNumbers: false,
-            showDate: true)
-
-        guard let documentUrl = documentUrl else {
-            debugLog("App document URL not found, cannot create log file destination")
-            return
-        }
-
-        let fileDestination = AutoRotatingFileDestination(
-            writeToFile: documentUrl.appendingPathComponent(logFileName),
-            identifier: "Bluejay.File",
-            shouldAppend: true)
-
-        fileDestination.outputLevel = .debug
-        fileDestination.targetMaxTimeInterval = 0
-        fileDestination.showLogIdentifier = true
-        fileDestination.showFunctionName = false
-        fileDestination.showThreadName = true
-        fileDestination.showLevel = false
-        fileDestination.showFileName = false
-        fileDestination.showLineNumber = false
-        fileDestination.showDate = true
-        fileDestination.logQueue = XCGLogger.logQueue
-
-        logger.add(destination: fileDestination)
+        debugLog("Bluejay initialized with UUID: \(uuid.uuidString).")
     }
 
     deinit {
@@ -364,7 +256,7 @@ public class Bluejay: NSObject { //swiftlint:disable:this type_body_length
             cbCentralManager = manager
 
             if let peripheral = peripheral {
-                connectedPeripheral = Peripheral(delegate: self, cbPeripheral: peripheral)
+                connectedPeripheral = Peripheral(delegate: self, cbPeripheral: peripheral, bluejay: self)
                 peripheral.delegate = connectedPeripheral
             }
         }
@@ -520,24 +412,18 @@ public class Bluejay: NSObject { //swiftlint:disable:this type_body_length
     }
 
     /**
-     Register for notifications when the log file is updated. Unregistering is not required, Bluejay will unregister for you if the observer is no longer in memory.
+     Register for notifications when debug logs occur inside the library. Unregistering is not required, Bluejay will unregister for you if the observer is no longer in memory. If no log
+        observers are registeres, debug logs will be printed with NSLog()
 
      - Parameter logObserver: object interested in receiving log file updates.
      */
     public func register(logObserver: LogObserver) {
-        if logObservers.isEmpty && logFileMonitorSource == nil {
-            // Only start monitoring the log file on first log observer registration.
-            monitorLogFile()
-        }
-
         logObservers = logObservers.filter { $0.weakReference != nil && $0.weakReference !== logObserver }
         logObservers.append(WeakLogObserver(weakReference: logObserver))
-
-        logObserver.logFileUpdated(logs: getLogs() ?? "")
     }
 
     /**
-     Unregister for notifications when the log file is updated. Unregistering is not required, Bluejay will unregister for you if the observer is no longer in memory.
+     Unregister for notifications when ebug logs occur inside the library Unregistering is not required, Bluejay will unregister for you if the observer is no longer in memory.
 
      - Parameter logObserver: object no longer interested in notifications when the log file is updated.
      */
@@ -1092,7 +978,7 @@ extension Bluejay: CBCentralManagerDelegate {
         connect(peripheral.identifier, timeout: .seconds(15)) { result in
             switch result {
             case .success(let peripheral):
-                debugLog("Did restore connection to peripheral: \(peripheral.description)")
+                self.debugLog("Did restore connection to peripheral: \(peripheral.description)")
 
                 let backgroundRestoreCompletion = backgroundRestorer.didRestoreConnection(to: peripheral)
 
@@ -1103,7 +989,7 @@ extension Bluejay: CBCentralManagerDelegate {
                     break
                 }
             case .failure(let error):
-                debugLog("Did fail to to restore connection with error: \(error.localizedDescription)")
+                self.debugLog("Did fail to to restore connection with error: \(error.localizedDescription)")
 
                 let backgroundRestoreCompletion = backgroundRestorer.didFailToRestoreConnection(
                     to: peripheral.identifier,
@@ -1270,7 +1156,7 @@ extension Bluejay: CBCentralManagerDelegate {
             return
         }
 
-        let peripheral = Peripheral(delegate: self, cbPeripheral: cbPeripheral)
+        let peripheral = Peripheral(delegate: self, cbPeripheral: cbPeripheral, bluejay: self)
         precondition(peripherals.count == 1, "Invalid number of peripheral to restore.")
         debugLog("Peripheral state to restore: \(cbPeripheral.state.string())")
 
@@ -1393,7 +1279,7 @@ extension Bluejay: CBCentralManagerDelegate {
                 return
             }
 
-            debugLog("Starting disconnect clean up...")
+            weakSelf.debugLog("Starting disconnect clean up...")
 
             var connectingError: Error?
 
@@ -1404,7 +1290,7 @@ extension Bluejay: CBCentralManagerDelegate {
                 )
 
                 if wasConnecting {
-                    debugLog("Disconnect clean up: delivering expected disconnected event back to the pending connection in the queue...")
+                    weakSelf.debugLog("Disconnect clean up: delivering expected disconnected event back to the pending connection in the queue...")
 
                     if let connection = weakSelf.queue.first as? Connection {
                         if case .running = connection.state {
@@ -1415,7 +1301,7 @@ extension Bluejay: CBCentralManagerDelegate {
                     }
 
                 } else if weakSelf.queue.isRunningQueuedDisconnection {
-                    debugLog("Disconnect clean up: delivering expected disconnected event back to the queued disconnection in the queue...")
+                    weakSelf.debugLog("Disconnect clean up: delivering expected disconnected event back to the queued disconnection in the queue...")
                 }
 
                 // Allow the Connection or Disconnection operation to finish its cancellation, trigger its callback, and continue cancelling any remaining operations in the queue.
@@ -1425,7 +1311,7 @@ extension Bluejay: CBCentralManagerDelegate {
             }
 
             if wasRestoringConnectingPeripheral {
-                debugLog("Disconnect clean up: disconnected while restoring a connecting peripheral, will not auto-reconnect.")
+                weakSelf.debugLog("Disconnect clean up: disconnected while restoring a connecting peripheral, will not auto-reconnect.")
 
                 guard let connectingError = connectingError else {
                     preconditionFailure(
@@ -1436,27 +1322,27 @@ extension Bluejay: CBCentralManagerDelegate {
                 weakSelf.connectingCallback?(.failure(connectingError))
                 weakSelf.connectingCallback = nil
             } else {
-                debugLog("Disconnect clean up: notifying all connection observers.")
+                weakSelf.debugLog("Disconnect clean up: notifying all connection observers.")
 
                 for observer in weakSelf.connectionObservers {
                     observer.weakReference?.disconnected(from: disconnectedPeripheral.identifier)
                 }
 
-                debugLog("Disconnect clean up: should auto-reconnect: \(weakSelf.shouldAutoReconnect)")
+                weakSelf.debugLog("Disconnect clean up: should auto-reconnect: \(weakSelf.shouldAutoReconnect)")
 
                 if let disconnectHandler = weakSelf.disconnectHandler {
-                    debugLog("Disconnect clean up: calling the disconnect handler.")
+                    weakSelf.debugLog("Disconnect clean up: calling the disconnect handler.")
                     switch disconnectHandler.didDisconnect(from: disconnectedPeripheral.identifier, with: error, willReconnect: weakSelf.shouldAutoReconnect) {
                     case .noChange:
-                        debugLog("Disconnect handler will not change auto-reconnect.")
+                        weakSelf.debugLog("Disconnect handler will not change auto-reconnect.")
                     case .change(let autoReconnect):
                         weakSelf.shouldAutoReconnect = autoReconnect
-                        debugLog("Disconnect handler changing auto-reconnect to: \(weakSelf.shouldAutoReconnect)")
+                        weakSelf.debugLog("Disconnect handler changing auto-reconnect to: \(weakSelf.shouldAutoReconnect)")
                     }
                 }
 
                 if isExpectedDisconnect {
-                    debugLog("Disconnect clean up: calling the explicit disconnect callback if it is provided.")
+                    weakSelf.debugLog("Disconnect clean up: calling the explicit disconnect callback if it is provided.")
                     weakSelf.disconnectCallback?(.disconnected(disconnectedPeripheral.identifier))
                     weakSelf.disconnectCallback = nil
                 }
@@ -1466,7 +1352,7 @@ extension Bluejay: CBCentralManagerDelegate {
                         preconditionFailure("Missing connecting error at the end of a disconnect clean up after cancelling a pending connection.")
                     }
 
-                    debugLog("Disconnect clean up: calling the connecting callback if it is provided.")
+                    weakSelf.debugLog("Disconnect clean up: calling the connecting callback if it is provided.")
                     weakSelf.connectingCallback?(.failure(connectingError))
                     weakSelf.connectingCallback = nil
                 }
@@ -1474,14 +1360,14 @@ extension Bluejay: CBCentralManagerDelegate {
                 weakSelf.isDisconnecting = false
 
                 if weakSelf.shouldAutoReconnect {
-                    debugLog("Disconnect clean up: issuing reconnect to: \(peripheral.name ?? peripheral.identifier.uuidString)")
+                    weakSelf.debugLog("Disconnect clean up: issuing reconnect to: \(peripheral.name ?? peripheral.identifier.uuidString)")
                     weakSelf.connect(
                         PeripheralIdentifier(uuid: peripheral.identifier, name: peripheral.name),
                         timeout: weakSelf.previousConnectionTimeout ?? .none) { _ in }
                 }
             }
 
-            debugLog("End of disconnect clean up.")
+            weakSelf.debugLog("End of disconnect clean up.")
         }
 
         if isRunningBackgroundTask {
@@ -1516,7 +1402,7 @@ extension Bluejay: QueueObserver {
 
     /// Support for the will connect state that CBCentralManagerDelegate does not have.
     func willConnect(to peripheral: CBPeripheral) {
-        connectingPeripheral = Peripheral(delegate: self, cbPeripheral: peripheral)
+        connectingPeripheral = Peripheral(delegate: self, cbPeripheral: peripheral, bluejay: self)
     }
 
 }
@@ -1573,13 +1459,6 @@ extension Bluejay: PeripheralDelegate {
             )
         }
     }
-}
-
-let logger = XCGLogger(identifier: "Bluejay", includeDefaultDestinations: true)
-
-/// Convenience function to log information specific to Bluejay within the framework.
-func debugLog(_ string: String) {
-    logger.debug(string)
 }
 
 // Helper function inserted by Swift 4.2 migrator.

@@ -21,9 +21,11 @@ class Peripheral: NSObject {
 
     private var listeners: [CharacteristicIdentifier: (ListenCallback?, MultipleListenOption)] = [:]
 
+    private weak var bluejay: Bluejay?
+
     // MARK: - Initialization
 
-    init(delegate: PeripheralDelegate, cbPeripheral: CBPeripheral) {
+    init(delegate: PeripheralDelegate, cbPeripheral: CBPeripheral, bluejay: Bluejay) {
         self.delegate = delegate
         self.cbPeripheral = cbPeripheral
 
@@ -38,6 +40,8 @@ class Peripheral: NSObject {
         }
 
         self.cbPeripheral.delegate = self
+
+        self.bluejay = bluejay
 
         debugLog("Init Peripheral: \(self), \(self.cbPeripheral.debugDescription)")
     }
@@ -262,6 +266,10 @@ class Peripheral: NSObject {
     /// Ask for the peripheral's maximum payload length in bytes for a single write request.
     public func maximumWriteValueLength(`for` writeType: CBCharacteristicWriteType) -> Int {
         return cbPeripheral.maximumWriteValueLength(for: writeType)
+    }
+
+    func debugLog(_ string: String) {
+        bluejay?.debugLog(string)
     }
 }
 
