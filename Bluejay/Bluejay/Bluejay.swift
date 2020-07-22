@@ -199,8 +199,13 @@ public class Bluejay: NSObject { //swiftlint:disable:this type_body_length
     /**
      Initializing a Bluejay instance will not yet initialize the CoreBluetooth stack. An explicit `start` call after Bluejay is intialized will then initialize the CoreBluetooth stack and is required because in cases where a state resotration is trying to restore a listen on a characteristic, a listen restorer must be available before the CoreBluetooth stack is re-initialized. This two-step startup allows you to prepare and gaurantee the setup of your listen restorer in between the initialization of Bluejay and the initialization of the CoreBluetooth stack.
      */
-    public override init() {
+    public init(logObserver: LogObserver? = nil) {
         super.init()
+
+        if let logObserver = logObserver {
+            register(logObserver: logObserver)
+        }
+
         debugLog("Bluejay initialized with UUID: \(uuid.uuidString).")
     }
 
