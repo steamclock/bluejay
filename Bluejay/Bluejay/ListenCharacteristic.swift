@@ -102,4 +102,7 @@ class ListenCharacteristic: Operation {
         updateQueue()
     }
 
+    func debugLog(_ string: String) {
+        queue?.debugLog(string)
+    }
 }

@@ -7,7 +7,6 @@ def core_pods
 
   # Pods for Bluejay
   pod 'SwiftLint'
-  pod 'XCGLogger', '~> 7.0.0'
 end
 
 def demo_pods

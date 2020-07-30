@@ -208,18 +208,18 @@ public class SynchronizedPeripheral {
         var shouldListenAgain = false
 
         DispatchQueue.main.async {
-            debugLog("Flushing listen to \(characteristicIdentifier.description)")
+            self.debugLog("Flushing listen to \(characteristicIdentifier.description)")
 
             shouldListenAgain = false
 
             self.parent.listen(to: characteristicIdentifier, multipleListenOption: .trap) { (result: ReadResult<Data>) in
                 switch result {
                 case .success:
-                    debugLog("Flushed some data.")
+                    self.debugLog("Flushed some data.")
 
                     shouldListenAgain = true
                 case .failure(let failureError):
-                    debugLog("Flush failed with error: \(failureError.localizedDescription)")
+                    self.debugLog("Flush failed with error: \(failureError.localizedDescription)")
 
                     shouldListenAgain = false
                     error = failureError
@@ -384,7 +384,7 @@ public class SynchronizedPeripheral {
                             writeAndAssembleError = error
                         }
                     } else {
-                        debugLog("Need to continue to assemble data.")
+                        self.debugLog("Need to continue to assemble data.")
                     }
                 case .failure(let error):
                     writeAndAssembleError = error
@@ -443,6 +443,9 @@ public class SynchronizedPeripheral {
         return parent.maximumWriteValueLength(for: writeType)
     }
 
+    func debugLog(_ string: String) {
+        parent.debugLog(string)
+    }
 }
 
 extension SynchronizedPeripheral: ConnectionObserver {

@@ -157,4 +157,7 @@ class Connection: Queueable {
         fail(BluejayError.connectionTimedOut)
     }
 
+    func debugLog(_ string: String) {
+        queue?.debugLog(string)
+    }
 }
