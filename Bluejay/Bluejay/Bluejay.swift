@@ -259,11 +259,13 @@ public class Bluejay: NSObject { //swiftlint:disable:this type_body_length
             debugLog("CBCentralManager initialized.")
         case .use(let manager, let peripheral):
             cbCentralManager = manager
-
+            // restoring delegation with cental manger
+            cbCentralManager.delegate = self
             if let peripheral = peripheral {
                 connectedPeripheral = Peripheral(delegate: self, cbPeripheral: peripheral, bluejay: self)
                 peripheral.delegate = connectedPeripheral
             }
+            queue.start()
         }
 
         debugLog("Bluejay with UUID: \(uuid.uuidString) started.")
