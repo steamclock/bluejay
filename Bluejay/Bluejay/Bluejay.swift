@@ -264,6 +264,8 @@ public class Bluejay: NSObject { //swiftlint:disable:this type_body_length
                 connectedPeripheral = Peripheral(delegate: self, cbPeripheral: peripheral, bluejay: self)
                 peripheral.delegate = connectedPeripheral
             }
+
+            queue.start()
         }
 
         debugLog("Bluejay with UUID: \(uuid.uuidString) started.")
