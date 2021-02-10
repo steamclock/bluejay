@@ -163,6 +163,14 @@ public class Bluejay: NSObject { //swiftlint:disable:this type_body_length
         return restoreIdentifier != nil
     }
 
+    /// Enables disconnection errors or arguments to "cancelEverything" also being broadcast to active listeners, to allow them to perform cleanup or shutdown
+    /// operations.
+    ///
+    /// Note: Currently defaults to false, to match original behaviour, because this could be quite disruptive to code that was written assuming this isn't true.
+    /// Arguably should default to true, since there are some situations (such listens in background tasks without timeouts) where this is required for correct
+    /// behaviour, and it may change eventually.
+    public var broadcastErrorsToListeners: Bool = false
+
     // MARK: - Logging
 
     /**
@@ -337,6 +345,7 @@ public class Bluejay: NSObject { //swiftlint:disable:this type_body_length
             debugLog("Should auto-reconnect: \(shouldAutoReconnect)")
         }
 
+        connectedPeripheral?.broadcastErrorToListeners(error)
         queue.cancelAll(error: error)
 
         if isConnected && shouldDisconnect {
