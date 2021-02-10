@@ -263,6 +263,10 @@ class Peripheral: NSObject {
         }
     }
 
+    func broadcastErrorToListeners(_ error: Error) {
+        listeners.values.forEach { $0.0?(.failure(error)) }
+    }
+    
     /// Ask for the peripheral's maximum payload length in bytes for a single write request.
     public func maximumWriteValueLength(`for` writeType: CBCharacteristicWriteType) -> Int {
         return cbPeripheral.maximumWriteValueLength(for: writeType)
