@@ -345,7 +345,9 @@ public class Bluejay: NSObject { //swiftlint:disable:this type_body_length
             debugLog("Should auto-reconnect: \(shouldAutoReconnect)")
         }
 
-        connectedPeripheral?.broadcastErrorToListeners(error)
+        if broadcastErrorsToListeners {
+            connectedPeripheral?.broadcastErrorToListeners(error)
+        }
         queue.cancelAll(error: error)
 
         if isConnected && shouldDisconnect {
