@@ -23,9 +23,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Request permission to display alerts and play sounds.
         center.requestAuthorization(options: [.alert, .sound]) { granted, error in
             if granted {
-                bluejay.log("User notifications authorization granted")
+                debugLog("User notifications authorization granted")
             } else if let error = error {
-                bluejay.log("User notifications authorization error: \(error.localizedDescription)")
+                debugLog("User notifications authorization error: \(error.localizedDescription)")
             }
         }
 
