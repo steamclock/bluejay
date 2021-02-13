@@ -295,6 +295,11 @@ extension Peripheral: CBPeripheralDelegate {
     public func peripheral(_ peripheral: CBPeripheral, didWriteValueFor characteristic: CBCharacteristic, error: Error?) {
         handle(event: .didWriteCharacteristic(characteristic), error: error as NSError?)
     }
+    
+    /// Captures CoreBluetooth's peripheral is ready to send write without response event and pass it to Bluejay's queue for processing.
+    func peripheralIsReady(toSendWriteWithoutResponse peripheral: CBPeripheral) {
+        handle(event: .isReadyToWriteWithoutResponse, error: nil)
+    }
 
     /// Captures CoreBluetooth's did receive a notification/value from a characteristic event and pass it to Bluejay's queue for processing.
     public func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
