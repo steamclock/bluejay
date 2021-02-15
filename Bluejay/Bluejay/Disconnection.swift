@@ -74,4 +74,7 @@ class Disconnection: Queueable {
         updateQueue()
     }
 
+    func debugLog(_ string: String) {
+        queue?.debugLog(string)
+    }
 }

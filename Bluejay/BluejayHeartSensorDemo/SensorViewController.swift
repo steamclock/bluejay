@@ -39,16 +39,16 @@ class SensorViewController: UITableViewController {
             bluejay.disconnect(immediate: true) { result in
                 switch result {
                 case .disconnected:
-                    bluejay.log("Immediate disconnect is successful")
+                    debugLog("Immediate disconnect is successful")
                 case .failure(let error):
-                    bluejay.log("Immediate disconnect failed with error: \(error.localizedDescription)")
+                    debugLog("Immediate disconnect failed with error: \(error.localizedDescription)")
                 }
             }
         }
     }
 
     deinit {
-        bluejay.log("Deinit SensorViewController")
+        debugLog("Deinit SensorViewController")
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -118,7 +118,7 @@ class SensorViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let selectedSensor = sensor else {
-            bluejay.log("No sensor found")
+            debugLog("No sensor found")
             return
         }
 
@@ -127,9 +127,9 @@ class SensorViewController: UITableViewController {
                 bluejay.connect(selectedSensor, timeout: .seconds(15)) { result in
                     switch result {
                     case .success:
-                        bluejay.log("Connection attempt to: \(selectedSensor.description) is successful")
+                        debugLog("Connection attempt to: \(selectedSensor.description) is successful")
                     case .failure(let error):
-                        bluejay.log("Failed to connect to: \(selectedSensor.description) with error: \(error.localizedDescription)")
+                        debugLog("Failed to connect to: \(selectedSensor.description) with error: \(error.localizedDescription)")
                     }
                 }
             } else if indexPath.row == 1 {
@@ -148,9 +148,9 @@ class SensorViewController: UITableViewController {
                 bluejay.read(from: pairingCharacteristic) { (result: ReadResult<Data>) in
                     switch result {
                     case .success(let data):
-                        bluejay.log("Pairing success: \(String(data: data, encoding: .utf8) ?? "")")
+                        debugLog("Pairing success: \(String(data: data, encoding: .utf8) ?? "")")
                     case .failure(let error):
-                        bluejay.log("Pairing failed with error: \(error.localizedDescription)")
+                        debugLog("Pairing failed with error: \(error.localizedDescription)")
                     }
                 }
             }
@@ -173,14 +173,14 @@ class SensorViewController: UITableViewController {
                         weakSelf.heartRate = heartRate
                         weakSelf.tableView.reloadData()
                     case .failure(let error):
-                        bluejay.log("Failed to listen to heart rate with error: \(error.localizedDescription)")
+                        debugLog("Failed to listen to heart rate with error: \(error.localizedDescription)")
                     }
             }
         } else if characteristic == chirpCharacteristic {
             bluejay.listen(to: chirpCharacteristic, multipleListenOption: .replaceable) { (result: ReadResult<Data>) in
                 switch result {
                 case .success:
-                    bluejay.log("Dittojay chirped.")
+                    debugLog("Dittojay chirped.")
 
                     let content = UNMutableNotificationContent()
                     content.title = "Bluejay Heart Sensor"
@@ -189,7 +189,7 @@ class SensorViewController: UITableViewController {
                     let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: nil)
                     UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
                 case .failure(let error):
-                    bluejay.log("Failed to listen to heart rate with error: \(error.localizedDescription)")
+                    debugLog("Failed to listen to heart rate with error: \(error.localizedDescription)")
                 }
             }
         }
@@ -199,9 +199,9 @@ class SensorViewController: UITableViewController {
         bluejay.endListen(to: characteristic) { result in
             switch result {
             case .success:
-                bluejay.log("End listen to \(characteristic.description) is successful")
+                debugLog("End listen to \(characteristic.description) is successful")
             case .failure(let error):
-                bluejay.log("End listen to \(characteristic.description) failed with error: \(error.localizedDescription)")
+                debugLog("End listen to \(characteristic.description) failed with error: \(error.localizedDescription)")
             }
         }
     }
@@ -215,7 +215,7 @@ extension SensorViewController: ConnectionObserver {
     }
 
     func connected(to peripheral: PeripheralIdentifier) {
-        bluejay.log("SensorViewController - Connected to: \(peripheral.description)")
+        debugLog("SensorViewController - Connected to: \(peripheral.description)")
 
         sensor = peripheral
         listen(to: heartRateCharacteristic)
@@ -232,7 +232,7 @@ extension SensorViewController: ConnectionObserver {
     }
 
     func disconnected(from peripheral: PeripheralIdentifier) {
-        bluejay.log("SensorViewController - Disconnected from: \(peripheral.description)")
+        debugLog("SensorViewController - Disconnected from: \(peripheral.description)")
 
         tableView.reloadData()
 
@@ -247,7 +247,7 @@ extension SensorViewController: ConnectionObserver {
 
 extension SensorViewController: ServiceObserver {
     func didModifyServices(from peripheral: PeripheralIdentifier, invalidatedServices: [ServiceIdentifier]) {
-        bluejay.log("SensorViewController - Invalidated services: \(invalidatedServices.debugDescription)")
+        debugLog("SensorViewController - Invalidated services: \(invalidatedServices.debugDescription)")
 
         if invalidatedServices.contains(where: { invalidatedServiceIdentifier -> Bool in
             invalidatedServiceIdentifier == chirpCharacteristic.service

@@ -8,6 +8,7 @@
 
 import CoreBluetooth
 import Foundation
+import UIKit
 
 /// A scan operation.
 class Scan: Queueable {
@@ -319,5 +320,9 @@ class Scan: Queueable {
 
             stopScan(with: discoveries, error: nil)
         }
+    }
+
+    func debugLog(_ string: String) {
+        queue?.debugLog(string)
     }
 }

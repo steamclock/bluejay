@@ -1,6 +1,6 @@
 Pod::Spec.new do |spec|
   spec.name = 'Bluejay'
-  spec.version = '0.8.6'
+  spec.version = '0.8.8'
   spec.license = { type: 'MIT', file: 'LICENSE' }
   spec.homepage = 'https://github.com/neurovalens/bluejay'
   spec.authors = { 'Jeremy Chiang' => 'jeremy@steamclock.com', 'Chris McCabe' => 'chris.mccabe@neurovalens.com' }
@@ -11,6 +11,5 @@ Pod::Spec.new do |spec|
   spec.framework = 'SystemConfiguration'
   spec.platform = :ios, '10.0'
   spec.requires_arc = true
-  spec.dependency 'XCGLogger', '~> 7.0.0'
   spec.swift_version = '5.0'
 end

@@ -64,7 +64,7 @@ class ScanViewController: UITableViewController {
                         return .stop
                     }
 
-                    bluejay.log("Lost discovery: \(lostDiscovery)")
+                    debugLog("Lost discovery: \(lostDiscovery)")
 
                     weakSelf.sensors = discoveries
                     weakSelf.tableView.reloadData()
@@ -73,9 +73,9 @@ class ScanViewController: UITableViewController {
                 },
                 stopped: { _, error in
                     if let error = error {
-                        bluejay.log("Scan stopped with error: \(error.localizedDescription)")
+                        debugLog("Scan stopped with error: \(error.localizedDescription)")
                     } else {
-                        bluejay.log("Scan stopped without error")
+                        debugLog("Scan stopped without error")
                     }
                 })
         }
@@ -114,9 +114,9 @@ class ScanViewController: UITableViewController {
         bluejay.connect(selectedSensor, timeout: .seconds(15)) { result in
             switch result {
             case .success:
-                bluejay.log("Connection attempt to: \(selectedSensor.description) is successful")
+                debugLog("Connection attempt to: \(selectedSensor.description) is successful")
             case .failure(let error):
-                bluejay.log("Failed to connect to: \(selectedSensor.description) with error: \(error.localizedDescription)")
+                debugLog("Failed to connect to: \(selectedSensor.description) with error: \(error.localizedDescription)")
             }
         }
     }
@@ -135,7 +135,7 @@ extension ScanViewController: ConnectionObserver {
     }
 
     func connected(to peripheral: PeripheralIdentifier) {
-        bluejay.log("ScanViewController - Connected to: \(peripheral.description)")
+        debugLog("ScanViewController - Connected to: \(peripheral.description)")
         performSegue(withIdentifier: "showSensor", sender: self)
     }
 }

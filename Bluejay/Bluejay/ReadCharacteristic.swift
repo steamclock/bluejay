@@ -81,4 +81,7 @@ class ReadCharacteristic<T: Receivable>: ReadOperation {
         updateQueue()
     }
 
+    func debugLog(_ string: String) {
+        queue?.debugLog(string)
+    }
 }

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 /**
  * Protocols for handling the results of a background restoration.

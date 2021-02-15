@@ -9,30 +9,37 @@
 import Bluejay
 import UIKit
 
+// should only ever be one of these, keep a local reference to it so we can implement a general
+// debug logging free function below
+private weak var logViewControllerInstance: LogViewController?
+
+func debugLog(_ text: String) {
+    logViewControllerInstance?.logTextView.text.append(text + "\n")
+}
+
 class LogViewController: UIViewController {
 
-    @IBOutlet private var logTextView: UITextView!
+    @IBOutlet fileprivate var logTextView: UITextView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        clearLogs()
         bluejay.register(logObserver: self)
     }
 
     @IBAction func clearLogs() {
-        bluejay.clearLogs()
+        logTextView.text = ""
     }
 
     @IBAction func exportLogs() {
-        present(UIActivityViewController(activityItems: [bluejay.getLogs() ?? ""], applicationActivities: nil), animated: true, completion: nil)
+        present(UIActivityViewController(activityItems: [logTextView.text ?? ""], applicationActivities: nil), animated: true, completion: nil)
     }
 
 }
 
 extension LogViewController: LogObserver {
-
-    func logFileUpdated(logs: String) {
-        logTextView.text = logs
-        logTextView.scrollRectToVisible(logTextView.caretRect(for: logTextView.endOfDocument), animated: true)
+    func debug(_ text: String) {
+        logTextView.text.append(text + "\n")
     }
 
 }
