@@ -17,9 +17,16 @@ public struct CharacteristicIdentifier {
     /// The `CBUUID` of this characteristic.
     public let uuid: CBUUID
 
-    /// Create a `CharacteristicIdentifier` using a `CBCharacterstic`.
-    public init(_ cbCharacteristic: CBCharacteristic) {
-        self.service = ServiceIdentifier(uuid: cbCharacteristic.service.uuid)
+    /// Create a `CharacteristicIdentifier` using a `CBCharacterstic`. Creation will fail if the "service" property of the CBCharacteristic is nil.
+    /// Note: It isn't documented in CoreBluetooth under what circumstances that property might be nil, but it seems like it should almost never happen.
+    public init?(_ cbCharacteristic: CBCharacteristic) {
+        let optionalService: CBService? = cbCharacteristic.service // became optional with iOS 15 SDK, do a little dance to make it always optional so code below should compile on Xcode 12 or 13
+
+        guard let service = optionalService else {
+            return nil
+        }
+
+        self.service = ServiceIdentifier(uuid: service.uuid)
         self.uuid = cbCharacteristic.uuid
     }
 
@@ -46,7 +53,8 @@ public struct CharacteristicIdentifier {
 
     /// Check equality between a `CharacteristicIdentifier` and a `CBCharacterstic`.
     public static func == (lhs: CharacteristicIdentifier, rhs: CBCharacteristic) -> Bool {
-        return (lhs.uuid == rhs.uuid) && (lhs.service.uuid == rhs.service.uuid)
+        let optionalService: CBService? = rhs.service // became optional with iOS 15 SDK, do a little dance to make it always optional so code below should compile on Xcode 12 or 13
+        return (lhs.uuid == rhs.uuid) && (lhs.service.uuid == optionalService?.uuid)
     }
 }
 
