@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 ### Changed
 
+## [0.8.9] - 2021-11-23
+### Added
+- Add setting to broadcast errors sent to cancelEverything to all listeners
+
+### Fixed
+= Fix not building properly on Xcode 13 / iOS 15
+- Fix problem with timeouts in writeAndAssemble not working as expected if partial data is received- Fix problem with the queue not restarting after transferring states back to Bluejay
+
+## [0.8.8] - 2021-01-20
+### Changed
+- Replace direct use of XCGLogger with a logging callback interface
+
+### Fixed
+- Fix problem with the queue not restarting after transferring states back to Bluejay
+
 ## [0.8.7] - 2020-05-11
 ### Added
 - Added support for Swift Package Manager
