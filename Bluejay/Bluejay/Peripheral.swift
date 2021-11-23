@@ -298,12 +298,15 @@ extension Peripheral: CBPeripheralDelegate {
 
     /// Captures CoreBluetooth's did receive a notification/value from a characteristic event and pass it to Bluejay's queue for processing.
     public func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
-        let characteristicIdentifier = CharacteristicIdentifier(characteristic)
+        guard let characteristicIdentifier = CharacteristicIdentifier(characteristic) else {
+            debugLog("Received value update for characteristic (\(characteristic.uuid.uuidString) without a valid service. Update will be ignored")
+            return
+        }
 
         guard let listener = listeners[characteristicIdentifier], let listenCallback = listener.0 else {
             if delegate.isReading(characteristic: characteristicIdentifier) {
                 handle(event: .didReadCharacteristic(characteristic, characteristic.value ?? Data()), error: error as NSError?)
-            } else if delegate.willEndListen(on: CharacteristicIdentifier(characteristic)) {
+            } else if delegate.willEndListen(on: characteristicIdentifier) {
                 debugLog("""
                     Received read event with value \(String(data: characteristic.value ?? Data(), encoding: .utf8) ?? "") \
                     on characteristic \(characteristic.debugDescription), \
