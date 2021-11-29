@@ -18,5 +18,6 @@ enum Event {
     case didDisconnectPeripheral(Peripheral)
     case didReadCharacteristic(CBCharacteristic, Data)
     case didWriteCharacteristic(CBCharacteristic)
+    case isReadyToWriteWithoutResponse
     case didUpdateCharacteristicNotificationState(CBCharacteristic)
 }
