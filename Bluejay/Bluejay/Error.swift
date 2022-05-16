@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import CoreBluetooth
 
 /// Errors specific to Bluejay.
 public enum BluejayError {
@@ -26,6 +27,8 @@ public enum BluejayError {
     case missingService(ServiceIdentifier)
     /// A Bluetooth characteristic is not found.
     case missingCharacteristic(CharacteristicIdentifier)
+    /// A Bluetooth characteristic doesn't have the requested property
+    case missingCharacteristicProperty(CBCharacteristicProperties)
     /// A Bluetooth operation is cancelled.
     case cancelled
     /// Bluejay disconnect is called.
@@ -89,6 +92,8 @@ extension BluejayError: LocalizedError {
             return "Service not found: \(service.uuid)"
         case let .missingCharacteristic(characteristic):
             return "Characteristic not found: \(characteristic.uuid)"
+        case let .missingCharacteristicProperty(property):
+            return "Write type (\(property)) on characteristic was not found"
         case .cancelled:
             return "Cancelled"
         case .explicitDisconnect:
@@ -140,11 +145,11 @@ extension BluejayError: LocalizedError {
 }
 
 extension BluejayError: CustomNSError {
-
+    
     public static var errorDomain: String {
         return "Bluejay"
     }
-
+    
     public var errorCode: Int {
         switch self {
         case .bluetoothUnavailable: return 1
@@ -176,6 +181,7 @@ extension BluejayError: CustomNSError {
         case .multipleListenTrapped: return 27
         case .multipleListenReplaced: return 28
         case .tooMuchData: return 29
+        case .missingCharacteristicProperty: return 30
         }
     }
 

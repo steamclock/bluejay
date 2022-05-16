@@ -52,6 +52,12 @@ class WriteCharacteristic<T: Sendable>: Operation {
             return
         }
 
+        let property: CBCharacteristicProperties = type == .withoutResponse ? .writeWithoutResponse : .write
+        guard characteristic.properties.contains(property) else {
+            fail(BluejayError.missingCharacteristicProperty(property))
+            return
+        }
+        
         state = .running
 
         peripheral.writeValue(value.toBluetoothData(), for: characteristic, type: type)
