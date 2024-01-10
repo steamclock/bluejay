@@ -1,16 +1,16 @@
 PODS:
-  - SwiftLint (0.31.0)
+  - SwiftLint (0.54.0)
 
 DEPENDENCIES:
   - SwiftLint
 
 SPEC REPOS:
-  https://github.com/CocoaPods/Specs.git:
+  trunk:
     - SwiftLint
 
 SPEC CHECKSUMS:
-  SwiftLint: 7a0227733d786395817373b2d0ca799fd0093ff3
+  SwiftLint: c1de071d9d08c8aba837545f6254315bc900e211
 
 PODFILE CHECKSUM: 07981f3fb1581565fc80eff90f9eef01bb31a032
 
-COCOAPODS: 1.9.1
+COCOAPODS: 1.14.3
